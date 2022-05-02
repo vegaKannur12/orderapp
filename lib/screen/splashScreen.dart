@@ -1,4 +1,6 @@
+
 import 'package:flutter/material.dart';
+import 'package:orderapp/screen/registrationScreen.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -10,10 +12,10 @@ class _SplashScreenState extends State<SplashScreen>
     with TickerProviderStateMixin {
   navigate() async {
     await Future.delayed(Duration(seconds: 2), () async {
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(builder: (context) => HomePage()),
-      // );
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => RegistrationScreen(isExpired: true)),
+      );
     });
   }
 
@@ -41,22 +43,18 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
-      body: SizeTransition(
-        sizeFactor: _animation,
-        axis: Axis.horizontal,
-        axisAlignment: -1,
-        child: const Center(
-          child: Text(
-            "Order App",
-            style: TextStyle(
-                fontFamily: "Roboto",
-                fontWeight: FontWeight.bold,
-                fontSize: 50,
-                color: Color.fromARGB(255, 5, 42, 145)),
+      backgroundColor: Colors.pink[100],
+      body: Center(
+          child: Column(
+        children: [
+          SizedBox(
+            height: size.height * 0.4,
           ),
-        ),
-      ),
+          Image.asset("asset/logo_black_bg.png"),
+        ],
+      )),
     );
   }
 }
