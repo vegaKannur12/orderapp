@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'companyDetailsscreen.dart';
+
 class RegistrationScreen extends StatefulWidget {
   bool isExpired = false;
   RegistrationScreen({required this.isExpired});
@@ -16,22 +18,22 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   late String uniqId;
 
   //////////////////snackbar///////////////////
-  _showSnackbar(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        backgroundColor: Color.fromARGB(255, 143, 17, 8),
-        duration: const Duration(seconds: 1),
-        content: Text('Expired!!!!'),
-        action: SnackBarAction(
-          label: 'Dissmiss',
-          textColor: Colors.yellow,
-          onPressed: () {
-            ScaffoldMessenger.of(context).hideCurrentSnackBar();
-          },
-        ),
-      ),
-    );
-  }
+  // _showSnackbar(BuildContext context) {
+  //   ScaffoldMessenger.of(context).showSnackBar(
+  //     SnackBar(
+  //       backgroundColor: Color.fromARGB(255, 143, 17, 8),
+  //       duration: const Duration(seconds: 1),
+  //       content: Text('Expired!!!!'),
+  //       action: SnackBarAction(
+  //         label: 'Dissmiss',
+  //         textColor: Colors.yellow,
+  //         onPressed: () {
+  //           ScaffoldMessenger.of(context).hideCurrentSnackBar();
+  //         },
+  //       ),
+  //     ),
+  //   );
+  // }
 
   @override
   void initState() {
@@ -43,7 +45,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   Widget build(BuildContext context) {
     if (widget.isExpired) {
       Future<Null>.delayed(Duration.zero, () {
-        _showSnackbar(context);
+        // _showSnackbar(context);
       });
     }
     Size size = MediaQuery.of(context).size;
@@ -83,22 +85,22 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       onPressed: () async {
                         // Navigator.of(context).pop();
                         if (_formKey.currentState!.validate()) {
-                          print(uniqId);
+                          // print(uniqId);
                         }
                         // ScaffoldMessenger.of(context).hideCurrentSnackBar();
                         ScaffoldMessenger.of(context).removeCurrentSnackBar();
                         Navigator.of(context).pop();
 
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //       builder: (context) => BarcodeType(
-                        //           // companyName: result!.companyName.toString(),
-                        //           )),
-                        // );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CompanyDetails(
+                                  // companyName: result!.companyName.toString(),
+                                  )),
+                        );
                       },
                       child:
-                          Text(widget.isExpired ? "Register" : "Re-Register"),
+                          Text(widget.isExpired ? "Register" : "Register"),
                     ),
                   ),
                 ],

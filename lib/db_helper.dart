@@ -8,9 +8,23 @@ class BarcodeScanlogDB {
   static Database? _database;
   BarcodeScanlogDB._init();
   static final id = 'id';
-  static final Company_name = 'Company_name';
-  static final fingerprint = 'fingerprint';
-  static final company_code = 'company_code';
+  static final cid = 'cid';
+  static final fp = 'fp';
+  static final os = 'os';
+  static final cpre = 'cpre';
+  static final ctype = 'ctype';
+  static final hoid = 'hoid';
+  static final cnme = 'cnme';
+  static final ad1 = 'ad1';
+  static final ad2 = 'ad2';
+  static final ad3 = 'ad3';
+  static final land = 'land';
+  static final mob = 'mob';
+  static final em = 'em';
+  static final gst = 'gst';
+  static final ccode = 'ccode';
+  static final scode = 'scode';
+  static final error = 'error';
   // int DB_VERSION = 2;
   //////////////////////////////////////
 
@@ -23,20 +37,12 @@ class BarcodeScanlogDB {
   Future<Database> _initDB(String filepath) async {
     final dbpath = await getDatabasesPath();
     final path = join(dbpath, filepath);
-    return await openDatabase(path,
-        version: 1, onCreate: _createDB, 
-        // onUpgrade: _upgradeDB
+    return await openDatabase(
+      path,
+      version: 1, onCreate: _createDB,
+      // onUpgrade: _upgradeDB
     );
   }
-
-  // Future _upgradeDB(Database db, int oldversion, int newVwersion) async {
-  //   var batch = db.batch();
-  //   print("version UPGRADE-----------------${oldversion} && ${newVwersion}");
-  //   if (oldversion == 1) {
-  //     _updateTableScanLog(batch);
-  //   }
-  //   batch.commit();
-  // }
 
   Future _createDB(Database db, int version) async {
     ///////////////barcode store table ////////////////
@@ -44,76 +50,23 @@ class BarcodeScanlogDB {
     await db.execute('''
           CREATE TABLE registrationTable (
             $id INTEGER PRIMARY KEY AUTOINCREMENT,
-            $Company_name TEXT NOT NULL,
-            $fingerprint TEXT NOT NULL,
-            $company_code TEXT NOT NULL,
+            $cid TEXT NOT NULL,
+            $fp TEXT NOT NULL,
+            $os TEXT NOT NULL,
           )
           ''');
-////////////// registration table ////////////
-    // await db.execute('''
-    //       CREATE TABLE tableRegistration (
-    //         $id INTEGER PRIMARY KEY AUTOINCREMENT,
-    //         $company_code TEXT NOT NULL,
-    //         $device_id TEXT NOT NULL,
-    //         $appType TEXT NOT NULL,
-    //         $company_id TEXT NOT NULL,
-    //         $company_name TEXT NOT NULL,
-    //         $user_id TEXT NOT NULL,
-    //         $expiry_date TEXT NOT NULL
-    //       )
-    //       ''');
   }
-
-  // void _updateTableScanLog(Batch batch) {
-  //   batch.execute(
-  //       'ALTER TABLE registrationTable ADD model TEXT, brand TEXT, description TEXT, rate TEXT ,size TEXT, product TEXT');
-  // }
-
-  // Future insertBarcode(Data barcodeData) async {
-  //   final db = await database;
-  //   var query =
-  //       'INSERT INTO tableBarcode(barcode, brand, model, size, description , rate, product) VALUES("${barcodeData.barcode}", "${barcodeData.brand}", "${barcodeData.model}", "${barcodeData.size}", "${barcodeData.description}", "${barcodeData.rate}", "${barcodeData.product}")';
-  //   var res = await db.rawInsert(query);
-  //   print(query);
-  //   print(res);
-  //   return res;
-  // }
-
-  ////////////////////////////////////////////////
-  // Future barcodeTimeStamp(String? barcode, String? time, int? qty, int page_id,
-  //     String type, Data? barcodeData) async {
-  //   var query;
-  //   print("entered insertion table");
-  //   final db = await database;
-  //   if (type == "Free Scan" || type == "Free Scan with quantity") {
-  //     query =
-  //         'INSERT INTO tableScanLog(barcode, time, qty, page_id, model, brand, description, rate, size, product) VALUES("${barcode}", "${time}", ${qty}, ${page_id},"","","","","","")';
-  //   }
-  //   if (type == "API Scan" || type == "API Scan with quantity") {
-  //     query =
-  //         'INSERT INTO tableScanLog(barcode, time, qty, page_id, model, brand, description, rate, size, product) VALUES("${barcodeData!.barcode}", "${time}", ${qty}, ${page_id},"${barcodeData.model}","${barcodeData.brand}","${barcodeData.description}","${barcodeData.rate}","${barcodeData.size}","${barcodeData.product}")';
-  //   }
-
-  //   var res = await db.rawInsert(query);
-  //   print(query);
-  //   print(res);
-  //   return res;
-  // }
 
   ///////////////////////////////////////////////
   Future insertRegistrationDetails(
-      String company_code,
-      String device_id,
+      String cid,
+      String fp,
       String appType,
-      String company_id,
-      String company_name,
-      String user_id,
-      String expiry_date) async {
+      String os,) async {
     final db = await database;
-    print("userId*****${user_id}");
     // print(user_id.runtimeType);
     var query =
-        'INSERT INTO tableRegistration(company_name, fingerprint, company_code) VALUES("${company_name}", "${fingerprint}", "${company_code}")';
+        'INSERT INTO tableRegistration(cid, fp, os) VALUES("${cid}", "${fp}", "${os}")';
     var res = await db.rawInsert(query);
     print(query);
     print(res);
@@ -142,66 +95,66 @@ class BarcodeScanlogDB {
   //   await db.delete('tableScanLog');
   // }
 ///////////////////////////////////////////
- Future searchIn(String barcode)async{
-    Database db = await instance.database;
+  // Future searchIn(String barcode) async {
+  //   Database db = await instance.database;
 
-    List<Map<String, dynamic>> list =
-        await db.rawQuery('SELECT * FROM tableRegistration WHERE company_code="${company_code}"');
-        if(list.isEmpty)
-        {
-          return false;
-        }else {
-          return true;
-        }
- }
+  //   List<Map<String, dynamic>> list = await db.rawQuery(
+  //       'SELECT * FROM tableRegistration WHERE cid="${cid}"');
+  //   if (list.isEmpty) {
+  //     return false;
+  //   } else {
+  //     return true;
+  //   }
+  // }
+
   //////////////////////////////////////
-  Future delete(int id) async {
-    Database db = await instance.database;
-    // print("id--${id}");
-    return await db.rawDelete("DELETE FROM 'tableRegistration' WHERE $id = id");
-  }
+  // Future delete(int id) async {
+  //   Database db = await instance.database;
+  //   // print("id--${id}");
+  //   return await db.rawDelete("DELETE FROM 'tableRegistration' WHERE $id = id");
+  // }
 
   ////////////////////////////////////
   ///
-  Future findCount() async {
-    Database db = await instance.database;
-    print(await db.rawQuery('SELECT count(*) FROM tableRegistration'));
-  }
+  // Future findCount() async {
+  //   Database db = await instance.database;
+  //   print(await db.rawQuery('SELECT count(*) FROM tableRegistration'));
+  // }
 
-  /////////////////select company nme////////////////
-  Future<List<Map<String, dynamic>>> getCompanyDetails() async {
-    Database db = await instance.database;
+  // /////////////////select company nme////////////////
+  // Future<List<Map<String, dynamic>>> getCompanyDetails() async {
+  //   Database db = await instance.database;
 
-    List<Map<String, dynamic>> list =
-        await db.rawQuery('SELECT * FROM tableRegistration');
-    print("company details-- ${list}");
-    return list;
-  }
+  //   List<Map<String, dynamic>> list =
+  //       await db.rawQuery('SELECT * FROM tableRegistration');
+  //   print("company details-- ${list}");
+  //   return list;
+  // }
 
-  ////////////////////////////////////////////////////////
-  deleteAllRowsTableScanLog() async {
-    Database db = await instance.database;
-    await db.delete('tableRegistration');
-  }
+  // ////////////////////////////////////////////////////////
+  // deleteAllRowsTableScanLog() async {
+  //   Database db = await instance.database;
+  //   await db.delete('tableRegistration');
+  // }
 
   /////////////////////////////////////////////////////////
-  getColumnnames() async {
-    Database db = await instance.database;
-    var list =
-        await db.query("SELECT barcode,time FROM 'tableScanLog' WHERE 1=0");
-    return list;
-  }
+  // getColumnnames() async {
+  //   Database db = await instance.database;
+  //   var list =
+  //       await db.query("SELECT barcode,time FROM 'tableScanLog' WHERE 1=0");
+  //   return list;
+  // }
 
-  getListOfTables() async {
-    Database db = await instance.database;
-    var list = await db.query('sqlite_master', columns: ['type', 'name']);
-    print(list);
-    list.map((e) => print(e["name"])).toList();
-    return list;
-    // list.forEach((row) {
-    //   print(row.values);
-    // });
-  }
+  // getListOfTables() async {
+  //   Database db = await instance.database;
+  //   var list = await db.query('sqlite_master', columns: ['type', 'name']);
+  //   print(list);
+  //   list.map((e) => print(e["name"])).toList();
+  //   return list;
+  //   // list.forEach((row) {
+  //   //   print(row.values);
+  //   // });
+  // }
 
   // getTableData(String tablename) async {
   //   Database db = await instance.database;
