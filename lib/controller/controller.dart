@@ -8,6 +8,7 @@ import '../model/staffdetails_model.dart';
 
 class Controller extends ChangeNotifier {
   bool isLoading = false;
+  String? cid;
   List<CD> c_d = [];
 ////////////////////////////////////////////////////////////////////////
   Future<RegistrationData?> postRegistration(String company_code) async {
@@ -31,6 +32,7 @@ class Controller extends ChangeNotifier {
       print("response ${response}");
       RegistrationData regModel = RegistrationData.fromJson(map);
       print("gre model===${regModel.c_d![0]}");
+      cid=regModel.cid;
       for (var item in regModel.c_d!) {
         c_d.add(item);
       }
@@ -43,7 +45,7 @@ class Controller extends ChangeNotifier {
 
   //////////////////////////////////////////////////////////////////////
   ///
-  Future<StaffDetails?> postStaffDetails(String cid) async {
+  Future<StaffDetails?> getStaffDetails(String cid) async {
     try {
       Uri url = Uri.parse("http://trafiqerp.in/order/fj/get_staff.php");
       Map body = {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:orderapp/components/commoncolor.dart';
 import 'package:orderapp/components/customAppbar.dart';
+import 'package:orderapp/components/customSnackbar.dart';
 import 'package:orderapp/controller/controller.dart';
 import 'package:orderapp/screen/staffLoginScreen.dart';
 import 'package:provider/provider.dart';
@@ -11,14 +12,24 @@ class CompanyDetails extends StatefulWidget {
 }
 
 class _CompanyDetailsState extends State<CompanyDetails> {
+  CustomSnackbar _snackbar=CustomSnackbar();
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: P_Settings.detailscolor,
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(60),
-        child: CustomAppbar(title: "Order App"),
+      appBar: AppBar(
+        title: Text("Order App"),
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => StaffLogin()),
+                );
+              },
+              icon: Icon(Icons.done))
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -191,13 +202,13 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                               ),
                               ElevatedButton(
                                 onPressed: () {
-                                  Provider.of<Controller>(context, listen: false)
-                                      .postStaffDetails("CO1001");
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => StaffLogin()),
-                                  );
+                                  String cid = Provider.of<Controller>(context,
+                                          listen: false)
+                                      .cid!;
+                                  Provider.of<Controller>(context,
+                                          listen: false)
+                                      .getStaffDetails(cid);
+                                  _snackbar.showSnackbar(context,"Staff Details Saved");
                                 },
                                 child: Text("Download Data"),
                               ),
