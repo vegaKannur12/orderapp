@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:orderapp/controller/controller.dart';
+import 'package:provider/provider.dart';
 
 import 'companyDetailsscreen.dart';
 
@@ -16,24 +18,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   late String uniqId;
-
-  //////////////////snackbar///////////////////
-  // _showSnackbar(BuildContext context) {
-  //   ScaffoldMessenger.of(context).showSnackBar(
-  //     SnackBar(
-  //       backgroundColor: Color.fromARGB(255, 143, 17, 8),
-  //       duration: const Duration(seconds: 1),
-  //       content: Text('Expired!!!!'),
-  //       action: SnackBarAction(
-  //         label: 'Dissmiss',
-  //         textColor: Colors.yellow,
-  //         onPressed: () {
-  //           ScaffoldMessenger.of(context).hideCurrentSnackBar();
-  //         },
-  //       ),
-  //     ),
-  //   );
-  // }
 
   @override
   void initState() {
@@ -83,14 +67,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     width: size.width * 0.3,
                     child: ElevatedButton(
                       onPressed: () async {
-                        // Navigator.of(context).pop();
-                        if (_formKey.currentState!.validate()) {
-                          // print(uniqId);
-                        }
-                        // ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                        ScaffoldMessenger.of(context).removeCurrentSnackBar();
-                        Navigator.of(context).pop();
-
+                        Provider.of<Controller>(context,listen:false).postRegistration(codeController.text);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -99,8 +76,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                   )),
                         );
                       },
-                      child:
-                          Text(widget.isExpired ? "Register" : "Register"),
+                      child: Text("Register")
                     ),
                   ),
                 ],
