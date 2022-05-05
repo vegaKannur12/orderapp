@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:orderapp/model/model.dart';
+import 'package:orderapp/model/registration_model.dart';
+
+import '../model/staffdetails_model.dart';
 
 class Controller extends ChangeNotifier {
   bool isLoading = false;
@@ -41,11 +43,11 @@ class Controller extends ChangeNotifier {
 
   //////////////////////////////////////////////////////////////////////
   ///
-  Future<RegistrationData?> postStaffDetails(String cid) async {
+  Future<StaffDetails?> postStaffDetails(String cid) async {
     try {
       Uri url = Uri.parse("http://trafiqerp.in/order/fj/get_staff.php");
       Map body = {
-        'cid': "RONPBQ9AD5D",
+        'cid': "CO1001",
       };
       print("compny----${cid}");
       http.Response response = await http.post(
@@ -55,13 +57,13 @@ class Controller extends ChangeNotifier {
       print("body ${body}");
       var map = jsonDecode(response.body);
       print("map ${map}");
-      RegistrationData regModel = RegistrationData.fromJson(map);
+      StaffDetails staffModel = StaffDetails.fromJson(map);
 
       /////////////// insert into local db /////////////////////
-      // late Data dataDetails;
-      // for (var item in RegistrationData.data!) {
+      late StaffDetails dataDetails;
+      // for (var item in StaffDetails.data!) {
       //   dataDetails = Data(
-      //       cid: item.cid,
+      //       sid: item.sid,
       //       cpre: item.cpre,
       //       ctype: item.ctype,
       //       hoid: item.hoid,
@@ -77,7 +79,7 @@ class Controller extends ChangeNotifier {
       //       scode: item.scode);
       //   var res = await OrderAppDB.instance.insertRegistrationDetails(dataDetails);
       // }
-      return regModel;
+      return staffModel;
     } catch (e) {
       print(e);
       return null;

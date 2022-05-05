@@ -54,14 +54,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           color: P_Settings.wavecolor,
                           height: size.height * 0.3,
                           alignment: Alignment.center,
-                          // child: Text(
-                          //   "LOGIN",
-                          //   style: TextStyle(
-                          //     fontSize: 28,
-                          //     fontWeight: FontWeight.bold,
-                          //     color: Colors.white,
-                          //   ),
-                          // ),
                         ),
                       ),
                     ],
