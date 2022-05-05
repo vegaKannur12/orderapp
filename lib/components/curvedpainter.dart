@@ -13,7 +13,7 @@ class CurvedPainter extends CustomPainter {
     path.quadraticBezierTo(size.width * 0.25, size.height * 0.7,
         size.width * 0.5, size.height * 0.8);
     path.quadraticBezierTo(size.width * 0.75, size.height * 0.9,
-        size.width * 1.0, size.height * 0.8);
+        size.width * 1.0, size.height * 0.8); 
     path.lineTo(size.width, size.height);
     path.lineTo(0, size.height);
 

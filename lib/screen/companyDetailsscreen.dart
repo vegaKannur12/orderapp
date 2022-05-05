@@ -24,9 +24,9 @@ class _CompanyDetailsState extends State<CompanyDetails> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            // SizedBox(
-            //   height: size.height * 0.03,
-            // ),
+            SizedBox(
+              height: size.height * 0.03,
+            ),
             Text(
               "Company Details",
               style: TextStyle(fontSize: 20, color: P_Settings.headingColor),

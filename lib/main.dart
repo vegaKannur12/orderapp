@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:orderapp/controller/controller.dart';
 import 'package:orderapp/screen/registrationScreen.dart';
+import 'package:orderapp/screen/staffLoginScreen.dart';
 import 'package:provider/provider.dart';
 import 'components/commoncolor.dart';
 
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Raleway',
         primaryColor: P_Settings.bodycolor,
         colorScheme: ColorScheme.fromSwatch(
-          primarySwatch: Colors.teal,
+          primarySwatch: Colors.indigo,
         ),
         scaffoldBackgroundColor: P_Settings.bodycolor,
         textTheme: const TextTheme(
@@ -41,6 +42,8 @@ class MyApp extends StatelessWidget {
         ),
       ),
       home: RegistrationScreen(isExpired: true,),
+      // home: MyWaveClipper(),
+      
     );
   }
 }

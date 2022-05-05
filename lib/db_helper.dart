@@ -25,13 +25,13 @@ class OrderAppDB {
   static final gst = 'gst';
   static final ccode = 'ccode';
   static final scode = 'scode';
-  static final error = 'error';
+  static final msg = 'msg';
   // int DB_VERSION = 2;
   //////////////////////////////////////
 
   Future<Database> get database async {
     if (_database != null) return _database!;
-    _database = await _initDB("barcodeScan.db");
+    _database = await _initDB("orderapp.db");
     return _database!;
   }
 
@@ -46,7 +46,7 @@ class OrderAppDB {
   }
 
   Future _createDB(Database db, int version) async {
-  ///////////////barcode store table ////////////////
+    ///////////////barcode store table ////////////////
     await db.execute('''
           CREATE TABLE registrationTable (
             $id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -65,10 +65,28 @@ class OrderAppDB {
     String appType,
     String os,
     String c_d,
+////////// company c_d details/////////////////
+    String cpre,
+    String ctype,
+    String hoid,
+    String cnme,
+    String ad1,
+    String ad2,
+    String ad3,
+    String land,
+    String mob,
+    String em,
+    String gst,
+    String ccode,
+    String scode,
+    String msg,
+
   ) async {
     final db = await database;
     var query =
-        'INSERT INTO tableRegistration(cid, fp, os) VALUES("${cid}", "${fp}", "${os}", "${c_d}")';
+        'INSERT INTO tableRegistration(cid, fp, os, c_d) VALUES("${cid}", "${fp}", "${os}", "${c_d}")';
+    var query1 =
+        'INSERT INTO tableRegistration(cpre, ctype, cnme, ad1, ad2, ad2, land, mob, em, gst, ccode, scode, msg) VALUES("${cid}", "${fp}", "${os}", "${c_d}")';
     var res = await db.rawInsert(query);
     print(query);
     print(res);
