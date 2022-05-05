@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:orderapp/components/commoncolor.dart';
 import 'package:orderapp/components/customAppbar.dart';
+import 'package:orderapp/controller/controller.dart';
+import 'package:provider/provider.dart';
 
 class CompanyDetails extends StatefulWidget {
   @override
@@ -37,177 +39,172 @@ class _CompanyDetailsState extends State<CompanyDetails> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: P_Settings.detailscolor2,
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  height: size.height * 0.03,
-                  width: size.width * 0.9,
-                  child: ListView.builder(
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        onTap: () {
-                          // Future.delayed(
-                          //     const Duration(milliseconds: 100),
-                          //     () {
-                          //   // Navigator.push(
-                          //   //   context,
-                          //   //   MaterialPageRoute(
-                          //   //     builder: (context) => HomePage1(),
-                          //   //   ),
-                          //   // );
-                          // });
-                        },
-                        title: Column(
-                          // mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              height: size.height * 0.04,
+                child: Consumer<Controller>(
+                  builder: (context, value, child) {
+                    if (value.isLoading){
+                      return Container(
+                        height: size.height*0.9,
+                        child: Center(
+                          
+                            child: CircularProgressIndicator(
+                              
                             ),
-                            Row(
-                              children: [
-                                Icon(Icons.person),
-                                SizedBox(
-                              width: size.width * 0.02,
-                            ),
-                                Text("company name : G7 MARKETINGS"),
-                              ],
-                            ),
-                            SizedBox(
-                              height: size.height * 0.02,
-                            ),
-                            Row(
-                              children: [
-                                Icon(Icons.book),
-                                SizedBox(
-                              width: size.width * 0.02,
-                            ),
-                                Text(
-                                  "Address1           : ",
-                                  // value.reportList![index]['filter_names'],
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: size.height * 0.02,
-                            ),
-                            Row(
-                              children: [
-                                Icon(Icons.book),
-                                SizedBox(
-                                  width: size.width * 0.02,
-                                ),
-                                Text(
-                                  "Address2            : MAVOOR ROAD",
-                                  // value.reportList![index]['filter_names'],
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: size.height * 0.02,
-                            ),
-                            Row(
-                              children: [
-                                Icon(Icons.pin),
-                                SizedBox(
-                                  width: size.width * 0.02,
-                                ),
-                                Text(
-                                  "PinCode              : ",
-                                  // value.reportList![index]['filter_names'],
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: size.height * 0.02,
-                            ),
-                            Row(
-                              children: [
-                                Icon(Icons.business),
-                                SizedBox(
-                                  width: size.width * 0.02,
-                                ),
-                                Text(
-                                  "CompanyPrefix  : VGMHD",
-                                  // value.reportList![index]['filter_names'],
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: size.height * 0.02,
-                            ),
-                            Row(
-                              children: [
-                                Icon(Icons.landscape),
-                                SizedBox(
-                                  width: size.width * 0.02,
-                                ),
-                                Text(
-                                  "Land                    : 12397485",
-                                  // value.reportList![index]['filter_names'],
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: size.height * 0.02,
-                            ),
-                            Row(
-                              children: [
-                                Icon(Icons.phone),
-                                SizedBox(
-                                  width: size.width * 0.02,
-                                ),
-                                Text(
-                                  "Mobile                 : 13456789",
-                                  // value.reportList![index]['filter_names'],
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: size.height * 0.02,
-                            ),
-                            Row(
-                              children: [
-                                Icon(Icons.design_services),
-                                SizedBox(
-                                  width: size.width * 0.02,
-                                ),
-                                Text(
-                                  "GST                      : 32SGT45211RFDT",
-                                  // value.reportList![index]['filter_names'],
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: size.height * 0.02,
-                            ),
-                            Row(
-                              children: [
-                                Icon(Icons.copy_rounded),
-                                SizedBox(
-                                  width: size.width * 0.02,
-                                ),
-                                Text(
-                                  "Country Code     : INR",
-                                  // value.reportList![index]['filter_names'],
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: size.height * 0.04,
-                            ),
-                            ElevatedButton(
-                              onPressed: () {},
-                              child: Text("Download Data"),
-                            ),
-                          ],
+                          
                         ),
                       );
-                    },
-                    itemCount: 1,
-                  ),
+
+                    }else{
+                      return  Container(
+                        height: size.height*0.9,
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: size.height * 0.04,
+                              ),
+                              Row(
+                                children: [
+                                  Icon(Icons.person),
+                                  SizedBox(
+                                width: size.width * 0.02,
+                              ),
+                                  Text("company name : ${value.c_d[0].cnme}"),
+                                ],
+                              ),
+                              SizedBox(
+                                height: size.height * 0.02,
+                              ),
+                              Row(
+                                children: [
+                                  Icon(Icons.book),
+                                  SizedBox(
+                                width: size.width * 0.02,
+                              ),
+                                  Text(
+                                    "Address1           : ${value.c_d[0].ad1}",
+                                    
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: size.height * 0.02,
+                              ),
+                              Row(
+                                children: [
+                                  Icon(Icons.book),
+                                  SizedBox(
+                                    width: size.width * 0.02,
+                                  ),
+                                  Text(
+                                    "Address2            : ${value.c_d[0].ad2}",
+                                    // value.reportList![index]['filter_names'],
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: size.height * 0.02,
+                              ),
+                              Row(
+                                children: [
+                                  Icon(Icons.pin),
+                                  SizedBox(
+                                    width: size.width * 0.02,
+                                  ),
+                                  Text(
+                                    "PinCode              : ",
+                                    // value.reportList![index]['filter_names'],
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: size.height * 0.02,
+                              ),
+                              Row(
+                                children: [
+                                  Icon(Icons.business),
+                                  SizedBox(
+                                    width: size.width * 0.02,
+                                  ),
+                                  Text(
+                                    "CompanyPrefix  : ${value.c_d[0].cpre}",
+                                    // value.reportList![index]['filter_names'],
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: size.height * 0.02,
+                              ),
+                              Row(
+                                children: [
+                                  Icon(Icons.landscape),
+                                  SizedBox(
+                                    width: size.width * 0.02,
+                                  ),
+                                  Text(
+                                    "Land                    : ${value.c_d[0].land}",
+                                    // value.reportList![index]['filter_names'],
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: size.height * 0.02,
+                              ),
+                              Row(
+                                children: [
+                                  Icon(Icons.phone),
+                                  SizedBox(
+                                    width: size.width * 0.02,
+                                  ),
+                                  Text(
+                                    "Mobile                 : ${value.c_d[0].mob}",
+                                    // value.reportList![index]['filter_names'],
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: size.height * 0.02,
+                              ),
+                              Row(
+                                children: [
+                                  Icon(Icons.design_services),
+                                  SizedBox(
+                                    width: size.width * 0.02,
+                                  ),
+                                  Text(
+                                    "GST                      : ${value.c_d[0].gst}",
+                                    // value.reportList![index]['filter_names'],
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: size.height * 0.02,
+                              ),
+                              Row(
+                                children: [
+                                  Icon(Icons.copy_rounded),
+                                  SizedBox(
+                                    width: size.width * 0.02,
+                                  ),
+                                  Text(
+                                    "Country Code     : ${value.c_d[0].ccode}",
+                                    // value.reportList![index]['filter_names'],
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: size.height * 0.04,
+                              ),
+                              ElevatedButton(
+                                onPressed: () {},
+                                child: Text("Download Data"),
+                              ),
+                            ],
+                          ),
+                      );
+                    }
+                    
+                  },
+                
                 ),
               ),
             )
