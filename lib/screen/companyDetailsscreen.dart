@@ -190,7 +190,7 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                             ElevatedButton(
                               onPressed: () {
                                 Provider.of<Controller>(context, listen: false)
-                                    .postRegistration("RONPBQ9AD5D");
+                                    .postStaffDetails("CO1001");
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(

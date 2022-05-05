@@ -41,13 +41,13 @@ class Controller extends ChangeNotifier {
 
   //////////////////////////////////////////////////////////////////////
   ///
-  Future<RegistrationData?> postStaffDetails(String company_code) async {
+  Future<RegistrationData?> postStaffDetails(String cid) async {
     try {
       Uri url = Uri.parse("http://trafiqerp.in/order/fj/get_staff.php");
       Map body = {
-        'company_code': "RONPBQ9AD5D",
+        'cid': "RONPBQ9AD5D",
       };
-      print("compny----${company_code}");
+      print("compny----${cid}");
       http.Response response = await http.post(
         url,
         body: body,
