@@ -5,10 +5,10 @@ import 'package:provider/provider.dart';
 import '../components/commoncolor.dart';
 import '../components/waveclipper.dart';
 import 'companyDetailsscreen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RegistrationScreen extends StatefulWidget {
-  bool isExpired = false;
-  RegistrationScreen({required this.isExpired});
+
 
   @override
   State<RegistrationScreen> createState() => _RegistrationScreenState();
@@ -29,11 +29,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.isExpired) {
-      Future<Null>.delayed(Duration.zero, () {
-        // _showSnackbar(context);
-      });
-    }
+    // if (widget.isExpired) {
+    //   Future<Null>.delayed(Duration.zero, () {
+    //     // _showSnackbar(context);
+    //   });
+    // }
     Size size = MediaQuery.of(context).size;
     return Scaffold(
         key: _scaffoldKey,
@@ -87,8 +87,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     child: ElevatedButton(
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
+                             SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
                             Provider.of<Controller>(context, listen: false)
                                 .postRegistration(codeController.text);
+                            
+                            prefs.setString("company_id", codeController.text);
+
                             Navigator.push(
                               context,
                               MaterialPageRoute(

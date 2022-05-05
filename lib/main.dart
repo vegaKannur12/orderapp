@@ -2,16 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:orderapp/controller/controller.dart';
 import 'package:orderapp/screen/registrationScreen.dart';
+import 'package:orderapp/screen/splashScreen.dart';
 import 'package:orderapp/screen/staffLoginScreen.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'components/commoncolor.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String? cid=prefs.getString("company_id");
   runApp(MultiProvider(
     providers: [ChangeNotifierProvider(create: (_) => Controller())],
     child: MyApp(),
@@ -41,9 +45,8 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: RegistrationScreen(isExpired: true,),
+      home: SplashScreen(),
       // home: MyWaveClipper(),
-      
     );
   }
 }
