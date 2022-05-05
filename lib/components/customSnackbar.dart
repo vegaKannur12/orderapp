@@ -1,0 +1,22 @@
+
+import 'package:flutter/material.dart';
+import 'package:orderapp/components/commoncolor.dart';
+class CustomSnackbar{
+
+  showSnackbar(BuildContext context,String content) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor:Colors.indigo,
+        duration: const Duration(seconds: 1),
+        content: Text("${content}!!!!"),
+        action: SnackBarAction(
+          label: '',
+          textColor: Colors.yellow,
+          onPressed: () {
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          },
+        ),
+      ),
+    );
+  }
+}
