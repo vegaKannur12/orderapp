@@ -43,27 +43,10 @@ class Controller extends ChangeNotifier {
       late CD dataDetails;
       String? fp = regModel.fp;
       String? os = regModel.os;
-      for (var items in regModel.c_d!) {
-        dataDetails = CD(
-          cid: items.cid,
-          cpre:items.cpre,
-          ctype: items.ctype,
-          hoid: items.hoid,
-          cnme: items.cnme,
-          ad1: items.ad1,
-          ad2: items.ad2,
-          ad3:items.ad3,
-          pcode:items.pcode,
-          land: items.land,
-          mob: items.mob,
-          em: items.em,
-          gst: items.gst,
-          ccode:items.ccode,
-          scode: items.scode,
-        );
-        var res =
-            await OrderAppDB.instance.insertRegistrationDetails(dataDetails);
-      }
+      regModel.c_d![0].cid;
+      var res =
+            await OrderAppDB.instance.insertRegistrationDetails(regModel);
+            print("inserted ${res}");
       notifyListeners();
     } catch (e) {
       print(e);
