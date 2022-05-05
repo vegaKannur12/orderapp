@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:orderapp/db_helper.dart';
 import 'package:orderapp/model/registration_model.dart';
 
 import '../model/staffdetails_model.dart';
@@ -9,6 +10,7 @@ import '../model/staffdetails_model.dart';
 class Controller extends ChangeNotifier {
   bool isLoading = false;
   List<CD> c_d = [];
+  List<CD> data = [];
 ////////////////////////////////////////////////////////////////////////
   Future<RegistrationData?> postRegistration(String company_code) async {
     try {
@@ -33,6 +35,30 @@ class Controller extends ChangeNotifier {
       print("gre model===${regModel.c_d![0]}");
       for (var item in regModel.c_d!) {
         c_d.add(item);
+      }
+
+      /////////////// insert into local db /////////////////////
+      late CD dataDetails;
+      for (var items in regModel.c_d!) {
+        dataDetails = CD(
+          cid: items.cid,
+          cpre:items.cpre,
+          ctype: items.ctype,
+          hoid: items.hoid,
+          cnme: items.cnme,
+          ad1: items.ad1,
+          ad2: items.ad2,
+          ad3:items.ad3,
+          pcode:items.pcode,
+          land: items.land,
+          mob: items.mob,
+          em: items.em,
+          gst: items.gst,
+          ccode:items.ccode,
+          scode: items.scode,
+        );
+        var res =
+            await OrderAppDB.instance.insertRegistrationDetails(dataDetails);
       }
       notifyListeners();
     } catch (e) {
@@ -64,19 +90,14 @@ class Controller extends ChangeNotifier {
       // for (var item in StaffDetails.data!) {
       //   dataDetails = Data(
       //       sid: item.sid,
-      //       cpre: item.cpre,
-      //       ctype: item.ctype,
-      //       hoid: item.hoid,
-      //       cnme: item.cnme,
+      //       snme: item.snme,
+      //       unme: item.unme,
+      //       pwd: item.hoid,
       //       ad1: item.ad1,
       //       ad2: item.ad2,
       //       ad3: item.ad3,
-      //       ad1: item.ad1,
-      //       ad1: item.ad1,
-      //       ad1: item.ad1,
-      //       gst: item.gst,
-      //       ccode: item.ccode,
-      //       scode: item.scode);
+      //       ph: item.ph,
+      //      );
       //   var res = await OrderAppDB.instance.insertRegistrationDetails(dataDetails);
       // }
       return staffModel;

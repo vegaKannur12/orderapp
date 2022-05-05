@@ -3,6 +3,8 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
+import 'model/registration_model.dart';
+
 class OrderAppDB {
   static final OrderAppDB instance = OrderAppDB._init();
   static Database? _database;
@@ -18,6 +20,7 @@ class OrderAppDB {
   static final cnme = 'cnme';
   static final ad1 = 'ad1';
   static final ad2 = 'ad2';
+  static final pcode = 'pcode';
   static final ad3 = 'ad3';
   static final land = 'land';
   static final mob = 'mob';
@@ -53,42 +56,33 @@ class OrderAppDB {
             $cid TEXT NOT NULL,
             $fp TEXT NOT NULL,
             $os TEXT NOT NULL,
-            $c_d TEXT NOT NULL,
+            $cpre TEXT,
+            $ctype TEXT,
+            $cnme TEXT,
+            $ad1 TEXT,
+            $ad2 TEXT,
+            $ad3 TEXT,
+            $pcode TEXT,
+            $land TEXT,
+            $mob TEXT,
+            $em TEXT,
+            $gst TEXT,
+            $ccode TEXT,
+            $scode TEXT,
+            $msg TEXT,
           )
           ''');
   }
 
   ///////////////////////////////////////////////
-  Future insertRegistrationDetails(
-    String cid,
-    String fp,
-    String appType,
-    String os,
-    String c_d,
-////////// company c_d details/////////////////
-    String cpre,
-    String ctype,
-    String hoid,
-    String cnme,
-    String ad1,
-    String ad2,
-    String ad3,
-    String land,
-    String mob,
-    String em,
-    String gst,
-    String ccode,
-    String scode,
-    String msg,
-
-  ) async {
+  Future insertRegistrationDetails(CD cid) async {
     final db = await database;
-    var query =
-        'INSERT INTO tableRegistration(cid, fp, os, c_d) VALUES("${cid}", "${fp}", "${os}", "${c_d}")';
+    // var query =
+    //     'INSERT INTO tableRegistration(cid, fp, os, c_d) VALUES("${cid}", "${fp}", "${os}", "${c_d}")';
     var query1 =
-        'INSERT INTO tableRegistration(cpre, ctype, cnme, ad1, ad2, ad2, land, mob, em, gst, ccode, scode, msg) VALUES("${cid}", "${fp}", "${os}", "${c_d}")';
-    var res = await db.rawInsert(query);
-    print(query);
+        'INSERT INTO registrationTable(cid, fp, os, cpre, ctype, cnme, ad1, ad2, ad3, pcode, land, mob, em, gst, ccode, scode, msg) VALUES("${cid}", "${fp}", "${os}","${cpre}", "${ctype}", "${cnme}", "${ad1}", "${ad2}", "${ad3}", "${pcode}", "${land}", "${mob}", "${em}", "${gst}", "${ccode}", "${scode}", "${msg}" )';
+    var res = await db.rawInsert(query1);
+    print(query1);
     print(res);
     return res;
   }
@@ -99,99 +93,13 @@ class OrderAppDB {
   }
 
   /////////////////////////get all rows////////////
-  Future<List<Map<String, dynamic>>> queryAllRows() async {
-    Database db = await instance.database;
-
-    List<Map<String, dynamic>> list =
-        await db.rawQuery('SELECT * FROM tableScanLog');
-    print("all data ${list}");
-    return list;
-  }
-
-//////////////////////////////////////////////
-  // deleteAllRows() async {
-  //   Database db = await instance.database;
-  //   await db.delete('tableScanLog');
-  // }
-///////////////////////////////////////////
-  // Future searchIn(String barcode) async {
-  //   Database db = await instance.database;
-
-  //   List<Map<String, dynamic>> list = await db.rawQuery(
-  //       'SELECT * FROM tableRegistration WHERE cid="${cid}"');
-  //   if (list.isEmpty) {
-  //     return false;
-  //   } else {
-  //     return true;
-  //   }
-  // }
-
-  //////////////////////////////////////
-  // Future delete(int id) async {
-  //   Database db = await instance.database;
-  //   // print("id--${id}");
-  //   return await db.rawDelete("DELETE FROM 'tableRegistration' WHERE $id = id");
-  // }
-
-  ////////////////////////////////////
-  ///
-  // Future findCount() async {
-  //   Database db = await instance.database;
-  //   print(await db.rawQuery('SELECT count(*) FROM tableRegistration'));
-  // }
-
-  // /////////////////select company nme////////////////
-  // Future<List<Map<String, dynamic>>> getCompanyDetails() async {
+  // Future<List<Map<String, dynamic>>> queryAllRows() async {
   //   Database db = await instance.database;
 
   //   List<Map<String, dynamic>> list =
   //       await db.rawQuery('SELECT * FROM tableRegistration');
-  //   print("company details-- ${list}");
+  //   print("all data ${list}");
   //   return list;
   // }
 
-  // ////////////////////////////////////////////////////////
-  // deleteAllRowsTableScanLog() async {
-  //   Database db = await instance.database;
-  //   await db.delete('tableRegistration');
-  // }
-
-  /////////////////////////////////////////////////////////
-  // getColumnnames() async {
-  //   Database db = await instance.database;
-  //   var list =
-  //       await db.query("SELECT barcode,time FROM 'tableScanLog' WHERE 1=0");
-  //   return list;
-  // }
-
-  // getListOfTables() async {
-  //   Database db = await instance.database;
-  //   var list = await db.query('sqlite_master', columns: ['type', 'name']);
-  //   print(list);
-  //   list.map((e) => print(e["name"])).toList();
-  //   return list;
-  //   // list.forEach((row) {
-  //   //   print(row.values);
-  //   // });
-  // }
-
-  // getTableData(String tablename) async {
-  //   Database db = await instance.database;
-  //   print(tablename);
-  //   var list = await db.rawQuery('SELECT * FROM $tablename');
-  //   print(list);
-  //   return list;
-  // }
-
-  //////////////////////////////////////////////////////
-
-  // Future<int> queryQtyUpdate(int updatedQty, int id) async {
-  //   Database db = await instance.database;
-  //   print("upoadtes---${updatedQty}");
-  //   // var query =
-  //   //     'UPDATE tableScanLog SET qty=${updatedQty} WHERE id=${id}';
-  //   var res = await db
-  //       .rawUpdate('UPDATE tableScanLog SET qty=$updatedQty WHERE id=$id');
-  //   return res;
-  // }
 }
