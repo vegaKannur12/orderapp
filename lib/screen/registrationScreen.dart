@@ -15,7 +15,7 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
-  final _formKey = new GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   TextEditingController codeController = TextEditingController();
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -68,7 +68,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       decoration: const InputDecoration(
                         icon: Icon(Icons.business),
                         // hintText: 'What do people call you?',
-                        labelText: 'Company Code',
+                       labelText: 'Company Code',
                       ),
                       validator: (text) {
                         if (text == null || text.isEmpty) {
@@ -86,15 +86,15 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     width: size.width * 0.3,
                     child: ElevatedButton(
                         onPressed: () async {
-                          Provider.of<Controller>(context, listen: false)
-                              .postRegistration(codeController.text);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => CompanyDetails(
-                                    // companyName: result!.companyName.toString(),
-                                    )),
-                          );
+                          if (_formKey.currentState!.validate()) {
+                            Provider.of<Controller>(context, listen: false)
+                                .postRegistration(codeController.text);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CompanyDetails()),
+                            );
+                          }
                         },
                         child: Text("Register")),
                   ),
