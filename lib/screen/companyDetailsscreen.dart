@@ -62,68 +62,142 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                             SizedBox(
                               height: size.height * 0.04,
                             ),
-                            Text("company name : G7 MARKETINGS"),
-                            SizedBox(
-                              height: size.height * 0.02,
+                            Row(
+                              children: [
+                                Icon(Icons.person),
+                                SizedBox(
+                              width: size.width * 0.02,
                             ),
-                            Text(
-                              "Address1           : ",
-                              // value.reportList![index]['filter_names'],
-                            ),
-                            SizedBox(
-                              height: size.height * 0.02,
-                            ),
-                            Text(
-                              "Address2            : MAVOOR ROAD",
-                              // value.reportList![index]['filter_names'],
+                                Text("company name : G7 MARKETINGS"),
+                              ],
                             ),
                             SizedBox(
                               height: size.height * 0.02,
                             ),
-                            Text(
-                              "PinCode              : ",
-                              // value.reportList![index]['filter_names'],
+                            Row(
+                              children: [
+                                Icon(Icons.book),
+                                SizedBox(
+                              width: size.width * 0.02,
+                            ),
+                                Text(
+                                  "Address1           : ",
+                                  // value.reportList![index]['filter_names'],
+                                ),
+                              ],
                             ),
                             SizedBox(
                               height: size.height * 0.02,
                             ),
-                            Text(
-                              "CompanyPrefix  : VGMHD",
-                              // value.reportList![index]['filter_names'],
+                            Row(
+                              children: [
+                                Icon(Icons.book),
+                                SizedBox(
+                                  width: size.width * 0.02,
+                                ),
+                                Text(
+                                  "Address2            : MAVOOR ROAD",
+                                  // value.reportList![index]['filter_names'],
+                                ),
+                              ],
                             ),
                             SizedBox(
                               height: size.height * 0.02,
                             ),
-                            Text(
-                              "Land                    : 12397485",
-                              // value.reportList![index]['filter_names'],
+                            Row(
+                              children: [
+                                Icon(Icons.pin),
+                                SizedBox(
+                                  width: size.width * 0.02,
+                                ),
+                                Text(
+                                  "PinCode              : ",
+                                  // value.reportList![index]['filter_names'],
+                                ),
+                              ],
                             ),
                             SizedBox(
                               height: size.height * 0.02,
                             ),
-                            Text(
-                              "Mobile                 : 13456789",
-                              // value.reportList![index]['filter_names'],
+                            Row(
+                              children: [
+                                Icon(Icons.business),
+                                SizedBox(
+                                  width: size.width * 0.02,
+                                ),
+                                Text(
+                                  "CompanyPrefix  : VGMHD",
+                                  // value.reportList![index]['filter_names'],
+                                ),
+                              ],
                             ),
                             SizedBox(
                               height: size.height * 0.02,
                             ),
-                            Text(
-                              "GST                      : 32SGT45211RFDT",
-                              // value.reportList![index]['filter_names'],
+                            Row(
+                              children: [
+                                Icon(Icons.landscape),
+                                SizedBox(
+                                  width: size.width * 0.02,
+                                ),
+                                Text(
+                                  "Land                    : 12397485",
+                                  // value.reportList![index]['filter_names'],
+                                ),
+                              ],
                             ),
                             SizedBox(
                               height: size.height * 0.02,
                             ),
-                            Text(
-                              "Country Code     : INR",
-                              // value.reportList![index]['filter_names'],
+                            Row(
+                              children: [
+                                Icon(Icons.phone),
+                                SizedBox(
+                                  width: size.width * 0.02,
+                                ),
+                                Text(
+                                  "Mobile                 : 13456789",
+                                  // value.reportList![index]['filter_names'],
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: size.height * 0.02,
+                            ),
+                            Row(
+                              children: [
+                                Icon(Icons.design_services),
+                                SizedBox(
+                                  width: size.width * 0.02,
+                                ),
+                                Text(
+                                  "GST                      : 32SGT45211RFDT",
+                                  // value.reportList![index]['filter_names'],
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: size.height * 0.02,
+                            ),
+                            Row(
+                              children: [
+                                Icon(Icons.copy_rounded),
+                                SizedBox(
+                                  width: size.width * 0.02,
+                                ),
+                                Text(
+                                  "Country Code     : INR",
+                                  // value.reportList![index]['filter_names'],
+                                ),
+                              ],
                             ),
                             SizedBox(
                               height: size.height * 0.04,
                             ),
                             ElevatedButton(
-                                onPressed: () {}, child: Text("Download Data"),),
+                              onPressed: () {},
+                              child: Text("Download Data"),
+                            ),
                           ],
                         ),
                       );
