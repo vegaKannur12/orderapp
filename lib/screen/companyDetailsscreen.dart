@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:orderapp/components/commoncolor.dart';
+import 'package:orderapp/components/customAppbar.dart';
 
 class CompanyDetails extends StatefulWidget {
   @override
@@ -12,9 +13,12 @@ class _CompanyDetailsState extends State<CompanyDetails> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: P_Settings.detailscolor,
-      appBar: AppBar(
-        title: Text(P_Settings.title),
-      ),
+      appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(60),
+          child: CustomAppbar(
+            title:"Order App"
+          ),
+        ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
