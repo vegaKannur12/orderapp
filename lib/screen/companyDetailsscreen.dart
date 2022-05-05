@@ -34,14 +34,20 @@ class _CompanyDetailsState extends State<CompanyDetails> {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          // crossAxisAlignment: CrossAxisAlignment.center,
+          // mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
-              height: size.height * 0.03,
+              height: size.height * 0.03, 
             ),
-            Text(
-              "Company Details",
-              style: TextStyle(fontSize: 20, color: P_Settings.headingColor),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Company Details",
+                  style: TextStyle(fontSize: 20, color: P_Settings.headingColor),
+                ),
+              ],
             ),
             SizedBox(
               height: size.height * 0.05,
@@ -76,6 +82,7 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                                     width: size.width * 0.02,
                                   ),
                                   Text("company name : ${value.c_d[0].cnme}"),
+                                  
                                 ],
                               ),
                               SizedBox(

@@ -35,73 +35,78 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       });
     }
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
-        key: _scaffoldKey,
-        resizeToAvoidBottomInset: false,
-        body: Column(
-          children: [
-            Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  Container(
-                      child: Stack(
-                    children: <Widget>[
-                      ClipPath(
-                        clipper: WaveClipper(), //set our custom wave clipper.
-                        child: Container(
-                          padding: EdgeInsets.only(bottom: 50),
-                          color: P_Settings.wavecolor,
-                          height: size.height * 0.3,
-                          alignment: Alignment.center,
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+      },
+      child: Scaffold(
+          key: _scaffoldKey,
+          resizeToAvoidBottomInset: false,
+          body: Column(
+            children: [
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    Container(
+                        child: Stack(
+                      children: <Widget>[
+                        ClipPath(
+                          clipper: WaveClipper(), //set our custom wave clipper.
+                          child: Container(
+                            padding: EdgeInsets.only(bottom: 50),
+                            color: P_Settings.wavecolor,
+                            height: size.height * 0.3,
+                            alignment: Alignment.center,
+                          ),
                         ),
-                      ),
-                    ],
-                  )),
-                  SizedBox(
-                    height: size.height * 0.15,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: TextFormField(
-                      controller: codeController,
-                      decoration: const InputDecoration(
-                        icon: Icon(Icons.business),
-                        // hintText: 'What do people call you?',
-                        labelText: 'Company Code',
-                      ),
-                      validator: (text) {
-                        if (text == null || text.isEmpty) {
-                          return 'Please Enter Company code';
-                        }
-                        return null;
-                      },
+                      ],
+                    )),
+                    SizedBox(
+                      height: size.height * 0.15,
                     ),
-                  ),
-                  SizedBox(
-                    height: size.height * 0.04,
-                  ),
-                  Container(
-                    height: size.height * 0.05,
-                    width: size.width * 0.3,
-                    child: ElevatedButton(
-                        onPressed: () async {
-                          Provider.of<Controller>(context, listen: false)
-                              .postRegistration(codeController.text);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => CompanyDetails(
-                                    // companyName: result!.companyName.toString(),
-                                    )),
-                          );
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: TextFormField(
+                        controller: codeController,
+                        decoration: const InputDecoration(
+                          icon: Icon(Icons.business),
+                          // hintText: 'What do people call you?',
+                          labelText: 'Company Code',
+                        ),
+                        validator: (text) {
+                          if (text == null || text.isEmpty) {
+                            return 'Please Enter Company code';
+                          }
+                          return null;
                         },
-                        child: Text("Register")),
-                  ),
-                ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: size.height * 0.04,
+                    ),
+                    Container(
+                      height: size.height * 0.05,
+                      width: size.width * 0.3,
+                      child: ElevatedButton(
+                          onPressed: () async {
+                            Provider.of<Controller>(context, listen: false)
+                                .postRegistration(codeController.text);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CompanyDetails(
+                                      // companyName: result!.companyName.toString(),
+                                      )),
+                            );
+                          },
+                          child: Text("Register")),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
-        ));
+            ],
+          )),
+    );
   }
 }
