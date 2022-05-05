@@ -11,7 +11,7 @@ class CustomSnackbar{
         content: Text("${content}!!!!"),
         action: SnackBarAction(
           label: '',
-          textColor: Colors.yellow,
+          textColor: Colors.white,
           onPressed: () {
             ScaffoldMessenger.of(context).hideCurrentSnackBar();
           },

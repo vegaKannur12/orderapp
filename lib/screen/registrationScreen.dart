@@ -68,7 +68,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       decoration: const InputDecoration(
                         icon: Icon(Icons.business),
                         // hintText: 'What do people call you?',
-                       labelText: 'Company Code',
+                        labelText: 'Company Code',
                       ),
                       validator: (text) {
                         if (text == null || text.isEmpty) {
