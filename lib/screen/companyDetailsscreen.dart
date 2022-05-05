@@ -38,30 +38,19 @@ class _CompanyDetailsState extends State<CompanyDetails> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: P_Settings.detailscolor2,
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  height: size.height * 0.03,
-                  width: size.width * 0.9,
-                  child: ListView.builder(
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        onTap: () {
-                          // Future.delayed(
-                          //     const Duration(milliseconds: 100),
-                          //     () {
-                          //   // Navigator.push(
-                          //   //   context,
-                          //   //   MaterialPageRoute(
-                          //   //     builder: (context) => HomePage1(),
-                          //   //   ),
-                          //   // );
-                          // });
-                        },
-                        title: Column(
-                          // mainAxisAlignment: MainAxisAlignment.start,
+                child: Consumer<Controller>(
+                  builder: (context, value, child) {
+                    if (value.isLoading) {
+                      return Container(
+                        height: size.height * 0.9,
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
+                    } else {
+                      return Container(
+                        height: size.height * 0.9,
+                        child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(
@@ -73,7 +62,7 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                                 SizedBox(
                                   width: size.width * 0.02,
                                 ),
-                                Text("company name : G7 MARKETINGS"),
+                                Text("company name : ${value.c_d[0].cnme}"),
                               ],
                             ),
                             SizedBox(
@@ -86,8 +75,7 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                                   width: size.width * 0.02,
                                 ),
                                 Text(
-                                  "Address1           : ",
-                                  // value.reportList![index]['filter_names'],
+                                  "Address1           : ${value.c_d[0].ad1}",
                                 ),
                               ],
                             ),
@@ -101,7 +89,7 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                                   width: size.width * 0.02,
                                 ),
                                 Text(
-                                  "Address2            : MAVOOR ROAD",
+                                  "Address2            : ${value.c_d[0].ad2}",
                                   // value.reportList![index]['filter_names'],
                                 ),
                               ],
@@ -131,7 +119,7 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                                   width: size.width * 0.02,
                                 ),
                                 Text(
-                                  "CompanyPrefix  : VGMHD",
+                                  "CompanyPrefix  : ${value.c_d[0].cpre}",
                                   // value.reportList![index]['filter_names'],
                                 ),
                               ],
@@ -146,7 +134,7 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                                   width: size.width * 0.02,
                                 ),
                                 Text(
-                                  "Land                    : 12397485",
+                                  "Land                    : ${value.c_d[0].land}",
                                   // value.reportList![index]['filter_names'],
                                 ),
                               ],
@@ -161,7 +149,7 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                                   width: size.width * 0.02,
                                 ),
                                 Text(
-                                  "Mobile                 : 13456789",
+                                  "Mobile                 : ${value.c_d[0].mob}",
                                   // value.reportList![index]['filter_names'],
                                 ),
                               ],
@@ -176,7 +164,7 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                                   width: size.width * 0.02,
                                 ),
                                 Text(
-                                  "GST                      : 32SGT45211RFDT",
+                                  "GST                      : ${value.c_d[0].gst}",
                                   // value.reportList![index]['filter_names'],
                                 ),
                               ],
@@ -191,7 +179,7 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                                   width: size.width * 0.02,
                                 ),
                                 Text(
-                                  "Country Code     : INR",
+                                  "Country Code     : ${value.c_d[0].ccode}",
                                   // value.reportList![index]['filter_names'],
                                 ),
                               ],
@@ -203,20 +191,19 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                               onPressed: () {
                                 Provider.of<Controller>(context, listen: false)
                                     .postRegistration("RONPBQ9AD5D");
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //       builder: (context) => StaffLogin()),
-                                // );
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => StaffLogin()),
+                                );
                               },
                               child: Text("Download Data"),
                             ),
                           ],
                         ),
                       );
-                    },
-                    itemCount: 1,
-                  ),
+                    }
+                  },
                 ),
               ),
             )
