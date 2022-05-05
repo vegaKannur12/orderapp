@@ -1,22 +1,27 @@
-
 import 'package:flutter/material.dart';
+import 'package:orderapp/components/commoncolor.dart';
 import 'package:orderapp/controller/controller.dart';
 import 'package:orderapp/screen/registrationScreen.dart';
+import 'package:orderapp/screen/staffLoginScreen.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-/// AnimationControllers can be created with `vsync: this` because of TickerProviderStateMixin.
 class _SplashScreenState extends State<SplashScreen>
     with TickerProviderStateMixin {
+  String? cid;
   navigate() async {
     await Future.delayed(Duration(seconds: 2), () async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      cid = prefs.getString("company_id");
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => RegistrationScreen(isExpired: true)),
+        MaterialPageRoute(
+            builder: (context) => cid !=null?StaffLogin():RegistrationScreen()),
       );
     });
   }
@@ -26,7 +31,7 @@ class _SplashScreenState extends State<SplashScreen>
     // TODO: implement initState
     // Provider.of<Controller>(context, listen: false).getRegistrationDetails();
     super.initState();
-    
+
     navigate();
   }
 
@@ -48,14 +53,17 @@ class _SplashScreenState extends State<SplashScreen>
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Colors.pink[100],
+      backgroundColor: P_Settings.wavecolor,
       body: Center(
           child: Column(
         children: [
           SizedBox(
             height: size.height * 0.4,
           ),
-          Image.asset("asset/logo_black_bg.png"),
+          Container(
+            height: 200,
+            width: 200,
+            child: Image.asset("asset/logo_black_bg.png",)),
         ],
       )),
     );
