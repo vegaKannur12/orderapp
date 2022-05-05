@@ -41,6 +41,8 @@ class Controller extends ChangeNotifier {
 
       /////////////// insert into local db /////////////////////
       late CD dataDetails;
+      String? fp = regModel.fp;
+      String? os = regModel.os;
       for (var items in regModel.c_d!) {
         dataDetails = CD(
           cid: items.cid,
