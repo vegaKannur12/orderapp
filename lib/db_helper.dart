@@ -3,14 +3,15 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
-class BarcodeScanlogDB {
-  static final BarcodeScanlogDB instance = BarcodeScanlogDB._init();
+class OrderAppDB {
+  static final OrderAppDB instance = OrderAppDB._init();
   static Database? _database;
-  BarcodeScanlogDB._init();
+  OrderAppDB._init();
   static final id = 'id';
   static final cid = 'cid';
   static final fp = 'fp';
   static final os = 'os';
+  static final c_d = 'c_d';
   static final cpre = 'cpre';
   static final ctype = 'ctype';
   static final hoid = 'hoid';
@@ -45,28 +46,29 @@ class BarcodeScanlogDB {
   }
 
   Future _createDB(Database db, int version) async {
-    ///////////////barcode store table ////////////////
-
+  ///////////////barcode store table ////////////////
     await db.execute('''
           CREATE TABLE registrationTable (
             $id INTEGER PRIMARY KEY AUTOINCREMENT,
             $cid TEXT NOT NULL,
             $fp TEXT NOT NULL,
             $os TEXT NOT NULL,
+            $c_d TEXT NOT NULL,
           )
           ''');
   }
 
   ///////////////////////////////////////////////
   Future insertRegistrationDetails(
-      String cid,
-      String fp,
-      String appType,
-      String os,) async {
+    String cid,
+    String fp,
+    String appType,
+    String os,
+    String c_d,
+  ) async {
     final db = await database;
-    // print(user_id.runtimeType);
     var query =
-        'INSERT INTO tableRegistration(cid, fp, os) VALUES("${cid}", "${fp}", "${os}")';
+        'INSERT INTO tableRegistration(cid, fp, os) VALUES("${cid}", "${fp}", "${os}", "${c_d}")';
     var res = await db.rawInsert(query);
     print(query);
     print(res);
@@ -80,7 +82,6 @@ class BarcodeScanlogDB {
 
   /////////////////////////get all rows////////////
   Future<List<Map<String, dynamic>>> queryAllRows() async {
-    var a = "";
     Database db = await instance.database;
 
     List<Map<String, dynamic>> list =

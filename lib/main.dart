@@ -30,8 +30,6 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.teal,
         ),
         scaffoldBackgroundColor: P_Settings.bodycolor,
-        //  brightness: Brightness.dark,
-        //  fontFamily: 'Georgia',
         textTheme: const TextTheme(
           headline1: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
           headline6: TextStyle(
