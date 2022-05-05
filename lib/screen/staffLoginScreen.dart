@@ -4,7 +4,7 @@ import 'package:orderapp/components/commoncolor.dart';
 
 import '../components/waveclipper.dart';
 
-class MyWaveClipper extends StatelessWidget {
+class StaffLogin extends StatelessWidget {
   TextEditingController controller1 = TextEditingController();
   TextEditingController controller2 = TextEditingController();
   @override
@@ -57,8 +57,8 @@ class MyWaveClipper extends StatelessWidget {
         ),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
-            // primary: Colors.red,
-          ),
+              // primary: Colors.red,
+              ),
           onPressed: () {},
           child: Text("Login"),
         ),

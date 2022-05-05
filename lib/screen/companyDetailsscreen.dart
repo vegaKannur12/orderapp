@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:orderapp/components/commoncolor.dart';
 import 'package:orderapp/components/customAppbar.dart';
+import 'package:orderapp/controller/controller.dart';
+import 'package:orderapp/screen/staffLoginScreen.dart';
+import 'package:provider/provider.dart';
 
 class CompanyDetails extends StatefulWidget {
   @override
@@ -14,11 +17,9 @@ class _CompanyDetailsState extends State<CompanyDetails> {
     return Scaffold(
       backgroundColor: P_Settings.detailscolor,
       appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(60),
-          child: CustomAppbar(
-            title:"Order App"
-          ),
-        ),
+        preferredSize: const Size.fromHeight(60),
+        child: CustomAppbar(title: "Order App"),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -70,8 +71,8 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                               children: [
                                 Icon(Icons.person),
                                 SizedBox(
-                              width: size.width * 0.02,
-                            ),
+                                  width: size.width * 0.02,
+                                ),
                                 Text("company name : G7 MARKETINGS"),
                               ],
                             ),
@@ -82,8 +83,8 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                               children: [
                                 Icon(Icons.book),
                                 SizedBox(
-                              width: size.width * 0.02,
-                            ),
+                                  width: size.width * 0.02,
+                                ),
                                 Text(
                                   "Address1           : ",
                                   // value.reportList![index]['filter_names'],
@@ -199,7 +200,15 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                               height: size.height * 0.04,
                             ),
                             ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Provider.of<Controller>(context, listen: false)
+                                    .postRegistration("RONPBQ9AD5D");
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //       builder: (context) => StaffLogin()),
+                                // );
+                              },
                               child: Text("Download Data"),
                             ),
                           ],
