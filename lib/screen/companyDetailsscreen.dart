@@ -18,17 +18,12 @@ class _CompanyDetailsState extends State<CompanyDetails> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: P_Settings.detailscolor,
-<<<<<<< HEAD
-      appBar: AppBar(
-        title: Text("Order App"),
-=======
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
         child: CustomAppbar(
           title: "Order App",
           pageName: "company details",
         ),
->>>>>>> b6f9a18bca3c7f943c4c9291995bb9df9abdf983
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -218,17 +213,12 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                                   Provider.of<Controller>(context,
                                           listen: false)
                                       .getStaffDetails(cid);
-<<<<<<< HEAD
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>StaffLogin()),
                                   );
                                   // _snackbar.showSnackbar(context,"Staff Details Saved");
-=======
-                                  _snackbar.showSnackbar(
-                                      context, "Staff Details Saved");
->>>>>>> b6f9a18bca3c7f943c4c9291995bb9df9abdf983
                                 },
                                 child: Text("Continue"),
                               ),

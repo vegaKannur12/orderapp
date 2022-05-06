@@ -40,10 +40,6 @@ class Controller extends ChangeNotifier {
       }
 
       /////////////// insert into local db /////////////////////
-      late CD dataDetails;
-      String? fp = regModel.fp;
-      String? os = regModel.os;
-      regModel.c_d![0].cid;
       var res =
             await OrderAppDB.instance.insertRegistrationDetails(regModel);
             print("inserted ${res}");
@@ -60,9 +56,8 @@ class Controller extends ChangeNotifier {
     try {
       Uri url = Uri.parse("http://trafiqerp.in/order/fj/get_staff.php");
       Map body = {
-        'cid': "CO1001",
+        'cid': "cid",
       };
-      print("compny----${cid}");
       http.Response response = await http.post(
         url,
         body: body,
@@ -73,7 +68,9 @@ class Controller extends ChangeNotifier {
       StaffDetails staffModel = StaffDetails.fromJson(map);
 
       /////////////// insert into local db /////////////////////
-      late StaffDetails dataDetails;
+      //  var restaff =
+      //       await OrderAppDB.instance.insertStaffDetails(staffModel);
+      //       print("inserted ${restaff}");
       // for (var item in StaffDetails.data!) {
       //   dataDetails = Data(
       //       sid: item.sid,
