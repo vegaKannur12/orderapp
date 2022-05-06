@@ -12,6 +12,7 @@ class Controller extends ChangeNotifier {
   String? cid;
   List<CD> c_d = [];
   List<CD> data = [];
+  List<StaffDetails> staffs = [];
 ////////////////////////////////////////////////////////////////////////
   Future<RegistrationData?> postRegistration(String company_code) async {
     try {
@@ -34,15 +35,14 @@ class Controller extends ChangeNotifier {
       print("response ${response}");
       RegistrationData regModel = RegistrationData.fromJson(map);
       print("gre model===${regModel.c_d![0]}");
-      cid=regModel.cid;
+      cid = regModel.cid;
       for (var item in regModel.c_d!) {
         c_d.add(item);
       }
 
       /////////////// insert into local db /////////////////////
-      var res =
-            await OrderAppDB.instance.insertRegistrationDetails(regModel);
-            print("inserted ${res}");
+      var res = await OrderAppDB.instance.insertRegistrationDetails(regModel);
+      print("inserted ${res}");
       notifyListeners();
     } catch (e) {
       print(e);
@@ -53,6 +53,7 @@ class Controller extends ChangeNotifier {
   //////////////////////////////////////////////////////////////////////
   ///
   Future<StaffDetails?> getStaffDetails(String cid) async {
+    print("cid...............${cid}");
     try {
       Uri url = Uri.parse("http://trafiqerp.in/order/fj/get_staff.php");
       Map body = {
@@ -64,15 +65,12 @@ class Controller extends ChangeNotifier {
       );
       print("body ${body}");
       var map = jsonDecode(response.body);
-      print("staff map ${map}");
       StaffDetails staffModel = StaffDetails.fromJson(map);
       print("staff Model ${staffModel}");
-
-      
+ 
       /////////////// insert into local db /////////////////////
-       var restaff =
-            await OrderAppDB.instance.insertStaffDetails(staffModel);
-            print("inserted ${restaff}");
+      var restaff = await OrderAppDB.instance.insertStaffDetails(staffModel);
+      print("inserted ${restaff}");
       return staffModel;
     } catch (e) {
       print(e);
