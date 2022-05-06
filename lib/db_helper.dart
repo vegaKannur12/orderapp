@@ -4,6 +4,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 import 'model/registration_model.dart';
+import 'model/staffdetails_model.dart';
 
 class OrderAppDB {
   static final OrderAppDB instance = OrderAppDB._init();
@@ -32,14 +33,14 @@ class OrderAppDB {
   static final msg = 'msg';
 
 /////////// staff details /////////////
-  static final sid = 'sid';
-  static final sname = 'sname';
+  static final staff_id = 'sid';
+  static final staff_name = 'sname';
   static final uname = 'uname';
   static final pwd = 'os';
   static final add1 = 'ad1';
   static final add2 = 'ad2';
   static final add3 = 'ad3';
-  static final ph = 'ph';
+  static final phone = 'ph';
   // int DB_VERSION = 2;
   //////////////////////////////////////
 
@@ -87,14 +88,14 @@ class OrderAppDB {
     await db.execute('''
           CREATE TABLE staffDetailsTable (
             $id INTEGER PRIMARY KEY AUTOINCREMENT,
-            $sid TEXT NOT NULL,
-            $sname TEXT NOT NULL,
+            $staff_id TEXT NOT NULL,
+            $staff_name TEXT NOT NULL,
             $uname TEXT NOT NULL,
             $pwd TEXT NOT NULL,
             $ad1 TEXT,
             $ad2 TEXT,
             $ad3 TEXT,
-            $ph TEXT
+            $phone TEXT
           )
           ''');
   }
@@ -110,10 +111,10 @@ class OrderAppDB {
     return res;
   }
 ////////////////////// staff details insertion /////////////////////
-  Future insertStaffDetails(RegistrationData data) async {
+  Future insertStaffDetails(StaffDetails data) async {
     final db = await database;
     var query1 =
-        'INSERT INTO staffDetailsTable(sid, sname, uname, pwd, add1, add2, add3, ph) VALUES("${data.c_d![0].cnme}", "${data.c_d![0].ad1}", "${data.c_d![0].ad2}", "${data.c_d![0].ad3}", "${data.c_d![0].pcode}", "${data.c_d![0].land}", "${data.c_d![0].gst}", "${data.c_d![0].ccode}")';
+        'INSERT INTO staffDetailsTable(staff_id, staff_name, uname, pwd, add1, add2, add3, phone) VALUES("${data.sid}", "${data.snme}", "${data.unme}", "${data.pwd}", "${data.ad1}", "${data.ad2}", "${data.ad3}", "${data.ph}")';
     var res = await db.rawInsert(query1);
     print(query1);
     print(res);

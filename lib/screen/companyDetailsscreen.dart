@@ -18,17 +18,8 @@ class _CompanyDetailsState extends State<CompanyDetails> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: P_Settings.detailscolor,
-<<<<<<< HEAD
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(60),
-        child: CustomAppbar(
-          title: "Order App",
-          pageName: "company details",
-        ),
-=======
       appBar: AppBar(
         title: Text("Order App"),
->>>>>>> 25b7704824f15498adb6953d4401f9970b148166
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
