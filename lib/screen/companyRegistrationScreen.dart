@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:orderapp/components/customSnackbar.dart';
 import 'package:orderapp/controller/controller.dart';
 import 'package:provider/provider.dart';
 
@@ -27,35 +28,40 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // if (widget.isExpired) {
-    //   Future<Null>.delayed(Duration.zero, () {
-    //     // _showSnackbar(context);
-    //   });
-    // }
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-        key: _scaffoldKey,
-        resizeToAvoidBottomInset: false,
-        body: Column(
+      key: _scaffoldKey,
+      resizeToAvoidBottomInset: false,
+      body: SingleChildScrollView(
+        child: Column(
           children: [
             Form(
               key: _formKey,
               child: Column(
                 children: [
                   Container(
-                      child: Stack(
-                    children: <Widget>[
-                      ClipPath(
-                        clipper: WaveClipper(), //set our custom wave clipper.
-                        child: Container(
-                          padding: EdgeInsets.only(bottom: 50),
-                          color: P_Settings.wavecolor,
-                          height: size.height * 0.3,
-                          alignment: Alignment.center,
+                    child: Stack(
+                      children: <Widget>[
+                        ClipPath(
+                          clipper: WaveClipper(), //set our custom wave clipper.
+                          child: Container(
+                            padding: EdgeInsets.only(bottom: 50),
+                            color: P_Settings.wavecolor,
+                            height: size.height * 0.3,
+                            alignment: Alignment.center,
+                            //   child: Text(
+                            //   "Company Registration",
+                            //   style: TextStyle(
+                            //     fontSize: 20,
+                            //     // fontWeight: FontWeight.bold,
+                            //     color: Colors.white,
+                            //   ),
+                            // ),
+                          ),
                         ),
-                      ),
-                    ],
-                  )),
+                      ],
+                    ),
+                  ),
                   SizedBox(
                     height: size.height * 0.15,
                   ),
@@ -66,12 +72,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       decoration: const InputDecoration(
                         icon: Icon(Icons.business),
                         // hintText: 'What do people call you?',
-                        labelText: 'Company Code',
+                        labelText: 'Company Key',
                       ),
                       validator: (text) {
                         if (text == null || text.isEmpty) {
-                          return 'Please Enter Company code';
+                          return 'Please Enter Company Key';
                         }
+
                         return null;
                       },
                     ),
@@ -85,18 +92,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     child: ElevatedButton(
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
-                             SharedPreferences prefs =
-                                await SharedPreferences.getInstance();
                             Provider.of<Controller>(context, listen: false)
-                                .postRegistration(codeController.text);
-
-                            prefs.setString("company_id", codeController.text);
-
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => CompanyDetails()),
-                            );
+                                .postRegistration(codeController.text, context);
                           }
                         },
                         child: Text("Register")),
@@ -105,6 +102,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               ),
             ),
           ],
-        ));
+        ),
+      ),
+    );
   }
 }

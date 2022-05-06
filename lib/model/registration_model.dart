@@ -4,8 +4,8 @@ class RegistrationData {
   String? os;
   List<CD>? c_d;
   String? msg;
-
-  RegistrationData({this.cid, this.fp, this.os, this.c_d, this.msg});
+  String? sof;
+  RegistrationData({this.cid, this.fp, this.os, this.c_d, this.msg,this.sof});
 
   RegistrationData.fromJson(Map<String, dynamic> json) {
     cid = json['cid'];
@@ -18,6 +18,7 @@ class RegistrationData {
       });
     }
     msg = json['msg'];
+    sof = json['sof'];
   }
 
   Map<String, dynamic> toJson() {
@@ -29,6 +30,7 @@ class RegistrationData {
       data['c_d'] = this.c_d!.map((v) => v.toJson()).toList();
     }
     data['msg'] = this.msg;
+    data['sof'] = this.sof;
     return data;
   }
 }
