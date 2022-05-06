@@ -12,6 +12,8 @@ class Controller extends ChangeNotifier {
   String? cid;
   List<CD> c_d = [];
   List<CD> data = [];
+  List<StaffDetails?> staffs = [];
+  List<StaffDetails?> stafflist = [];
   StaffDetails staffModel = StaffDetails();
 ////////////////////////////////////////////////////////////////////////
   Future<RegistrationData?> postRegistration(String company_code) async {
@@ -51,9 +53,8 @@ class Controller extends ChangeNotifier {
   }
 
   //////////////////////////////////////////////////////////////////////
-  ///
-  Future<StaffDetails?> getStaffDetails(String cid) async {
-    
+
+  getStaffDetails(String cid) async {
     print("cid...............${cid}");
     try {
       Uri url = Uri.parse("http://trafiqerp.in/order/fj/get_staff.php");
@@ -69,10 +70,12 @@ class Controller extends ChangeNotifier {
       var map = jsonDecode(response.body);
       print("map ${map}");
       staffModel = StaffDetails.fromJson(map[0]);
+      // staffs = staffModel as List<StaffDetails>;
+      print("staffs ${staffs}");
       /////////////// insert into local db /////////////////////
       var restaff = await OrderAppDB.instance.insertStaffDetails(staffModel);
       print("inserted ${restaff}");
-      return staffModel;
+      notifyListeners();
     } catch (e) {
       print(e);
       return null;
