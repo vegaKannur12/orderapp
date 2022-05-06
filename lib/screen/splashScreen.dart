@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:orderapp/components/commoncolor.dart';
 import 'package:orderapp/controller/controller.dart';
-import 'package:orderapp/screen/registrationScreen.dart';
+import 'package:orderapp/screen/companyRegistrationScreen.dart';
 import 'package:orderapp/screen/staffLoginScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -55,6 +55,7 @@ class _SplashScreenState extends State<SplashScreen>
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: P_Settings.wavecolor,
       body: Center(
           child: Column(

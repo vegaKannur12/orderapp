@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:orderapp/controller/controller.dart';
-import 'package:orderapp/screen/registrationScreen.dart';
+import 'package:orderapp/screen/companyRegistrationScreen.dart';
+import 'package:orderapp/screen/dashboard.dart';
 import 'package:orderapp/screen/splashScreen.dart';
 import 'package:orderapp/screen/staffLoginScreen.dart';
 import 'package:provider/provider.dart';
