@@ -8,8 +8,6 @@ import 'companyDetailsscreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RegistrationScreen extends StatefulWidget {
-
-
   @override
   State<RegistrationScreen> createState() => _RegistrationScreenState();
 }
@@ -91,7 +89,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                 await SharedPreferences.getInstance();
                             Provider.of<Controller>(context, listen: false)
                                 .postRegistration(codeController.text);
-                            
+
                             prefs.setString("company_id", codeController.text);
 
                             Navigator.push(

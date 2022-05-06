@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:orderapp/components/commoncolor.dart';
@@ -11,6 +13,16 @@ class StaffLogin extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        elevation: 0,
+        backgroundColor: P_Settings.wavecolor,
+        actions: [
+          IconButton(onPressed: (){
+               exit(0);
+          }, icon: Icon(Icons.close))
+        ],
+      ),
         body: Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -43,14 +55,14 @@ class StaffLogin extends StatelessWidget {
         ),
         Flexible(
           flex: 2,
-          child: customTextField("Staff Name", controller1),
+          child: customTextField("Staff Name", controller1,"staff"),
         ),
         SizedBox(
           height: size.height * 0.01,
         ),
         Flexible(
           flex: 2,
-          child: customTextField("Password", controller1),
+          child: customTextField("Password", controller1,"password"),
         ),
         SizedBox(
           height: size.height * 0.05,
@@ -68,11 +80,12 @@ class StaffLogin extends StatelessWidget {
 
 /////////////////////////////////////////////////////////////////////////
   Widget customTextField(
-      String hinttext, TextEditingController controllerValue) {
+      String hinttext, TextEditingController controllerValue,String type) {
     return Container(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: TextField(
+          obscureText:type=="password"? true:false,
           // controller: controllerValue,
           decoration: InputDecoration(hintText: hinttext.toString()),
         ),
