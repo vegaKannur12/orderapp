@@ -12,7 +12,7 @@ class Controller extends ChangeNotifier {
   String? cid;
   List<CD> c_d = [];
   List<CD> data = [];
-  List<StaffDetails> staffs = [];
+  StaffDetails staffModel = StaffDetails();
 ////////////////////////////////////////////////////////////////////////
   Future<RegistrationData?> postRegistration(String company_code) async {
     try {
@@ -53,21 +53,22 @@ class Controller extends ChangeNotifier {
   //////////////////////////////////////////////////////////////////////
   ///
   Future<StaffDetails?> getStaffDetails(String cid) async {
+    
     print("cid...............${cid}");
     try {
       Uri url = Uri.parse("http://trafiqerp.in/order/fj/get_staff.php");
       Map body = {
         'cid': cid,
       };
+      print("compny----${cid}");
       http.Response response = await http.post(
         url,
         body: body,
       );
       print("body ${body}");
       var map = jsonDecode(response.body);
-      StaffDetails staffModel = StaffDetails.fromJson(map);
-      print("staff Model ${staffModel}");
- 
+      print("map ${map}");
+      staffModel = StaffDetails.fromJson(map[0]);
       /////////////// insert into local db /////////////////////
       var restaff = await OrderAppDB.instance.insertStaffDetails(staffModel);
       print("inserted ${restaff}");

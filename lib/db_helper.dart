@@ -33,14 +33,11 @@ class OrderAppDB {
   static final msg = 'msg';
 
 /////////// staff details /////////////
-  static final staff_id = 'sid';
-  static final staff_name = 'sname';
+  static final sid = 'sid';
+  static final sname = 'sname';
   static final uname = 'uname';
-  static final pwd = 'os';
-  static final add1 = 'ad1';
-  static final add2 = 'ad2';
-  static final add3 = 'ad3';
-  static final phone = 'ph';
+  static final pwd = 'pwd';
+  static final ph = 'ph';
   // int DB_VERSION = 2;
   //////////////////////////////////////
 
@@ -88,14 +85,14 @@ class OrderAppDB {
     await db.execute('''
           CREATE TABLE staffDetailsTable (
             $id INTEGER PRIMARY KEY AUTOINCREMENT,
-            $staff_id TEXT NOT NULL,
-            $staff_name TEXT NOT NULL,
-            $uname TEXT NOT NULL,
-            $pwd TEXT NOT NULL,
+            $sid TEXT NOT NULL,
+            $sname TEXT,
+            $uname TEXT,
+            $pwd TEXT,
             $ad1 TEXT,
             $ad2 TEXT,
             $ad3 TEXT,
-            $phone TEXT
+            $ph TEXT
           )
           ''');
   }
@@ -111,12 +108,12 @@ class OrderAppDB {
     return res;
   }
 ////////////////////// staff details insertion /////////////////////
-  Future insertStaffDetails(StaffDetails data) async {
+  Future insertStaffDetails(StaffDetails sdata) async {
     final db = await database;
-    var query1 =
-        'INSERT INTO staffDetailsTable(staff_id, staff_name, uname, pwd, add1, add2, add3, phone) VALUES("${data.sid}", "${data.snme}", "${data.unme}", "${data.pwd}", "${data.ad1}", "${data.ad2}", "${data.ad3}", "${data.ph}")';
-    var res = await db.rawInsert(query1);
-    print(query1);
+    var query2 =
+        'INSERT INTO staffDetailsTable(sid, sname, uname, pwd, ad1, ad2, ad3, ph) VALUES("${sdata.sid}", "${sdata.sname}", "${sdata.unme}", "${sdata.pwd}", "${sdata.ad1}", "${sdata.ad2}", "${sdata.ad3}", "${sdata.ph}")';
+    var res = await db.rawInsert(query2);
+    print(query2);
     print(res);
     return res;
   }
