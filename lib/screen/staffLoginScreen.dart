@@ -14,6 +14,7 @@ class StaffLogin extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         elevation: 0,
         backgroundColor: P_Settings.wavecolor,
         actions: [

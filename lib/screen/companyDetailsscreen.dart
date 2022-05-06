@@ -18,12 +18,8 @@ class _CompanyDetailsState extends State<CompanyDetails> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: P_Settings.detailscolor,
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(60),
-        child: CustomAppbar(
-          title: "Order App",
-          pageName: "company details",
-        ),
+      appBar: AppBar(
+        title: Text("Order App"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -201,6 +197,10 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                               SizedBox(
                                 height: size.height * 0.04,
                               ),
+                              Text("Company Registration Successfull",style:TextStyle(color: Colors.red),),
+                              SizedBox(
+                                height: size.height * 0.02,
+                              ),
                               ElevatedButton(
                                 onPressed: () {
                                   String cid = Provider.of<Controller>(context,
@@ -209,10 +209,14 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                                   Provider.of<Controller>(context,
                                           listen: false)
                                       .getStaffDetails(cid);
-                                  _snackbar.showSnackbar(
-                                      context, "Staff Details Saved");
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>StaffLogin()),
+                                  );
+                                  // _snackbar.showSnackbar(context,"Staff Details Saved");
                                 },
-                                child: Text("Download Data"),
+                                child: Text("Continue"),
                               ),
                             ],
                           ),

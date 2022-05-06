@@ -21,7 +21,9 @@ class _SplashScreenState extends State<SplashScreen>
       Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => cid !=null?StaffLogin():RegistrationScreen()),
+            builder: (context) =>RegistrationScreen()),
+
+            // builder: (context) => cid !=null?StaffLogin():RegistrationScreen()),
       );
     });
   }
