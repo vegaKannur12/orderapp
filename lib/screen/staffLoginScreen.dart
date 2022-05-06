@@ -184,16 +184,6 @@ class StaffLogin extends StatelessWidget {
                       ),
                     ),
                   ),
-<<<<<<< HEAD
-              onPressed: () {},
-              child: Text("Login"),
-            ),
-            SizedBox(
-              height: size.height * 0.01,
-            ),
-          ],
-        ));
-=======
                 ),
               );
             },
@@ -289,7 +279,6 @@ class StaffLogin extends StatelessWidget {
     //     ],
     //   ),
     // ));
->>>>>>> 91c72519d7f301881c504dcb12a864b4e2134a14
   }
 
 /////////////////////////////////////////////////////////////////////////
