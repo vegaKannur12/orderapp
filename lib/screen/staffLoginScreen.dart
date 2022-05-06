@@ -9,11 +9,13 @@ import 'package:orderapp/screen/dashboard.dart';
 import '../components/waveclipper.dart';
 
 class StaffLogin extends StatelessWidget {
+  final _formKey = GlobalKey<FormState>();
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   TextEditingController controller1 = TextEditingController();
   TextEditingController controller2 = TextEditingController();
-  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  // GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   ValueNotifier<bool> visible = ValueNotifier(false);
-  final _formKey = GlobalKey<FormState>();
+  // final _formKey = GlobalKey<FormState>();
   toggle() {
     visible.value = !visible.value;
   }

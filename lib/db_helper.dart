@@ -95,6 +95,20 @@ class OrderAppDB {
             $ph TEXT
           )
           ''');
+
+    // await db.execute('''
+    //       CREATE TABLE areaDetails (
+    //         $id INTEGER PRIMARY KEY AUTOINCREMENT,
+    //         $sid TEXT NOT NULL,
+    //         $sname TEXT,
+    //         $uname TEXT,
+    //         $pwd TEXT,
+    //         $ad1 TEXT,
+    //         $ad2 TEXT,
+    //         $ad3 TEXT,
+    //         $ph TEXT
+    //       )
+    //       ''');
   }
 
   ///////////////////// registration details insertion //////////////////////////
