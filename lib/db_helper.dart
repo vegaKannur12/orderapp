@@ -4,11 +4,13 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 import 'model/registration_model.dart';
+import 'model/staffdetails_model.dart';
 
 class OrderAppDB {
   static final OrderAppDB instance = OrderAppDB._init();
   static Database? _database;
   OrderAppDB._init();
+  /////////registration fields//////////
   static final id = 'id';
   static final cid = 'cid';
   static final fp = 'fp';
@@ -29,6 +31,13 @@ class OrderAppDB {
   static final ccode = 'ccode';
   static final scode = 'scode';
   static final msg = 'msg';
+
+/////////// staff details /////////////
+  static final sid = 'sid';
+  static final sname = 'sname';
+  static final uname = 'uname';
+  static final pwd = 'pwd';
+  static final ph = 'ph';
   // int DB_VERSION = 2;
   //////////////////////////////////////
 
@@ -73,13 +82,24 @@ class OrderAppDB {
             $msg TEXT
           )
           ''');
+    await db.execute('''
+          CREATE TABLE staffDetailsTable (
+            $id INTEGER PRIMARY KEY AUTOINCREMENT,
+            $sid TEXT NOT NULL,
+            $sname TEXT,
+            $uname TEXT,
+            $pwd TEXT,
+            $ad1 TEXT,
+            $ad2 TEXT,
+            $ad3 TEXT,
+            $ph TEXT
+          )
+          ''');
   }
 
-  ///////////////////////////////////////////////
+  ///////////////////// registration details insertion //////////////////////////
   Future insertRegistrationDetails(RegistrationData data) async {
     final db = await database;
-    // var query =
-    //     'INSERT INTO tableRegistration(cid, fp, os, c_d) VALUES("${cid}", "${fp}", "${os}", "${c_d}")';
     var query1 =
         'INSERT INTO registrationTable(cid, fp, os, cpre, ctype, cnme, ad1, ad2, ad3, pcode, land, mob, em, gst, ccode, scode, msg) VALUES("${data.cid}", "${data.fp}", "${data.os}","${data.c_d![0].cpre}", "${data.c_d![0].ctype}", "${data.c_d![0].cnme}", "${data.c_d![0].ad1}", "${data.c_d![0].ad2}", "${data.c_d![0].ad3}", "${data.c_d![0].pcode}", "${data.c_d![0].land}", "${data.c_d![0].mob}", "${data.c_d![0].em}", "${data.c_d![0].gst}", "${data.c_d![0].ccode}", "${data.c_d![0].scode}", "${data.msg}" )';
     var res = await db.rawInsert(query1);
@@ -87,7 +107,16 @@ class OrderAppDB {
     print(res);
     return res;
   }
-
+////////////////////// staff details insertion /////////////////////
+  Future insertStaffDetails(StaffDetails sdata) async {
+    final db = await database;
+    var query2 =
+        'INSERT INTO staffDetailsTable(sid, sname, uname, pwd, ad1, ad2, ad3, ph) VALUES("${sdata.sid}", "${sdata.sname}", "${sdata.unme}", "${sdata.pwd}", "${sdata.ad1}", "${sdata.ad2}", "${sdata.ad3}", "${sdata.ph}")';
+    var res = await db.rawInsert(query2);
+    print(query2);
+    print(res);
+    return res;
+  }
   Future close() async {
     final _db = await instance.database;
     _db.close();

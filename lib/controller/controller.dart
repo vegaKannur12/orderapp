@@ -16,6 +16,7 @@ class Controller extends ChangeNotifier {
   List<CD> c_d = [];
   List<CD> data = [];
   String? sof;
+  StaffDetails staffModel = StaffDetails();
 ////////////////////////////////////////////////////////////////////////
   Future<RegistrationData?> postRegistration(
       String company_code, BuildContext context) async {
@@ -76,10 +77,12 @@ class Controller extends ChangeNotifier {
   //////////////////////////////////////////////////////////////////////
   ///
   Future<StaffDetails?> getStaffDetails(String cid) async {
+    
+    print("cid...............${cid}");
     try {
       Uri url = Uri.parse("http://trafiqerp.in/order/fj/get_staff.php");
       Map body = {
-        'cid': "CO1001",
+        'cid': cid,
       };
       print("compny----${cid}");
       http.Response response = await http.post(
@@ -89,23 +92,10 @@ class Controller extends ChangeNotifier {
       print("body ${body}");
       var map = jsonDecode(response.body);
       print("map ${map}");
-      StaffDetails staffModel = StaffDetails.fromJson(map);
-
+      staffModel = StaffDetails.fromJson(map[0]);
       /////////////// insert into local db /////////////////////
-      late StaffDetails dataDetails;
-      // for (var item in StaffDetails.data!) {
-      //   dataDetails = Data(
-      //       sid: item.sid,
-      //       snme: item.snme,
-      //       unme: item.unme,
-      //       pwd: item.hoid,
-      //       ad1: item.ad1,
-      //       ad2: item.ad2,
-      //       ad3: item.ad3,
-      //       ph: item.ph,
-      //      );
-      //   var res = await OrderAppDB.instance.insertRegistrationDetails(dataDetails);
-      // }
+      var restaff = await OrderAppDB.instance.insertStaffDetails(staffModel);
+      print("inserted ${restaff}");
       return staffModel;
     } catch (e) {
       print(e);
