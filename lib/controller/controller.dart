@@ -8,6 +8,7 @@ import 'package:orderapp/model/registration_model.dart';
 import 'package:orderapp/screen/companyDetailsscreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../model/staffarea_model.dart';
 import '../model/staffdetails_model.dart';
 
 class Controller extends ChangeNotifier {
@@ -18,6 +19,7 @@ class Controller extends ChangeNotifier {
   String? sof;
   List<Map<String, dynamic>> staffList = [];
   StaffDetails staffModel = StaffDetails();
+  StaffArea staffArea = StaffArea();
 ////////////////////////////////////////////////////////////////////////
   Future<RegistrationData?> postRegistration(
       String company_code, BuildContext context) async {
@@ -74,12 +76,42 @@ class Controller extends ChangeNotifier {
     }
   }
 
-  //////////////////////////////////////////////////////////////////////
-  ///
+  /////////////////////// Staff details////////////////////////////////
+  
   Future<StaffDetails?> getStaffDetails(String cid) async {
-    print("cid...............${cid}");
+    // print("cid...............${cid}");
     try {
       Uri url = Uri.parse("http://trafiqerp.in/order/fj/get_staff.php");
+      Map body = {
+        'cid': cid,
+      };
+      // print("compny----${cid}");
+      http.Response response = await http.post(
+        url,
+        body: body,
+      );
+      // print("body ${body}");
+      List map = jsonDecode(response.body);
+      // print("map ${map}");
+      for (var staff in map) {
+        // print("staff----${staff}");
+        staffModel = StaffDetails.fromJson(staff);
+        var restaff = await OrderAppDB.instance.insertStaffDetails(staffModel);
+        // print("inserted ${restaff}");
+      }
+      /////////////// insert into local db /////////////////////
+      notifyListeners();
+      return staffModel;
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+////////////////////// Staff Area ///////////////////////////////////
+  Future<StaffArea?> getAreaDetails(String cid) async {
+    print("cid...............${cid}");
+    try {
+      Uri url = Uri.parse("http://trafiqerp.in/order/fj/get_area.php");
       Map body = {
         'cid': cid,
       };
@@ -91,15 +123,15 @@ class Controller extends ChangeNotifier {
       print("body ${body}");
       List map = jsonDecode(response.body);
       print("map ${map}");
-      for (var staff in map) {
-        print("staff----${staff}");
-        staffModel = StaffDetails.fromJson(staff);
-        var restaff = await OrderAppDB.instance.insertStaffDetails(staffModel);
-        print("inserted ${restaff}");
+      for (var staffarea in map) {
+        print("staffarea----${staffarea}");
+        staffArea= StaffArea.fromJson(staffarea);
+        var staffar = await OrderAppDB.instance.insertStaffAreaDetails(staffArea);
+        print("inserted ${staffar}");
       }
       /////////////// insert into local db /////////////////////
       notifyListeners();
-      return staffModel;
+      return staffArea;
     } catch (e) {
       print(e);
       return null;

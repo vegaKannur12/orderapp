@@ -82,20 +82,6 @@ class StaffLogin extends StatelessWidget {
             SizedBox(
               height: size.height * 0.01,
             ),
-            Flexible(
-              flex: 2,
-              child: customTextField("Password", controller1, "password"),
-            ),
-            SizedBox(
-              height: size.height * 0.05,
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  // primary: Colors.red,
-                  ),
-              onPressed: () {},
-              child: Text("Login"),
-            ),
           ],
         ));
   }

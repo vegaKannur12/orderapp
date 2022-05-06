@@ -10,8 +10,10 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   List companyAttributes = [
-    "logged in",
-    "collection",
+    "Logged in",
+    "Collection",
+    "orders",
+    "sale"
   ];
   int _selectedIndex = 0;
 
@@ -67,7 +69,7 @@ class _DashboardState extends State<Dashboard> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: P_Settings.wavecolor,
+        backgroundColor: Color.fromARGB(255, 11, 14, 31)
       ),
       drawer: Drawer(
         child: Column(
@@ -101,41 +103,74 @@ class _DashboardState extends State<Dashboard> {
           ],
         ),
       ),
-      body: SafeArea(
-          child: Column(
+      body: Column(
         children: [
           Padding(
             padding: const EdgeInsets.only(top: 30),
             child: Container(
               height: size.height * 0.09,
               child: Text("Dashboard",
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
+                  style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                      color: P_Settings.headingColor)),
             ),
           ),
           Expanded(
-            child: ListView.builder(
+            child: GridView.builder(
               itemCount: companyAttributes.length,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                childAspectRatio: 1,
+                crossAxisCount: 2,
+              ),
               itemBuilder: ((context, index) {
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Ink(
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.grey[400]
-                        // color:P_Settings.wavecolor,
+                        // borderRadius: BorderRadius.circular(20),
+                        // color: P_Settings.wavecolor,
                         ),
-                    child: ListTile(
-                      // leading: Container(
-                      //     height: 20,
-                      //     width: 20,
-                      //     child: Image.asset(
-                      //       "asset/logged.png",
-                      //     )),
-                      title: Center(
-                          child: Text(
-                        companyAttributes[index],
-                      )),
-                      subtitle: Center(child: Text("10:13:00")),
+                    child: Card(
+                      // color: Colors.transparent,
+                      elevation: 3,
+                      child: Container(
+                        alignment: Alignment.center,
+                        decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Color.fromARGB(255, 102, 190, 171),
+                              Color.fromARGB(255, 38, 202, 112)
+                            ],
+                            begin: Alignment.bottomLeft,
+                            end: Alignment.topRight,
+                          ),
+                          // borderRadius: BorderRadius.all(Radius.circular(40)),
+                        ),
+                        // color: Color.fromARGB(255, 235, 118, 200),
+                        height: 30,
+                        width: 100,
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: 50,
+                            ),
+                            Text(
+                              companyAttributes[index],
+                              style:
+                                  TextStyle(fontSize: 20, color: Colors.white),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Text(
+                              "10.00",
+                              style:
+                                  TextStyle(fontSize: 20, color: Colors.amber),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 );
@@ -143,7 +178,7 @@ class _DashboardState extends State<Dashboard> {
             ),
           ),
         ],
-      )),
+      ),
     );
   }
 }

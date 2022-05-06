@@ -19,7 +19,7 @@ class _CompanyDetailsState extends State<CompanyDetails> {
     return Scaffold(
       backgroundColor: P_Settings.detailscolor,
       appBar: AppBar(
-        title: Text("Order App"),
+        title: Text("Company Details",style: TextStyle(fontSize: 20),),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -33,11 +33,11 @@ class _CompanyDetailsState extends State<CompanyDetails> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  "Company Details",
-                  style:
-                      TextStyle(fontSize: 20, color: P_Settings.headingColor),
-                ),
+                // Text(
+                //   "Company Details",
+                //   style:
+                //       TextStyle(fontSize: 20, color: P_Settings.headingColor),
+                // ),
               ],
             ),
             SizedBox(
@@ -215,6 +215,9 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                                     Provider.of<Controller>(context,
                                             listen: false)
                                         .getStaffDetails(cid);
+                                        Provider.of<Controller>(context,
+                                            listen: false)
+                                        .getAreaDetails(cid);
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
