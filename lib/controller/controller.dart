@@ -16,6 +16,7 @@ class Controller extends ChangeNotifier {
   List<CD> c_d = [];
   List<CD> data = [];
   String? sof;
+  List<Map<String, dynamic>> staffList = [];
   StaffDetails staffModel = StaffDetails();
 ////////////////////////////////////////////////////////////////////////
   Future<RegistrationData?> postRegistration(
@@ -43,7 +44,6 @@ class Controller extends ChangeNotifier {
       if (sof == "0") {
         CustomSnackbar snackbar = CustomSnackbar();
         snackbar.showSnackbar(context, "Invalid Company Key");
-     
       }
 
       if (sof == "1") {
@@ -77,7 +77,6 @@ class Controller extends ChangeNotifier {
   //////////////////////////////////////////////////////////////////////
   ///
   Future<StaffDetails?> getStaffDetails(String cid) async {
-    
     print("cid...............${cid}");
     try {
       Uri url = Uri.parse("http://trafiqerp.in/order/fj/get_staff.php");
@@ -90,12 +89,16 @@ class Controller extends ChangeNotifier {
         body: body,
       );
       print("body ${body}");
-      var map = jsonDecode(response.body);
+      List map = jsonDecode(response.body);
       print("map ${map}");
-      staffModel = StaffDetails.fromJson(map[0]);
+      for (var staff in map) {
+        print("staff----${staff}");
+        staffModel = StaffDetails.fromJson(staff);
+        var restaff = await OrderAppDB.instance.insertStaffDetails(staffModel);
+        print("inserted ${restaff}");
+      }
       /////////////// insert into local db /////////////////////
-      var restaff = await OrderAppDB.instance.insertStaffDetails(staffModel);
-      print("inserted ${restaff}");
+      notifyListeners();
       return staffModel;
     } catch (e) {
       print(e);

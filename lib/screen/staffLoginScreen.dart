@@ -58,7 +58,7 @@ class StaffLogin extends StatelessWidget {
             ),
             Flexible(
               flex: 2,
-              child: customTextField("Staff Name", controller1, "staff"),
+              child: customTextField("Username", controller1, "staff"),
             ),
             SizedBox(
               height: size.height * 0.01,
@@ -87,10 +87,16 @@ class StaffLogin extends StatelessWidget {
     return Container(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: TextField(
+        child: TextFormField(
           obscureText: type == "password" ? true : false,
           // controller: controllerValue,
           decoration: InputDecoration(hintText: hinttext.toString()),
+          validator: (text) {
+            if (text == null || text.isEmpty) {
+              return 'Please Enter ${text}';
+            }
+            return null;
+          },
         ),
       ),
     );
