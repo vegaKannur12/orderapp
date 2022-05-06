@@ -107,6 +107,7 @@ class OrderAppDB {
     print(res);
     return res;
   }
+
 ////////////////////// staff details insertion /////////////////////
   Future insertStaffDetails(StaffDetails sdata) async {
     final db = await database;
@@ -117,19 +118,33 @@ class OrderAppDB {
     print(res);
     return res;
   }
+
   Future close() async {
     final _db = await instance.database;
     _db.close();
   }
 
   /////////////////////////get all rows////////////
-  // Future<List<Map<String, dynamic>>> queryAllRows() async {
-  //   Database db = await instance.database;
+  Future<String> selectStaff(String uname, String pwd) async {
+    String result = "";
+    print("uname---Password----${uname}--${pwd}");
+    Database db = await instance.database;
+    List<Map<String, dynamic>> list =
+        await db.rawQuery('SELECT * FROM staffDetailsTable');
+    for (var staff in list) {
+      print(
+          "staff['uname'] & staff['pwd']------------------${staff['uname']}--${staff['pwd']}");
+      if (uname == staff["uname"] && pwd == staff["pwd"]) {
+        print("ok");
+        result = "success";
+        break;
+      } else {
+        result = "failed";
+      }
+    }
+    print("res===${result}");
 
-  //   List<Map<String, dynamic>> list =
-  //       await db.rawQuery('SELECT * FROM tableRegistration');
-  //   print("all data ${list}");
-  //   return list;
-  // }
-
+    print("all data ${list}");
+    return result;
+  }
 }
