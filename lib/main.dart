@@ -47,7 +47,11 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
+<<<<<<< HEAD
       home: Dashboard(),
+=======
+      home: DownloadedPage(),
+>>>>>>> 0ada2dba6c717dfe36e036ae4128da32e98779b2
       // home: MyWaveClipper(),
     );
   }
