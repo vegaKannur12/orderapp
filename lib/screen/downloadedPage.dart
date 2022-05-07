@@ -44,8 +44,13 @@ class _DownloadedPageState extends State<DownloadedPage> {
                       child: ListTile(
                         trailing: IconButton(
                           onPressed: () {
+                            String cid =
+                                Provider.of<Controller>(context, listen: false)
+                                    .cid!;
+
                             if (downloadItems[index] == "Account Heads") {
-                              Provider.of<Controller>(context, listen: false).getaccountHeadsDetails("CO1001");
+                              Provider.of<Controller>(context, listen: false)
+                                  .getaccountHeadsDetails(cid);
                             }
                           },
                           icon: Icon(Icons.download),

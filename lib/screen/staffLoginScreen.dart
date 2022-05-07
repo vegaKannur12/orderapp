@@ -101,61 +101,63 @@ class StaffLogin extends StatelessWidget {
                                   customTextField(
                                       "Password", controller2, "password"),
                                   SizedBox(
-                                    height: 20,
+                                    height: 10,
                                   ),
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      primary: P_Settings.wavecolor,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(
-                                                70), // <-- Radius
+                                  Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        primary: P_Settings.wavecolor,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              20), // <-- Radius
+                                        ),
                                       ),
-                                    ),
-                                    onPressed: () async {
-                                      // toggle();
-                                      if (_formKey.currentState!.validate()) {
-                                        String result = await OrderAppDB
-                                            .instance
-                                            .selectStaff(controller1.text,
-                                                controller2.text);
-                                        if (result == "success") {
-                                          visible.value = false;
-                                          print("visible===${visible.value}");
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    Dashboard()),
-                                          );
-                                        } else {
-                                          visible.value = true;
-                                          print("visible===${visible.value}");
+                                      onPressed: () async {
+                                        // toggle();
+                                        if (_formKey.currentState!.validate()) {
+                                          String result = await OrderAppDB
+                                              .instance
+                                              .selectStaff(controller1.text,
+                                                  controller2.text);
+                                          if (result == "success") {
+                                            visible.value = false;
+                                            print("visible===${visible.value}");
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      Dashboard()),
+                                            );
+                                          } else {
+                                            visible.value = true;
+                                            print("visible===${visible.value}");
+                                          }
                                         }
-                                      }
-                                    },
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Text(
-                                          'LOGIN',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 10,
+                                      },
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          Text(
+                                            'LOGIN',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20,
+                                            ),
                                           ),
-                                        ),
-                                        Icon(
-                                          Icons.arrow_forward,
-                                          size: 15,
-                                          color: Colors.white,
-                                        ),
-                                      ],
+                                          Icon(
+                                            Icons.arrow_forward,
+                                            size: 25,
+                                            color: Colors.white,
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(
-                                        left: 15, right: 15),
+                                        left: 15, right: 15,top: 25),
                                     child: Container(
                                       height: size.height * 0.07,
                                       child: Row(
@@ -186,8 +188,8 @@ class StaffLogin extends StatelessWidget {
                                           ),
                                           //////////////////////////////
                                           MaterialButton(
-                                            onPressed: ()  {
-                                         exit(0);
+                                            onPressed: () {
+                                              exit(0);
                                             },
                                             color: P_Settings.wavecolor,
                                             textColor: Colors.white,
@@ -195,7 +197,7 @@ class StaffLogin extends StatelessWidget {
                                               Icons.close,
                                               size: 24,
                                             ),
-                                            padding: EdgeInsets.all(20),
+                                            padding: EdgeInsets.all(16),
                                             shape: CircleBorder(),
                                           ),
 

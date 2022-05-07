@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:orderapp/components/commoncolor.dart';
+import 'package:orderapp/screen/staffLoginScreen.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../controller/controller.dart';
 
@@ -102,7 +104,26 @@ class _DashboardState extends State<Dashboard> {
                 ],
               ),
             ),
-            Column(children: drawerOpts)
+            Column(children: drawerOpts),
+            Divider(
+              color: Colors.black,
+              indent: 20,
+              endIndent: 20,
+            ),
+            ListTile(
+              trailing: Icon(Icons.logout),
+              onTap: () async {
+                final prefs = await SharedPreferences.getInstance();
+                await prefs.remove('st_username');
+                await prefs.remove('st_pwd');
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => StaffLogin()));
+              },
+              title: Text(
+                "Logout",
+                style: TextStyle(fontSize: 16),
+              ),
+            ),
           ],
         ),
       ),
