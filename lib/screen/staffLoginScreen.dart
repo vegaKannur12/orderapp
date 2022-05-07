@@ -33,13 +33,13 @@ class StaffLogin extends StatelessWidget {
         automaticallyImplyLeading: false,
         elevation: 0,
         backgroundColor: P_Settings.wavecolor,
-        actions: [
-          IconButton(
-              onPressed: () {
-                exit(0);
-              },
-              icon: Icon(Icons.close))
-        ],
+        // actions: [
+        //   IconButton(
+        //       onPressed: () {
+        //         exit(0);
+        //       },
+        //       icon: Icon(Icons.close))
+        // ],
       ),
       body: Form(
         key: _formKey,
@@ -157,7 +157,7 @@ class StaffLogin extends StatelessWidget {
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(
-                                        left: 15, right: 15,top: 25),
+                                        left: 15, right: 15, top: 25),
                                     child: Container(
                                       height: size.height * 0.07,
                                       child: Row(
@@ -165,9 +165,7 @@ class StaffLogin extends StatelessWidget {
                                           SizedBox(
                                             width: 20,
                                           ),
-                                          //////////////////////////////////////////////////////////
 
-                                          //////////////////////////////////////////////
                                           MaterialButton(
                                             onPressed: () {
                                               Navigator.push(
@@ -248,94 +246,6 @@ class StaffLogin extends StatelessWidget {
         ),
       ),
     );
-    // body: Form(
-    //   key: _formKey,
-    //   child: Column(
-    //     mainAxisAlignment: MainAxisAlignment.start,
-    //     children: [
-    //       Container(
-    //           height: 175,
-    //           child: Stack(
-    //             children: <Widget>[
-    //               //stack overlaps widgets
-    //               ClipPath(
-    //                 //upper clippath with less height
-    //                 clipper: WaveClipper(), //set our custom wave clipper.
-    //                 child: Container(
-    //                   padding: EdgeInsets.only(bottom: 50),
-    //                   color: P_Settings.wavecolor,
-    //                   height: size.height * 0.3,
-    //                   alignment: Alignment.center,
-    //                   child: Text(
-    //                     "LOGIN",
-    //                     style: TextStyle(
-    //                       fontSize: 28,
-    //                       fontWeight: FontWeight.bold,
-    //                       color: Colors.white,
-    //                     ),
-    //                   ),
-    //                 ),
-    //               ),
-    //             ],
-    //           )),
-    //       SizedBox(
-    //         height: size.height * 0.05,
-    //       ),
-    //       Flexible(
-    //         flex: 2,
-    //         child: customTextField("Username", controller1, "staff"),
-    //       ),
-    //       SizedBox(
-    //         height: size.height * 0.01,
-    //       ),
-    //       Flexible(
-    //         flex: 2,
-    //         child: customTextField("Password", controller2, "password"),
-    //       ),
-    //       SizedBox(
-    //         height: size.height * 0.05,
-    //       ),
-    //       ElevatedButton(
-    //         style: ElevatedButton.styleFrom(
-    //             // primary: Colors.red,
-    //             ),
-    //         onPressed: () async {
-    //           // toggle();
-    //           if (_formKey.currentState!.validate()) {
-    //             String result = await OrderAppDB.instance
-    //                 .selectStaff(controller1.text, controller2.text);
-    //             if (result == "success") {
-    //               visible.value = false;
-    //               print("visible===${visible.value}");
-    //               Navigator.push(
-    //                 context,
-    //                 MaterialPageRoute(builder: (context) => Dashboard()),
-    //               );
-    //             } else {
-
-    //               visible.value = true;
-    //               print("visible===${visible.value}");
-    //             }
-    //           }
-    //         },
-    //         child: Text("Login"),
-    //       ),
-    //       SizedBox(height: size.height*0.02,),
-    //       ValueListenableBuilder(
-    //           valueListenable: visible,
-    //           builder: (BuildContext context, bool v, Widget? child) {
-    //             print("value===${visible.value}");
-    //             return Visibility(
-    //               visible: v,
-    //               child: Text(
-    //                 "Incorrect Username or Password!!!",
-    //                 style: TextStyle(color: Colors.red),
-    //               ),
-    //             );
-    //           })
-    //     ],
-    //   ),
-    // ));
   }
 
 /////////////////////////////////////////////////////////////////////////
