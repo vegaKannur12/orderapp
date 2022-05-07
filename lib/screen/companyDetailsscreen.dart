@@ -19,7 +19,10 @@ class _CompanyDetailsState extends State<CompanyDetails> {
     return Scaffold(
       backgroundColor: P_Settings.detailscolor,
       appBar: AppBar(
-        title: Text("Company Details",style: TextStyle(fontSize: 20),),
+        title: Text(
+          "Company Details",
+          style: TextStyle(fontSize: 20),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -48,8 +51,7 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                 padding: const EdgeInsets.all(10.0),
                 child: Consumer<Controller>(
                   builder: (context, value, child) {
-                    
-                    if (value.isLoading ) {
+                    if (value.isLoading) {
                       return Container(
                         height: size.height * 0.9,
                         child: Center(
@@ -215,7 +217,7 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                                     Provider.of<Controller>(context,
                                             listen: false)
                                         .getStaffDetails(cid);
-                                        Provider.of<Controller>(context,
+                                    Provider.of<Controller>(context,
                                             listen: false)
                                         .getAreaDetails(cid);
                                     Navigator.push(
@@ -231,8 +233,7 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                             ),
                           ),
                         );
-                      }
-                      else{
+                      } else {
                         return Container(
                           child: Text(""),
                         );

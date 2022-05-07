@@ -7,6 +7,7 @@ import 'package:orderapp/db_helper.dart';
 import 'package:orderapp/screen/dashboard.dart';
 
 import '../components/waveclipper.dart';
+import 'downloadedPage.dart';
 
 class StaffLogin extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
@@ -114,7 +115,14 @@ class StaffLogin extends StatelessWidget {
 
                                           //////////////////////////////////////////////
                                           MaterialButton(
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            DownloadedPage()),
+                                                  );
+                                            },
                                             color: P_Settings.wavecolor,
                                             textColor: Colors.white,
                                             child: Icon(
@@ -124,9 +132,10 @@ class StaffLogin extends StatelessWidget {
                                             padding: EdgeInsets.all(16),
                                             shape: CircleBorder(),
                                           ),
+                                          //////////////////////////////
                                           MaterialButton(
-                                            onPressed: () async{
-                                                  if (_formKey.currentState!
+                                            onPressed: () async {
+                                              if (_formKey.currentState!
                                                   .validate()) {
                                                 String result = await OrderAppDB
                                                     .instance
@@ -152,31 +161,28 @@ class StaffLogin extends StatelessWidget {
                                             },
                                             color: P_Settings.wavecolor,
                                             textColor: Colors.white,
-                                            child: Icon(
-                                              Icons.login,
-                                              size: 24,
-                                            ),
-                                            padding: EdgeInsets.all(16),
+                                            child: Text("Login"),
+                                            padding: EdgeInsets.all(20),
                                             shape: CircleBorder(),
                                           ),
                                           // ElevatedButton(
                                           //   style: ElevatedButton.styleFrom(
                                           //     primary: P_Settings.wavecolor,
-                                          //     shape: RoundedRectangleBorder(
-                                          //       borderRadius:
-                                          //           BorderRadius.circular(
-                                          //               20), // <-- Radius
-                                          //     ),
+                                          //     // shape: RoundedRectangleBorder(
+                                          //     //   borderRadius:
+                                          //     //       BorderRadius.circular(
+                                          //     //           70), // <-- Radius
+                                          //     // ),
                                           //   ),
                                           //   onPressed: () async {
                                           //     // toggle();
                                           //     if (_formKey.currentState!
                                           //         .validate()) {
-                                          //       String result = await OrderAppDB
-                                          //           .instance
-                                          //           .selectStaff(
-                                          //               controller1.text,
-                                          //               controller2.text);
+                                          //       String result =
+                                          //           await OrderAppDB.instance
+                                          //               .selectStaff(
+                                          //                   controller1.text,
+                                          //                   controller2.text);
                                           //       if (result == "success") {
                                           //         visible.value = false;
                                           //         print(
