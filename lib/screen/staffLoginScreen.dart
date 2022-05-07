@@ -51,7 +51,8 @@ class StaffLogin extends StatelessWidget {
                     await OrderAppDB.instance.getListOfTables();
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => TableList(list: list)),
+                  MaterialPageRoute(
+                      builder: (context) => TableList(list: list)),
                 );
               },
               icon: Icon(Icons.table_bar),
@@ -71,8 +72,8 @@ class StaffLogin extends StatelessWidget {
               builder: (context, BoxConstraints viewportConstraints) {
                 return SingleChildScrollView(
                   child: ConstrainedBox(
-                    constraints:
-                        BoxConstraints(minHeight: viewportConstraints.maxHeight),
+                    constraints: BoxConstraints(
+                        minHeight: viewportConstraints.maxHeight),
                     child: Container(
                       child: IntrinsicHeight(
                         child: Column(
@@ -120,7 +121,7 @@ class StaffLogin extends StatelessWidget {
                                   children: <Widget>[
                                     customTextField(
                                         "Username", controller1, "staff"),
-    
+
                                     customTextField(
                                         "Password", controller2, "password"),
                                     SizedBox(
@@ -135,8 +136,9 @@ class StaffLogin extends StatelessWidget {
                                           style: ElevatedButton.styleFrom(
                                             primary: P_Settings.wavecolor,
                                             shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(
-                                                  20), // <-- Radius
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      20), // <-- Radius
                                             ),
                                           ),
                                           onPressed: () async {
@@ -149,6 +151,10 @@ class StaffLogin extends StatelessWidget {
                                                       controller2.text);
                                               if (result == "success") {
                                                 visible.value = false;
+                                                Provider.of<Controller>(context,
+                                                        listen: false)
+                                                    .sname=controller1.text;
+
                                                 final prefs =
                                                     await SharedPreferences
                                                         .getInstance();
@@ -159,6 +165,7 @@ class StaffLogin extends StatelessWidget {
                                                     'st_pwd', controller2.text);
                                                 print(
                                                     "visible===${visible.value}");
+
                                                 Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
@@ -203,7 +210,7 @@ class StaffLogin extends StatelessWidget {
                                             SizedBox(
                                               width: 20,
                                             ),
-    
+
                                             MaterialButton(
                                               onPressed: () {
                                                 Navigator.push(
@@ -240,7 +247,7 @@ class StaffLogin extends StatelessWidget {
                                               padding: EdgeInsets.all(16),
                                               shape: CircleBorder(),
                                             ),
-    
+
                                             MaterialButton(
                                               onPressed: () async {
                                                 await OrderAppDB.instance
@@ -256,11 +263,11 @@ class StaffLogin extends StatelessWidget {
                                                     .getStaffDetails(cid!);
                                                 showDialog(
                                                   context: context,
-                                                  builder:
-                                                      (BuildContext context) =>
-                                                          popup.buildPopupDialog(
-                                                              context,
-                                                              "Details Saved"),
+                                                  builder: (BuildContext
+                                                          context) =>
+                                                      popup.buildPopupDialog(
+                                                          context,
+                                                          "Details Saved"),
                                                 );
                                               },
                                               color:
@@ -290,7 +297,8 @@ class StaffLogin extends StatelessWidget {
                                             visible: v,
                                             child: Text(
                                               "Incorrect Username or Password!!!",
-                                              style: TextStyle(color: Colors.red),
+                                              style:
+                                                  TextStyle(color: Colors.red),
                                             ),
                                           );
                                         })
@@ -342,7 +350,8 @@ class StaffLogin extends StatelessWidget {
     );
   }
 }
-//////////////////////////////             
+
+//////////////////////////////
 Future<bool> _onBackPressed(BuildContext context) async {
   return await showDialog(
     context: context,

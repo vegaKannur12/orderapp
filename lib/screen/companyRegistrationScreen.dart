@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:orderapp/components/customSnackbar.dart';
 import 'package:orderapp/controller/controller.dart';
@@ -29,81 +31,88 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
-      key: _scaffoldKey,
-      resizeToAvoidBottomInset: false,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  Container(
-                    child: Stack(
-                      children: <Widget>[
-                        ClipPath(
-                          clipper: WaveClipper(), //set our custom wave clipper.
-                          child: Container(
-                            padding: EdgeInsets.only(bottom: 50),
-                            color: P_Settings.wavecolor,
-                            height: size.height * 0.3,
-                            alignment: Alignment.center,
-                            //   child: Text(
-                            //   "Company Registration",
-                            //   style: TextStyle(
-                            //     fontSize: 20,
-                            //     // fontWeight: FontWeight.bold,
-                            //     color: Colors.white,
-                            //   ),
-                            // ),
+    return WillPopScope(
+      onWillPop: () => _onBackPressed(context),
+      child: Scaffold(
+        key: _scaffoldKey,
+        resizeToAvoidBottomInset: false,
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    Container(
+                      child: Stack(
+                        children: <Widget>[
+                          ClipPath(
+                            clipper: WaveClipper(), //set our custom wave clipper.
+                            child: Container(
+                              padding: EdgeInsets.only(bottom: 50),
+                              color: P_Settings.wavecolor,
+                              height: size.height * 0.3,
+                              alignment: Alignment.center,
+                              //   child: Text(
+                              //   "Company Registration",
+                              //   style: TextStyle(
+                              //     fontSize: 20,
+                              //     // fontWeight: FontWeight.bold,
+                              //     color: Colors.white,
+                              //   ),
+                              // ),
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: size.height * 0.15,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: TextFormField(
-                      controller: codeController,
-                      decoration: const InputDecoration(
-                        icon: Icon(Icons.business),
-                        // hintText: 'What do people call you?',
-                        labelText: 'Company Key',
+                        ],
                       ),
-                      validator: (text) {
-                        if (text == null || text.isEmpty) {
-                          return 'Please Enter Company Key';
-                        }
-
-                        return null;
-                      },
                     ),
-                  ),
-                  SizedBox(
-                    height: size.height * 0.04,
-                  ),
-                  Container(
-                    height: size.height * 0.05,
-                    width: size.width * 0.3,
-                    child: ElevatedButton(
-                        onPressed: () async {
-                          if (_formKey.currentState!.validate()) {
-                            Provider.of<Controller>(context, listen: false)
-                                .postRegistration(codeController.text, context);
+                    SizedBox(
+                      height: size.height * 0.15,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: TextFormField(
+                        controller: codeController,
+                        decoration: const InputDecoration(
+                          icon: Icon(Icons.business),
+                          // hintText: 'What do people call you?',
+                          labelText: 'Company Key',
+                        ),
+                        validator: (text) {
+                          if (text == null || text.isEmpty) {
+                            return 'Please Enter Company Key';
                           }
+    
+                          return null;
                         },
-                        child: Text("Register")),
-                  ),
-                ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: size.height * 0.04,
+                    ),
+                    Container(
+                      height: size.height * 0.05,
+                      width: size.width * 0.3,
+                      child: ElevatedButton(
+                          onPressed: () async {
+                            if (_formKey.currentState!.validate()) {
+                              Provider.of<Controller>(context, listen: false)
+                                  .postRegistration(codeController.text, context);
+                            }
+                          },
+                          child: Text("Register")),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
+}
+
+Future<bool> _onBackPressed(BuildContext context) async {
+  return await showDialog(context: context, builder: (context) => exit(0));
 }
