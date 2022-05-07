@@ -75,7 +75,7 @@ class _DashboardState extends State<Dashboard> {
     }
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(title: Text("Dashboard"), backgroundColor: Colors.indigo),
+      appBar: AppBar(backgroundColor: Colors.indigo),
       drawer: Drawer(
         child: Column(
           children: [
@@ -129,99 +129,99 @@ class _DashboardState extends State<Dashboard> {
       ),
       body: Column(
         children: [
-          SizedBox(
-            height: 15,
-          ),
           Consumer<Controller>(builder: (context, value, child) {
-            print("company name:${value.c_d[0].cnme}");
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                alignment: Alignment.topLeft,
-                height: size.height * 0.09,
-                child:
-                    //  Text("company name: ${(value.c_d[0].cnme == null) && (value.c_d[0].cnme!.isEmpty) ? "null value" : value.c_d[0].cnme}}",
-                    Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text("Company name:  ${value.c_d[0].cnme}",
-                          style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: P_Settings.headingColor)),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Text("Staff Name : ${value.sname}",
-                          style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                              color: P_Settings.extracolor)),
-                              
-                    ],
-                  ),
+            return Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(50),
+                  bottomRight: Radius.circular(50),
+                ),
+                color: Color.fromARGB(255, 177, 212, 235),
+              ),
+              alignment: Alignment.center,
+              height: size.height * 0.09,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("${value.c_d[0].cnme}",
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: P_Settings.headingColor)),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Text("${value.sname}",
+                        style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: P_Settings.extracolor)),
+                  ],
                 ),
               ),
             );
           }),
           Expanded(
-            child: GridView.builder(
-              itemCount: companyAttributes.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                childAspectRatio: 1.3,
-                crossAxisCount: 2,
-              ),
-              itemBuilder: ((context, index) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Ink(
-                    decoration: BoxDecoration(),
-                    child: Card(
-                      // color: Colors.transparent,
-                      elevation: 3,
-                      child: Container(
-                        alignment: Alignment.center,
-                        decoration: const BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              Color.fromARGB(255, 107, 95, 206),
-                              Color.fromARGB(255, 20, 70, 209)
-                            ],
-                            begin: Alignment.bottomLeft,
-                            end: Alignment.topRight,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 50),
+              child: GridView.builder(
+                itemCount: companyAttributes.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  childAspectRatio: 1.3,
+                  crossAxisCount: 2,
+                ),
+                itemBuilder: ((context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Ink(
+                      decoration: BoxDecoration(),
+                      child: Card(
+                        // color: Colors.transparent,
+                        elevation: 3,
+                        child: Container(
+                          alignment: Alignment.center,
+                          decoration: const BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                Color.fromARGB(255, 107, 95, 206),
+                                Color.fromARGB(255, 20, 70, 209)
+                              ],
+                              begin: Alignment.bottomLeft,
+                              end: Alignment.topRight,
+                            ),
+                            // borderRadius: BorderRadius.all(Radius.circular(40)),
                           ),
-                          // borderRadius: BorderRadius.all(Radius.circular(40)),
-                        ),
-                        // color: Color.fromARGB(255, 235, 118, 200),
-                        height: 40,
-                        width: 100,
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              height: 30,
-                            ),
-                            Text(
-                              companyAttributes[index],
-                              style:
-                                  TextStyle(fontSize: 20, color: Colors.white),
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Text(
-                              "10.00",
-                              style:
-                                  TextStyle(fontSize: 20, color: Colors.amber),
-                            ),
-                          ],
+                          // color: Color.fromARGB(255, 235, 118, 200),
+                          height: 40,
+                          width: 100,
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: 30,
+                              ),
+                              Text(
+                                companyAttributes[index],
+                                style: TextStyle(
+                                    fontSize: 20, color: Colors.white),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                "10.00",
+                                style: TextStyle(
+                                    fontSize: 20, color: Colors.amber),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                );
-              }),
+                  );
+                }),
+              ),
             ),
           ),
         ],
