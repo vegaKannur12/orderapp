@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:orderapp/components/commoncolor.dart';
 import 'package:orderapp/controller/controller.dart';
 import 'package:orderapp/screen/companyRegistrationScreen.dart';
+import 'package:orderapp/screen/dashboard.dart';
 import 'package:orderapp/screen/staffLoginScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,16 +15,26 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen>
     with TickerProviderStateMixin {
   String? cid;
+  String? st_uname;
+  String? st_pwd;
+
   navigate() async {
     await Future.delayed(Duration(seconds: 2), () async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       cid = prefs.getString("company_id");
+      st_uname = prefs.getString("st_username");
+      st_pwd = prefs.getString("st_pwd");
+
       Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) =>RegistrationScreen()),
+            // builder: (context) =>RegistrationScreen()),
 
-            // builder: (context) => cid !=null?StaffLogin():RegistrationScreen()),
+            builder: (context) => cid != null
+                ? st_uname != null && st_pwd != null
+                    ? Dashboard()
+                    : StaffLogin()
+                : RegistrationScreen()),
       );
     });
   }
@@ -64,9 +75,11 @@ class _SplashScreenState extends State<SplashScreen>
             height: size.height * 0.4,
           ),
           Container(
-            height: 200,
-            width: 200,
-            child: Image.asset("asset/logo_black_bg.png",)),
+              height: 200,
+              width: 200,
+              child: Image.asset(
+                "asset/logo_black_bg.png",
+              )),
         ],
       )),
     );

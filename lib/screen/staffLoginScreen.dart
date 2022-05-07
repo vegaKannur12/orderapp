@@ -3,8 +3,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:orderapp/components/commoncolor.dart';
+import 'package:orderapp/controller/controller.dart';
 import 'package:orderapp/db_helper.dart';
 import 'package:orderapp/screen/dashboard.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../components/waveclipper.dart';
 import 'downloadedPage.dart';
@@ -117,11 +120,11 @@ class StaffLogin extends StatelessWidget {
                                           MaterialButton(
                                             onPressed: () {
                                               Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            DownloadedPage()),
-                                                  );
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        DownloadedPage()),
+                                              );
                                             },
                                             color: P_Settings.wavecolor,
                                             textColor: Colors.white,
@@ -144,6 +147,13 @@ class StaffLogin extends StatelessWidget {
                                                         controller2.text);
                                                 if (result == "success") {
                                                   visible.value = false;
+                                                  final prefs =
+                                                      await SharedPreferences
+                                                          .getInstance();
+                                                  await prefs.setString(
+                                                      'st_username', controller1.text);
+                                                       await prefs.setString(
+                                                      'st_pwd', controller2.text);
                                                   print(
                                                       "visible===${visible.value}");
                                                   Navigator.push(

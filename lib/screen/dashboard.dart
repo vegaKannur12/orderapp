@@ -30,7 +30,8 @@ class _DashboardState extends State<Dashboard> {
     // companyAttributes.clear();
     for (var i = 0; i < companyAttributes.length; i++) {
       // var d =Provider.of<Controller>(context, listen: false).drawerItems[i];
-      drawerOpts.add(ListTile(
+      drawerOpts.add(
+        ListTile(
         title: Text(
           companyAttributes[i],
           style: TextStyle(fontFamily: P_Font.kronaOne, fontSize: 17),
@@ -95,30 +96,32 @@ class _DashboardState extends State<Dashboard> {
                 ],
               ),
             ),
-            Column(children: drawerOpts)
+            Column(children: drawerOpts),
+            // Divider(),
+            // Container(child: Text("Logout"),),
           ],
         ),
       ),
       body: Flexible(
         child: Column(
           children: [
-            Consumer<Controller>(builder: (context, value, child) {
-              return Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    alignment: Alignment.topLeft,
-                    height: size.height * 0.09,
-                    child: Text("company name : ${(value.c_d[0].cnme == null) && (value.c_d[0].cnme!.isEmpty) ? "" : value.c_d[0].cnme}",
-                        style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: P_Settings.headingColor)),
-                  ),
+            // Consumer<Controller>(builder: (context, value, child) {
+            //   return Expanded(
+            //     child: Padding(
+            //       padding: const EdgeInsets.all(8.0),
+            //       child: Container(
+            //         alignment: Alignment.topLeft,
+            //         height: size.height * 0.09,
+            //         child: Text("company name : ${(value.c_d[0].cnme == null) && (value.c_d[0].cnme!.isEmpty) ? "" : value.c_d[0].cnme}",
+            //             style: TextStyle(
+            //                 fontSize: 20,
+            //                 fontWeight: FontWeight.bold,
+            //                 color: P_Settings.headingColor)),
+            //       ),
                   
-                ),
-              );
-            }),
+            //     ),
+            //   );
+            // }),
       
             
             Expanded(
