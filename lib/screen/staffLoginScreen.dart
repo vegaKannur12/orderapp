@@ -105,57 +105,127 @@ class StaffLogin extends StatelessWidget {
                                         left: 15, right: 15),
                                     child: Container(
                                       height: size.height * 0.07,
-                                      child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          primary: P_Settings.wavecolor,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(
-                                                20), // <-- Radius
+                                      child: Row(
+                                        children: [
+                                          SizedBox(
+                                            width: 20,
                                           ),
-                                        ),
-                                        onPressed: () async {
-                                          // toggle();
-                                          if (_formKey.currentState!
-                                              .validate()) {
-                                            String result = await OrderAppDB
-                                                .instance
-                                                .selectStaff(controller1.text,
-                                                    controller2.text);
-                                            if (result == "success") {
-                                              visible.value = false;
-                                              print(
-                                                  "visible===${visible.value}");
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        Dashboard()),
-                                              );
-                                            } else {
-                                              visible.value = true;
-                                              print(
-                                                  "visible===${visible.value}");
-                                            }
-                                          }
-                                        },
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: <Widget>[
-                                            Text(
-                                              'LOGIN',
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 20,
-                                              ),
+                                          //////////////////////////////////////////////////////////
+
+                                          //////////////////////////////////////////////
+                                          MaterialButton(
+                                            onPressed: () {},
+                                            color: P_Settings.wavecolor,
+                                            textColor: Colors.white,
+                                            child: Icon(
+                                              Icons.download,
+                                              size: 24,
                                             ),
-                                            Icon(
-                                              Icons.arrow_forward,
-                                              size: 25,
-                                              color: Colors.white,
+                                            padding: EdgeInsets.all(16),
+                                            shape: CircleBorder(),
+                                          ),
+                                          MaterialButton(
+                                            onPressed: () async{
+                                                  if (_formKey.currentState!
+                                                  .validate()) {
+                                                String result = await OrderAppDB
+                                                    .instance
+                                                    .selectStaff(
+                                                        controller1.text,
+                                                        controller2.text);
+                                                if (result == "success") {
+                                                  visible.value = false;
+                                                  print(
+                                                      "visible===${visible.value}");
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            Dashboard()),
+                                                  );
+                                                } else {
+                                                  visible.value = true;
+                                                  print(
+                                                      "visible===${visible.value}");
+                                                }
+                                              }
+                                            },
+                                            color: P_Settings.wavecolor,
+                                            textColor: Colors.white,
+                                            child: Icon(
+                                              Icons.login,
+                                              size: 24,
                                             ),
-                                          ],
-                                        ),
+                                            padding: EdgeInsets.all(16),
+                                            shape: CircleBorder(),
+                                          ),
+                                          // ElevatedButton(
+                                          //   style: ElevatedButton.styleFrom(
+                                          //     primary: P_Settings.wavecolor,
+                                          //     shape: RoundedRectangleBorder(
+                                          //       borderRadius:
+                                          //           BorderRadius.circular(
+                                          //               20), // <-- Radius
+                                          //     ),
+                                          //   ),
+                                          //   onPressed: () async {
+                                          //     // toggle();
+                                          //     if (_formKey.currentState!
+                                          //         .validate()) {
+                                          //       String result = await OrderAppDB
+                                          //           .instance
+                                          //           .selectStaff(
+                                          //               controller1.text,
+                                          //               controller2.text);
+                                          //       if (result == "success") {
+                                          //         visible.value = false;
+                                          //         print(
+                                          //             "visible===${visible.value}");
+                                          //         Navigator.push(
+                                          //           context,
+                                          //           MaterialPageRoute(
+                                          //               builder: (context) =>
+                                          //                   Dashboard()),
+                                          //         );
+                                          //       } else {
+                                          //         visible.value = true;
+                                          //         print(
+                                          //             "visible===${visible.value}");
+                                          //       }
+                                          //     }
+                                          //   },
+                                          //   child: Row(
+                                          //     mainAxisAlignment:
+                                          //         MainAxisAlignment
+                                          //             .spaceBetween,
+                                          //     children: <Widget>[
+                                          //       Text(
+                                          //         'LOGIN',
+                                          //         style: TextStyle(
+                                          //           color: Colors.white,
+                                          //           fontSize: 10,
+                                          //         ),
+                                          //       ),
+                                          //       Icon(
+                                          //         Icons.arrow_forward,
+                                          //         size: 15,
+                                          //         color: Colors.white,
+                                          //       ),
+                                          //     ],
+                                          //   ),
+                                          // ),
+                                          MaterialButton(
+                                            onPressed: () {},
+                                            color: P_Settings.wavecolor,
+                                            textColor: Colors.white,
+                                            child: Icon(
+                                              Icons.refresh,
+                                              size: 24,
+                                            ),
+                                            padding: EdgeInsets.all(16),
+                                            shape: CircleBorder(),
+                                          )
+                                        ],
                                       ),
                                     ),
                                   ),
@@ -184,16 +254,6 @@ class StaffLogin extends StatelessWidget {
                       ),
                     ),
                   ),
-<<<<<<< HEAD
-              onPressed: () {},
-              child: Text("Login"),
-            ),
-            SizedBox(
-              height: size.height * 0.01,
-            ),
-          ],
-        ));
-=======
                 ),
               );
             },
@@ -289,7 +349,6 @@ class StaffLogin extends StatelessWidget {
     //     ],
     //   ),
     // ));
->>>>>>> 91c72519d7f301881c504dcb12a864b4e2134a14
   }
 
 /////////////////////////////////////////////////////////////////////////

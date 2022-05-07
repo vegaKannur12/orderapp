@@ -69,7 +69,7 @@ class _DashboardState extends State<Dashboard> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 11, 14, 31)
+        backgroundColor: Colors.indigo
       ),
       drawer: Drawer(
         child: Column(

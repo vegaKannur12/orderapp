@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:orderapp/components/customSnackbar.dart';
 import 'package:orderapp/db_helper.dart';
+import 'package:orderapp/model/accounthead_model.dart';
 import 'package:orderapp/model/registration_model.dart';
 import 'package:orderapp/screen/companyDetailsscreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,6 +20,7 @@ class Controller extends ChangeNotifier {
   String? sof;
   List<Map<String, dynamic>> staffList = [];
   StaffDetails staffModel = StaffDetails();
+  AccountHead accountHead = AccountHead();
   StaffArea staffArea = StaffArea();
 ////////////////////////////////////////////////////////////////////////
   Future<RegistrationData?> postRegistration(
@@ -132,6 +134,37 @@ class Controller extends ChangeNotifier {
       /////////////// insert into local db /////////////////////
       notifyListeners();
       return staffArea;
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  ////////////////////////// account head ///////////////////////////////////////
+    Future<AccountHead?> getaccountHeadsDetails(String cid) async {
+    print("cid...............${cid}");
+    try {
+      Uri url = Uri.parse("http://trafiqerp.in/order/fj/get_achead.php");
+      Map body = {
+        'cid': cid,
+      };
+      print("compny----${cid}");
+      http.Response response = await http.post(
+        url,
+        body: body,
+      );
+      print("body ${body}");
+      List map = jsonDecode(response.body);
+      print("map ${map}");
+      for (var ahead in map) {
+        print("staffarea----${ahead}");
+        accountHead= AccountHead.fromJson(ahead);
+        // var account = await OrderAppDB.instance.insertStaffAreaDetails(accountHead);
+        // print("inserted ${account}");
+      }
+      /////////////// insert into local db /////////////////////
+      notifyListeners();
+      return accountHead;
     } catch (e) {
       print(e);
       return null;
