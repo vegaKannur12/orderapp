@@ -64,7 +64,6 @@ class OrderAppDB {
   static final ac = 'ac';
   static final cag = 'cag';
 
-
   Future<Database> get database async {
     if (_database != null) return _database!;
     _database = await _initDB("orderapp.db");
@@ -128,7 +127,7 @@ class OrderAppDB {
           )
           ''');
     ////////////////account_haed table///////////////////
-     await db.execute('''
+    await db.execute('''
           CREATE TABLE accountHeadsTable (
             $id INTEGER PRIMARY KEY AUTOINCREMENT,
             $code TEXT NOT NULL,
@@ -168,7 +167,7 @@ class OrderAppDB {
     var query2 =
         'INSERT INTO staffDetailsTable(sid, sname, uname, pwd, ad1, ad2, ad3, ph) VALUES("${sdata.sid}", "${sdata.sname}", "${sdata.unme}", "${sdata.pwd}", "${sdata.ad1}", "${sdata.ad2}", "${sdata.ad3}", "${sdata.ph}")';
     var res = await db.rawInsert(query2);
-    // print(query2);
+    print(query2);
     // print(res);
     return res;
   }
@@ -212,8 +211,9 @@ class OrderAppDB {
     print("all data ${list}");
     return result;
   }
+
   /////////////////////////account heads insertion///////////////////////////////
-    Future insertAccoundHeads(AccountHead accountHead) async {
+  Future insertAccoundHeads(AccountHead accountHead) async {
     final db = await database;
     var query =
         'INSERT INTO accountHeadsTable(code, hname, gtype, ac_ad1, ac_ad2, ac_ad3, area_id, phn, ba, ri, rc, ht, mo, ac_gst, ac, cag) VALUES("${accountHead.code}", "${accountHead.hname}", "${accountHead.gtype}", "${accountHead.ad1}", "${accountHead.ad2}", "${accountHead.ad3}", "${accountHead.aid}", "${accountHead.ph}", "${accountHead.ba}", "${accountHead.ri}", "${accountHead.rc}", "${accountHead.ht}", "${accountHead.mo}", "${accountHead.gst}", "${accountHead.ac}", "${accountHead.cag}")';
@@ -223,4 +223,41 @@ class OrderAppDB {
     return res;
   }
 
+  ///////////////////////clear staffDetails///////////////////////////////
+  // Future deleteStaffdetails() async {
+  //   final db = await database;
+  //   var res =await db.delete("staffDetailsTable");
+  //   // var res = await db.delete(query);
+  //   print(res);
+  //   return res;
+  // }
+ Future deleteStaffdetails() async {
+    Database db = await instance.database;
+    await db.delete('staffDetailsTable');
+  }
+
+  ////////////////////////////////////////////////////////////////////
+  getListOfTables() async {
+    Database db = await instance.database;
+    var list = await db.query('sqlite_master', columns: ['type', 'name']);
+    print(list);
+    list.map((e) => print(e["name"])).toList();
+    return list;
+    // list.forEach((row) {
+    //   print(row.values);
+    // });
+  }
+
+  getTableData(String tablename) async {
+    Database db = await instance.database;
+    print(tablename);
+    var list = await db.rawQuery('SELECT * FROM $tablename');
+    print(list);
+    return list;
+    // list.map((e) => print(e["name"])).toList();
+    // return list;
+    // list.forEach((row) {
+    //   print(row.values);
+    // });
+  }
 }
