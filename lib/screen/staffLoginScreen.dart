@@ -7,6 +7,7 @@ import 'package:orderapp/controller/controller.dart';
 import 'package:orderapp/db_helper.dart';
 import 'package:orderapp/screen/dashboard.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../components/waveclipper.dart';
 import 'downloadedPage.dart';
@@ -122,6 +123,13 @@ class StaffLogin extends StatelessWidget {
                                                   controller2.text);
                                           if (result == "success") {
                                             visible.value = false;
+                                            final prefs =
+                                                      await SharedPreferences
+                                                          .getInstance();
+                                                  await prefs.setString(
+                                                      'st_username', controller1.text);
+                                                       await prefs.setString(
+                                                      'st_pwd', controller2.text);
                                             print("visible===${visible.value}");
                                             Navigator.push(
                                               context,
