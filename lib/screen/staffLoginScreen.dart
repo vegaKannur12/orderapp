@@ -3,9 +3,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:orderapp/components/commoncolor.dart';
+import 'package:orderapp/components/customPopup.dart';
 import 'package:orderapp/controller/controller.dart';
 import 'package:orderapp/db_helper.dart';
 import 'package:orderapp/screen/dashboard.dart';
+import 'package:orderapp/service/tableList.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -17,6 +19,7 @@ class StaffLogin extends StatelessWidget {
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   TextEditingController controller1 = TextEditingController();
   TextEditingController controller2 = TextEditingController();
+  CustomPopup popup = CustomPopup();
   // GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   ValueNotifier<bool> visible = ValueNotifier(false);
   // final _formKey = GlobalKey<FormState>();
@@ -34,13 +37,30 @@ class StaffLogin extends StatelessWidget {
         automaticallyImplyLeading: false,
         elevation: 0,
         backgroundColor: P_Settings.wavecolor,
-        // actions: [
-        //   IconButton(
-        //       onPressed: () {
-        //         exit(0);
-        //       },
-        //       icon: Icon(Icons.close))
-        // ],
+        actions: [
+          // IconButton(
+          //     onPressed: () {
+          //       controller.add(true);
+          //     },
+          //     icon: Icon(Icons.refresh)),
+          IconButton(
+            onPressed: () async {
+              List<Map<String, dynamic>> list =
+                  await OrderAppDB.instance.getListOfTables();
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => TableList(list: list)),
+              );
+            },
+            icon: Icon(Icons.table_bar),
+          ),
+          IconButton(
+            onPressed: () async {
+              await OrderAppDB.instance.deleteStaffdetails();
+            },
+            icon: Icon(Icons.delete),
+          ),
+        ],
       ),
       body: Form(
         key: _formKey,
@@ -102,64 +122,72 @@ class StaffLogin extends StatelessWidget {
                                   customTextField(
                                       "Password", controller2, "password"),
                                   SizedBox(
-                                    height: 10,
+                                    height: size.height * 0.01,
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.all(16.0),
-                                    child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        primary: P_Settings.wavecolor,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                              20), // <-- Radius
+                                    padding: const EdgeInsets.only(
+                                        left: 17.0, right: 17),
+                                    child: Container(
+                                      height: size.height * 0.06,
+                                      child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          primary: P_Settings.wavecolor,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                                20), // <-- Radius
+                                          ),
                                         ),
-                                      ),
-                                      onPressed: () async {
-                                        // toggle();
-                                        if (_formKey.currentState!.validate()) {
-                                          String result = await OrderAppDB
-                                              .instance
-                                              .selectStaff(controller1.text,
-                                                  controller2.text);
-                                          if (result == "success") {
-                                            visible.value = false;
-                                            final prefs =
-                                                      await SharedPreferences
-                                                          .getInstance();
-                                                  await prefs.setString(
-                                                      'st_username', controller1.text);
-                                                       await prefs.setString(
-                                                      'st_pwd', controller2.text);
-                                            print("visible===${visible.value}");
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      Dashboard()),
-                                            );
-                                          } else {
-                                            visible.value = true;
-                                            print("visible===${visible.value}");
+                                        onPressed: () async {
+                                          // toggle();
+                                          if (_formKey.currentState!
+                                              .validate()) {
+                                            String result = await OrderAppDB
+                                                .instance
+                                                .selectStaff(controller1.text,
+                                                    controller2.text);
+                                            if (result == "success") {
+                                              visible.value = false;
+                                              final prefs =
+                                                  await SharedPreferences
+                                                      .getInstance();
+                                              await prefs.setString(
+                                                  'st_username',
+                                                  controller1.text);
+                                              await prefs.setString(
+                                                  'st_pwd', controller2.text);
+                                              print(
+                                                  "visible===${visible.value}");
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        Dashboard()),
+                                              );
+                                            } else {
+                                              visible.value = true;
+                                              print(
+                                                  "visible===${visible.value}");
+                                            }
                                           }
-                                        }
-                                      },
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Text(
-                                            'LOGIN',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 20,
+                                        },
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            Text(
+                                              'LOGIN',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 20,
+                                              ),
                                             ),
-                                          ),
-                                          Icon(
-                                            Icons.arrow_forward,
-                                            size: 25,
-                                            color: Colors.white,
-                                          ),
-                                        ],
+                                            Icon(
+                                              Icons.arrow_forward,
+                                              size: 25,
+                                              color: Colors.white,
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -183,11 +211,13 @@ class StaffLogin extends StatelessWidget {
                                                         DownloadedPage()),
                                               );
                                             },
-                                            color: P_Settings.wavecolor,
+                                            color:
+                                                P_Settings.roundedButtonColor,
                                             textColor: Colors.white,
                                             child: Icon(
                                               Icons.download,
                                               size: 24,
+                                              color: P_Settings.wavecolor,
                                             ),
                                             padding: EdgeInsets.all(16),
                                             shape: CircleBorder(),
@@ -197,23 +227,47 @@ class StaffLogin extends StatelessWidget {
                                             onPressed: () {
                                               exit(0);
                                             },
-                                            color: P_Settings.wavecolor,
+                                            color:
+                                                P_Settings.roundedButtonColor,
                                             textColor: Colors.white,
                                             child: Icon(
                                               Icons.close,
                                               size: 24,
+                                              color: P_Settings.wavecolor,
                                             ),
                                             padding: EdgeInsets.all(16),
                                             shape: CircleBorder(),
                                           ),
 
                                           MaterialButton(
-                                            onPressed: () {},
-                                            color: P_Settings.wavecolor,
+                                            onPressed: () async {
+                                              await OrderAppDB.instance
+                                                  .deleteStaffdetails();
+                                              SharedPreferences prefs =
+                                                  await SharedPreferences
+                                                      .getInstance();
+                                              String? cid =
+                                                  prefs.getString("cid");
+                                              print("staff cid----${cid}");
+                                              Provider.of<Controller>(context,
+                                                      listen: false)
+                                                  .getStaffDetails(cid!);
+                                              showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) =>
+                                                        popup.buildPopupDialog(
+                                                            context,
+                                                            "Details Saved"),
+                                              );
+                                            },
+                                            color:
+                                                P_Settings.roundedButtonColor,
                                             textColor: Colors.white,
                                             child: Icon(
                                               Icons.refresh,
                                               size: 24,
+                                              color: P_Settings.wavecolor,
                                             ),
                                             padding: EdgeInsets.all(16),
                                             shape: CircleBorder(),

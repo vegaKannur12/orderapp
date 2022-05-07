@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:orderapp/components/commoncolor.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../controller/controller.dart';
 
@@ -43,14 +44,13 @@ class _DownloadedPageState extends State<DownloadedPage> {
                           color: P_Settings.wavecolor),
                       child: ListTile(
                         trailing: IconButton(
-                          onPressed: () {
-                            String cid =
-                                Provider.of<Controller>(context, listen: false)
-                                    .cid!;
-
+                          onPressed: () async {
+                            SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
+                            String? cid = prefs.getString("cid");
                             if (downloadItems[index] == "Account Heads") {
                               Provider.of<Controller>(context, listen: false)
-                                  .getaccountHeadsDetails(cid);
+                                  .getaccountHeadsDetails(cid!);
                             }
                           },
                           icon: Icon(Icons.download),

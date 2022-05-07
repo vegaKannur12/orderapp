@@ -5,6 +5,7 @@ import 'package:orderapp/components/customSnackbar.dart';
 import 'package:orderapp/controller/controller.dart';
 import 'package:orderapp/screen/staffLoginScreen.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CompanyDetails extends StatefulWidget {
   @override
@@ -209,7 +210,7 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                                   height: size.height * 0.02,
                                 ),
                                 ElevatedButton(
-                                  onPressed: () {
+                                  onPressed: () async {
                                     String cid = Provider.of<Controller>(
                                             context,
                                             listen: false)
@@ -220,6 +221,13 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                                     Provider.of<Controller>(context,
                                             listen: false)
                                         .getAreaDetails(cid);
+                                    Provider.of<Controller>(context,
+                                            listen: false)
+                                        .cid = cid;
+                                    print("cid-----${cid}");
+                                    SharedPreferences prefs =
+                                        await SharedPreferences.getInstance();
+                                    prefs.setString("cid", cid);
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
