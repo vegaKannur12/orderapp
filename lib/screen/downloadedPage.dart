@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:orderapp/components/commoncolor.dart';
+import 'package:provider/provider.dart';
+
+import '../controller/controller.dart';
 
 class DownloadedPage extends StatefulWidget {
-  const DownloadedPage({Key? key}) : super(key: key);
+  // String cid;
+  // DownloadedPage({required this.cid});
 
   @override
   State<DownloadedPage> createState() => _DownloadedPageState();
@@ -39,7 +43,11 @@ class _DownloadedPageState extends State<DownloadedPage> {
                           color: P_Settings.wavecolor),
                       child: ListTile(
                         trailing: IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            if (downloadItems[index] == "Account Heads") {
+                              Provider.of<Controller>(context, listen: false).getaccountHeadsDetails("CO1001");
+                            }
+                          },
                           icon: Icon(Icons.download),
                           color: Colors.white,
                         ),

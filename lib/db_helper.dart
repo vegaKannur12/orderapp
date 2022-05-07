@@ -1,5 +1,6 @@
 // ignore_for_file: unused_local_variable
 
+import 'package:orderapp/model/accounthead_model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -44,6 +45,25 @@ class OrderAppDB {
   //////////////Staff area details////////////////////////
   static final aid = 'aid';
   static final aname = 'aname';
+
+  //////////////account heads///////////////////////////////
+  static final code = 'code';
+  static final hname = 'hname';
+  static final gtype = 'gtype';
+  static final ac_ad1 = 'ac_ad1';
+  static final ac_ad2 = 'ac_ad2';
+  static final ac_ad3 = 'ac_ad3';
+  static final area_id = 'area_id';
+  static final phn = 'phn';
+  static final ba = 'ba';
+  static final ri = 'ri';
+  static final rc = 'rc';
+  static final ht = 'ht';
+  static final mo = 'mo';
+  static final ac_gst = 'ac_gst';
+  static final ac = 'ac';
+  static final cag = 'cag';
+
 
   Future<Database> get database async {
     if (_database != null) return _database!;
@@ -107,6 +127,28 @@ class OrderAppDB {
             $aname TEXT
           )
           ''');
+    ////////////////account_haed table///////////////////
+     await db.execute('''
+          CREATE TABLE accountHeadsTable (
+            $id INTEGER PRIMARY KEY AUTOINCREMENT,
+            $code TEXT NOT NULL,
+            $hname TEXT NOT NULL,
+            $gtype TEXT NOT NULL,
+            $ac_ad1 TEXT,
+            $ac_ad2 TEXT,
+            $ac_ad3 TEXT,
+            $area_id TEXT,
+            $phn TEXT,
+            $ba TEXT,
+            $ri TEXT,
+            $rc TEXT,
+            $ht TEXT,
+            $mo TEXT,
+            $ac_gst TEXT,
+            $ac TEXT,
+            $cag TEXT
+          )
+          ''');
   }
 
   ///////////////////// registration details insertion //////////////////////////
@@ -141,12 +183,13 @@ class OrderAppDB {
     print(res);
     return res;
   }
+
   Future close() async {
     final _db = await instance.database;
     _db.close();
   }
 
-  /////////////////////////get all rows////////////
+  /////////////////////////ustaff login authentication////////////
   Future<String> selectStaff(String uname, String pwd) async {
     String result = "";
     print("uname---Password----${uname}--${pwd}");
@@ -169,4 +212,15 @@ class OrderAppDB {
     print("all data ${list}");
     return result;
   }
+  /////////////////////////account heads insertion///////////////////////////////
+    Future insertAccoundHeads(AccountHead accountHead) async {
+    final db = await database;
+    var query =
+        'INSERT INTO accountHeadsTable(code, hname, gtype, ac_ad1, ac_ad2, ac_ad3, area_id, phn, ba, ri, rc, ht, mo, ac_gst, ac, cag) VALUES("${accountHead.code}", "${accountHead.hname}", "${accountHead.gtype}", "${accountHead.ad1}", "${accountHead.ad2}", "${accountHead.ad3}", "${accountHead.aid}", "${accountHead.ph}", "${accountHead.ba}", "${accountHead.ri}", "${accountHead.rc}", "${accountHead.ht}", "${accountHead.mo}", "${accountHead.gst}", "${accountHead.ac}", "${accountHead.cag}")';
+    var res = await db.rawInsert(query);
+    print(query);
+    // print(res);
+    return res;
+  }
+
 }
