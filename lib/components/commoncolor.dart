@@ -21,6 +21,8 @@ class P_Settings {
   static Color get detailscolor => Colors.white;
 
   static Color get wavecolor => Color.fromARGB(255, 49, 91, 155);
+  static Color get extracolor => Color.fromARGB(255, 207, 30, 30);
+
 
 
 

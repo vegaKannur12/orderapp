@@ -108,26 +108,42 @@ class _DashboardState extends State<Dashboard> {
       ),
       body: Column(
         children: [
+          SizedBox(
+            height: 15,
+          ),
           Consumer<Controller>(builder: (context, value, child) {
+            print("company name:${value.c_d[0].cnme}");
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
                 alignment: Alignment.topLeft,
                 height: size.height * 0.09,
-               
-                child: 
-                //  Text("company name: ${(value.c_d[0].cnme == null) && (value.c_d[0].cnme!.isEmpty) ? "null value" : value.c_d[0].cnme}}",
-                Text("hjhjjj",
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: P_Settings.headingColor)),
+                child:
+                    //  Text("company name: ${(value.c_d[0].cnme == null) && (value.c_d[0].cnme!.isEmpty) ? "null value" : value.c_d[0].cnme}}",
+                    Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text("Company name:  ${value.c_d[0].cnme}",
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: P_Settings.headingColor)),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Text("Staff Name : ${value.sname}",
+                          style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: P_Settings.extracolor)),
+                    ],
+                  ),
+                ),
               ),
-              
             );
           }),
-      
-          
           Expanded(
             child: GridView.builder(
               itemCount: companyAttributes.length,

@@ -14,6 +14,7 @@ import '../model/staffdetails_model.dart';
 
 class Controller extends ChangeNotifier {
   bool isLoading = false;
+  String sname="";
   String? cid;
   List<CD> c_d = [];
   List<CD> data = [];
