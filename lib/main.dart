@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:orderapp/controller/controller.dart';
 import 'package:orderapp/screen/companyRegistrationScreen.dart';
 import 'package:orderapp/screen/dashboard.dart';
+import 'package:orderapp/screen/downloadedPage.dart';
 import 'package:orderapp/screen/splashScreen.dart';
 import 'package:orderapp/screen/staffLoginScreen.dart';
 import 'package:provider/provider.dart';
@@ -46,7 +47,11 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
+<<<<<<< HEAD
       home: SplashScreen(),
+=======
+      home: DownloadedPage(),
+>>>>>>> 22c35616e32748163718668cb3c32276adcd5d81
       // home: MyWaveClipper(),
     );
   }
