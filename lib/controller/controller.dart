@@ -169,14 +169,14 @@ class Controller extends ChangeNotifier {
       print("body ${body}");
       List map = jsonDecode(response.body);
       print("map ${map}");
-      // for (var ahead in map) {
-      //   print("ahead------${ahead}");
-      //   accountHead = AccountHead.fromJson(ahead);
-      //   var account = await OrderAppDB.instance.insertAccoundHeads(accountHead);
+      for (var ahead in map) {
+        print("ahead------${ahead}");
+        accountHead = AccountHead.fromJson(ahead);
+        var account = await OrderAppDB.instance.insertAccoundHeads(accountHead);
 
-      //   // print("inserted ${account}");
-      // }
-      // isLoading = false;
+        // print("inserted ${account}");
+      }
+      isLoading = false;
 
       /////////////// insert into local db /////////////////////
       notifyListeners();
