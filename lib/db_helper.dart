@@ -318,7 +318,7 @@ Future insertProductCompany(
       ProductCompanymodel productsCompanyModel) async {
     final db = await database;
     var query =
-        'INSERT INTO productsCategory(comid, comanme) VALUES("${productsCompanyModel.comid}", "${productsCompanyModel.comanme}")';
+        'INSERT INTO companyTable(comid, comanme) VALUES("${productsCompanyModel.comid}", "${productsCompanyModel.comanme}")';
     var res = await db.rawInsert(query);
     print(query);
     // print(res);
