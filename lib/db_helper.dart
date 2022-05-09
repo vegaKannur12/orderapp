@@ -6,6 +6,7 @@ import 'package:orderapp/model/productsCategory_model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
+import 'model/productCompany_model.dart';
 import 'model/registration_model.dart';
 import 'model/staffarea_model.dart';
 import 'model/staffdetails_model.dart';
@@ -88,6 +89,9 @@ class OrderAppDB {
   ////////////////prooduct category///////////////
   static final cat_id = 'cat_id';
   static final cat_name = 'cat_name';
+  ////////////////// product company ////////////////
+  static final comid = 'comid';
+  static final comanme = 'comanme';
 
   Future<Database> get database async {
     if (_database != null) return _database!;
@@ -309,7 +313,17 @@ class OrderAppDB {
     // print(res);
     return res;
   }
-
+////////////////////////////////// product company ///////////////////////
+Future insertProductCompany(
+      ProductCompanymodel productsCompanyModel) async {
+    final db = await database;
+    var query =
+        'INSERT INTO companyTable(comid, comanme) VALUES("${productsCompanyModel.comid}", "${productsCompanyModel.comanme}")';
+    var res = await db.rawInsert(query);
+    print(query);
+    // print(res);
+    return res;
+  }
   ///////////////////////clear staffDetails///////////////////////////////
   // Future deleteStaffdetails() async {
   //   final db = await database;

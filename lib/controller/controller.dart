@@ -290,8 +290,8 @@ class Controller extends ChangeNotifier {
       ProductCompanymodel productCompany;
       for (var proComp in map) {
         productCompany = ProductCompanymodel.fromJson(proComp);
-        // var product =
-        //     await OrderAppDB.instance.insertProductCategory(productCompany);
+        var product =
+            await OrderAppDB.instance.insertProductCompany(productCompany);
       isLoading=false;
       notifyListeners();
         // print("inserted ${account}");
