@@ -19,7 +19,7 @@ class Controller extends ChangeNotifier {
   String? cid;
   String? cname;
   List<CD> c_d = [];
-  
+
   List<CD> data = [];
   String? sof;
   List<Map<String, dynamic>> staffList = [];
@@ -171,11 +171,11 @@ class Controller extends ChangeNotifier {
         print("ahead------${ahead}");
         accountHead = AccountHead.fromJson(ahead);
         var account = await OrderAppDB.instance.insertAccoundHeads(accountHead);
- 
+
         // print("inserted ${account}");
-      }       
+      }
       isLoading = false;
-    
+
       /////////////// insert into local db /////////////////////
       notifyListeners();
       return accountHead;
@@ -184,7 +184,37 @@ class Controller extends ChangeNotifier {
       return null;
     }
   }
-//////////////////// product details //////////////////////
+
+  //////////////////// product details //////////////////////
+  Future<ProductDetails?> getProductDetails(String cid) async {
+    print("cid...............${cid}");
+    try {
+      Uri url = Uri.parse("http://trafiqerp.in/order/fj/get_prod.php");
+      Map body = {
+        'cid': cid,
+      };
+      print("compny----${cid}");
+      http.Response response = await http.post(
+        url,
+        body: body,
+      );
+      // print("body ${body}");
+      List map = jsonDecode(response.body);
+      // print("map ${map}");
+      for (var pro in map) {
+        proDetails = ProductDetails.fromJson(pro);
+        var product =
+            await OrderAppDB.instance.insertProductDetails(proDetails);
+        // print("inserted ${account}");
+      }
+      /////////////// insert into local db /////////////////////
+      notifyListeners();
+      return proDetails;
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
 
   ///////////////////////////////////////////////////////////
   setCname() async {
@@ -201,33 +231,7 @@ class Controller extends ChangeNotifier {
     sname = same;
     notifyListeners();
   }
-    Future<ProductDetails?> getProductDetails(String cid) async {
-    print("cid...............${cid}");
-    try {
-      Uri url = Uri.parse("http://trafiqerp.in/order/fj/get_prod.php");
-      Map body = {
-        'cid': cid,
-      };
-      print("compny----${cid}");
-      http.Response response = await http.post(
-        url,
-        body: body,
-      );
-      // print("body ${body}");
-      List map = jsonDecode(response.body);
-      // print("map ${map}");
-      for (var pro in map) {
-        proDetails= ProductDetails.fromJson(pro);
-        var product = await OrderAppDB.instance.insertProductDetails(proDetails);
-        // print("inserted ${account}");
-      }
-      /////////////// insert into local db /////////////////////
-      notifyListeners();
-      return proDetails;
-    } catch (e) {
-      print(e);
-      return null;
-    }
-  }
-  
+
+  /////////////////////////////////////////////////////////
+
 }
