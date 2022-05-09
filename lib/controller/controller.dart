@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:orderapp/components/customSnackbar.dart';
 import 'package:orderapp/db_helper.dart';
 import 'package:orderapp/model/accounthead_model.dart';
+import 'package:orderapp/model/productsCategory_model.dart';
 import 'package:orderapp/model/registration_model.dart';
 import 'package:orderapp/screen/companyDetailsscreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -153,7 +154,7 @@ class Controller extends ChangeNotifier {
   Future<AccountHead?> getaccountHeadsDetails(String cid) async {
     print("cid...............${cid}");
     try {
-      Uri url = Uri.parse("http://trafiqerp.in/order/fj/get_achead.php");
+      Uri url = Uri.parse("http://trafiqerp.in/order/fj/get_cat.php");
       Map body = {
         'cid': cid,
       };
@@ -167,25 +168,42 @@ class Controller extends ChangeNotifier {
       print("body ${body}");
       List map = jsonDecode(response.body);
       print("map ${map}");
-      for (var ahead in map) {
-        print("ahead------${ahead}");
-        accountHead = AccountHead.fromJson(ahead);
-        var account = await OrderAppDB.instance.insertAccoundHeads(accountHead);
+      // for (var ahead in map) {
+      //   print("ahead------${ahead}");
+      //   accountHead = AccountHead.fromJson(ahead);
+      //   var account = await OrderAppDB.instance.insertAccoundHeads(accountHead);
 
-        // print("inserted ${account}");
-      }
-      isLoading = false;
+      //   // print("inserted ${account}");
+      // }
+      // isLoading = false;
 
       /////////////// insert into local db /////////////////////
       notifyListeners();
-      return accountHead;
+      // return accountHead;
     } catch (e) {
       print(e);
       return null;
     }
   }
+//////////////////// product details //////////////////////
 
-  //////////////////// product details //////////////////////
+  ///////////////////////////////////////////////////////////
+  setCname() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? came = prefs.getString("cname");
+    cname = came;
+    notifyListeners();
+  }
+
+  ///////////////////////////////////////////////////////////
+  setSname() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? same = prefs.getString("st_username");
+    sname = same;
+    notifyListeners();
+  }
+
+  ///////////////////////////////////////////////////////////////
   Future<ProductDetails?> getProductDetails(String cid) async {
     print("cid...............${cid}");
     try {
@@ -215,23 +233,40 @@ class Controller extends ChangeNotifier {
       return null;
     }
   }
-
-  ///////////////////////////////////////////////////////////
-  setCname() async {
-    final prefs = await SharedPreferences.getInstance();
-    String? came = prefs.getString("cname");
-    cname = came;
-    notifyListeners();
+  /////////////////////////////product category//////////////////////////////
+    Future<ProductDetails?> getProductCategory(String cid) async {
+    print("cid...............${cid}");
+    try {
+      Uri url = Uri.parse("http://trafiqerp.in/order/fj/get_cat.php");
+      Map body = {
+        'cid': cid,
+      };
+      print("compny----${cid}");
+      isLoading=true;
+      notifyListeners();
+      http.Response response = await http.post(
+        url,
+        body: body,
+      );
+      // print("body ${body}");
+      List map = jsonDecode(response.body);
+      print("map ${map}");
+      ProductsCategoryModel category;;
+      for (var cat in map) {
+        category = ProductsCategoryModel.fromJson(cat);
+        var product =
+            await OrderAppDB.instance.insertProductCategory(category);
+      isLoading=false;
+      notifyListeners();
+        // print("inserted ${account}");
+      }
+      /////////////// insert into local db /////////////////////
+      notifyListeners();
+      return proDetails;
+    } catch (e) {
+      print(e);
+      return null;
+    }
   }
-
-  ///////////////////////////////////////////////////////////
-  setSname() async {
-    final prefs = await SharedPreferences.getInstance();
-    String? same = prefs.getString("st_username");
-    sname = same;
-    notifyListeners();
-  }
-
-  /////////////////////////////////////////////////////////
 
 }
