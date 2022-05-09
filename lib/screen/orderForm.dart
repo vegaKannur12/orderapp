@@ -11,7 +11,10 @@ class _OrderFormState extends State<OrderForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
+      appBar: AppBar(),
+      body: Column(
+        children: [],
+      ),
     );
   }
 }
