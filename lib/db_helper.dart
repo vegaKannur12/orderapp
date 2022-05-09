@@ -88,6 +88,9 @@ class OrderAppDB {
   ////////////////prooduct category///////////////
   static final cat_id = 'cat_id';
   static final cat_name = 'cat_name';
+  ////////////////// product company ////////////////
+  static final comid = 'comid';
+  static final comanme = 'comanme';
 
   Future<Database> get database async {
     if (_database != null) return _database!;
@@ -309,7 +312,17 @@ class OrderAppDB {
     // print(res);
     return res;
   }
-
+////////////////////////////////// product company ///////////////////////
+Future insertProductCompany(
+      ProductsCategoryModel productsCategoryModel) async {
+    final db = await database;
+    var query =
+        'INSERT INTO productsCategory(cat_id, cat_name) VALUES("${productsCategoryModel.cid}", "${productsCategoryModel.canme}")';
+    var res = await db.rawInsert(query);
+    print(query);
+    // print(res);
+    return res;
+  }
   ///////////////////////clear staffDetails///////////////////////////////
   // Future deleteStaffdetails() async {
   //   final db = await database;
