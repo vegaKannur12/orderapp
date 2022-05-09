@@ -235,7 +235,7 @@ class Controller extends ChangeNotifier {
     }
   }
   /////////////////////////////product category//////////////////////////////
-    Future<ProductDetails?> getProductCategory(String cid) async {
+    Future<ProductsCategoryModel?> getProductCategory(String cid) async {
     print("cid...............${cid}");
     try {
       Uri url = Uri.parse("http://trafiqerp.in/order/fj/get_cat.php");
@@ -263,14 +263,14 @@ class Controller extends ChangeNotifier {
       }
       /////////////// insert into local db /////////////////////
       notifyListeners();
-      return proDetails;
+    
     } catch (e) {
       print(e);
       return null;
     }
   }
   ////////////////////////////////get company//////////////////////////////////
-  Future<ProductDetails?> getProductCompany(String cid) async {
+  Future<ProductCompanymodel?> getProductCompany(String cid) async {
     print("cid...............${cid}");
     try {
       Uri url = Uri.parse("http://trafiqerp.in/order/fj/get_com.php");
@@ -298,7 +298,7 @@ class Controller extends ChangeNotifier {
       }
       /////////////// insert into local db /////////////////////
       notifyListeners();
-      return proDetails;
+     
     } catch (e) {
       print(e);
       return null;
