@@ -218,7 +218,17 @@ class _DashboardState extends State<Dashboard> {
                           child: Container(
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                              color: P_Settings.roundedButtonColor,
+                              // gradient: LinearGradient(
+                              //   begin: Alignment.topLeft,
+                              //   end: Alignment(0.8,
+                              //       0.3), // 10% of the width, so there are ten blinds.
+                              //   colors: <Color>[
+                              //     Color.fromARGB(255, 162, 72, 214),
+                              //     Color.fromARGB(255, 88, 86, 202)
+                              //   ], // red to yellow
+                              //   // repeats the gradient over the canvas
+                              // ),
+                              color: Color.fromARGB(255, 115, 158, 233),
                               borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(35),
                                 bottomRight: Radius.circular(35),
@@ -235,7 +245,7 @@ class _DashboardState extends State<Dashboard> {
                                 Text(
                                   companyAttributes[index],
                                   style: TextStyle(
-                                      fontSize: 20, color: Colors.indigo),
+                                      fontSize: 20, color: Colors.white),
                                 ),
                                 SizedBox(
                                   height: 10,

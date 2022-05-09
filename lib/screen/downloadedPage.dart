@@ -18,6 +18,7 @@ class _DownloadedPageState extends State<DownloadedPage> {
     "Account Heads",
     "Product Details",
     "Product category",
+    "Company",
     "Images"
   ];
 

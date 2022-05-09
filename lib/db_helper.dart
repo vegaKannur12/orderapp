@@ -205,6 +205,13 @@ class OrderAppDB {
             $cat_name TEXT
           )
           ''');
+    await db.execute('''
+          CREATE TABLE companyTable (
+            $id INTEGER PRIMARY KEY AUTOINCREMENT,
+            $comid TEXT NOT NULL,
+            $comanme TEXT
+          )
+          ''');
   }
 
   ///////////////////// registration details insertion //////////////////////////
@@ -240,7 +247,7 @@ class OrderAppDB {
     return res;
   }
 
-/////////////////////////////////////////////////////////////////////
+//////////////////////////product details ///////////////////////////////////////////
   Future insertProductDetails(ProductDetails pdata) async {
     final db = await database;
     var query3 =
@@ -290,8 +297,10 @@ class OrderAppDB {
     // print(res);
     return res;
   }
- ////////////////////////////product category insertion//////////////
-   Future insertProductCategory(ProductsCategoryModel productsCategoryModel) async {
+
+  ////////////////////////////product category insertion//////////////
+  Future insertProductCategory(
+      ProductsCategoryModel productsCategoryModel) async {
     final db = await database;
     var query =
         'INSERT INTO productsCategory(cat_id, cat_name) VALUES("${productsCategoryModel.cid}", "${productsCategoryModel.canme}")';
@@ -300,6 +309,7 @@ class OrderAppDB {
     // print(res);
     return res;
   }
+
   ///////////////////////clear staffDetails///////////////////////////////
   // Future deleteStaffdetails() async {
   //   final db = await database;
