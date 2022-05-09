@@ -19,7 +19,7 @@ class Controller extends ChangeNotifier {
   String? cid;
   String? cname;
   List<CD> c_d = [];
-  String? cname;
+  
   List<CD> data = [];
   String? sof;
   List<Map<String, dynamic>> staffList = [];
@@ -186,7 +186,6 @@ class Controller extends ChangeNotifier {
   }
 //////////////////// product details //////////////////////
 
-<<<<<<< HEAD
   ///////////////////////////////////////////////////////////
   setCname() async {
     final prefs = await SharedPreferences.getInstance();
@@ -202,7 +201,6 @@ class Controller extends ChangeNotifier {
     sname = same;
     notifyListeners();
   }
-=======
     Future<ProductDetails?> getProductDetails(String cid) async {
     print("cid...............${cid}");
     try {
@@ -232,5 +230,4 @@ class Controller extends ChangeNotifier {
     }
   }
   
->>>>>>> d59a745cc1201f19f06ffa33c39688d791457d01
 }
