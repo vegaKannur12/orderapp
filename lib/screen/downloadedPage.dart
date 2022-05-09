@@ -20,12 +20,31 @@ class _DownloadedPageState extends State<DownloadedPage> {
     "Product category",
     "Images"
   ];
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: P_Settings.wavecolor,
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(6.0),
+          child: Consumer<Controller>(
+            builder: (context, value, child) {
+              if (value.isLoading) {
+                return LinearProgressIndicator(
+                  backgroundColor: Colors.white,
+                  color: P_Settings.wavecolor,
+
+                  // valueColor: new AlwaysStoppedAnimation<Color>(Colors.red),
+                  // value: 0.25,
+                );
+              } else {
+                return Container();
+              }
+            },
+          ),
+        ),
         // title: Text("Company Details",style: TextStyle(fontSize: 20),),
       ),
       body: Column(
@@ -80,7 +99,23 @@ class _DownloadedPageState extends State<DownloadedPage> {
                 ),
                 onPressed: () {},
                 child: Text("Download all")),
-          )
+          ),
+          // SizedBox(height:20),
+          // Consumer<Controller>(
+          //   builder: (context, value, child) {
+          //     if (value.isLoading) {
+          //       return LinearProgressIndicator(
+          //         backgroundColor: Colors.white,
+          //         color: P_Settings.wavecolor,
+
+          //         // valueColor: new AlwaysStoppedAnimation<Color>(Colors.red),
+          //         // value: 0.25,
+          //       );
+          //     } else {
+          //       return Container();
+          //     }
+          //   },
+          // ),
         ],
       ),
     );

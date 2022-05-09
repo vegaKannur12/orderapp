@@ -16,6 +16,9 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+  String? cname;
+  String? sname;
+
   List companyAttributes = ["Logged in", "Collection", "orders", "sale"];
   int _selectedIndex = 0;
 
@@ -31,6 +34,8 @@ class _DashboardState extends State<Dashboard> {
     // Provider.of<Controller>(context, listen: false).postRegistration("RONPBQ9AD5D",context);
     // TODO: implement initState
     super.initState();
+     Provider.of<Controller>(context, listen: false).setCname();
+     Provider.of<Controller>(context, listen: false).setSname();
   }
 
   @override
@@ -133,40 +138,93 @@ class _DashboardState extends State<Dashboard> {
         ),
         body: Column(
           children: [
-            Consumer<Controller>(builder: (context, value, child) {
-              return Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(50),
-                    bottomRight: Radius.circular(50),
-                  ),
-                  color: Color.fromARGB(255, 177, 212, 235),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(50),
+                  bottomRight: Radius.circular(50),
                 ),
-                alignment: Alignment.center,
-                height: size.height * 0.09,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text("${value.c_d[0].cnme}",
-                          style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: P_Settings.headingColor)),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Text("${value.sname}",
-                          style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                              color: P_Settings.extracolor)),
-                    ],
-                  ),
+                color: Color.fromARGB(255, 177, 212, 235),
+              ),
+              alignment: Alignment.center,
+              height: size.height * 0.09,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // Text("${cname}",
+                    //     style: TextStyle(
+                    //         fontSize: 20,
+                    //         fontWeight: FontWeight.bold,
+                    //         color: P_Settings.headingColor)),
+                    // SizedBox(
+                    //   height: 15,
+                    // ),
+                    // Text("${sname}",
+                    //     style: TextStyle(
+                    //         fontSize: 15,
+                    //         fontWeight: FontWeight.bold,
+                    //         color: P_Settings.extracolor)),
+                    Consumer<Controller>(
+                      builder: (context, value, child) {
+                        return Column(
+                          children: [
+                            Text("${value.cname}",
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: P_Settings.headingColor)),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            Text("${value.sname}",
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    color: P_Settings.extracolor)),
+                          ],
+                        );
+                      },
+                    ),
+                  ],
                 ),
-              );
-            }),
+              ),
+            ),
+            // Consumer<Controller>(builder: (context, value, child) {
+            //   return Container(
+            //     decoration: BoxDecoration(
+            //       borderRadius: BorderRadius.only(
+            //         bottomLeft: Radius.circular(50),
+            //         bottomRight: Radius.circular(50),
+            //       ),
+            //       color: Color.fromARGB(255, 177, 212, 235),
+            //     ),
+            //     alignment: Alignment.center,
+            //     height: size.height * 0.09,
+            //     child: Padding(
+            //       padding: const EdgeInsets.all(8.0),
+            //       child: Column(
+            //         mainAxisAlignment: MainAxisAlignment.center,
+            //         children: [
+            //           Text("${value.c_d[0].cnme}",
+            //               style: TextStyle(
+            //                   fontSize: 20,
+            //                   fontWeight: FontWeight.bold,
+            //                   color: P_Settings.headingColor)),
+            //           SizedBox(
+            //             height: 15,
+            //           ),
+            //           Text("${value.sname}",
+            //               style: TextStyle(
+            //                   fontSize: 15,
+            //                   fontWeight: FontWeight.bold,
+            //                   color: P_Settings.extracolor)),
+            //         ],
+            //       ),
+            //     ),
+            //   );
+            // }),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.only(top: 50),
@@ -234,7 +292,6 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 }
-
 
 Future<bool> _onBackPressed(BuildContext context) async {
   return await showDialog(
