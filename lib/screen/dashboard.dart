@@ -288,6 +288,12 @@ Future<bool> _onBackPressed(BuildContext context) async {
         ),
         actions: <Widget>[
           TextButton(
+            child: const Text('cancel'),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          TextButton(
             child: const Text('Ok'),
             onPressed: () {
               exit(0);

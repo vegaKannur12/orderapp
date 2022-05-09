@@ -153,7 +153,7 @@ class StaffLogin extends StatelessWidget {
                                                 visible.value = false;
                                                 Provider.of<Controller>(context,
                                                         listen: false)
-                                                    .sname=controller1.text;
+                                                    .sname = controller1.text;
 
                                                 final prefs =
                                                     await SharedPreferences
@@ -234,8 +234,10 @@ class StaffLogin extends StatelessWidget {
                                             //////////////////////////////
                                             MaterialButton(
                                               onPressed: () {
-                                                CustomPopup popu=CustomPopup();
-                                                popup.buildPopupDialog(context,"Exit ap?");
+                                                CustomPopup popu =
+                                                    CustomPopup();
+                                                popup.buildPopupDialog(
+                                                    context, "Exit ap?");
                                                 exit(0);
                                               },
                                               color:
@@ -369,6 +371,12 @@ Future<bool> _onBackPressed(BuildContext context) async {
           ),
         ),
         actions: <Widget>[
+          TextButton(
+            child: const Text('cancel'),
+            onPressed: () {
+             Navigator.pop(context);
+            },
+          ),
           TextButton(
             child: const Text('Ok'),
             onPressed: () {
