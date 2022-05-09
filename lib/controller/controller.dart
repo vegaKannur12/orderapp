@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:orderapp/components/customSnackbar.dart';
 import 'package:orderapp/db_helper.dart';
 import 'package:orderapp/model/accounthead_model.dart';
+import 'package:orderapp/model/productCompany_model.dart';
 import 'package:orderapp/model/productsCategory_model.dart';
 import 'package:orderapp/model/registration_model.dart';
 import 'package:orderapp/screen/companyDetailsscreen.dart';
@@ -268,5 +269,39 @@ class Controller extends ChangeNotifier {
       return null;
     }
   }
-
+  ////////////////////////////////get company//////////////////////////////////
+  Future<ProductDetails?> getProductCompany(String cid) async {
+    print("cid...............${cid}");
+    try {
+      Uri url = Uri.parse("http://trafiqerp.in/order/fj/get_com.php");
+      Map body = {
+        'cid': cid,
+      };
+      print("compny----${cid}");
+      isLoading=true;
+      notifyListeners();
+      http.Response response = await http.post(
+        url,
+        body: body,
+      );
+      // print("body ${body}");
+      List map = jsonDecode(response.body);
+      print("map ${map}");
+      ProductCompanymodel productCompany;
+      for (var proComp in map) {
+        productCompany = ProductCompanymodel.fromJson(proComp);
+        // var product =
+        //     await OrderAppDB.instance.insertProductCategory(productCompany);
+      isLoading=false;
+      notifyListeners();
+        // print("inserted ${account}");
+      }
+      /////////////// insert into local db /////////////////////
+      notifyListeners();
+      return proDetails;
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
 }
