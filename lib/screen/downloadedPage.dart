@@ -79,6 +79,9 @@ class _DownloadedPageState extends State<DownloadedPage> {
                             if (downloadItems[index] == "Company") {
                               Provider.of<Controller>(context, listen: false)
                                   .getProductCompany(cid!);
+                            } if (downloadItems[index] == "Product Details") {
+                              Provider.of<Controller>(context, listen: false)
+                                  .getProductDetails(cid!);
                             }
                           },
                           icon: Icon(Icons.download),
