@@ -47,7 +47,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       child: Stack(
                         children: <Widget>[
                           ClipPath(
-                            clipper: WaveClipper(), //set our custom wave clipper.
+                            clipper:
+                                WaveClipper(), //set our custom wave clipper.
                             child: Container(
                               padding: EdgeInsets.only(bottom: 50),
                               color: P_Settings.wavecolor,
@@ -82,7 +83,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           if (text == null || text.isEmpty) {
                             return 'Please Enter Company Key';
                           }
-    
+
                           return null;
                         },
                       ),
@@ -97,7 +98,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           onPressed: () async {
                             if (_formKey.currentState!.validate()) {
                               Provider.of<Controller>(context, listen: false)
-                                  .postRegistration(codeController.text, context);
+                                  .postRegistration(
+                                      codeController.text, context);
+                              // Provider.of<Controller>(context, listen: false)
+                              //     .cname = codeController.text;
                             }
                           },
                           child: Text("Register")),

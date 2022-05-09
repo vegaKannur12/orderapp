@@ -140,7 +140,7 @@ class _DashboardState extends State<Dashboard> {
                     bottomLeft: Radius.circular(50),
                     bottomRight: Radius.circular(50),
                   ),
-                  color: Color.fromARGB(255, 177, 212, 235),
+                  color: P_Settings.roundedButtonColor
                 ),
                 alignment: Alignment.center,
                 height: size.height * 0.09,
@@ -149,7 +149,7 @@ class _DashboardState extends State<Dashboard> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("${value.c_d[0].cnme}",
+                      Text("G7 MARKETINGS",
                           style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -157,11 +157,11 @@ class _DashboardState extends State<Dashboard> {
                       SizedBox(
                         height: 15,
                       ),
-                      Text("${value.sname}",
-                          style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                              color: P_Settings.extracolor)),
+                      // Text("${value.sname}",
+                      //     style: TextStyle(
+                      //         fontSize: 15,
+                      //         fontWeight: FontWeight.bold,
+                      //         color: P_Settings.extracolor)),
                     ],
                   ),
                 ),
