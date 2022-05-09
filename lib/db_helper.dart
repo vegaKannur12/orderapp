@@ -6,6 +6,7 @@ import 'package:orderapp/model/productsCategory_model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
+import 'model/productCompany_model.dart';
 import 'model/registration_model.dart';
 import 'model/staffarea_model.dart';
 import 'model/staffdetails_model.dart';
@@ -314,10 +315,10 @@ class OrderAppDB {
   }
 ////////////////////////////////// product company ///////////////////////
 Future insertProductCompany(
-      ProductsCategoryModel productsCategoryModel) async {
+      ProductCompanymodel productsCompanyModel) async {
     final db = await database;
     var query =
-        'INSERT INTO productsCategory(cat_id, cat_name) VALUES("${productsCategoryModel.cid}", "${productsCategoryModel.canme}")';
+        'INSERT INTO productsCategory(comid, comanme) VALUES("${productsCompanyModel.comid}", "${productsCompanyModel.comanme}")';
     var res = await db.rawInsert(query);
     print(query);
     // print(res);
