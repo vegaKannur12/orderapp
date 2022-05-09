@@ -1,6 +1,7 @@
 // ignore_for_file: unused_local_variable
 
 import 'package:orderapp/model/accounthead_model.dart';
+import 'package:orderapp/model/productdetails_model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -63,6 +64,25 @@ class OrderAppDB {
   static final ac_gst = 'ac_gst';
   static final ac = 'ac';
   static final cag = 'cag';
+
+  /////////////productdetails//////////
+  
+  static final ean = 'ean';
+  static final item = 'item';
+  static final unit = 'unit';
+  static final categoryId = 'categoryId';
+  static final companyId = 'companyId';
+  static final stock = 'stock';
+  static final hsn = 'hsn';
+  static final tax = 'tax';
+  static final prate = 'prate';
+  static final mrp = 'mrp';
+  static final cost = 'cost';
+  static final rate1 = 'rate1';
+  static final rate2 = 'rate2';
+  static final rate3 = 'rate3';
+  static final rate4 = 'rate4';
+  static final priceflag = 'priceflag';
 
   Future<Database> get database async {
     if (_database != null) return _database!;
@@ -148,6 +168,30 @@ class OrderAppDB {
             $cag TEXT
           )
           ''');
+
+    await db.execute('''
+          CREATE TABLE productDetailsTable (
+            $id INTEGER PRIMARY KEY AUTOINCREMENT,
+            $code TEXT NOT NULL,
+            $ean TEXT,
+            $item TEXT,
+            $unit TEXT,
+            $categoryId TEXT,
+            $companyId TEXT,
+            $stock TEXT,
+            $hsn TEXT,
+            $tax TEXT,
+            $prate TEXT,
+            $mrp TEXT,
+            $cost TEXT,
+            $rate1 TEXT,
+            $rate2 TEXT,
+            $rate3 TEXT,
+            $rate4 TEXT,
+            $priceflag TEXT
+
+          )
+          ''');
   }
 
   ///////////////////// registration details insertion //////////////////////////
@@ -180,6 +224,17 @@ class OrderAppDB {
     var res = await db.rawInsert(query3);
     print(query3);
     print(res);
+    return res;
+  }
+
+/////////////////////////////////////////////////////////////////////
+  Future insertProductDetails(ProductDetails pdata) async {
+    final db = await database;
+    var query3 =
+        'INSERT INTO productDetailsTable(code, ean, item, unit, categoryId, companyId, stock, hsn, tax, prate, mrp, cost, rate1, rate2, rate3, rate4, priceflag) VALUES("${pdata.code}", "${pdata.ean}", "${pdata.item}", "${pdata.unit}", "${pdata.categoryId}", "${pdata.companyId}", "${pdata.stock}", "${pdata.hsn}", "${pdata.tax}", "${pdata.prate}", "${pdata.mrp}", "${pdata.cost}", "${pdata.rate1}", "${pdata.rate2}", "${pdata.rate3}", "${pdata.rate4}", "${pdata.priceFlag}")';
+    var res = await db.rawInsert(query3);
+    // print(query3);
+    // print(res);
     return res;
   }
 
@@ -231,7 +286,7 @@ class OrderAppDB {
   //   print(res);
   //   return res;
   // }
- Future deleteStaffdetails() async {
+  Future deleteStaffdetails() async {
     Database db = await instance.database;
     await db.delete('staffDetailsTable');
   }
