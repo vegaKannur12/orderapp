@@ -2,6 +2,7 @@
 
 import 'package:orderapp/model/accounthead_model.dart';
 import 'package:orderapp/model/productdetails_model.dart';
+import 'package:orderapp/model/productsCategory_model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -66,7 +67,7 @@ class OrderAppDB {
   static final cag = 'cag';
 
   /////////////productdetails//////////
-  
+
   static final ean = 'ean';
   static final item = 'item';
   static final unit = 'unit';
@@ -83,6 +84,10 @@ class OrderAppDB {
   static final rate3 = 'rate3';
   static final rate4 = 'rate4';
   static final priceflag = 'priceflag';
+
+  ////////////////prooduct category///////////////
+  static final cat_id = 'cat_id';
+  static final cat_name = 'cat_name';
 
   Future<Database> get database async {
     if (_database != null) return _database!;
@@ -192,6 +197,14 @@ class OrderAppDB {
 
           )
           ''');
+    //////////////////////////products category////////////////////
+    await db.execute('''
+          CREATE TABLE productsCategory (
+            $id INTEGER PRIMARY KEY AUTOINCREMENT,
+            $cat_id TEXT NOT NULL,
+            $cat_name TEXT
+          )
+          ''');
   }
 
   ///////////////////// registration details insertion //////////////////////////
@@ -277,7 +290,16 @@ class OrderAppDB {
     // print(res);
     return res;
   }
-
+ ////////////////////////////product category insertion//////////////
+   Future insertProductCategory(ProductsCategoryModel productsCategoryModel) async {
+    final db = await database;
+    var query =
+        'INSERT INTO productsCategory(cat_id, cat_name) VALUES("${productsCategoryModel.cid}", "${productsCategoryModel.canme}")';
+    var res = await db.rawInsert(query);
+    print(query);
+    // print(res);
+    return res;
+  }
   ///////////////////////clear staffDetails///////////////////////////////
   // Future deleteStaffdetails() async {
   //   final db = await database;
