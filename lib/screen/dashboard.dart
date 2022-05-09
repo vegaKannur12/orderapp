@@ -16,10 +16,7 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  String? cname;
-  String? sname;
-
-  List companyAttributes = ["Logged in", "Collection", "orders", "sale"];
+  List companyAttributes = ["Logged in", "Collection", "Orders", "Sale"];
   int _selectedIndex = 0;
 
   _onSelectItem(int index) {
@@ -34,8 +31,8 @@ class _DashboardState extends State<Dashboard> {
     // Provider.of<Controller>(context, listen: false).postRegistration("RONPBQ9AD5D",context);
     // TODO: implement initState
     super.initState();
-     Provider.of<Controller>(context, listen: false).setCname();
-     Provider.of<Controller>(context, listen: false).setSname();
+    Provider.of<Controller>(context, listen: false).setCname();
+    Provider.of<Controller>(context, listen: false).setSname();
   }
 
   @override
@@ -84,7 +81,11 @@ class _DashboardState extends State<Dashboard> {
     return WillPopScope(
       onWillPop: () => _onBackPressed(context),
       child: Scaffold(
-        appBar: AppBar(backgroundColor: Colors.indigo),
+        backgroundColor: Colors.indigo,
+        appBar: AppBar(
+          backgroundColor: Colors.indigo,
+          elevation: 0,
+        ),
         drawer: Drawer(
           child: Column(
             children: [
@@ -141,15 +142,15 @@ class _DashboardState extends State<Dashboard> {
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(50),
-                  bottomRight: Radius.circular(50),
-                ),
-                color: Color.fromARGB(255, 177, 212, 235),
+                    // bottomLeft: Radius.circular(50),
+                    // bottomRight: Radius.circular(50),
+                    ),
+                // color: P_Settings.roundedButtonColor
               ),
               alignment: Alignment.center,
               height: size.height * 0.09,
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(5.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -191,98 +192,66 @@ class _DashboardState extends State<Dashboard> {
                 ),
               ),
             ),
-            // Consumer<Controller>(builder: (context, value, child) {
-            //   return Container(
-            //     decoration: BoxDecoration(
-            //       borderRadius: BorderRadius.only(
-            //         bottomLeft: Radius.circular(50),
-            //         bottomRight: Radius.circular(50),
-            //       ),
-            //       color: Color.fromARGB(255, 177, 212, 235),
-            //     ),
-            //     alignment: Alignment.center,
-            //     height: size.height * 0.09,
-            //     child: Padding(
-            //       padding: const EdgeInsets.all(8.0),
-            //       child: Column(
-            //         mainAxisAlignment: MainAxisAlignment.center,
-            //         children: [
-            //           Text("${value.c_d[0].cnme}",
-            //               style: TextStyle(
-            //                   fontSize: 20,
-            //                   fontWeight: FontWeight.bold,
-            //                   color: P_Settings.headingColor)),
-            //           SizedBox(
-            //             height: 15,
-            //           ),
-            //           Text("${value.sname}",
-            //               style: TextStyle(
-            //                   fontSize: 15,
-            //                   fontWeight: FontWeight.bold,
-            //                   color: P_Settings.extracolor)),
-            //         ],
-            //       ),
-            //     ),
-            //   );
-            // }),
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 50),
-                child: GridView.builder(
-                  itemCount: companyAttributes.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    childAspectRatio: 1.3,
-                    crossAxisCount: 2,
-                  ),
-                  itemBuilder: ((context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Ink(
-                        decoration: BoxDecoration(),
+              child: Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(95),
+                      topRight: Radius.circular(95),
+                    ),
+                    color: Colors.white),
+                // color: P_Settings.wavecolor,
+                // height: size.height*0.6,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 50),
+                  child: GridView.builder(
+                    itemCount: companyAttributes.length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      childAspectRatio: 1.3,
+                      crossAxisCount: 2,
+                    ),
+                    itemBuilder: ((context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(15.0),
                         child: Card(
-                          // color: Colors.transparent,
-                          elevation: 3,
+                          elevation: 0,
                           child: Container(
                             alignment: Alignment.center,
-                            decoration: const BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  Color.fromARGB(255, 107, 95, 206),
-                                  Color.fromARGB(255, 20, 70, 209)
-                                ],
-                                begin: Alignment.bottomLeft,
-                                end: Alignment.topRight,
+                            decoration: BoxDecoration(
+                              color: P_Settings.roundedButtonColor,
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(35),
+                                bottomRight: Radius.circular(35),
                               ),
-                              // borderRadius: BorderRadius.all(Radius.circular(40)),
+                              border: Border.all(width: 1, color: Colors.white),
                             ),
-                            // color: Color.fromARGB(255, 235, 118, 200),
                             height: 40,
                             width: 100,
                             child: Column(
                               children: [
                                 SizedBox(
-                                  height: 30,
+                                  height: 20,
                                 ),
                                 Text(
                                   companyAttributes[index],
                                   style: TextStyle(
-                                      fontSize: 20, color: Colors.white),
+                                      fontSize: 20, color: Colors.indigo),
                                 ),
                                 SizedBox(
                                   height: 10,
                                 ),
                                 Text(
-                                  "10.00",
+                                  '10.00 ',
                                   style: TextStyle(
-                                      fontSize: 20, color: Colors.amber),
+                                      fontSize: 20, color: Colors.pink),
                                 ),
                               ],
                             ),
                           ),
                         ),
-                      ),
-                    );
-                  }),
+                      );
+                    }),
+                  ),
                 ),
               ),
             ),

@@ -44,19 +44,19 @@ class StaffLogin extends StatelessWidget {
             //     onPressed: () {
             //       controller.add(true);
             //     },
-            // //     icon: Icon(Icons.refresh)),
-            // IconButton(
-            //   onPressed: () async {
-            //     List<Map<String, dynamic>> list =
-            //         await OrderAppDB.instance.getListOfTables();
-            //     Navigator.push(
-            //       context,
-            //       MaterialPageRoute(
-            //           builder: (context) => TableList(list: list)),
-            //     );
-            //   },
-            //   icon: Icon(Icons.table_bar),
-            // ),
+            //     icon: Icon(Icons.refresh)),
+            IconButton(
+              onPressed: () async {
+                List<Map<String, dynamic>> list =
+                    await OrderAppDB.instance.getListOfTables();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => TableList(list: list)),
+                );
+              },
+              icon: Icon(Icons.table_bar),
+            ),
             // IconButton(
             //   onPressed: () async {
             //     await OrderAppDB.instance.deleteStaffdetails();
