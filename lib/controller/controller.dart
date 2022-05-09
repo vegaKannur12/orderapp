@@ -155,7 +155,7 @@ class Controller extends ChangeNotifier {
   Future<AccountHead?> getaccountHeadsDetails(String cid) async {
     print("cid...............${cid}");
     try {
-      Uri url = Uri.parse("http://trafiqerp.in/order/fj/get_cat.php");
+      Uri url = Uri.parse("http://trafiqerp.in/order/fj/get_achead.php");
       Map body = {
         'cid': cid,
       };
@@ -169,14 +169,14 @@ class Controller extends ChangeNotifier {
       print("body ${body}");
       List map = jsonDecode(response.body);
       print("map ${map}");
-      // for (var ahead in map) {
-      //   print("ahead------${ahead}");
-      //   accountHead = AccountHead.fromJson(ahead);
-      //   var account = await OrderAppDB.instance.insertAccoundHeads(accountHead);
+      for (var ahead in map) {
+        print("ahead------${ahead}");
+        accountHead = AccountHead.fromJson(ahead);
+        var account = await OrderAppDB.instance.insertAccoundHeads(accountHead);
 
-      //   // print("inserted ${account}");
-      // }
-      // isLoading = false;
+        // print("inserted ${account}");
+      }
+      isLoading = false;
 
       /////////////// insert into local db /////////////////////
       notifyListeners();
@@ -186,7 +186,6 @@ class Controller extends ChangeNotifier {
       return null;
     }
   }
-//////////////////// product details //////////////////////
 
   ///////////////////////////////////////////////////////////
   setCname() async {
@@ -213,6 +212,8 @@ class Controller extends ChangeNotifier {
         'cid': cid,
       };
       print("compny----${cid}");
+      isLoading = true;
+      notifyListeners();
       http.Response response = await http.post(
         url,
         body: body,
@@ -226,6 +227,8 @@ class Controller extends ChangeNotifier {
             await OrderAppDB.instance.insertProductDetails(proDetails);
         // print("inserted ${account}");
       }
+      isLoading = false;
+      notifyListeners();
       /////////////// insert into local db /////////////////////
       notifyListeners();
       return proDetails;
@@ -234,8 +237,9 @@ class Controller extends ChangeNotifier {
       return null;
     }
   }
+
   /////////////////////////////product category//////////////////////////////
-    Future<ProductsCategoryModel?> getProductCategory(String cid) async {
+  Future<ProductsCategoryModel?> getProductCategory(String cid) async {
     print("cid...............${cid}");
     try {
       Uri url = Uri.parse("http://trafiqerp.in/order/fj/get_cat.php");
@@ -243,7 +247,7 @@ class Controller extends ChangeNotifier {
         'cid': cid,
       };
       print("compny----${cid}");
-      isLoading=true;
+      isLoading = true;
       notifyListeners();
       http.Response response = await http.post(
         url,
@@ -252,23 +256,23 @@ class Controller extends ChangeNotifier {
       // print("body ${body}");
       List map = jsonDecode(response.body);
       print("map ${map}");
-      ProductsCategoryModel category;;
+      ProductsCategoryModel category;
+      ;
       for (var cat in map) {
         category = ProductsCategoryModel.fromJson(cat);
-        var product =
-            await OrderAppDB.instance.insertProductCategory(category);
-      isLoading=false;
-      notifyListeners();
+        var product = await OrderAppDB.instance.insertProductCategory(category);
+        isLoading = false;
+        notifyListeners();
         // print("inserted ${account}");
       }
       /////////////// insert into local db /////////////////////
       notifyListeners();
-    
     } catch (e) {
       print(e);
       return null;
     }
   }
+
   ////////////////////////////////get company//////////////////////////////////
   Future<ProductCompanymodel?> getProductCompany(String cid) async {
     print("cid...............${cid}");
@@ -278,7 +282,7 @@ class Controller extends ChangeNotifier {
         'cid': cid,
       };
       print("compny----${cid}");
-      isLoading=true;
+      isLoading = true;
       notifyListeners();
       http.Response response = await http.post(
         url,
@@ -292,13 +296,12 @@ class Controller extends ChangeNotifier {
         productCompany = ProductCompanymodel.fromJson(proComp);
         var product =
             await OrderAppDB.instance.insertProductCompany(productCompany);
-      isLoading=false;
-      notifyListeners();
+        isLoading = false;
+        notifyListeners();
         // print("inserted ${account}");
       }
       /////////////// insert into local db /////////////////////
       notifyListeners();
-     
     } catch (e) {
       print(e);
       return null;
