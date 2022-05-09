@@ -9,6 +9,7 @@ import '../components/commoncolor.dart';
 import '../components/waveclipper.dart';
 import 'companyDetailsscreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class RegistrationScreen extends StatefulWidget {
   @override
@@ -100,11 +101,27 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               Provider.of<Controller>(context, listen: false)
                                   .postRegistration(
                                       codeController.text, context);
-                              // Provider.of<Controller>(context, listen: false)
-                              //     .cname = codeController.text;
                             }
                           },
                           child: Text("Register")),
+                    ),
+                    SizedBox(
+                      height: size.height * 0.09,
+                    ),
+                    Consumer<Controller>(
+                      builder: (context, value, child) {
+                        if (value.isLoading) {
+                          return SpinKitCircle(
+                            // backgroundColor:,
+                            color: P_Settings.wavecolor,
+
+                            // valueColor: new AlwaysStoppedAnimation<Color>(Colors.red),
+                            // value: 0.25,
+                          );
+                        } else {
+                          return Container();
+                        }
+                      },
                     ),
                   ],
                 ),

@@ -19,6 +19,7 @@ class Controller extends ChangeNotifier {
   String? cid;
   String? cname;
   List<CD> c_d = [];
+  
   List<CD> data = [];
   String? sof;
   List<Map<String, dynamic>> staffList = [];
@@ -61,6 +62,8 @@ class Controller extends ChangeNotifier {
         String? os = regModel.os;
         regModel.c_d![0].cid;
         cid = regModel.cid;
+        cname = regModel.c_d![0].cnme;
+        notifyListeners();
         for (var item in regModel.c_d!) {
           c_d.add(item);
         }
@@ -83,7 +86,7 @@ class Controller extends ChangeNotifier {
   }
 
   /////////////////////// Staff details////////////////////////////////
-  
+
   Future<StaffDetails?> getStaffDetails(String cid) async {
     // print("cid...............${cid}");
     try {
@@ -113,6 +116,7 @@ class Controller extends ChangeNotifier {
       return null;
     }
   }
+
 ////////////////////// Staff Area ///////////////////////////////////
   Future<StaffArea?> getAreaDetails(String cid) async {
     print("cid...............${cid}");
@@ -131,8 +135,9 @@ class Controller extends ChangeNotifier {
       print("map ${map}");
       for (var staffarea in map) {
         print("staffarea----${staffarea}");
-        staffArea= StaffArea.fromJson(staffarea);
-        var staffar = await OrderAppDB.instance.insertStaffAreaDetails(staffArea);
+        staffArea = StaffArea.fromJson(staffarea);
+        var staffar =
+            await OrderAppDB.instance.insertStaffAreaDetails(staffArea);
         print("inserted ${staffar}");
       }
       /////////////// insert into local db /////////////////////
@@ -145,13 +150,15 @@ class Controller extends ChangeNotifier {
   }
 
   ////////////////////////// account head ///////////////////////////////////////
-    Future<AccountHead?> getaccountHeadsDetails(String cid) async {
+  Future<AccountHead?> getaccountHeadsDetails(String cid) async {
     print("cid...............${cid}");
     try {
       Uri url = Uri.parse("http://trafiqerp.in/order/fj/get_achead.php");
       Map body = {
         'cid': cid,
       };
+      isLoading = true;
+      notifyListeners();
       print("compny----${cid}");
       http.Response response = await http.post(
         url,
@@ -162,10 +169,13 @@ class Controller extends ChangeNotifier {
       print("map ${map}");
       for (var ahead in map) {
         print("ahead------${ahead}");
-        accountHead= AccountHead.fromJson(ahead);
+        accountHead = AccountHead.fromJson(ahead);
         var account = await OrderAppDB.instance.insertAccoundHeads(accountHead);
+ 
         // print("inserted ${account}");
-      }
+      }       
+      isLoading = false;
+    
       /////////////// insert into local db /////////////////////
       notifyListeners();
       return accountHead;
@@ -176,6 +186,21 @@ class Controller extends ChangeNotifier {
   }
 //////////////////// product details //////////////////////
 
+  ///////////////////////////////////////////////////////////
+  setCname() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? came = prefs.getString("cname");
+    cname = came;
+    notifyListeners();
+  }
+
+  ///////////////////////////////////////////////////////////
+  setSname() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? same = prefs.getString("st_username");
+    sname = same;
+    notifyListeners();
+  }
     Future<ProductDetails?> getProductDetails(String cid) async {
     print("cid...............${cid}");
     try {

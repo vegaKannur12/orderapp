@@ -234,6 +234,8 @@ class StaffLogin extends StatelessWidget {
                                             //////////////////////////////
                                             MaterialButton(
                                               onPressed: () {
+                                                CustomPopup popu=CustomPopup();
+                                                popup.buildPopupDialog(context,"Exit ap?");
                                                 exit(0);
                                               },
                                               color:

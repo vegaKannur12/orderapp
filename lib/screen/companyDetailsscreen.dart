@@ -228,6 +228,10 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                                     SharedPreferences prefs =
                                         await SharedPreferences.getInstance();
                                     prefs.setString("cid", cid);
+                                    prefs.setString("cname", value.cname!);
+                                    // Provider.of<Controller>(context,
+                                    //         listen: false)
+                                    //     .setCname();
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
