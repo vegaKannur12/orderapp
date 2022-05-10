@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:orderapp/components/commoncolor.dart';
 import 'package:orderapp/controller/controller.dart';
@@ -11,11 +13,12 @@ class MainDashboard extends StatefulWidget {
 }
 
 class _MainDashboardState extends State<MainDashboard> {
-  List companyAttributes = ["Logged in", "Collection", "Orders", "Sale"];
+  List companyAttributes = ["Logged in", "Collection", "Orders", "Sale","Logged in", "Collection", "Orders", "Sale"];
+final _random = Random();
 
   @override
   Widget build(BuildContext context) {
-    Size size=MediaQuery.of(context).size;
+    Size size = MediaQuery.of(context).size;
     return Column(
       children: [
         Container(
@@ -54,7 +57,7 @@ class _MainDashboardState extends State<MainDashboard> {
                             style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
-                                color: P_Settings.headingColor)),
+                                color: P_Settings.detailscolor)),
                         SizedBox(
                           height: 15,
                         ),
@@ -107,7 +110,11 @@ class _MainDashboardState extends State<MainDashboard> {
                           //   ], // red to yellow
                           //   // repeats the gradient over the canvas
                           // ),
-                          color: Color.fromARGB(255, 115, 158, 233),
+                          color: Color.fromARGB(
+                              _random.nextInt(256),
+                              _random.nextInt(250),
+                              _random.nextInt(250),
+                              _random.nextInt(255)),
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(35),
                             bottomRight: Radius.circular(35),
