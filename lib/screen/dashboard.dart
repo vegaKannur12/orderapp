@@ -98,9 +98,9 @@ class _DashboardState extends State<Dashboard> {
     return WillPopScope(
       onWillPop: () => _onBackPressed(context),
       child: Scaffold(
-        backgroundColor: Colors.indigo,
+        backgroundColor: P_Settings.wavecolor,
         appBar: AppBar(
-          backgroundColor: Colors.indigo,
+          backgroundColor: P_Settings.wavecolor,
           elevation: 0,
         ),
         drawer: Drawer(
