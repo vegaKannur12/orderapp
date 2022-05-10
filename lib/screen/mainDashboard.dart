@@ -111,8 +111,8 @@ final _random = Random();
                           //   // repeats the gradient over the canvas
                           // ),
                           color: Color.fromARGB(
-                              _random.nextInt(256),
-                              _random.nextInt(250),
+                              _random.nextInt(107),
+                              _random.nextInt(209),
                               _random.nextInt(250),
                               _random.nextInt(255)),
                           borderRadius: BorderRadius.only(

@@ -20,7 +20,7 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   int _selectedDrawerIndex = 0;
-  List companyAttributes = ["Logged in", "Collection", "Orders", "Sale"];
+  List companyAttributes = ["Dashboard","Logged in", "Collection", "Orders", "Sale"];
   int _selectedIndex = 0;
 
   _onSelectItem(int index) {
@@ -44,7 +44,7 @@ class _DashboardState extends State<Dashboard> {
     switch (pos) {
       case 0:
         return new MainDashboard();
-      case 2:
+      case 3:
         return new OrderForm();
     }
   }

@@ -43,6 +43,8 @@ class OrderAppDB {
   static final uname = 'uname';
   static final pwd = 'pwd';
   static final ph = 'ph';
+  static final area = 'area';
+
   // int DB_VERSION = 2;
 
   //////////////Staff area details////////////////////////
@@ -144,7 +146,8 @@ class OrderAppDB {
             $ad1 TEXT,
             $ad2 TEXT,
             $ad3 TEXT,
-            $ph TEXT
+            $ph TEXT,
+            $area TEXT
           )
           ''');
 
@@ -166,7 +169,7 @@ class OrderAppDB {
             $ac_ad2 TEXT,
             $ac_ad3 TEXT,
             $area_id TEXT,
-            $phn TEXT,
+            $phn TEXT, 
             $ba TEXT,
             $ri TEXT,
             $rc TEXT,
@@ -233,7 +236,7 @@ class OrderAppDB {
   Future insertStaffDetails(StaffDetails sdata) async {
     final db = await database;
     var query2 =
-        'INSERT INTO staffDetailsTable(sid, sname, uname, pwd, ad1, ad2, ad3, ph) VALUES("${sdata.sid}", "${sdata.sname}", "${sdata.unme}", "${sdata.pwd}", "${sdata.ad1}", "${sdata.ad2}", "${sdata.ad3}", "${sdata.ph}")';
+        'INSERT INTO staffDetailsTable(sid, sname, uname, pwd, ad1, ad2, ad3, ph, area) VALUES("${sdata.sid}", "${sdata.sname}", "${sdata.unme}", "${sdata.pwd}", "${sdata.ad1}", "${sdata.ad2}", "${sdata.ad3}", "${sdata.ph}", "${sdata.area}")';
     var res = await db.rawInsert(query2);
     print(query2);
     // print(res);
@@ -313,9 +316,9 @@ class OrderAppDB {
     // print(res);
     return res;
   }
+
 ////////////////////////////////// product company ///////////////////////
-Future insertProductCompany(
-      ProductCompanymodel productsCompanyModel) async {
+  Future insertProductCompany(ProductCompanymodel productsCompanyModel) async {
     final db = await database;
     var query =
         'INSERT INTO companyTable(comid, comanme) VALUES("${productsCompanyModel.comid}", "${productsCompanyModel.comanme}")';
@@ -324,6 +327,7 @@ Future insertProductCompany(
     // print(res);
     return res;
   }
+
   ///////////////////////clear staffDetails///////////////////////////////
   // Future deleteStaffdetails() async {
   //   final db = await database;
@@ -360,5 +364,26 @@ Future insertProductCompany(
     // list.forEach((row) {
     //   print(row.values);
     // });
+  }
+
+  //////////////////////////////////////////////////////////
+  Future<List<Map<String, dynamic>>> getArea(String staffName) async {
+    List<Map<String, dynamic>> list = [];
+    String result = "";
+    print("uname---${staffName}");
+    Database db = await instance.database;
+    var area= await db.rawQuery('SELECT area FROM staffDetailsTable WHERE sname="${staffName}"'
+    );
+    if (area[0]["area"] == "") {
+      list = await db.rawQuery('SELECT * FROM areaDetailsTable');
+    }
+    // else {
+    //   list = await db.rawQuery('SELECT * FROM areaDetailsTable WHERE ');
+    // }
+
+    print("res===${result}");
+    print("area===${area}"); 
+    print("area---List ${list}");
+    return list;
   }
 }
