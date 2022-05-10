@@ -18,7 +18,7 @@ class _OrderFormState extends State<OrderForm> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Colors.grey[400],
+      backgroundColor: Colors.grey[200],
       appBar: AppBar(),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
@@ -75,7 +75,7 @@ class _OrderFormState extends State<OrderForm> {
                         padding: const EdgeInsets.only(left: 8.0),
                         child: Text(
                           "Area/Route",
-                          style: TextStyle(fontSize: 16),
+                          style: TextStyle(fontSize: 16,color: P_Settings.wavecolor),
                         ),
                       ),
                       SizedBox(height: size.height * 0.01),
@@ -86,7 +86,7 @@ class _OrderFormState extends State<OrderForm> {
                       SizedBox(height: size.height * 0.02),
                       Padding(
                         padding: const EdgeInsets.only(left: 8.0),
-                        child: Text("Customer", style: TextStyle(fontSize: 16)),
+                        child: Text("Customer", style: TextStyle(fontSize: 16,color: P_Settings.wavecolor)),
                       ),
                       SizedBox(height: size.height * 0.01),
                       Container(
@@ -109,18 +109,18 @@ class _OrderFormState extends State<OrderForm> {
                 child: Column(
                   children: [
                     Container(
-                      color: P_Settings.wavecolor,
+                      color: Colors.grey[300],
                       width: size.width * 0.95,
                       height: size.height * 0.06,
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: Row(
                           children: [
-                            Text('Orderform',style: TextStyle(color: P_Settings.detailscolor),),
+                            Text('Orderform'),
                             SizedBox(
                               width: size.width * 0.3,
                             ),
-                            Text('History',style: TextStyle(color: P_Settings.detailscolor),),
+                            Text('History'),
                             SizedBox(
                               width: size.width * 0.03,
                             ),
@@ -337,7 +337,7 @@ class _OrderFormState extends State<OrderForm> {
     return Padding(
       padding: const EdgeInsets.only(left: 16.0, right: 16),
       child: Container(
-        height: size.height * 0.04,
+        height: size.height * 0.045,
         width: size.width * 0.9,
         decoration: ShapeDecoration(
           shape: RoundedRectangleBorder(
