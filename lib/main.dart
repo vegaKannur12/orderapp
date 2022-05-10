@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: Dashboard(),
+      home: SplashScreen(),
       // home: MyWaveClipper(),
     );
   }

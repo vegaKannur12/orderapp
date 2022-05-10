@@ -21,10 +21,13 @@ class Controller extends ChangeNotifier {
   String? cid;
   String? cname;
   List<CD> c_d = [];
+  String? area;
 
   List<CD> data = [];
   String? sof;
   List<Map<String, dynamic>> staffList = [];
+  List<Map<String, dynamic>> areaList = [];
+
   StaffDetails staffModel = StaffDetails();
   AccountHead accountHead = AccountHead();
   StaffArea staffArea = StaffArea();
@@ -103,7 +106,7 @@ class Controller extends ChangeNotifier {
       );
       // print("body ${body}");
       List map = jsonDecode(response.body);
-      // print("map ${map}");
+      
       for (var staff in map) {
         // print("staff----${staff}");
         staffModel = StaffDetails.fromJson(staff);
@@ -301,6 +304,19 @@ class Controller extends ChangeNotifier {
         // print("inserted ${account}");
       }
       /////////////// insert into local db /////////////////////
+      notifyListeners();
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  //////////////////////////////////////////////////////
+  getArea(String staffName) async {
+    print("staff...............${staffName}");
+    try {
+      List<Map<String,dynamic>> areaList = await OrderAppDB.instance.getArea(staffName);
+      print("areaList----${areaList}");
       notifyListeners();
     } catch (e) {
       print(e);

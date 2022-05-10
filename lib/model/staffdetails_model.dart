@@ -7,6 +7,8 @@ class StaffDetails {
   String? ad2;
   String? ad3;
   String? ph;
+  String? area;
+
 
   StaffDetails(
       {this.sid,
@@ -16,7 +18,7 @@ class StaffDetails {
       this.ad1,
       this.ad2,
       this.ad3,
-      this.ph});
+      this.ph,this.area});
 
   StaffDetails.fromJson(Map<String, dynamic> json) {
     sid = json['sid'];
@@ -27,6 +29,8 @@ class StaffDetails {
     ad2 = json['ad2'];
     ad3 = json['ad3'];
     ph = json['ph'];
+    area = json['area'];
+
   }
 
   Map<String, dynamic> toJson() {
@@ -39,6 +43,8 @@ class StaffDetails {
     data['ad2'] = this.ad2;
     data['ad3'] = this.ad3;
     data['ph'] = this.ph;
+    data['area'] = this.area;
+
     return data;
   }
 }

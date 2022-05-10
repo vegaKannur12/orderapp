@@ -165,7 +165,10 @@ class StaffLogin extends StatelessWidget {
                                                     'st_pwd', controller2.text);
                                                 print(
                                                     "visible===${visible.value}");
-
+                                                Provider.of<Controller>(context,
+                                                        listen: false)
+                                                    .getArea(controller1.text);
+                                                //  await OrderAppDB.instance.getArea(controller1.text);
                                                 Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
@@ -374,7 +377,7 @@ Future<bool> _onBackPressed(BuildContext context) async {
           TextButton(
             child: const Text('cancel'),
             onPressed: () {
-             Navigator.pop(context);
+              Navigator.pop(context);
             },
           ),
           TextButton(
