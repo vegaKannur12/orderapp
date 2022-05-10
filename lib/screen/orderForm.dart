@@ -63,7 +63,7 @@ class _OrderFormState extends State<OrderForm> {
               Visibility(
                 visible: visible,
                 child: Padding(
-                  padding: const EdgeInsets.only(left:5,right:5),
+                  padding: const EdgeInsets.only(left: 5, right: 5),
                   child: Container(
                     height: size.height * 0.19,
                     color: Colors.white,
@@ -76,7 +76,9 @@ class _OrderFormState extends State<OrderForm> {
                           padding: const EdgeInsets.only(left: 8.0),
                           child: Text(
                             "Area/Route",
-                            style: TextStyle(fontSize: 16,),
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
                           ),
                         ),
                         SizedBox(height: size.height * 0.01),
@@ -87,12 +89,15 @@ class _OrderFormState extends State<OrderForm> {
                         SizedBox(height: size.height * 0.02),
                         Padding(
                           padding: const EdgeInsets.only(left: 8.0),
-                          child: Text("Customer", style: TextStyle(fontSize: 16,)),
+                          child: Text("Customer",
+                              style: TextStyle(
+                                fontSize: 16,
+                              )),
                         ),
                         SizedBox(height: size.height * 0.01),
                         Container(
-                          child: dropDown(
-                              selected_customer, items_customer, "customer", size),
+                          child: dropDown(selected_customer, items_customer,
+                              "customer", size),
                         ),
                       ],
                     ),
@@ -128,7 +133,8 @@ class _OrderFormState extends State<OrderForm> {
                               ),
                               CircleAvatar(
                                 radius: 13,
-                                backgroundColor: Color.fromARGB(255, 199, 88, 199),
+                                backgroundColor:
+                                    Color.fromARGB(255, 199, 88, 199),
                                 child: const Text('0'),
                               )
                             ],
@@ -160,7 +166,10 @@ class _OrderFormState extends State<OrderForm> {
                           padding: const EdgeInsets.all(10.0),
                           child: Row(
                             children: [
-                              Text("Choose Category",style: TextStyle(color: Colors.pink),),
+                              Text(
+                                "Choose Category",
+                                style: TextStyle(color: Colors.pink),
+                              ),
                             ],
                           ),
                         ),
@@ -270,7 +279,7 @@ class _OrderFormState extends State<OrderForm> {
                                   // height: size.height * 0.06,
                                   SizedBox(width: size.width * 0.3),
                                   Text("Total items"),
-                                  SizedBox(width: size.width * 0.3),
+                                  SizedBox(width: size.width * 0.34),
                                   Icon(Icons.shopping_cart, size: 19),
                                 ],
                               ),
@@ -282,7 +291,7 @@ class _OrderFormState extends State<OrderForm> {
                                     height: size.height * 0.04,
                                   ),
                                   Text("Appropriate Total : "),
-                                  SizedBox(width: size.width * 0.28),
+                                  SizedBox(width: size.width * 0.32),
                                   Text(
                                     '\u{20B9}${0}',
                                     style: TextStyle(color: Colors.red),
@@ -358,7 +367,7 @@ class _OrderFormState extends State<OrderForm> {
             underline: SizedBox(),
             elevation: 0,
             value: selected,
-            items: items
+            items: items 
                 .map((item) => DropdownMenuItem<String>(
                     value: item,
                     child: Container(

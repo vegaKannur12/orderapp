@@ -37,7 +37,7 @@ class Controller extends ChangeNotifier {
       Map body = {
         'company_code': company_code,
       };
-      print("compny----${company_code}");
+      print("compny----${company_code}"); 
       isLoading = true;
       notifyListeners();
       http.Response response = await http.post(
