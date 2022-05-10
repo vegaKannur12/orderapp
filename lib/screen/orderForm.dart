@@ -18,6 +18,7 @@ class _OrderFormState extends State<OrderForm> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: Colors.grey[400],
       appBar: AppBar(),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
@@ -25,7 +26,7 @@ class _OrderFormState extends State<OrderForm> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.all(0.0),
+              padding: const EdgeInsets.all(5.0),
               child: Ink(
                 decoration: BoxDecoration(color: P_Settings.wavecolor),
                 child: ListTile(
@@ -60,37 +61,40 @@ class _OrderFormState extends State<OrderForm> {
             ),
             Visibility(
               visible: visible,
-              child: Container(
-                height: size.height * 0.19,
-                color: Colors.white,
-                child: Column(
-                  // mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: size.height * 0.01),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: Text(
-                        "Area/Route",
-                        style: TextStyle(fontSize: 16),
+              child: Padding(
+                padding: const EdgeInsets.only(left:5,right:5),
+                child: Container(
+                  height: size.height * 0.19,
+                  color: Colors.white,
+                  child: Column(
+                    // mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: size.height * 0.01),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: Text(
+                          "Area/Route",
+                          style: TextStyle(fontSize: 16),
+                        ),
                       ),
-                    ),
-                    SizedBox(height: size.height * 0.01),
-                    Container(
-                      child: dropDown(
-                          selected_area, items_area, "area/route", size),
-                    ),
-                    SizedBox(height: size.height * 0.02),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: Text("Customer", style: TextStyle(fontSize: 16)),
-                    ),
-                    SizedBox(height: size.height * 0.01),
-                    Container(
-                      child: dropDown(
-                          selected_customer, items_customer, "customer", size),
-                    ),
-                  ],
+                      SizedBox(height: size.height * 0.01),
+                      Container(
+                        child: dropDown(
+                            selected_area, items_area, "area/route", size),
+                      ),
+                      SizedBox(height: size.height * 0.02),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: Text("Customer", style: TextStyle(fontSize: 16)),
+                      ),
+                      SizedBox(height: size.height * 0.01),
+                      Container(
+                        child: dropDown(
+                            selected_customer, items_customer, "customer", size),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -105,24 +109,24 @@ class _OrderFormState extends State<OrderForm> {
                 child: Column(
                   children: [
                     Container(
-                      color: Colors.grey[300],
+                      color: P_Settings.wavecolor,
                       width: size.width * 0.95,
                       height: size.height * 0.06,
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: Row(
                           children: [
-                            Text('Orderform'),
+                            Text('Orderform',style: TextStyle(color: P_Settings.detailscolor),),
                             SizedBox(
                               width: size.width * 0.3,
                             ),
-                            Text('History'),
+                            Text('History',style: TextStyle(color: P_Settings.detailscolor),),
                             SizedBox(
-                              width: size.width * 0.02,
+                              width: size.width * 0.03,
                             ),
                             CircleAvatar(
                               radius: 13,
-                              backgroundColor: Color.fromARGB(255, 0, 0, 0),
+                              backgroundColor: Color.fromARGB(255, 199, 88, 199),
                               child: const Text('0'),
                             )
                           ],
@@ -154,7 +158,7 @@ class _OrderFormState extends State<OrderForm> {
                         padding: const EdgeInsets.all(10.0),
                         child: Row(
                           children: [
-                            Text("Choose Category"),
+                            Text("Choose Category",style: TextStyle(color: Colors.pink),),
                           ],
                         ),
                       ),
@@ -223,7 +227,7 @@ class _OrderFormState extends State<OrderForm> {
                                       fontWeight: FontWeight.bold),
                                 ),
                                 SizedBox(
-                                  width: size.width * 0.43,
+                                  width: size.width * 0.45,
                                 ),
                                 Text(
                                   "_______",
@@ -233,7 +237,7 @@ class _OrderFormState extends State<OrderForm> {
                                       fontWeight: FontWeight.bold),
                                 ),
                                 SizedBox(
-                                  width: size.width * 0.088,
+                                  width: size.width * 0.09,
                                 ),
                                 Text(
                                   "_______",
