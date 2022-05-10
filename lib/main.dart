@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: OrderForm(),
+      home: Dashboard(),
       // home: MyWaveClipper(),
     );
   }

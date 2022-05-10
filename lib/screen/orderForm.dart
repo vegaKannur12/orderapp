@@ -18,88 +18,91 @@ class _OrderFormState extends State<OrderForm> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Colors.grey[400],
-      // appBar: AppBar(),
-      body: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(0.0),
-              child: Ink(
-                decoration: BoxDecoration(color: P_Settings.wavecolor),
-                child: ListTile(
-                  title: Row(
-                    children: [
-                      Icon(
-                        Icons.person,
-                        color: Colors.white,
-                      ),
-                      SizedBox(
-                        width: size.width * 0.01,
-                      ),
-                      Text(
-                        "CUSTOMER",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ],
-                  ),
-                  trailing: IconButton(
-                    icon: Icon(
-                      visible ? Icons.arrow_upward : Icons.arrow_downward,
-                      color: Colors.white,
+      // backgroundColor:P_Settings.detailscolor,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Ink(
+                  decoration: BoxDecoration(color: P_Settings.orderFormcolor),
+                  child: ListTile(
+                    title: Row(
+                      children: [
+                        Icon(
+                          Icons.person,
+                          // color: Colors.white,
+                        ),
+                        SizedBox(
+                          width: size.width * 0.01,
+                        ),
+                        Text(
+                          "CUSTOMER",
+                          // style: TextStyle(color: Colors.white
+                          // ),
+                        ),
+                      ],
                     ),
-                    onPressed: () {
-                      setState(() {
-                        visible = !visible;
-                      });
-                    },
+                    trailing: IconButton(
+                      icon: Icon(
+                        visible ? Icons.arrow_upward : Icons.arrow_downward,
+                        color: Colors.black,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          visible = !visible;
+                        });
+                      },
+                    ),
                   ),
                 ),
               ),
-            ),
-            Visibility(
-              visible: visible,
-              child: Container(
-                height: size.height * 0.19,
-                color: Colors.white,
-                child: Column(
-                  // mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: size.height * 0.01),
-                    
-                    Padding(
-                      padding: const EdgeInsets.only(left:8.0),
-                      child: Text(
-                        "Area/Route",
-                        style: TextStyle(fontSize: 16),
-                      ),
+              Visibility(
+                visible: visible,
+                child: Padding(
+                  padding: const EdgeInsets.only(left:5,right:5),
+                  child: Container(
+                    height: size.height * 0.19,
+                    color: Colors.white,
+                    child: Column(
+                      // mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: size.height * 0.01),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
+                          child: Text(
+                            "Area/Route",
+                            style: TextStyle(fontSize: 16,),
+                          ),
+                        ),
+                        SizedBox(height: size.height * 0.01),
+                        Container(
+                          child: dropDown(
+                              selected_area, items_area, "area/route", size),
+                        ),
+                        SizedBox(height: size.height * 0.02),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
+                          child: Text("Customer", style: TextStyle(fontSize: 16,)),
+                        ),
+                        SizedBox(height: size.height * 0.01),
+                        Container(
+                          child: dropDown(
+                              selected_customer, items_customer, "customer", size),
+                        ),
+                      ],
                     ),
-                    SizedBox(height: size.height * 0.01),
-                    Container(
-                      child: dropDown(
-                          selected_area, items_area, "area/route", size),
-                    ),
-                    SizedBox(height: size.height * 0.02),
-                    Padding(
-                      padding: const EdgeInsets.only(left:8.0),
-                      child: Text("Customer", style: TextStyle(fontSize: 16)),
-                    ),
-                    SizedBox(height: size.height * 0.01),
-                    Container(
-                      child: dropDown(
-                          selected_customer, items_customer, "customer", size),
-                    ),
-                  ],
+                  ),
                 ),
               ),
-            ),
-            SizedBox(height: size.height*0.01,),
-            Padding(
-              padding: const EdgeInsets.all(0.0),
-              child: Card(
+              SizedBox(
+                height: size.height * 0.01,
+              ),
+              Card(
                 child: InkWell(
                   onTap: () {
                     debugPrint('Card tapped.');
@@ -107,18 +110,19 @@ class _OrderFormState extends State<OrderForm> {
                   child: Column(
                     children: [
                       Container(
-                        color: Colors.grey[300],
+                        // color: Colors.grey[300],
+                        color: P_Settings.orderFormcolor,
                         width: size.width * 0.95,
                         height: size.height * 0.06,
                         child: Padding(
                           padding: const EdgeInsets.all(10.0),
                           child: Row(
                             children: [
-                              Text('Orderform',style: TextStyle(color: P_Settings.detailscolor),),
+                              Text('Orderform'),
                               SizedBox(
                                 width: size.width * 0.3,
                               ),
-                              Text('History',style: TextStyle(color: P_Settings.detailscolor),),
+                              Text('History'),
                               SizedBox(
                                 width: size.width * 0.03,
                               ),
@@ -325,8 +329,8 @@ class _OrderFormState extends State<OrderForm> {
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -336,12 +340,12 @@ class _OrderFormState extends State<OrderForm> {
     return Padding(
       padding: const EdgeInsets.only(left: 16.0, right: 16),
       child: Container(
-        height: size.height * 0.04,
+        height: size.height * 0.045,
         width: size.width * 0.9,
         decoration: ShapeDecoration(
           shape: RoundedRectangleBorder(
             side: BorderSide(
-              color: P_Settings.wavecolor,
+              color: P_Settings.orderFormcolor,
               width: 1.0,
             ),
             borderRadius: BorderRadius.all(Radius.circular(10.0)),
