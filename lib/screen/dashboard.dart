@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../controller/controller.dart';
+import 'orderForm.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -51,7 +52,10 @@ class _DashboardState extends State<Dashboard> {
         selected: i == _selectedIndex,
         onTap: () {
           _onSelectItem(i);
-
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => OrderForm()),
+          );
           // Provider.of<Controller>(context, listen: false).getCategoryReportList(
           //     value.reportCategoryList[i].values.elementAt(0));
         },

@@ -24,6 +24,7 @@ class P_Settings {
   static Color get extracolor => Color.fromARGB(255, 207, 30, 30);
 
   static Color get roundedButtonColor => Color.fromARGB(255, 177, 212, 235);
+  static Color get orderFormcolor => Color.fromARGB(255, 214, 214, 214);
 
 /////////////////////////level1///////////////////////////////////////////////
 

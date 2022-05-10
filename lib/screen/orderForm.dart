@@ -28,27 +28,28 @@ class _OrderFormState extends State<OrderForm> {
             Padding(
               padding: const EdgeInsets.all(5.0),
               child: Ink(
-                decoration: BoxDecoration(color: P_Settings.wavecolor),
+                decoration: BoxDecoration(color: P_Settings.orderFormcolor),
                 child: ListTile(
                   title: Row(
                     children: [
                       Icon(
                         Icons.person,
-                        color: Colors.white,
+                        // color: Colors.white,
                       ),
                       SizedBox(
                         width: size.width * 0.01,
                       ),
                       Text(
                         "CUSTOMER",
-                        style: TextStyle(color: Colors.white),
+                        // style: TextStyle(color: Colors.white
+                        // ),
                       ),
                     ],
                   ),
                   trailing: IconButton(
                     icon: Icon(
                       visible ? Icons.arrow_upward : Icons.arrow_downward,
-                      color: Colors.white,
+                      color: Colors.black,
                     ),
                     onPressed: () {
                       setState(() {
@@ -75,7 +76,7 @@ class _OrderFormState extends State<OrderForm> {
                         padding: const EdgeInsets.only(left: 8.0),
                         child: Text(
                           "Area/Route",
-                          style: TextStyle(fontSize: 16,color: P_Settings.wavecolor),
+                          style: TextStyle(fontSize: 16,),
                         ),
                       ),
                       SizedBox(height: size.height * 0.01),
@@ -86,7 +87,7 @@ class _OrderFormState extends State<OrderForm> {
                       SizedBox(height: size.height * 0.02),
                       Padding(
                         padding: const EdgeInsets.only(left: 8.0),
-                        child: Text("Customer", style: TextStyle(fontSize: 16,color: P_Settings.wavecolor)),
+                        child: Text("Customer", style: TextStyle(fontSize: 16,)),
                       ),
                       SizedBox(height: size.height * 0.01),
                       Container(
@@ -109,7 +110,8 @@ class _OrderFormState extends State<OrderForm> {
                 child: Column(
                   children: [
                     Container(
-                      color: Colors.grey[300],
+                      // color: Colors.grey[300],
+                      color: P_Settings.orderFormcolor,
                       width: size.width * 0.95,
                       height: size.height * 0.06,
                       child: Padding(
@@ -342,7 +344,7 @@ class _OrderFormState extends State<OrderForm> {
         decoration: ShapeDecoration(
           shape: RoundedRectangleBorder(
             side: BorderSide(
-              color: P_Settings.wavecolor,
+              color: P_Settings.orderFormcolor,
               width: 1.0,
             ),
             borderRadius: BorderRadius.all(Radius.circular(10.0)),
