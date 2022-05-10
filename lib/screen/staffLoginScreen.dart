@@ -165,9 +165,7 @@ class StaffLogin extends StatelessWidget {
                                                     'st_pwd', controller2.text);
                                                 print(
                                                     "visible===${visible.value}");
-                                                Provider.of<Controller>(context,
-                                                        listen: false)
-                                                    .getArea(controller1.text);
+                                               
                                                 //  await OrderAppDB.instance.getArea(controller1.text);
                                                 Navigator.push(
                                                   context,
