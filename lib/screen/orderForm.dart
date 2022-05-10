@@ -9,13 +9,83 @@ class OrderForm extends StatefulWidget {
 }
 
 class _OrderFormState extends State<OrderForm> {
+  String selected_area = "anu";
+  List<String> items_area = ["anu", "graha", "appu"];
+  String selected_customer = "anu";
+  List<String> items_customer = ["anu", "graha", "appu"];
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(),
       body: Column(
         children: [
+          // Padding(
+          //   padding: const EdgeInsets.all(10.0),
+          //   child: Card(
+          //     elevation: 0,
+          //     child: Ink(
+          //       decoration: BoxDecoration(
+          //           // borderRadius: BorderRadius.circular(20),
+          //           // color: P_Settings.wavecolor
+          //           ),
+          //       child: Row(
+          //         children: [
+          //           Icon(
+          //             Icons.person,
+          //             color: P_Settings.wavecolor,
+          //           ),
+          //           SizedBox(
+          //             width: size.width * 0.01,
+          //           ),
+          //           Text(
+          //             "CUSTOMER",
+          //             style: TextStyle(color: P_Settings.wavecolor),
+          //           ),
+          //         ],
+
+          //         // trailing: IconButton(
+          //         //   icon: Icon(
+          //         //     visible ? Icons.arrow_upward : Icons.arrow_downward,
+          //         //     color: Colors.white,
+          //         //   ),
+          //         //   onPressed: () {
+          //         //     setState(() {
+          //         //       visible = !visible;
+          //         //     });
+          //         //   },
+          //         // ),
+          //       ),
+          //     ),
+          //   ),
+          // ),
+          // Container(
+          //   child: Column(
+          //     children: [
+          //       Container(
+          //         child:
+          //             dropDown(selected_area, items_area, "area/route", size),
+          //       ),
+          //       SizedBox(height: size.height * 0.02),
+          //       Container(
+          //         child: dropDown(
+          //             selected_customer, items_customer, "customer", size),
+          //       ),
+          //     ],
+          //   ),
+          // ),
+          // SizedBox(
+          //   height: size.height * 0.03,
+          // ),
+          // Padding(
+          //   padding: const EdgeInsets.only(left: 20,right: 20),
+          //   child: Container(
+          //     height: size.height * 0.01,
+          //     color: Colors.grey[300],
+          //   ),
+          // ),
+          ////////////////////////////////////////////////////////
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Card(
@@ -87,41 +157,44 @@ class _OrderFormState extends State<OrderForm> {
                         padding: const EdgeInsets.all(8.0),
                         child: Column(
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "EAN",
-                                  style: TextStyle(
-                                      color: Colors.indigo,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  "Item Name",
-                                  style: TextStyle(
-                                      color: Colors.green,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  "Rate",
-                                  style: TextStyle(
-                                      color: Colors.green,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  "Qty",
-                                  style: TextStyle(
-                                      color: Colors.yellow[900],
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ],
+                            Flexible(
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "EAN",
+                                    style: TextStyle(
+                                        color: Colors.indigo,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    "Item Name",
+                                    style: TextStyle(
+                                        color: Colors.green,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    "Rate",
+                                    style: TextStyle(
+                                        color: Colors.green,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    "Qty",
+                                    style: TextStyle(
+                                        color: Colors.yellow[900],
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
                             ),
                             SizedBox(
-                              height: size.height * 0.04,
+                              height: size.height * 0.06,
                             ),
                             Row(
                               // mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -209,14 +282,27 @@ class _OrderFormState extends State<OrderForm> {
                                 children: [
                                   SizedBox(height: size.height * 0.03),
                                   ElevatedButton(
-                                      onPressed: () {}, child: Text("Reset")),
-                                  ElevatedButton(
-                                      onPressed: () {}, child: Text("Remark")),
+                                    onPressed: () {},
+                                    child: Text("Reset"),
+                                  ),
                                   ElevatedButton(
                                       onPressed: () {},
-                                      child: Text("Collection")),
+                                      child: Text("Remark"),
+                                      style: ElevatedButton.styleFrom(
+                                        primary: Colors.red,
+                                      )),
                                   ElevatedButton(
-                                      onPressed: () {}, child: Text("Save"))
+                                      onPressed: () {},
+                                      child: Text("Collection"),
+                                      style: ElevatedButton.styleFrom(
+                                        primary: Colors.green,
+                                      )),
+                                  ElevatedButton(
+                                      onPressed: () {},
+                                      child: Text("Save"),
+                                      style: ElevatedButton.styleFrom(
+                                        primary: Colors.orange[900],
+                                      ))
                                 ],
                               ),
                             ),
@@ -230,6 +316,66 @@ class _OrderFormState extends State<OrderForm> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget dropDown(String selected, List<String> items, String type, Size size) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 16.0, right: 16),
+      child: Container(
+        // height: size.height * 0.06,
+        width: size.width * 0.9,
+        decoration: ShapeDecoration(
+          shape: RoundedRectangleBorder(
+            side: BorderSide(
+              color: P_Settings.wavecolor,
+              width: 1.0,
+            ),
+            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+          ),
+        ),
+        child: DropdownButton<String>(
+            // dropdownColor: Colors.transparent,
+            isExpanded: true,
+            autofocus: false,
+            underline: SizedBox(),
+            elevation: 0,
+            value: selected,
+            items: items
+                .map((item) => DropdownMenuItem<String>(
+                    value: item,
+                    child: Container(
+                      width: size.width * 0.3,
+                      child: GestureDetector(
+                          onTap: (() {
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) => Page2(
+                            //       item: item,
+                            //     ),
+                            //   ),
+                            // );
+                          }),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(item),
+                          )),
+                    )))
+                .toList(),
+            onChanged: (item) {
+              setState(() {
+                if (item != null) {
+                  if (type == 'area/route') {
+                    selected_area = item;
+                  }
+                  if (type == 'customer') {
+                    selected_customer = item;
+                  }
+                }
+              });
+            }),
       ),
     );
   }
