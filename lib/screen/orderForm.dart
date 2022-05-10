@@ -13,82 +13,91 @@ class _OrderFormState extends State<OrderForm> {
   List<String> items_area = ["anu", "graha", "appu"];
   String selected_customer = "anu";
   List<String> items_customer = ["anu", "graha", "appu"];
+  bool visible = false;
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(),
-      body: Column(
-        children: [
-          // Padding(
-          //   padding: const EdgeInsets.all(10.0),
-          //   child: Card(
-          //     elevation: 0,
-          //     child: Ink(
-          //       decoration: BoxDecoration(
-          //           // borderRadius: BorderRadius.circular(20),
-          //           // color: P_Settings.wavecolor
-          //           ),
-          //       child: Row(
-          //         children: [
-          //           Icon(
-          //             Icons.person,
-          //             color: P_Settings.wavecolor,
-          //           ),
-          //           SizedBox(
-          //             width: size.width * 0.01,
-          //           ),
-          //           Text(
-          //             "CUSTOMER",
-          //             style: TextStyle(color: P_Settings.wavecolor),
-          //           ),
-          //         ],
-
-          //         // trailing: IconButton(
-          //         //   icon: Icon(
-          //         //     visible ? Icons.arrow_upward : Icons.arrow_downward,
-          //         //     color: Colors.white,
-          //         //   ),
-          //         //   onPressed: () {
-          //         //     setState(() {
-          //         //       visible = !visible;
-          //         //     });
-          //         //   },
-          //         // ),
-          //       ),
-          //     ),
-          //   ),
-          // ),
-          // Container(
-          //   child: Column(
-          //     children: [
-          //       Container(
-          //         child:
-          //             dropDown(selected_area, items_area, "area/route", size),
-          //       ),
-          //       SizedBox(height: size.height * 0.02),
-          //       Container(
-          //         child: dropDown(
-          //             selected_customer, items_customer, "customer", size),
-          //       ),
-          //     ],
-          //   ),
-          // ),
-          // SizedBox(
-          //   height: size.height * 0.03,
-          // ),
-          // Padding(
-          //   padding: const EdgeInsets.only(left: 20,right: 20),
-          //   child: Container(
-          //     height: size.height * 0.01,
-          //     color: Colors.grey[300],
-          //   ),
-          // ),
-          ////////////////////////////////////////////////////////
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Card(
+      body: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(0.0),
+              child: Ink(
+                decoration: BoxDecoration(color: P_Settings.wavecolor),
+                child: ListTile(
+                  title: Row(
+                    children: [
+                      Icon(
+                        Icons.person,
+                        color: Colors.white,
+                      ),
+                      SizedBox(
+                        width: size.width * 0.01,
+                      ),
+                      Text(
+                        "CUSTOMER",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ],
+                  ),
+                  trailing: IconButton(
+                    icon: Icon(
+                      visible ? Icons.arrow_upward : Icons.arrow_downward,
+                      color: Colors.white,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        visible = !visible;
+                      });
+                    },
+                  ),
+                ),
+              ),
+            ),
+            Visibility(
+              visible: visible,
+              child: Container(
+                height: size.height * 0.19,
+                color: Colors.white,
+                child: Column(
+                  // mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: size.height * 0.01),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Text(
+                        "Area/Route",
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ),
+                    SizedBox(height: size.height * 0.01),
+                    Container(
+                      child: dropDown(
+                          selected_area, items_area, "area/route", size),
+                    ),
+                    SizedBox(height: size.height * 0.02),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Text("Customer", style: TextStyle(fontSize: 16)),
+                    ),
+                    SizedBox(height: size.height * 0.01),
+                    Container(
+                      child: dropDown(
+                          selected_customer, items_customer, "customer", size),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(
+              height: size.height * 0.01,
+            ),
+            Card(
               child: InkWell(
                 onTap: () {
                   debugPrint('Card tapped.');
@@ -97,7 +106,7 @@ class _OrderFormState extends State<OrderForm> {
                   children: [
                     Container(
                       color: Colors.grey[300],
-                      width: size.width * 0.9,
+                      width: size.width * 0.95,
                       height: size.height * 0.06,
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
@@ -314,8 +323,8 @@ class _OrderFormState extends State<OrderForm> {
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -324,7 +333,7 @@ class _OrderFormState extends State<OrderForm> {
     return Padding(
       padding: const EdgeInsets.only(left: 16.0, right: 16),
       child: Container(
-        // height: size.height * 0.06,
+        height: size.height * 0.04,
         width: size.width * 0.9,
         decoration: ShapeDecoration(
           shape: RoundedRectangleBorder(
