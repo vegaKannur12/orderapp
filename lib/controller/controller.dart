@@ -315,12 +315,13 @@ class Controller extends ChangeNotifier {
   getArea(String staffName) async {
     print("staff...............${staffName}");
     try {
-      List<Map<String,dynamic>> areaList = await OrderAppDB.instance.getArea(staffName);
+      areaList = await OrderAppDB.instance.getArea(staffName);
       print("areaList----${areaList}");
       notifyListeners();
     } catch (e) {
       print(e);
       return null;
     }
+    notifyListeners();
   }
 }
