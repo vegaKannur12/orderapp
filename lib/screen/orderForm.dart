@@ -389,12 +389,12 @@ class _OrderFormState extends State<OrderForm> {
           // value: "INDIA",
           items: items
               .map((item) => DropdownMenuItem<String>(
-                  value:type=="area/route" ?item["aname"].toString():item["hname"],
+                  value:type=="area/route" ?item["aid"]:item["hname"],
                   child: Container(
                     width: size.width * 0.5,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child:type=="area/route" ? Text(item["aid"].toString()):Text(item["hname"].toString())
+                      child:type=="area/route" ? Text(item["aid"]):Text(item["hname"].toString())
                     ),
                   )))
               .toList(),
