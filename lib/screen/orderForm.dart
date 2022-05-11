@@ -15,22 +15,7 @@ class OrderForm extends StatefulWidget {
 class _OrderFormState extends State<OrderForm> {
   String? selected;
   String? staffname;
-  // List<String> items_area = ["anu", "graha", "appu"];
-  // String selected_customer = "anu";
-  // List<String> items_customer = ["anu", "graha", "appu"];
   bool visible = false;
-//   @override
-//   void initState() {
-//     // TODO: implement initState
-//     super.initState();
-
-//   }
-
-//   getArea()async{
-// String result = await OrderAppDB.instance.getArea(area);
-
-//   }
-
   @override
   void initState() {
     // TODO: implement initState
@@ -129,7 +114,7 @@ class _OrderFormState extends State<OrderForm> {
                           ),
                           SizedBox(height: size.height * 0.01),
                           Container(
-                            child: dropDown(values.areaList, "customer", size),
+                            child: dropDown(values.customerList, "customer", size),
                           ),
                         ],
                       ),
@@ -379,6 +364,7 @@ class _OrderFormState extends State<OrderForm> {
   }
 
   Widget dropDown(List<Map<String, dynamic>> items, String type, Size size) {
+    
     return Padding(
       padding: const EdgeInsets.only(left: 16.0, right: 16),
       child: Container(
@@ -403,12 +389,12 @@ class _OrderFormState extends State<OrderForm> {
           // value: "INDIA",
           items: items
               .map((item) => DropdownMenuItem<String>(
-                  value: item["aname"].toString(),
+                  value:type=="area/route" ?item["aname"].toString():item["hname"],
                   child: Container(
                     width: size.width * 0.5,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text(item["aname"].toString()),
+                      child:type=="area/route" ? Text(item["aid"].toString()):Text(item["hname"].toString())
                     ),
                   )))
               .toList(),
@@ -417,13 +403,11 @@ class _OrderFormState extends State<OrderForm> {
             if (item != null) {}
             setState(() {
               if (item != null) {
-                if (type == 'area/route') {
                   selected = item;
-                }
-
                 print("selected area..........${selected}");
               }
             });
+            Provider.of<Controller>(context, listen: false).getCustomer(selected!);
           },
           value: selected,
         ),
