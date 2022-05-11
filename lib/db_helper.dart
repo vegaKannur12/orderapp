@@ -372,8 +372,8 @@ class OrderAppDB {
     String result = "";
     print("uname---${staffName}");
     Database db = await instance.database;
-    var area= await db.rawQuery('SELECT area FROM staffDetailsTable WHERE sname="${staffName}"'
-    );
+    var area = await db.rawQuery(
+        'SELECT area FROM staffDetailsTable WHERE sname="${staffName}"');
     if (area[0]["area"] == "") {
       list = await db.rawQuery('SELECT * FROM areaDetailsTable');
     }
@@ -382,8 +382,18 @@ class OrderAppDB {
     // }
 
     print("res===${result}");
-    print("area===${area}"); 
+    print("area===${area}");
     print("area---List ${list}");
     return list;
+  }
+
+  //////////////////////////////////////////////////////
+  Future<List<Map<String, dynamic>>> getCustomer(String aid) async {
+    print("aid---${aid}");
+    Database db = await instance.database;
+    var hname = await db.rawQuery(
+        'SELECT hname FROM accountHeadsTable WHERE area_id="${aid}"');  
+    print("hname===${hname}");
+    return hname;
   }
 }

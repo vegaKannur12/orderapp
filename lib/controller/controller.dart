@@ -27,6 +27,7 @@ class Controller extends ChangeNotifier {
   String? sof;
   List<Map<String, dynamic>> staffList = [];
   List<Map<String, dynamic>> areaList = [];
+  List<Map<String, dynamic>> customerList = [];
 
   StaffDetails staffModel = StaffDetails();
   AccountHead accountHead = AccountHead();
@@ -40,7 +41,7 @@ class Controller extends ChangeNotifier {
       Map body = {
         'company_code': company_code,
       };
-      print("compny----${company_code}"); 
+      print("compny----${company_code}");
       isLoading = true;
       notifyListeners();
       http.Response response = await http.post(
@@ -106,7 +107,7 @@ class Controller extends ChangeNotifier {
       );
       // print("body ${body}");
       List map = jsonDecode(response.body);
-      
+
       for (var staff in map) {
         // print("staff----${staff}");
         staffModel = StaffDetails.fromJson(staff);
@@ -317,6 +318,20 @@ class Controller extends ChangeNotifier {
     try {
       areaList = await OrderAppDB.instance.getArea(staffName);
       print("areaList----${areaList}");
+      notifyListeners();
+    } catch (e) {
+      print(e);
+      return null;
+    }
+    notifyListeners();
+  }
+
+  /////////////////////////////////////////////////////
+  getCustomer(String aid) async {
+    print("aid...............${aid}");
+    try {
+      customerList = await OrderAppDB.instance.getCustomer(aid);
+      print("customerList----${customerList}");
       notifyListeners();
     } catch (e) {
       print(e);
