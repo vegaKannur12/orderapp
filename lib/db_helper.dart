@@ -1,8 +1,11 @@
 // ignore_for_file: unused_local_variable
 
+import 'package:flutter/cupertino.dart';
+import 'package:orderapp/controller/controller.dart';
 import 'package:orderapp/model/accounthead_model.dart';
 import 'package:orderapp/model/productdetails_model.dart';
 import 'package:orderapp/model/productsCategory_model.dart';
+import 'package:provider/provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -388,11 +391,14 @@ class OrderAppDB {
   }
 
   //////////////////////////////////////////////////////
-  Future<List<Map<String, dynamic>>> getCustomer(String aid) async {
-    print("aid---${aid}");
+  Future<List<Map<String, dynamic>>> getCustomer(String aid,BuildContext context) async {
+    // print("entered ")
+    print("enteredaid---${aid}");
+    // Provider.of<Controller>(context, listen: false).customerList.clear();
     Database db = await instance.database;
     var hname = await db.rawQuery(
-        'SELECT hname FROM accountHeadsTable WHERE area_id="${aid}"');  
+        'SELECT  hname,code FROM accountHeadsTable WHERE area_id="${aid}"');  
+        print('SELECT  hname,code FROM accountHeadsTable WHERE area_id="${aid}"');
     print("hname===${hname}");
     return hname;
   }

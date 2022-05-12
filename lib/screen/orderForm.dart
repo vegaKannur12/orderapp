@@ -20,6 +20,8 @@ class _OrderFormState extends State<OrderForm> {
   TextEditingController orderqty = TextEditingController();
   List<DataRow> dataRows = [];
   String? selected;
+  String? selectedCus;
+
   String? staffname;
   bool visible = false;
   @override
@@ -46,6 +48,7 @@ class _OrderFormState extends State<OrderForm> {
           padding: const EdgeInsets.all(10.0),
           child: Consumer<Controller>(builder: (context, values, child) {
             print("value.areaList-----${values.areaList}");
+
             return Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -108,7 +111,7 @@ class _OrderFormState extends State<OrderForm> {
                           SizedBox(height: size.height * 0.01),
                           Container(
                             child:
-                                dropDown(values.areaList, "area/route", size),
+                                dropDown1(values.areaList, "area/route", size),
                           ),
                           SizedBox(height: size.height * 0.02),
                           Padding(
@@ -120,8 +123,8 @@ class _OrderFormState extends State<OrderForm> {
                           ),
                           SizedBox(height: size.height * 0.01),
                           Container(
-                            child:
-                                dropDown(values.customerList, "customer", size),
+                            child: dropDown2(
+                                values.customerList, "customer", size),
                           ),
                         ],
                       ),
@@ -427,7 +430,9 @@ class _OrderFormState extends State<OrderForm> {
     );
   }
 
-  Widget dropDown(List<Map<String, dynamic>> items, String type, Size size) {
+  Widget dropDown1(List<Map<String, dynamic>> items, String type, Size size) {
+    print("value.area-----${items}");
+
     return Padding(
       padding: const EdgeInsets.only(left: 16.0, right: 16),
       child: Container(
@@ -452,14 +457,74 @@ class _OrderFormState extends State<OrderForm> {
           // value: "INDIA",
           items: items
               .map((item) => DropdownMenuItem<String>(
-                  value: type == "area/route" ? item["aname"] : item["hname"],
+                  value: item["aid"].toString(),
                   child: Container(
                     width: size.width * 0.5,
                     child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: type == "area/route"
-                            ? Text(item["aname "].toString())
-                            : Text(item["hname"])),
+                        child: Text(item["aname"].toString())),
+                  )))
+              .toList(),
+
+          onChanged: (item) {
+
+            print("clicked");
+
+
+
+            if (item != null) {}
+            setState(() {
+              if (item != null) {
+                selected = item;
+                print("selected area..........${selected}");
+              }
+            });
+            //  Provider.of<Controller>(context, listen: false).customerList.clear();
+
+            Provider.of<Controller>(context, listen: false)
+                .getCustomer(selected!,context);
+          },
+          value: selected,
+        ),
+      ),
+    );
+  }
+
+  //////////////////////////////////////////////////////////
+  Widget dropDown2(List<Map<String, dynamic>> items, String type, Size size) {
+    // print("value.custmer-----${items}");
+
+    return Padding(
+      padding: const EdgeInsets.only(left: 16.0, right: 16),
+      child: Container(
+        height: size.height * 0.045,
+        width: size.width * 0.9,
+        decoration: ShapeDecoration(
+          shape: RoundedRectangleBorder(
+            side: BorderSide(
+              color: P_Settings.orderFormcolor,
+              width: 1.0,
+            ),
+            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+          ),
+        ),
+        child: DropdownButton<String>(
+          disabledHint: items.isEmpty || items == null ? Text("Select") : null,
+          hint: Text("Select"),
+          // dropdownColor: Colors.transparent,
+          isExpanded: true,
+          autofocus: false,
+          underline: SizedBox(),
+          elevation: 0,
+          // value: "INDIA",
+          items: items
+              .map((item) => DropdownMenuItem<String>(
+                  value: item["code"].toString(),
+                  child: Container(
+                    width: size.width * 0.5,
+                    child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(item["hname"].toString())),
                   )))
               .toList(),
 
@@ -467,15 +532,13 @@ class _OrderFormState extends State<OrderForm> {
             if (item != null && item.isNotEmpty) {}
             setState(() {
               if (item != null) {
-                selected = item;
-                print("selected area..........${selected}");
+                selectedCus = item;
+                print("selected cus..........${selected}");
               }
             });
-            Provider.of<Controller>(context, listen: false)
-                .getCustomer(selected!);
-            // selected = "item";
+            // Provider.of<Controller>(context, listen: false).getCustomer(selected!);
           },
-          value: selected,
+          value: selectedCus,
         ),
       ),
     );
