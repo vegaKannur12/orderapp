@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:orderapp/components/autocomplete.dart';
 import 'package:orderapp/controller/controller.dart';
 import 'package:orderapp/screen/companyRegistrationScreen.dart';
 import 'package:orderapp/screen/dashboard.dart';
