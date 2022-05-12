@@ -286,7 +286,12 @@ class _OrderFormState extends State<OrderForm> {
                                         ]));
                                       });
                                     },
-                                    child: Text("Add"),
+                                    style: ElevatedButton.styleFrom(
+                                      primary: P_Settings.roundedButtonColor,
+                                      // shape: CircleBorder(),
+                                    ),
+                                    child: Icon(Icons.add,
+                                        size: 20, color: Colors.black),
                                   ),
                                 ],
                               ),
