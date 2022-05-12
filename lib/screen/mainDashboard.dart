@@ -13,8 +13,17 @@ class MainDashboard extends StatefulWidget {
 }
 
 class _MainDashboardState extends State<MainDashboard> {
-  List companyAttributes = ["Logged in", "Collection", "Orders", "Sale","Logged in", "Collection", "Orders", "Sale"];
-final _random = Random();
+  List companyAttributes = [
+    "Logged in",
+    "Collection",
+    "Orders",
+    "Sale",
+    "Logged in",
+    "Collection",
+    "Orders",
+    "Sale"
+  ];
+  final _random = Random();
 
   @override
   Widget build(BuildContext context) {
