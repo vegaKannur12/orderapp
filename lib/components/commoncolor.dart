@@ -25,6 +25,11 @@ class P_Settings {
 
   static Color get roundedButtonColor => Color.fromARGB(255, 177, 212, 235);
   static Color get orderFormcolor => Color.fromARGB(255, 214, 214, 214);
+  static Color get dataTable => Color.fromARGB(255, 2, 27, 65);
+  static Color get tableheadingColor => Color.fromARGB(255, 236, 243, 243);
+  static Color get chooseCategory => Color.fromRGBO(230, 81, 0, 1);
+
+
 
 /////////////////////////level1///////////////////////////////////////////////
 

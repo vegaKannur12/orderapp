@@ -405,11 +405,11 @@ class OrderAppDB {
 
   ///////////////////////////////////////////////////////////////
   
-   Future<List<Map<String, dynamic>>> getItems(String aid) async {
+   Future<List> getItems(String aid) async {
     print("aid---${aid}");
     Database db = await instance.database;
-    var items = await db.rawQuery(
-        'SELECT code,item,rate1 FROM productDetailsTable"');  
+    List items = List.from(await db.rawQuery(
+        'SELECT code,item,rate1 FROM productDetailsTable"'));  
     print("items=================${items}");
     return items;
   }
