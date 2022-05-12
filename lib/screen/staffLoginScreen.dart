@@ -15,6 +15,8 @@ import '../components/waveclipper.dart';
 import 'downloadedPage.dart';
 
 class StaffLogin extends StatelessWidget {
+  ValueNotifier<bool> _isObscure = ValueNotifier(true);
+  // bool _isObscure = true;
   final _formKey = GlobalKey<FormState>();
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   TextEditingController controller1 = TextEditingController();
@@ -332,25 +334,44 @@ class StaffLogin extends StatelessWidget {
     return Container(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: TextFormField(
-          obscureText: type == "password" ? true : false,
-          controller: controllerValue,
-          decoration: InputDecoration(
-              prefixIcon:
-                  type == "password" ? Icon(Icons.remove_red_eye) : Icon(Icons.email),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(20),
-                borderSide: BorderSide(
-                  color: Colors.black,
-                  width: 3,
-                ),
-              ),
-              hintText: hinttext.toString()),
-          validator: (text) {
-            if (text == null || text.isEmpty) {
-              return 'Please Enter ${hinttext}';
-            }
-            return null;
+        child: ValueListenableBuilder(
+          valueListenable: _isObscure,
+          builder: (context, value, child) {
+            return TextFormField(
+              obscureText: type == "password" ? _isObscure.value : false,
+              controller: controllerValue,
+              decoration: InputDecoration(
+                  prefixIcon: type == "password"
+                      ? Icon(Icons.password)
+                      : Icon(Icons.person),
+                  suffixIcon: type == "password"
+                      ? IconButton(
+                          icon: Icon(
+                            _isObscure.value
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                          ),
+                          onPressed: () {
+                            _isObscure.value = !_isObscure.value;
+                            print("_isObscure $_isObscure");
+                          },
+                        )
+                      : null,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide: BorderSide(
+                      color: Colors.black,
+                      width: 3,
+                    ),
+                  ),
+                  hintText: hinttext.toString()),
+              validator: (text) {
+                if (text == null || text.isEmpty) {
+                  return 'Please Enter ${hinttext}';
+                }
+                return null;
+              },
+            );
           },
         ),
       ),
