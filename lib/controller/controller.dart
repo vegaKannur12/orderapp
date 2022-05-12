@@ -26,9 +26,12 @@ class Controller extends ChangeNotifier {
   List<CD> data = [];
   String? sof;
   List<Map<String, dynamic>> staffList = [];
+  List<String> productName = [];
+
   List<Map<String, dynamic>> areaList = [];
   List<Map<String, dynamic>> customerList = [];
   List<Map<String, dynamic>> copyCus = [];
+  List<Map<String, dynamic>> prodctItems = [];
 
   StaffDetails staffModel = StaffDetails();
   AccountHead accountHead = AccountHead();
@@ -328,7 +331,7 @@ class Controller extends ChangeNotifier {
   }
 
   /////////////////////////////////////////////////////
-  getCustomer(String aid, BuildContext context) async {
+  getCustomer(String aid) async {
     print("aid...............${aid}");
     try {
       copyCus.clear();
@@ -337,7 +340,7 @@ class Controller extends ChangeNotifier {
 
       print("aid---...............${aid}");
 
-      customerList = await OrderAppDB.instance.getCustomer(aid, context);
+      customerList = await OrderAppDB.instance.getCustomer(aid);
       // for (var item in customerList){
       //   copyCus.add(item);
       // }
@@ -350,5 +353,22 @@ class Controller extends ChangeNotifier {
     notifyListeners();
   }
 
-  
+  ///////////////////////////////////////////////////////
+  getProductItems(String product) async {
+    print("product...............${product}");
+    try {
+      prodctItems = await OrderAppDB.instance.getItems(product);
+      print("prodctItems----${prodctItems}");
+
+      for (var item in prodctItems) {
+        productName.add(item["code"]+ '-'+item["item"]);
+      }
+      print("product name----${productName}");
+      notifyListeners();
+    } catch (e) {
+      print(e);
+      return null;
+    }
+    notifyListeners();
+  }
 }

@@ -392,26 +392,28 @@ class OrderAppDB {
 
   //////////////////////////////////////////////////////
   Future<List<Map<String, dynamic>>> getCustomer(
-      String aid, BuildContext context) async {
-    // print("entered ")
+      String aid) async {
+  
     print("enteredaid---${aid}");
     // Provider.of<Controller>(context, listen: false).customerList.clear();
     Database db = await instance.database;
     var hname = await db.rawQuery(
         'SELECT  hname,code FROM accountHeadsTable WHERE area_id="${aid}"');
-    print('SELECT  hname,code FROM accountHeadsTable WHERE area_id="${aid}"');
+    // print('SELECT  hname,code FROM accountHeadsTable WHERE area_id="${aid}"');
     print("hname===${hname}");
     return hname;
   }
 
   ///////////////////////////////////////////////////////////////
 
-  Future<List<Map<String, dynamic>>> getItems(String product) async {
+  getItems(String product) async {
     print("product---${product}");
     Database db = await instance.database;
     var res = await db.rawQuery(
-        "SELECT * FROM productDetailsTable WHERE name LIKE '%$product%'");
-    print("SELECT * FROM productDetailsTable WHERE name LIKE '%$product%'");
+        "SELECT * FROM productDetailsTable WHERE item LIKE '%$product%'");
+
+        
+    print("SELECT * FROM productDetailsTable WHERE item LIKE '%$product%'");
     print("items=================${res}");
     return res;
   }
