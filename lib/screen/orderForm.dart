@@ -221,7 +221,7 @@ class _OrderFormState extends State<OrderForm> {
                                 children: [
                                   Text("ORDER NO:  "),
                                   Text(
-                                    values.ordernum[0]['os'] + randnum,
+                                    "${values.ordernum.length != 0 && values.ordernum.isNotEmpty && values.ordernum[0]['os'] != null? values.ordernum[0]['os'] + randnum : randnum}",
                                     style:
                                         TextStyle(color: P_Settings.extracolor),
                                   ),
