@@ -337,7 +337,6 @@ class Controller extends ChangeNotifier {
     print("aid...............${aid}");
     try {
       copyCus.clear();
-
       customerList.clear();
 
       print("aid---...............${aid}");

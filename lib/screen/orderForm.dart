@@ -29,6 +29,7 @@ class _OrderFormState extends State<OrderForm> {
   List<DataRow> dataRows = [];
   String? selected;
   String? selectedCus;
+  String? common;
 
   String? staffname;
   bool visible = false;
@@ -202,14 +203,17 @@ class _OrderFormState extends State<OrderForm> {
                             child: Padding(
                               padding: const EdgeInsets.all(10.0),
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text("ORDER NO : ESOR4435"),
+                                  Text("ORDER NO:  "),
                                   Text(
-                                    '\u{20B9}${0}',
-                                    style: TextStyle(color: Colors.red),
+                                    "ESOR4435",
+                                    style:
+                                        TextStyle(color: P_Settings.extracolor),
                                   ),
+                                  // Text(
+                                  //   '\u{20B9}${0}',
+                                  //   style: TextStyle(color: Colors.red),
+                                  // ),
                                 ],
                               ),
                             ),
@@ -223,7 +227,8 @@ class _OrderFormState extends State<OrderForm> {
                                 children: [
                                   Text(
                                     "Choose Category",
-                                    style: TextStyle(color: Colors.pink),
+                                    style: TextStyle(
+                                        color: P_Settings.chooseCategory),
                                   ),
                                   SizedBox(
                                     width: size.width * 0.4,
@@ -325,40 +330,52 @@ class _OrderFormState extends State<OrderForm> {
                             child: SingleChildScrollView(
                               scrollDirection: Axis.vertical,
                               child: FittedBox(
-                                child: DataTable(columns: const <DataColumn>[
-                                  DataColumn(
-                                    label: Text(
-                                      'EAN',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
+                                child: DataTable(
+                                    headingRowHeight: 30,
+                                    decoration: BoxDecoration(
+                                        color: P_Settings.tableheadingColor),
+                                    dataRowColor:
+                                        MaterialStateColor.resolveWith(
+                                            (states) => Colors.white),
+                                    columns: <DataColumn>[
+                                      DataColumn(
+                                        label: Text(
+                                          'EAN',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: P_Settings.dataTable,
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                  DataColumn(
-                                    label: Text(
-                                      'Item Name',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
+                                      DataColumn(
+                                        label: Text(
+                                          'Item Name',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: P_Settings.dataTable,
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                  DataColumn(
-                                    label: Text(
-                                      'QTY',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
+                                      DataColumn(
+                                        label: Text(
+                                          'QTY',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: P_Settings.dataTable,
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                  DataColumn(
-                                    label: Text(
-                                      'Rate',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
+                                      DataColumn(
+                                        label: Text(
+                                          'Rate',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: P_Settings.dataTable,
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                ], rows: dataRows
+                                    ],
+                                    rows: dataRows
                                     // rows: const <DataRow>[
                                     //   DataRow(
                                     //     cells: <DataCell>[
@@ -400,40 +417,65 @@ class _OrderFormState extends State<OrderForm> {
                             color: Colors.grey[300],
                           ),
                           Padding(
-                            padding: const EdgeInsets.all(10.0),
+                            padding: EdgeInsets.all(10.0),
                             child: Container(
-                              height: size.height * 0.15,
+                              height: size.height * 0.2,
                               child: Column(
                                 children: [
-                                  Flexible(
-                                    child: Row(
-                                      // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        // height: size.height * 0.06,
-                                        SizedBox(width: size.width * 0.3),
-                                        Text("Total items"),
-                                        SizedBox(width: size.width * 0.3),
-                                        Icon(Icons.shopping_cart, size: 19),
-                                      ],
-                                    ),
+                                  Row(
+                                    children: [
+                                      SizedBox(
+                                        width: size.width * 0.359,
+                                      ),
+                                      Text("Total items:"),
+                                      SizedBox(
+                                        width: size.width * 0.1,
+                                      ),
+                                      Flexible(
+                                        child: TextField(
+                                          readOnly: true,
+                                          decoration: InputDecoration(
+                                              // border: UnderlineInputBorder(
+                                              //   borderSide: BorderSide(
+                                              //       color: Color.fromARGB(
+                                              //           255, 11, 177, 38)),
+                                              // ),
+                                              ),
+                                          onChanged: (value) {},
+                                        ),
+                                      ),
+                                      // Icon(Icons.shopping_cart, size: 19),
+                                    ],
                                   ),
                                   Row(
                                     // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
                                       SizedBox(
-                                        width: size.width * 0.2,
+                                        width: size.width * 0.25,
                                         height: size.height * 0.04,
                                       ),
                                       Text("Appropriate Total : "),
-                                      SizedBox(width: size.width * 0.28),
-                                      Text(
-                                        '\u{20B9}${0}',
-                                        style: TextStyle(color: Colors.red),
+                                      SizedBox(
+                                        width: size.width * 0.1,
+                                      ),
+                                      Flexible(
+                                        child: TextField(
+                                          readOnly: true,
+                                          obscureText: true,
+                                          // decoration: InputDecoration(
+                                          //   // border: UnderlineInputBorder(
+                                          //   //   borderSide: BorderSide(
+                                          //   //       color: Color.fromARGB(
+                                          //   //           255, 11, 177, 38)),
+                                          //   // ),
+                                          // ),
+                                          onChanged: (value) {},
+                                        ),
                                       ),
                                     ],
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.all(8.0),
+                                    padding: EdgeInsets.all(8.0),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -443,7 +485,8 @@ class _OrderFormState extends State<OrderForm> {
                                             onPressed: () {},
                                             child: Text("Save"),
                                             style: ElevatedButton.styleFrom(
-                                              primary: Colors.orange[900],
+                                              primary:
+                                                  P_Settings.chooseCategory,
                                             ))
                                       ],
                                     ),
@@ -465,11 +508,11 @@ class _OrderFormState extends State<OrderForm> {
     );
   }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////
   Widget dropDown1(List<Map<String, dynamic>> items, String type, Size size) {
     print("value.area-----${items}");
-
     return Padding(
-      padding: const EdgeInsets.only(left: 16.0, right: 16),
+      padding: EdgeInsets.only(left: 16.0, right: 16),
       child: Container(
         height: size.height * 0.045,
         width: size.width * 0.9,
@@ -496,7 +539,7 @@ class _OrderFormState extends State<OrderForm> {
                   child: Container(
                     width: size.width * 0.5,
                     child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: EdgeInsets.all(8.0),
                         child: Text(item["aname"].toString())),
                   )))
               .toList(),
@@ -523,9 +566,8 @@ class _OrderFormState extends State<OrderForm> {
   }
 
   //////////////////////////////////////////////////////////
-  Widget dropDown2(List<Map<String, dynamic>> items, String type, Size size) {
+  Widget dropDown2(List<Map<String, dynamic>> cust, String type, Size size) {
     // print("value.custmer-----${items}");
-
     return Padding(
       padding: const EdgeInsets.only(left: 16.0, right: 16),
       child: Container(
@@ -541,7 +583,7 @@ class _OrderFormState extends State<OrderForm> {
           ),
         ),
         child: DropdownButton<String>(
-          disabledHint: items.isEmpty || items == null ? Text("Select") : null,
+          disabledHint: cust.isEmpty || cust == null ? Text("Select") : null,
           hint: Text("Select"),
           // dropdownColor: Colors.transparent,
           isExpanded: true,
@@ -549,22 +591,22 @@ class _OrderFormState extends State<OrderForm> {
           underline: SizedBox(),
           elevation: 0,
           // value: "INDIA",
-          items: items
-              .map((item) => DropdownMenuItem<String>(
-                  value: item["code"].toString(),
+          items: cust
+              .map((cust) => DropdownMenuItem<String>(
+                  value: cust["code"].toString(),
                   child: Container(
                     width: size.width * 0.5,
                     child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text(item["hname"].toString())),
+                        child: Text(cust["hname"].toString())),
                   )))
               .toList(),
 
-          onChanged: (item) {
-            if (item != null && item.isNotEmpty) {}
+          onChanged: (cust) {
+            if (cust != null && cust.isNotEmpty) {}
             setState(() {
-              if (item != null) {
-                selectedCus = item;
+              if (cust != null) {
+                selectedCus = cust;
                 print("selected cus..........${selected}");
               }
             });
