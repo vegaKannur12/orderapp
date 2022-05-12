@@ -24,6 +24,8 @@ class Controller extends ChangeNotifier {
   String? cname;
   List<CD> c_d = [];
   String? area;
+  String? splittedCode;
+
 
   List<CD> data = [];
   String? sof;

@@ -26,17 +26,15 @@ class _OrderFormState extends State<OrderForm> {
     'Eagle',
     'Frog'
   ];
-  int _randomNumber1 = 0;
-  Random rn = Random();
-  TextEditingController ordercode = TextEditingController();
-  TextEditingController orderrate = TextEditingController();
-  TextEditingController ordername = TextEditingController();
-  TextEditingController orderqty = TextEditingController();
+  TextEditingController eanQtyCon = TextEditingController();
+  TextEditingController eanTextCon = TextEditingController();
+  List? splitted;
   List<DataRow> dataRows = [];
   String? selected;
   String? selectedCus;
   String? common;
-
+  int _randomNumber1 = 0;
+  Random rn = Random();
   String? staffname;
   bool visible = false;
   String randnum = "";
@@ -49,6 +47,9 @@ class _OrderFormState extends State<OrderForm> {
     _generateRandomNumber1();
     randnum = _randomNumber1.toString();
     sharedPref();
+    if (splitted == null || splitted!.isEmpty) {
+      splitted = ["", ""];
+    }
   }
 
   sharedPref() async {
@@ -65,7 +66,21 @@ class _OrderFormState extends State<OrderForm> {
   }
 
   @override
+  void didUpdateWidget(covariant OrderForm oldWidget) {
+    // TODO: implement didUpdateWidget
+    super.didUpdateWidget(oldWidget);
+  }
+  // @override
+  // void didChangeDependencies() {
+  //   // TODO: implement didChangeDependencies
+  //   super.didChangeDependencies();
+  //   print("change");
+  // }
+
+  @override
   Widget build(BuildContext context) {
+    // print("updateee");
+    Provider.of<Controller>(context, listen: false).splittedCode = splitted![0];
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       // backgroundColor:P_Settings.detailscolor,
@@ -237,22 +252,24 @@ class _OrderFormState extends State<OrderForm> {
                                   ),
                                   ElevatedButton(
                                     onPressed: () {
+                                      print("splitted0----${splitted![0]}");
                                       setState(() {
+                                        // splitted[0]="";
                                         dataRows.add(DataRow(cells: [
                                           DataCell(
-                                            TextField(
-                                              readOnly: true,
-                                              obscureText: true,
-                                              decoration: InputDecoration(
-                                                border: UnderlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      color: Colors.black),
-                                                ),
-                                              ),
-                                              onChanged: (value) {
-                                                ordercode.text;
-                                              },
-                                            ),
+                                            Text(
+                                                values.splittedCode.toString()),
+                                            // TextField(
+                                            //   readOnly: true,
+                                            //   controller: eanTextCon,
+                                            //   decoration: InputDecoration(
+                                            //     border: UnderlineInputBorder(
+                                            //       borderSide: BorderSide(
+                                            //           color: Colors.black),
+                                            //     ),
+                                            //   ),
+                                            //   onChanged: (value) {},
+                                            // ),
                                           ),
                                           DataCell(
                                             Autocomplete<String>(
@@ -274,21 +291,27 @@ class _OrderFormState extends State<OrderForm> {
                                               onSelected: (value) {
                                                 setState(() {
                                                   _selectedItem = value;
+                                                  print(
+                                                      "_selectedItem---${_selectedItem}");
+                                                  splitted =
+                                                      _selectedItem!.split('-');
                                                 });
+
+                                                print(
+                                                    "splitted---${splitted![0]}");
                                               },
                                             ),
                                           ),
                                           DataCell(
                                             TextField(
+                                              controller: eanQtyCon,
                                               decoration: InputDecoration(
                                                 border: UnderlineInputBorder(
                                                   borderSide: BorderSide(
                                                       color: Colors.black),
                                                 ),
                                               ),
-                                              onChanged: (value) {
-                                                orderqty.text;
-                                              },
+                                              onChanged: (value) {},
                                             ),
                                           ),
                                           DataCell(
@@ -301,9 +324,7 @@ class _OrderFormState extends State<OrderForm> {
                                                       color: Colors.black),
                                                 ),
                                               ),
-                                              onChanged: (value) {
-                                                orderrate.text;
-                                              },
+                                              onChanged: (value) {},
                                             ),
                                           ),
                                           DataCell(
