@@ -1,9 +1,12 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:orderapp/components/commoncolor.dart';
 import 'package:orderapp/controller/controller.dart';
 import 'package:orderapp/db_helper.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:orderapp/components/randomnumber.dart';
 // import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class OrderForm extends StatefulWidget {
@@ -23,6 +26,8 @@ class _OrderFormState extends State<OrderForm> {
     'Eagle',
     'Frog'
   ];
+  int _randomNumber1 = 0;
+  Random rn = Random();
   TextEditingController ordercode = TextEditingController();
   TextEditingController orderrate = TextEditingController();
   TextEditingController ordername = TextEditingController();
@@ -34,10 +39,15 @@ class _OrderFormState extends State<OrderForm> {
 
   String? staffname;
   bool visible = false;
+  String randnum = "";
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    Provider.of<Controller>(context, listen: false).getOrderno();
+    _generateRandomNumber1();
+    randnum = _randomNumber1.toString();
     sharedPref();
   }
 
@@ -46,6 +56,12 @@ class _OrderFormState extends State<OrderForm> {
     staffname = prefs.getString('st_username');
     print("staffname---${staffname}");
     Provider.of<Controller>(context, listen: false).getArea(staffname!);
+  }
+
+  void _generateRandomNumber1() {
+    setState(() {
+      _randomNumber1 = rn.nextInt(10000);
+    });
   }
 
   @override
@@ -190,7 +206,7 @@ class _OrderFormState extends State<OrderForm> {
                                 children: [
                                   Text("ORDER NO:  "),
                                   Text(
-                                    "ESOR4435",
+                                    values.ordernum[0]['os'] + randnum,
                                     style:
                                         TextStyle(color: P_Settings.extracolor),
                                   ),
@@ -212,7 +228,9 @@ class _OrderFormState extends State<OrderForm> {
                                   Text(
                                     "Choose Category",
                                     style: TextStyle(
-                                        color: P_Settings.chooseCategory),
+                                      color: P_Settings.chooseCategory,
+                                      fontSize: 15,
+                                    ),
                                   ),
                                   SizedBox(
                                     width: size.width * 0.4,
@@ -237,31 +255,19 @@ class _OrderFormState extends State<OrderForm> {
                                             ),
                                           ),
                                           DataCell(
-                                            // TextField(
-                                            //   // readOnly: true,
-                                            //   // obscureText: true,
-                                            //   decoration: InputDecoration(
-                                            //     border: UnderlineInputBorder(
-                                            //       borderSide: BorderSide(
-                                            //           color: Colors.black),
-                                            //     ),
-                                            //   ),
-                                            //   onChanged: (value) {
-                                            //     print("value----${value}");
-                                            //     Provider.of<Controller>(context, listen: false).getProductItems(value);
-                                            //   },
-                                            // ),
                                             Autocomplete<String>(
-                                              optionsBuilder:(TextEditingValue value) {
-                                                
+                                              optionsBuilder:
+                                                  (TextEditingValue value) {
                                                 if (value.text.isEmpty) {
                                                   return [];
                                                 } else {
-                                                  print("TextEditingValue---${value.text}");
+                                                  print(
+                                                      "TextEditingValue---${value.text}");
                                                   Provider.of<Controller>(
                                                           context,
                                                           listen: false)
-                                                      .getProductItems(value.text);
+                                                      .getProductItems(
+                                                          value.text);
                                                   return values.productName;
                                                 }
                                               },
@@ -274,7 +280,6 @@ class _OrderFormState extends State<OrderForm> {
                                           ),
                                           DataCell(
                                             TextField(
-                                             
                                               decoration: InputDecoration(
                                                 border: UnderlineInputBorder(
                                                   borderSide: BorderSide(
@@ -298,6 +303,17 @@ class _OrderFormState extends State<OrderForm> {
                                               ),
                                               onChanged: (value) {
                                                 orderrate.text;
+                                              },
+                                            ),
+                                          ),
+                                          DataCell(
+                                            IconButton(
+                                              icon: Icon(
+                                                Icons.delete,
+                                                color: P_Settings.extracolor,
+                                              ),
+                                              onPressed: () {
+                                                setState(() {});
                                               },
                                             ),
                                           ),
@@ -365,6 +381,9 @@ class _OrderFormState extends State<OrderForm> {
                                           ),
                                         ),
                                       ),
+                                      DataColumn(
+                                        label: Text(""),
+                                      ),
                                     ],
                                     rows: dataRows
                                     // rows: const <DataRow>[
@@ -418,7 +437,12 @@ class _OrderFormState extends State<OrderForm> {
                                       SizedBox(
                                         width: size.width * 0.359,
                                       ),
-                                      Text("Total items:"),
+                                      Text(
+                                        "Total items:",
+                                        style: TextStyle(
+                                          color: P_Settings.wavecolor,
+                                        ),
+                                      ),
                                       SizedBox(
                                         width: size.width * 0.1,
                                       ),
@@ -445,7 +469,10 @@ class _OrderFormState extends State<OrderForm> {
                                         width: size.width * 0.25,
                                         height: size.height * 0.04,
                                       ),
-                                      Text("Appropriate Total : "),
+                                      Text("Appropriate Total : ",
+                                          style: TextStyle(
+                                            color: P_Settings.wavecolor,
+                                          )),
                                       SizedBox(
                                         width: size.width * 0.1,
                                       ),
@@ -609,3 +636,5 @@ class _OrderFormState extends State<OrderForm> {
     );
   }
 }
+
+class RandomNumber {}

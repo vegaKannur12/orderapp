@@ -391,9 +391,7 @@ class OrderAppDB {
   }
 
   //////////////////////////////////////////////////////
-  Future<List<Map<String, dynamic>>> getCustomer(
-      String aid) async {
-  
+  Future<List<Map<String, dynamic>>> getCustomer(String aid) async {
     print("enteredaid---${aid}");
     // Provider.of<Controller>(context, listen: false).customerList.clear();
     Database db = await instance.database;
@@ -412,12 +410,18 @@ class OrderAppDB {
     var res = await db.rawQuery(
         "SELECT * FROM productDetailsTable WHERE item LIKE '%$product%'");
 
-        
     print("SELECT * FROM productDetailsTable WHERE item LIKE '%$product%'");
     print("items=================${res}");
     return res;
   }
 
   //////////////////////////////////////////////////////////////
+  getOrderNo() async {
+    Database db = await instance.database;
+    var res = await db.rawQuery(
+        "SELECT os FROM registrationTable");
 
+    print("SELECT os FROM registrationTable");
+    return res;
+  }
 }

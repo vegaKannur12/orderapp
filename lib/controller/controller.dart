@@ -16,8 +16,10 @@ import '../model/staffarea_model.dart';
 import '../model/staffdetails_model.dart';
 
 class Controller extends ChangeNotifier {
+  
   bool isLoading = false;
   String? sname;
+  String? ordernumber;
   String? cid;
   String? cname;
   List<CD> c_d = [];
@@ -32,6 +34,7 @@ class Controller extends ChangeNotifier {
   List<Map<String, dynamic>> customerList = [];
   List<Map<String, dynamic>> copyCus = [];
   List<Map<String, dynamic>> prodctItems = [];
+  List<Map<String, dynamic>> ordernum = [];
 
   StaffDetails staffModel = StaffDetails();
   AccountHead accountHead = AccountHead();
@@ -211,6 +214,13 @@ class Controller extends ChangeNotifier {
     notifyListeners();
   }
 
+  /////////////////////////////////////////
+  // setOrdernumber() async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   String? orderno = prefs.getString("os");
+  //   ordernumber = orderno;
+  //   notifyListeners();
+  // }
   ///////////////////////////////////////////////////////////////
   Future<ProductDetails?> getProductDetails(String cid) async {
     print("cid...............${cid}");
@@ -360,9 +370,23 @@ class Controller extends ChangeNotifier {
       print("prodctItems----${prodctItems}");
 
       for (var item in prodctItems) {
-        productName.add(item["code"]+ '-'+item["item"]);
+        productName.add(item["code"] + '-' + item["item"]);
       }
       print("product name----${productName}");
+      notifyListeners();
+    } catch (e) {
+      print(e);
+      return null;
+    }
+    notifyListeners();
+  }
+
+////////////////////////////////////////
+  getOrderno() async {
+    try {
+      ordernum = await OrderAppDB.instance.getOrderNo();
+      print("ordernum----${ordernum}");
+
       notifyListeners();
     } catch (e) {
       print(e);
