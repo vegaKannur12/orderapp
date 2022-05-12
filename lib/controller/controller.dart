@@ -28,6 +28,7 @@ class Controller extends ChangeNotifier {
   List<Map<String, dynamic>> staffList = [];
   List<Map<String, dynamic>> areaList = [];
   List<Map<String, dynamic>> customerList = [];
+  List<Map<String, dynamic>> copyCus = [];
 
   StaffDetails staffModel = StaffDetails();
   AccountHead accountHead = AccountHead();
@@ -327,10 +328,19 @@ class Controller extends ChangeNotifier {
   }
 
   /////////////////////////////////////////////////////
-  getCustomer(String aid) async {
+  getCustomer(String aid, BuildContext context) async {
     print("aid...............${aid}");
     try {
-      customerList = await OrderAppDB.instance.getCustomer(aid);
+      copyCus.clear();
+
+      customerList.clear();
+
+      print("aid---...............${aid}");
+
+      customerList = await OrderAppDB.instance.getCustomer(aid, context);
+      // for (var item in customerList){
+      //   copyCus.add(item);
+      // }
       print("customerList----${customerList}");
       notifyListeners();
     } catch (e) {
