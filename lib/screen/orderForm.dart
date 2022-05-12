@@ -237,20 +237,33 @@ class _OrderFormState extends State<OrderForm> {
                                             ),
                                           ),
                                           DataCell(
+                                            // TextField(
+                                            //   // readOnly: true,
+                                            //   // obscureText: true,
+                                            //   decoration: InputDecoration(
+                                            //     border: UnderlineInputBorder(
+                                            //       borderSide: BorderSide(
+                                            //           color: Colors.black),
+                                            //     ),
+                                            //   ),
+                                            //   onChanged: (value) {
+                                            //     print("value----${value}");
+                                            //     Provider.of<Controller>(context, listen: false).getProductItems(value);
+                                            //   },
+                                            // ),
                                             Autocomplete<String>(
-                                              optionsBuilder:
-                                                  (TextEditingValue value) {
-                                                // When the field is empty
+                                              optionsBuilder:(TextEditingValue value) {
+                                                
                                                 if (value.text.isEmpty) {
                                                   return [];
+                                                } else {
+                                                  print("TextEditingValue---${value.text}");
+                                                  Provider.of<Controller>(
+                                                          context,
+                                                          listen: false)
+                                                      .getProductItems(value.text);
+                                                  return values.productName;
                                                 }
-
-                                                // The logic to find out which ones should appear
-                                                return _suggestions.where(
-                                                    (suggestion) => suggestion
-                                                        .toLowerCase()
-                                                        .contains(value.text
-                                                            .toLowerCase()));
                                               },
                                               onSelected: (value) {
                                                 setState(() {
@@ -261,7 +274,7 @@ class _OrderFormState extends State<OrderForm> {
                                           ),
                                           DataCell(
                                             TextField(
-                                              obscureText: true,
+                                             
                                               decoration: InputDecoration(
                                                 border: UnderlineInputBorder(
                                                   borderSide: BorderSide(
@@ -459,22 +472,6 @@ class _OrderFormState extends State<OrderForm> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         SizedBox(height: size.height * 0.03),
-                                        // ElevatedButton(
-                                        //   onPressed: () {},
-                                        //   child: Text("Reset"),
-                                        // ),
-                                        // ElevatedButton(
-                                        //     onPressed: () {},
-                                        //     child: Text("Remark"),
-                                        //     style: ElevatedButton.styleFrom(
-                                        //       primary: Colors.red,
-                                        //     )),
-                                        // ElevatedButton(
-                                        //     onPressed: () {},
-                                        //     child: Text("Collection"),
-                                        //     style: ElevatedButton.styleFrom(
-                                        //       primary: Colors.green,
-                                        //     )),
                                         ElevatedButton(
                                             onPressed: () {},
                                             child: Text("Save"),
@@ -551,7 +548,7 @@ class _OrderFormState extends State<OrderForm> {
             //  Provider.of<Controller>(context, listen: false).customerList.clear();
 
             Provider.of<Controller>(context, listen: false)
-                .getCustomer(selected!, context);
+                .getCustomer(selected!);
           },
           value: selected,
         ),
