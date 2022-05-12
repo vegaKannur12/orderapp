@@ -396,4 +396,15 @@ class OrderAppDB {
     print("hname===${hname}");
     return hname;
   }
+
+  ///////////////////////////////////////////////////////////////
+  
+   Future<List<Map<String, dynamic>>> getItems(String aid) async {
+    print("aid---${aid}");
+    Database db = await instance.database;
+    var items = await db.rawQuery(
+        'SELECT code,item,rate1 FROM productDetailsTable"');  
+    print("items=================${items}");
+    return items;
+  }
 }

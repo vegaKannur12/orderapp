@@ -111,7 +111,7 @@ final _random = Random();
                           //   // repeats the gradient over the canvas
                           // ),
                           color: Color.fromARGB(
-                              _random.nextInt(107),
+                              _random.nextInt(245),
                               _random.nextInt(209),
                               _random.nextInt(250),
                               _random.nextInt(255)),
@@ -131,7 +131,7 @@ final _random = Random();
                             Text(
                               companyAttributes[index],
                               style:
-                                  TextStyle(fontSize: 20, color: Colors.white),
+                                  TextStyle(fontSize: 20, color: Colors.black),
                             ),
                             SizedBox(
                               height: 10,
