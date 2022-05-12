@@ -4,7 +4,7 @@ import 'package:orderapp/controller/controller.dart';
 import 'package:orderapp/db_helper.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+// import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class OrderForm extends StatefulWidget {
   const OrderForm({Key? key}) : super(key: key);
@@ -201,70 +201,77 @@ class _OrderFormState extends State<OrderForm> {
                                   width: size.width * 0.4,
                                 ),
                                 ElevatedButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      dataRows.add(DataRow(cells: [
-                                        DataCell(
-                                          TextField(
-                                            obscureText: true,
-                                            decoration: InputDecoration(
-                                              border: UnderlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Colors.black),
+                                    style: ElevatedButton.styleFrom(
+                                      primary: P_Settings.roundedButtonColor,
+                                      // shape: CircleBorder(),
+                                    ),
+                                    onPressed: () {
+                                      setState(
+                                        () {
+                                          dataRows.add(DataRow(cells: [
+                                            DataCell(
+                                              TextField(
+                                                obscureText: true,
+                                                decoration: InputDecoration(
+                                                  border: UnderlineInputBorder(
+                                                    borderSide: BorderSide(
+                                                        color: Colors.black),
+                                                  ),
+                                                ),
+                                                onChanged: (value) {
+                                                  ordercode.text;
+                                                },
                                               ),
                                             ),
-                                            onChanged: (value) {
-                                              ordercode.text;
-                                            },
-                                          ),
-                                        ),
-                                        DataCell(
-                                          TextField(
-                                            obscureText: true,
-                                            decoration: InputDecoration(
-                                              border: UnderlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Colors.black),
+                                            DataCell(
+                                              TextField(
+                                                obscureText: true,
+                                                decoration: InputDecoration(
+                                                  border: UnderlineInputBorder(
+                                                    borderSide: BorderSide(
+                                                        color: Colors.black),
+                                                  ),
+                                                ),
+                                                onChanged: (value) {
+                                                  ordername.text;
+                                                },
                                               ),
                                             ),
-                                            onChanged: (value) {
-                                              ordername.text;
-                                            },
-                                          ),
-                                        ),
-                                        DataCell(
-                                          TextField(
-                                            obscureText: true,
-                                            decoration: InputDecoration(
-                                              border: UnderlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Colors.black),
+                                            DataCell(
+                                              TextField(
+                                                obscureText: true,
+                                                decoration: InputDecoration(
+                                                  border: UnderlineInputBorder(
+                                                    borderSide: BorderSide(
+                                                        color: Colors.black),
+                                                  ),
+                                                ),
+                                                onChanged: (value) {
+                                                  orderqty.text;
+                                                },
                                               ),
                                             ),
-                                            onChanged: (value) {
-                                              orderqty.text;
-                                            },
-                                          ),
-                                        ),
-                                        DataCell(
-                                          TextField(
-                                            obscureText: true,
-                                            decoration: InputDecoration(
-                                              border: UnderlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Colors.black),
+                                            DataCell(
+                                              TextField(
+                                                obscureText: true,
+                                                decoration: InputDecoration(
+                                                  border: UnderlineInputBorder(
+                                                    borderSide: BorderSide(
+                                                        color: Colors.black),
+                                                  ),
+                                                ),
+                                                onChanged: (value) {
+                                                  orderrate.text;
+                                                },
                                               ),
                                             ),
-                                            onChanged: (value) {
-                                              orderrate.text;
-                                            },
-                                          ),
-                                        ),
-                                      ]));
-                                    });
-                                  },
-                                  child: Text("Add"),
-                                ),
+                                          ]));
+                                        },
+                                      );
+                                    },
+                                    child: Icon(Icons.add,
+                                        size: 20, color: Colors.black),
+                                  ),
                               ],
                             ),
                           ),
@@ -308,40 +315,7 @@ class _OrderFormState extends State<OrderForm> {
                                     ),
                                   ),
                                 ),
-                              ], rows: dataRows
-                                  // rows: const <DataRow>[
-                                  //   DataRow(
-                                  //     cells: <DataCell>[
-                                  //       DataCell(
-                                  //         Text('1'),
-                                  //       ),
-                                  //       DataCell(
-                                  //         TextField(
-                                  //           obscureText: true,
-                                  //           decoration: InputDecoration(
-                                  //             border: OutlineInputBorder(),
-                                  //             labelText: '',
-                                  //             hintText: 'Item name',
-                                  //           ),
-                                  //         ),
-                                  //       ),
-                                  //       DataCell(
-                                  //         TextField(
-                                  //           obscureText: true,
-                                  //           decoration: InputDecoration(
-                                  //             border: OutlineInputBorder(),
-                                  //             labelText: '',
-                                  //             hintText: 'QTY',
-                                  //           ),
-                                  //         ),
-                                  //       ),
-                                  //       DataCell(
-                                  //         Text('5*'),
-                                  //       ),
-                                  //     ],
-                                  //   ),
-                                  // ],
-                                  ),
+                              ], rows: dataRows),
                             ),
                           ),
                         ),
@@ -467,10 +441,7 @@ class _OrderFormState extends State<OrderForm> {
               .toList(),
 
           onChanged: (item) {
-
             print("clicked");
-
-
 
             if (item != null) {}
             setState(() {
@@ -482,7 +453,7 @@ class _OrderFormState extends State<OrderForm> {
             //  Provider.of<Controller>(context, listen: false).customerList.clear();
 
             Provider.of<Controller>(context, listen: false)
-                .getCustomer(selected!,context);
+                .getCustomer(selected!, context);
           },
           value: selected,
         ),
