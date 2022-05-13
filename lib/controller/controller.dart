@@ -18,6 +18,7 @@ import '../model/staffdetails_model.dart';
 class Controller extends ChangeNotifier {
   bool isLoading = false;
   String? sname;
+  String? ordernumber;
   String? cid;
   String? cname;
   List<CD> c_d = [];
@@ -34,6 +35,7 @@ class Controller extends ChangeNotifier {
   List<Map<String, dynamic>> customerList = [];
   List<Map<String, dynamic>> copyCus = [];
   List<Map<String, dynamic>> prodctItems = [];
+  List<Map<String, dynamic>> ordernum = [];
 
   StaffDetails staffModel = StaffDetails();
   AccountHead accountHead = AccountHead();
@@ -376,6 +378,7 @@ class Controller extends ChangeNotifier {
         productName.add(item["code"] + '-' + item["item"]);
       }
       print("product name----${productName}");
+      // print("product productRate----${productRate}");
       notifyListeners();
     } catch (e) {
       print(e);

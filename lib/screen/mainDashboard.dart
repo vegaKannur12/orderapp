@@ -119,11 +119,11 @@ class _MainDashboardState extends State<MainDashboard> {
                           //   ], // red to yellow
                           //   // repeats the gradient over the canvas
                           // ),
-                          color: Color.fromARGB(
-                              _random.nextInt(270),
-                              _random.nextInt(289),
-                              _random.nextInt(250),
-                              _random.nextInt(255)),
+                          color: Color.fromRGBO(
+                              _random.nextInt(212),
+                              _random.nextInt(212),
+                              _random.nextInt(212),
+                              _random.nextDouble()),
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(35),
                             bottomRight: Radius.circular(35),
