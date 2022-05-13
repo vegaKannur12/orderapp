@@ -24,14 +24,13 @@ class Controller extends ChangeNotifier {
   List<CD> c_d = [];
   String? area;
   String? splittedCode;
-  String? splittedCode1;
 
   List<CD> data = [];
   String? sof;
   List<Map<String, dynamic>> staffList = [];
   List<String> productName = [];
-  List<String> productRate = [];
-
+  List<String> areDetails = [];
+  List<String> custmerDetails = [];
   List<Map<String, dynamic>> areaList = [];
   List<Map<String, dynamic>> customerList = [];
   List<Map<String, dynamic>> copyCus = [];
@@ -327,6 +326,9 @@ class Controller extends ChangeNotifier {
     try {
       areaList = await OrderAppDB.instance.getArea(staffName);
       print("areaList----${areaList}");
+      for (var item in areaList) {
+        areDetails.add(item["aid"] + '-' + item["aname"]);
+      }
       notifyListeners();
     } catch (e) {
       print(e);
@@ -339,21 +341,29 @@ class Controller extends ChangeNotifier {
   getCustomer(String aid) async {
     print("aid...............${aid}");
     try {
-      copyCus.clear();
-      customerList.clear();
-
-      print("aid---...............${aid}");
-
+      // customerList.clear();
       customerList = await OrderAppDB.instance.getCustomer(aid);
-      // for (var item in customerList){
-      //   copyCus.add(item);
-      // }
       print("customerList----${customerList}");
+      for (var item in customerList) {
+        custmerDetails.add(item["hname"]);
+      }
+
       notifyListeners();
     } catch (e) {
       print(e);
       return null;
     }
+    notifyListeners();
+  }
+
+  /////////////////////////////////////////////////////
+  customerListClear() {
+    customerList.clear();
+    notifyListeners();
+  }
+
+  setSplittedCode(String splitted) {
+    splittedCode = splitted;
     notifyListeners();
   }
 
@@ -366,10 +376,9 @@ class Controller extends ChangeNotifier {
 
       for (var item in prodctItems) {
         productName.add(item["code"] + '-' + item["item"]);
-        productRate.add(item['rate1']); 
       }
       print("product name----${productName}");
-      print("product productRate----${productRate}");
+      // print("product productRate----${productRate}");
       notifyListeners();
     } catch (e) {
       print(e);
@@ -378,17 +387,6 @@ class Controller extends ChangeNotifier {
     notifyListeners();
   }
 
-////////////////////////////////////////
-  getOrderno() async {
-    try {
-      ordernum = await OrderAppDB.instance.getOrderNo();
-      print("ordernum----${ordernum}");
+  /////////////////////////////////////
 
-      notifyListeners();
-    } catch (e) {
-      print(e);
-      return null;
-    }
-    notifyListeners();
-  }
 }

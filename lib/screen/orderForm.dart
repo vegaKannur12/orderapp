@@ -1,12 +1,9 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:orderapp/components/commoncolor.dart';
 import 'package:orderapp/controller/controller.dart';
 import 'package:orderapp/db_helper.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:orderapp/components/randomnumber.dart';
 // import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class OrderForm extends StatefulWidget {
@@ -18,37 +15,24 @@ class OrderForm extends StatefulWidget {
 
 class _OrderFormState extends State<OrderForm> {
   String? _selectedItem;
-  final List<String> _suggestions = [
-    'Alligator',
-    'Buffalo',
-    'Chicken',
-    'Dog',
-    'Eagle',
-    'Frog'
-  ];
   TextEditingController itemName = TextEditingController();
   TextEditingController eanQtyCon = TextEditingController();
   TextEditingController eanTextCon = TextEditingController();
-  int selectedIndex = 0;
   List? splitted;
   List? splitted1;
   List<DataRow> dataRows = [];
   String? selected;
   String? selectedCus;
   String? common;
+  int selectedIndex = 0;
   int _randomNumber1 = 0;
-  Random rn = Random();
   String? staffname;
   bool visible = false;
   String randnum = "";
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    Provider.of<Controller>(context, listen: false).getOrderno();
-    _generateRandomNumber1();
-    randnum = _randomNumber1.toString();
     sharedPref();
     if (splitted == null || splitted!.isEmpty) {
       splitted = ["", ""];
@@ -62,39 +46,18 @@ class _OrderFormState extends State<OrderForm> {
     Provider.of<Controller>(context, listen: false).getArea(staffname!);
   }
 
-  void _generateRandomNumber1() {
-    setState(() {
-      _randomNumber1 = rn.nextInt(10000);
-    });
-  }
-
-  @override
-  void didUpdateWidget(covariant OrderForm oldWidget) {
-    // TODO: implement didUpdateWidget
-    super.didUpdateWidget(oldWidget);
-  }
-  // @override
-  // void didChangeDependencies() {
-  //   // TODO: implement didChangeDependencies
-  //   super.didChangeDependencies();
-  //   print("change");
-  // }
-
   @override
   Widget build(BuildContext context) {
-    // print("updateee");
-    Provider.of<Controller>(context, listen: false).splittedCode = splitted![0];
-    Provider.of<Controller>(context, listen: false).splittedCode1 =
-        splitted![1];
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      // backgroundColor:P_Settings.detailscolor,
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(10.0),
             child: Consumer<Controller>(builder: (context, values, child) {
               print("value.areaList-----${values.areaList}");
+              print("value.custmer-----${values.customerList}");
+              print("value.splitted-----${values.splittedCode}");
 
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -157,9 +120,44 @@ class _OrderFormState extends State<OrderForm> {
                               ),
                             ),
                             SizedBox(height: size.height * 0.01),
-                            Container(
-                              child: dropDown1(
-                                  values.areaList, "area/route", size),
+                            Center(
+                              child: Container(
+                                height: size.height * 0.04,
+                                width: size.width * 0.75,
+                                child: InputDecorator(
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 0, horizontal: 4),
+                                    border: OutlineInputBorder(gapPadding: 1),
+                                    hintText: "Select..",
+                                  ),
+                                  child: Autocomplete<String>(
+                                    optionsBuilder: (TextEditingValue value) {
+                                      if (value.text.isEmpty) {
+                                        return [];
+                                      } else {
+                                        print(
+                                            "TextEditingValue---${value.text}");
+                                        return values.areDetails.where((area) =>
+                                            area.toLowerCase().contains(
+                                                value.text.toLowerCase()));
+                                      }
+                                    },
+                                    onSelected: (value) {
+                                      setState(() {
+                                        _selectedItem = value;
+                                      });
+                                      print("_selectedItem---${_selectedItem}");
+                                      splitted = _selectedItem!.split('-');
+
+                                      Provider.of<Controller>(context,
+                                              listen: false)
+                                          .getCustomer(splitted![0]);
+                                      print("splitted---${splitted![0]}");
+                                    },
+                                  ),
+                                ),
+                              ),
                             ),
                             SizedBox(height: size.height * 0.02),
                             Padding(
@@ -170,10 +168,7 @@ class _OrderFormState extends State<OrderForm> {
                                   )),
                             ),
                             SizedBox(height: size.height * 0.01),
-                            Container(
-                              child: dropDown2(
-                                  values.customerList, "customer", size),
-                            ),
+                            dropDown2(values.customerList, "customer", size),
                           ],
                         ),
                       ),
@@ -226,7 +221,7 @@ class _OrderFormState extends State<OrderForm> {
                                 children: [
                                   Text("ORDER NO:  "),
                                   Text(
-                                    "${values.ordernum.length != 0 && values.ordernum.isNotEmpty && values.ordernum[0]['os'] != null ? values.ordernum[0]['os'] + randnum : randnum}",
+                                    "ESOR4435",
                                     style:
                                         TextStyle(color: P_Settings.extracolor),
                                   ),
@@ -287,16 +282,11 @@ class _OrderFormState extends State<OrderForm> {
                                                   "_selectedItem---${_selectedItem}");
                                               splitted =
                                                   _selectedItem!.split('-');
-                                              // Provider.of<Controller>(
-                                              //         context,
-                                              //         listen:
-                                              //             false)
-                                              //     .setSplittedCode(
-                                              //         splitted![
-                                              //             0]);
+                                              Provider.of<Controller>(context,
+                                                      listen: false)
+                                                  .setSplittedCode(
+                                                      splitted![0]);
                                             });
-
-                                            print("splitted---${splitted![0]}");
                                           },
                                         ),
                                       ),
@@ -315,6 +305,7 @@ class _OrderFormState extends State<OrderForm> {
                                           ),
                                           onChanged: (value) {
                                             setState(() {
+                                              // keyboardType: TextInputType
                                               // Provider.of<Controller>(context,
                                               //         listen: false)
                                               //     .getProductItems(value.text);
@@ -322,9 +313,6 @@ class _OrderFormState extends State<OrderForm> {
                                             });
                                           },
                                         ),
-                                      ),
-                                      SizedBox(
-                                        width: size.width * 0.04,
                                       ),
                                       Flexible(
                                           child: ElevatedButton(
@@ -351,50 +339,7 @@ class _OrderFormState extends State<OrderForm> {
                                                       // ),
                                                     ),
                                                     DataCell(
-                                                      Text(values.splittedCode1
-                                                          .toString()),
-                                                      // Autocomplete<String>(
-                                                      //   optionsBuilder:
-                                                      //       (TextEditingValue
-                                                      //           value) {
-                                                      //     if (value
-                                                      //         .text.isEmpty) {
-                                                      //       return [];
-                                                      //     } else {
-                                                      //       print(
-                                                      //           "TextEditingValue---${value.text}");
-                                                      //       Provider.of<Controller>(
-                                                      //               context,
-                                                      //               listen:
-                                                      //                   false)
-                                                      //           .getProductItems(
-                                                      //               value.text);
-                                                      //       return values
-                                                      //           .productName;
-                                                      //     }
-                                                      //   },
-                                                      //   onSelected: (value) {
-                                                      //     setState(() {
-                                                      //       _selectedItem =
-                                                      //           value;
-                                                      //       print(
-                                                      //           "_selectedItem---${_selectedItem}");
-                                                      //       splitted =
-                                                      //           _selectedItem!
-                                                      //               .split('-');
-                                                      //       // Provider.of<Controller>(
-                                                      //       //         context,
-                                                      //       //         listen:
-                                                      //       //             false)
-                                                      //       //     .setSplittedCode(
-                                                      //       //         splitted![
-                                                      //       //             0]);
-                                                      //     });
-
-                                                      //     print(
-                                                      //         "splitted---${splitted![0]}");
-                                                      //   },
-                                                      // ),
+                                                      Text('T SHIRT H/S')
                                                     ),
                                                     DataCell(
                                                       TextField(
@@ -514,12 +459,7 @@ class _OrderFormState extends State<OrderForm> {
                                       SizedBox(
                                         width: size.width * 0.359,
                                       ),
-                                      Text(
-                                        "Total items:",
-                                        style: TextStyle(
-                                          color: P_Settings.wavecolor,
-                                        ),
-                                      ),
+                                      Text("Total items:"),
                                       SizedBox(
                                         width: size.width * 0.1,
                                       ),
@@ -546,10 +486,7 @@ class _OrderFormState extends State<OrderForm> {
                                         width: size.width * 0.25,
                                         height: size.height * 0.04,
                                       ),
-                                      Text("Appropriate Total : ",
-                                          style: TextStyle(
-                                            color: P_Settings.wavecolor,
-                                          )),
+                                      Text("Appropriate Total : "),
                                       SizedBox(
                                         width: size.width * 0.1,
                                       ),
@@ -622,12 +559,10 @@ class _OrderFormState extends State<OrderForm> {
         ),
         child: DropdownButton<String>(
           hint: Text("Select"),
-          // dropdownColor: Colors.transparent,
           isExpanded: true,
           autofocus: false,
           underline: SizedBox(),
           elevation: 0,
-          // value: "INDIA",
           items: items
               .map((item) => DropdownMenuItem<String>(
                   value: item["aid"].toString(),
@@ -638,36 +573,36 @@ class _OrderFormState extends State<OrderForm> {
                         child: Text(item["aname"].toString())),
                   )))
               .toList(),
-
           onChanged: (item) {
+            // Provider.of<Controller>(context, listen: false)
+            //     .customerList
+            //     .length = 0;
             print("clicked");
 
-            if (item != null) {}
-            setState(() {
-              if (item != null) {
+            if (item != null) {
+              setState(() {
                 selected = item;
                 print("selected area..........${selected}");
-              }
-            });
-            //  Provider.of<Controller>(context, listen: false).customerList.clear();
-
+              });
+            }
             Provider.of<Controller>(context, listen: false)
                 .getCustomer(selected!);
           },
           value: selected,
+          // disabledHint: Text(selected ?? "null"),
         ),
       ),
     );
   }
 
   //////////////////////////////////////////////////////////
-  Widget dropDown2(List<Map<String, dynamic>> cust, String type, Size size) {
+  Widget dropDown2(List<Map<String, dynamic>> customr, String type, Size size) {
     // print("value.custmer-----${items}");
     return Padding(
       padding: const EdgeInsets.only(left: 16.0, right: 16),
       child: Container(
         height: size.height * 0.045,
-        width: size.width * 0.9,
+        width: size.width * 0.75,
         decoration: ShapeDecoration(
           shape: RoundedRectangleBorder(
             side: BorderSide(
@@ -678,7 +613,7 @@ class _OrderFormState extends State<OrderForm> {
           ),
         ),
         child: DropdownButton<String>(
-          disabledHint: cust.isEmpty || cust == null ? Text("Select") : null,
+          // disabledHint: customr.isEmpty || customr == null ? Text("Select") : null,
           hint: Text("Select"),
           // dropdownColor: Colors.transparent,
           isExpanded: true,
@@ -686,7 +621,7 @@ class _OrderFormState extends State<OrderForm> {
           underline: SizedBox(),
           elevation: 0,
           // value: "INDIA",
-          items: cust
+          items: customr
               .map((cust) => DropdownMenuItem<String>(
                   value: cust["code"].toString(),
                   child: Container(
@@ -698,13 +633,14 @@ class _OrderFormState extends State<OrderForm> {
               .toList(),
 
           onChanged: (cust) {
-            if (cust != null && cust.isNotEmpty) {}
-            setState(() {
-              if (cust != null) {
+            // Provider.of<Controller>(context, listen: false).areaList.clear();
+            if (cust != null) {
+              setState(() {
                 selectedCus = cust;
+
                 print("selected cus..........${selected}");
-              }
-            });
+              });
+            }
             // Provider.of<Controller>(context, listen: false).getCustomer(selected!);
           },
           value: selectedCus,
@@ -713,5 +649,3 @@ class _OrderFormState extends State<OrderForm> {
     );
   }
 }
-
-class RandomNumber {}
