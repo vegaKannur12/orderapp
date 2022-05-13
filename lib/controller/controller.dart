@@ -366,7 +366,7 @@ class Controller extends ChangeNotifier {
 
       for (var item in prodctItems) {
         productName.add(item["code"] + '-' + item["item"]);
-        // productRate.add(item['rate1']); 
+        productRate.add(item['rate1']); 
       }
       print("product name----${productName}");
       print("product productRate----${productRate}");

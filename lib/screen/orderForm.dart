@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:orderapp/components/commoncolor.dart';
 import 'package:orderapp/controller/controller.dart';
+import 'package:orderapp/db_helper.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:orderapp/components/randomnumber.dart';
@@ -25,10 +26,12 @@ class _OrderFormState extends State<OrderForm> {
     'Eagle',
     'Frog'
   ];
+  TextEditingController itemName = TextEditingController();
   TextEditingController eanQtyCon = TextEditingController();
   TextEditingController eanTextCon = TextEditingController();
   int selectedIndex = 0;
   List? splitted;
+  List? splitted1;
   List<DataRow> dataRows = [];
   String? selected;
   String? selectedCus;
@@ -236,186 +239,69 @@ class _OrderFormState extends State<OrderForm> {
                             ),
                           ),
                           Container(
-                            height: size.height * 0.05,
+                            height: size.height * 0.13,
                             alignment: Alignment.topLeft,
                             child: Padding(
                               padding: const EdgeInsets.all(10.0),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    "Choose Category",
-                                    style: TextStyle(
-                                      color: P_Settings.chooseCategory,
-                                      fontSize: 15,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: size.height * 0.2,
-                                  ),
-                                  Column(
-                                    children: [
-                                      // ElevatedButton(
-                                      //   onPressed: () {
-                                      //     // dataRows.clear();
-                                      //     print("splitted0----${splitted![0]}");
-                                      //     setState(() {
-                                      //       dataRows.add(DataRow(
-                                      //           cells: [
-                                      //             DataCell(
-                                      //                 Text(values.splittedCode
-                                      //                     .toString()), onTap: () {
-                                      //               selectedIndex = 0;
-                                      //               print(
-                                      //                   "selected row0.........$selectedIndex");
-                                      //             }),
-                                      //             DataCell(
-                                      //               Autocomplete<String>(
-                                      //                 optionsBuilder:
-                                      //                     (TextEditingValue value) {
-                                      //                   if (value.text.isEmpty) {
-                                      //                     return [];
-                                      //                   } else {
-                                      //                     print(
-                                      //                         "TextEditingValue---${value.text}");
-                                      //                     Provider.of<Controller>(
-                                      //                             context,
-                                      //                             listen: false)
-                                      //                         .getProductItems(
-                                      //                             value.text);
-
-                                      //                     return values.productName;
-                                      //                   }
-                                      //                 },
-                                      //                 onSelected: (value) {
-                                      //                   setState(() {
-                                      //                     _selectedItem = value;
-                                      //                     print(
-                                      //                         "_selectedItem---${_selectedItem}");
-                                      //                     splitted = _selectedItem!
-                                      //                         .split('-');
-                                      //                   });
-
-                                      //                   print(
-                                      //                       "splitted---${splitted![0]}");
-                                      //                 },
-                                      //               ),
-                                      //               onTap: () {
-                                      //                 selectedIndex = 1;
-                                      //                 print(
-                                      //                     "selected row1.........$selectedIndex");
-                                      //               },
-                                      //             ),
-                                      //             DataCell(
-                                      //                 TextField(
-                                      //                   controller: eanQtyCon,
-                                      //                   decoration: InputDecoration(
-                                      //                     border:
-                                      //                         UnderlineInputBorder(
-                                      //                       borderSide: BorderSide(
-                                      //                           color:
-                                      //                               Colors.black),
-                                      //                     ),
-                                      //                   ),
-                                      //                   onChanged: (value) {
-                                      //                     setState(() {
-                                      //                       eanQtyCon.text;
-                                      //                     });
-                                      //                   },
-                                      //                 ), onTap: () {
-                                      //               selectedIndex = 2;
-                                      //               print(
-                                      //                   "selected row2.........$selectedIndex");
-                                      //             }),
-                                      //             DataCell(
-                                      //                 TextField(
-                                      //                   readOnly: true,
-                                      //                   obscureText: true,
-                                      //                   decoration: InputDecoration(
-                                      //                     border:
-                                      //                         UnderlineInputBorder(
-                                      //                       borderSide: BorderSide(
-                                      //                           color:
-                                      //                               Colors.black),
-                                      //                     ),
-                                      //                   ),
-                                      //                   onChanged: (value) {
-                                      //                     Provider.of<Controller>(
-                                      //                             context,
-                                      //                             listen: false)
-                                      //                         .getProductItems(
-                                      //                             values
-                                      //                                 .productRate[
-                                      //                                     0]
-                                      //                                 .toString());
-                                      //                   },
-                                      //                 ), onTap: () {
-                                      //               selectedIndex = 3;
-                                      //               print(
-                                      //                   "selected row3.........$selectedIndex");
-                                      //             }),
-                                      //             DataCell(
-                                      //                 IconButton(
-                                      //                   icon: Icon(
-                                      //                     Icons.delete,
-                                      //                     color:
-                                      //                         P_Settings.extracolor,
-                                      //                   ),
-                                      //                   onPressed: () {
-                                      //                     setState(() {
-                                      //                       dataRows.removeLast();
-                                      //                     });
-                                      //                   },
-                                      //                 ), onTap: () {
-                                      //               dataRows.removeLast();
-                                      //             }),
-                                      //           ]));
-                                      //     });
-                                      //   },
-                                      //   style: ElevatedButton.styleFrom(
-                                      //     primary: P_Settings.roundedButtonColor,
-                                      //     // shape: CircleBorder(),
-                                      //   ),
-                                      //   child: Icon(Icons.add,
-                                      //       size: 20, color: Colors.black),
-                                      // ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    width: size.width * 0.01,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Container(
-                            height: size.height * 0.25,
-                            width: size.width * 0.9,
-                            child: SingleChildScrollView(
-                              scrollDirection: Axis.vertical,
                               child: Column(
                                 children: [
                                   Row(
                                     children: [
+                                      Text(
+                                        "Choose Category",
+                                        style: TextStyle(
+                                          color: P_Settings.chooseCategory,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: size.width * 0.27,
+                                      ),
+                                      SizedBox(
+                                        width: size.width * 0.01,
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
                                       Flexible(
                                         flex: 3,
-                                        child: TextField(
-                                          controller: eanQtyCon,
-                                          decoration: InputDecoration(
-                                            hintText: "Item Name",
-                                            border: UnderlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: Colors.black),
-                                            ),
-                                          ),
-                                          onChanged: (value) {
+                                        child: Autocomplete<String>(
+                                          optionsBuilder:
+                                              (TextEditingValue value) {
+                                            if (value.text.isEmpty) {
+                                              return [];
+                                            } else {
+                                              print(
+                                                  "TextEditingValue---${value.text}");
+                                              Provider.of<Controller>(context,
+                                                      listen: false)
+                                                  .getProductItems(value.text);
+                                              return values.productName;
+                                            }
+                                          },
+                                          onSelected: (value) {
                                             setState(() {
-                                              eanQtyCon.text;
+                                              _selectedItem = value;
+                                              print(
+                                                  "_selectedItem---${_selectedItem}");
+                                              splitted =
+                                                  _selectedItem!.split('-');
+                                              // Provider.of<Controller>(
+                                              //         context,
+                                              //         listen:
+                                              //             false)
+                                              //     .setSplittedCode(
+                                              //         splitted![
+                                              //             0]);
                                             });
+
+                                            print("splitted---${splitted![0]}");
                                           },
                                         ),
                                       ),
                                       SizedBox(
-                                        width: size.width * 0.03,
+                                        width: size.width * 0.02,
                                       ),
                                       Flexible(
                                         child: TextField(
@@ -429,7 +315,10 @@ class _OrderFormState extends State<OrderForm> {
                                           ),
                                           onChanged: (value) {
                                             setState(() {
-                                              eanQtyCon.text;
+                                              // Provider.of<Controller>(context,
+                                              //         listen: false)
+                                              //     .getProductItems(value.text);
+                                              // return values.productRate;
                                             });
                                           },
                                         ),
@@ -439,66 +328,175 @@ class _OrderFormState extends State<OrderForm> {
                                       ),
                                       Flexible(
                                           child: ElevatedButton(
-                                              onPressed: () {},
+                                              onPressed: () {
+                                                print(
+                                                    "splitted0----${splitted![0]}");
+
+                                                setState(() {
+                                                  // splitted[0]="";
+                                                  dataRows.add(DataRow(cells: [
+                                                    DataCell(
+                                                      Text(values.splittedCode
+                                                          .toString()),
+                                                      // TextField(
+                                                      //   readOnly: true,
+                                                      //   controller: eanTextCon,
+                                                      //   decoration: InputDecoration(
+                                                      //     border: UnderlineInputBorder(
+                                                      //       borderSide: BorderSide(
+                                                      //           color: Colors.black),
+                                                      //     ),
+                                                      //   ),
+                                                      //   onChanged: (value) {},
+                                                      // ),
+                                                    ),
+                                                    DataCell(
+                                                      Text(values.splittedCode1
+                                                          .toString()),
+                                                      // Autocomplete<String>(
+                                                      //   optionsBuilder:
+                                                      //       (TextEditingValue
+                                                      //           value) {
+                                                      //     if (value
+                                                      //         .text.isEmpty) {
+                                                      //       return [];
+                                                      //     } else {
+                                                      //       print(
+                                                      //           "TextEditingValue---${value.text}");
+                                                      //       Provider.of<Controller>(
+                                                      //               context,
+                                                      //               listen:
+                                                      //                   false)
+                                                      //           .getProductItems(
+                                                      //               value.text);
+                                                      //       return values
+                                                      //           .productName;
+                                                      //     }
+                                                      //   },
+                                                      //   onSelected: (value) {
+                                                      //     setState(() {
+                                                      //       _selectedItem =
+                                                      //           value;
+                                                      //       print(
+                                                      //           "_selectedItem---${_selectedItem}");
+                                                      //       splitted =
+                                                      //           _selectedItem!
+                                                      //               .split('-');
+                                                      //       // Provider.of<Controller>(
+                                                      //       //         context,
+                                                      //       //         listen:
+                                                      //       //             false)
+                                                      //       //     .setSplittedCode(
+                                                      //       //         splitted![
+                                                      //       //             0]);
+                                                      //     });
+
+                                                      //     print(
+                                                      //         "splitted---${splitted![0]}");
+                                                      //   },
+                                                      // ),
+                                                    ),
+                                                    DataCell(
+                                                      TextField(
+                                                        controller: eanQtyCon,
+                                                        decoration:
+                                                            InputDecoration(
+                                                          border:
+                                                              UnderlineInputBorder(
+                                                            borderSide:
+                                                                BorderSide(
+                                                                    color: Colors
+                                                                        .black),
+                                                          ),
+                                                        ),
+                                                        onChanged: (value) {
+                                                          eanQtyCon.text;
+                                                        },
+                                                      ),
+                                                    ),
+                                                    DataCell(
+                                                      TextField(
+                                                        readOnly: true,
+                                                        obscureText: true,
+                                                        decoration:
+                                                            InputDecoration(
+                                                          border:
+                                                              UnderlineInputBorder(
+                                                            borderSide:
+                                                                BorderSide(
+                                                                    color: Colors
+                                                                        .black),
+                                                          ),
+                                                        ),
+                                                        onChanged: (value) {},
+                                                      ),
+                                                    ),
+                                                  ]));
+                                                });
+                                              },
                                               child: Text("Add"),
                                               style: ElevatedButton.styleFrom(
                                                 primary: P_Settings.wavecolor,
                                               ))),
                                     ],
-                                  )
+                                  ),
                                 ],
                               ),
-                              // child: FittedBox(
-                              //   child: DataTable(
-                              //       headingRowHeight: 30,
-                              //       decoration: BoxDecoration(
-                              //           color: P_Settings.tableheadingColor),
-                              //       dataRowColor:
-                              //           MaterialStateColor.resolveWith(
-                              //               (states) => Colors.white),
-                              //       columns: <DataColumn>[
-                              //         DataColumn(
-                              //           label: Text(
-                              //             'EAN',
-                              //             style: TextStyle(
-                              //               fontWeight: FontWeight.bold,
-                              //               color: P_Settings.dataTable,
-                              //             ),
-                              //           ),
-                              //         ),
-                              //         DataColumn(
-                              //           label: Text(
-                              //             'Item Name',
-                              //             style: TextStyle(
-                              //               fontWeight: FontWeight.bold,
-                              //               color: P_Settings.dataTable,
-                              //             ),
-                              //           ),
-                              //         ),
-                              //         DataColumn(
-                              //           label: Text(
-                              //             'QTY',
-                              //             style: TextStyle(
-                              //               fontWeight: FontWeight.bold,
-                              //               color: P_Settings.dataTable,
-                              //             ),
-                              //           ),
-                              //         ),
-                              //         DataColumn(
-                              //           label: Text(
-                              //             'Rate',
-                              //             style: TextStyle(
-                              //               fontWeight: FontWeight.bold,
-                              //               color: P_Settings.dataTable,
-                              //             ),
-                              //           ),
-                              //         ),
-                              //         DataColumn(
-                              //           label: Text(""),
-                              //         ),
-                              //       ],
-                              //       rows: dataRows),
-                              // ),
+                            ),
+                          ),
+                          Container(
+                            height: size.height * 0.25,
+                            width: size.width * 0.9,
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.vertical,
+                              child: FittedBox(
+                                child: DataTable(
+                                    headingRowHeight: 30,
+                                    decoration: BoxDecoration(
+                                        color: P_Settings.tableheadingColor),
+                                    dataRowColor:
+                                        MaterialStateColor.resolveWith(
+                                            (states) => Colors.white),
+                                    columns: <DataColumn>[
+                                      DataColumn(
+                                        label: Text(
+                                          'EAN',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: P_Settings.dataTable,
+                                          ),
+                                        ),
+                                      ),
+                                      DataColumn(
+                                        label: Text(
+                                          'Item Name',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: P_Settings.dataTable,
+                                          ),
+                                        ),
+                                      ),
+                                      DataColumn(
+                                        label: Text(
+                                          'QTY',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: P_Settings.dataTable,
+                                          ),
+                                        ),
+                                      ),
+                                      DataColumn(
+                                        label: Text(
+                                          'Rate',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: P_Settings.dataTable,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                    rows: dataRows),
+                              ),
                             ),
                           ),
                           Container(
