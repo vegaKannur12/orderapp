@@ -28,6 +28,7 @@ class _OrderFormState extends State<OrderForm> {
   ];
   TextEditingController eanQtyCon = TextEditingController();
   TextEditingController eanTextCon = TextEditingController();
+  int selectedIndex = 0;
   List? splitted;
   List<DataRow> dataRows = [];
   String? selected;
@@ -81,6 +82,8 @@ class _OrderFormState extends State<OrderForm> {
   Widget build(BuildContext context) {
     // print("updateee");
     Provider.of<Controller>(context, listen: false).splittedCode = splitted![0];
+    Provider.of<Controller>(context, listen: false).splittedCode1 =
+        splitted![1];
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       // backgroundColor:P_Settings.detailscolor,
@@ -221,7 +224,7 @@ class _OrderFormState extends State<OrderForm> {
                                 children: [
                                   Text("ORDER NO:  "),
                                   Text(
-                                    "${values.ordernum.length != 0 && values.ordernum.isNotEmpty && values.ordernum[0]['os'] != null? values.ordernum[0]['os'] + randnum : randnum}",
+                                    "${values.ordernum.length != 0 && values.ordernum.isNotEmpty && values.ordernum[0]['os'] != null ? values.ordernum[0]['os'] + randnum : randnum}",
                                     style:
                                         TextStyle(color: P_Settings.extracolor),
                                   ),
@@ -248,97 +251,128 @@ class _OrderFormState extends State<OrderForm> {
                                     ),
                                   ),
                                   SizedBox(
-                                    width: size.width * 0.4,
+                                    width: size.width * 0.27,
                                   ),
                                   ElevatedButton(
                                     onPressed: () {
+                                      // dataRows.clear();
                                       print("splitted0----${splitted![0]}");
                                       setState(() {
-                                        // splitted[0]="";
-                                        dataRows.add(DataRow(cells: [
-                                          DataCell(
-                                            Text(
-                                                values.splittedCode.toString()),
-                                            // TextField(
-                                            //   readOnly: true,
-                                            //   controller: eanTextCon,
-                                            //   decoration: InputDecoration(
-                                            //     border: UnderlineInputBorder(
-                                            //       borderSide: BorderSide(
-                                            //           color: Colors.black),
-                                            //     ),
-                                            //   ),
-                                            //   onChanged: (value) {},
-                                            // ),
-                                          ),
-                                          DataCell(
-                                            Autocomplete<String>(
-                                              optionsBuilder:
-                                                  (TextEditingValue value) {
-                                                if (value.text.isEmpty) {
-                                                  return [];
-                                                } else {
-                                                  print(
-                                                      "TextEditingValue---${value.text}");
-                                                  Provider.of<Controller>(
-                                                          context,
-                                                          listen: false)
-                                                      .getProductItems(
-                                                          value.text);
-                                                  return values.productName;
-                                                }
-                                              },
-                                              onSelected: (value) {
-                                                setState(() {
-                                                  _selectedItem = value;
-                                                  print(
-                                                      "_selectedItem---${_selectedItem}");
-                                                  splitted =
-                                                      _selectedItem!.split('-');
-                                                });
-
+                                        dataRows.add(DataRow(
+                                            // onSelectChanged: (bool) =>
+                                            //     print("select $bool"),
+                                            // onSelectChanged: (b) {
+                                            //   selectedIndex = 0;
+                                            // },
+                                            cells: [
+                                              DataCell(
+                                                  Text(values.splittedCode
+                                                      .toString()), onTap: () {
+                                                selectedIndex = 0;
                                                 print(
-                                                    "splitted---${splitted![0]}");
-                                              },
-                                            ),
-                                          ),
-                                          DataCell(
-                                            TextField(
-                                              controller: eanQtyCon,
-                                              decoration: InputDecoration(
-                                                border: UnderlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      color: Colors.black),
+                                                    "selected row0.........$selectedIndex");
+                                              }),
+                                              DataCell(
+                                                Autocomplete<String>(
+                                                  optionsBuilder:
+                                                      (TextEditingValue value) {
+                                                    if (value.text.isEmpty) {
+                                                      return [];
+                                                    } else {
+                                                      print(
+                                                          "TextEditingValue---${value.text}");
+                                                      Provider.of<Controller>(
+                                                              context,
+                                                              listen: false)
+                                                          .getProductItems(
+                                                              value.text);
+
+                                                      return values.productName;
+                                                    }
+                                                  },
+                                                  onSelected: (value) {
+                                                    setState(() {
+                                                      _selectedItem = value;
+                                                      print(
+                                                          "_selectedItem---${_selectedItem}");
+                                                      splitted = _selectedItem!
+                                                          .split('-');
+                                                    });
+
+                                                    print(
+                                                        "splitted---${splitted![0]}");
+                                                  },
                                                 ),
+                                                onTap: () {
+                                                  selectedIndex = 1;
+                                                  print(
+                                                      "selected row1.........$selectedIndex");
+                                                },
                                               ),
-                                              onChanged: (value) {},
-                                            ),
-                                          ),
-                                          DataCell(
-                                            TextField(
-                                              readOnly: true,
-                                              obscureText: true,
-                                              decoration: InputDecoration(
-                                                border: UnderlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      color: Colors.black),
-                                                ),
-                                              ),
-                                              onChanged: (value) {},
-                                            ),
-                                          ),
-                                          DataCell(
-                                            IconButton(
-                                              icon: Icon(
-                                                Icons.delete,
-                                                color: P_Settings.extracolor,
-                                              ),
-                                              onPressed: () {
-                                                setState(() {});
-                                              },
-                                            ),
-                                          ),
-                                        ]));
+                                              DataCell(
+                                                  TextField(
+                                                    controller: eanQtyCon,
+                                                    decoration: InputDecoration(
+                                                      border:
+                                                          UnderlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            color:
+                                                                Colors.black),
+                                                      ),
+                                                    ),
+                                                    onChanged: (value) {
+                                                      setState(() {
+                                                        eanQtyCon.text;
+                                                      });
+                                                    },
+                                                  ), onTap: () {
+                                                selectedIndex = 2;
+                                                print(
+                                                    "selected row2.........$selectedIndex");
+                                              }),
+                                              DataCell(
+                                                  TextField(
+                                                    readOnly: true,
+                                                    obscureText: true,
+                                                    decoration: InputDecoration(
+                                                      border:
+                                                          UnderlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            color:
+                                                                Colors.black),
+                                                      ),
+                                                    ),
+                                                    onChanged: (value) {
+                                                      Provider.of<Controller>(
+                                                              context,
+                                                              listen: false)
+                                                          .getProductItems(
+                                                              values
+                                                                  .productRate[
+                                                                      0]
+                                                                  .toString());
+                                                    },
+                                                  ), onTap: () {
+                                                selectedIndex = 3;
+                                                print(
+                                                    "selected row3.........$selectedIndex");
+                                              }),
+                                              DataCell(
+                                                  IconButton(
+                                                    icon: Icon(
+                                                      Icons.delete,
+                                                      color:
+                                                          P_Settings.extracolor,
+                                                    ),
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        dataRows.removeLast();
+                                                      });
+                                                    },
+                                                  ), onTap: () {
+                                                dataRows.removeLast();
+                                              }),
+                                            ]));
                                       });
                                     },
                                     style: ElevatedButton.styleFrom(
@@ -347,6 +381,20 @@ class _OrderFormState extends State<OrderForm> {
                                     ),
                                     child: Icon(Icons.add,
                                         size: 20, color: Colors.black),
+                                  ),
+                                  SizedBox(
+                                    width: size.width * 0.01,
+                                  ),
+                                  IconButton(
+                                    icon: Icon(
+                                      Icons.delete,
+                                      color: Colors.black,
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        dataRows.clear();
+                                      });
+                                    },
                                   ),
                                 ],
                               ),
@@ -406,40 +454,7 @@ class _OrderFormState extends State<OrderForm> {
                                         label: Text(""),
                                       ),
                                     ],
-                                    rows: dataRows
-                                    // rows: const <DataRow>[
-                                    //   DataRow(
-                                    //     cells: <DataCell>[
-                                    //       DataCell(
-                                    //         Text('1'),
-                                    //       ),
-                                    //       DataCell(
-                                    //         TextField(
-                                    //           obscureText: true,
-                                    //           decoration: InputDecoration(
-                                    //             border: OutlineInputBorder(),
-                                    //             labelText: '',
-                                    //             hintText: 'Item name',
-                                    //           ),
-                                    //         ),
-                                    //       ),
-                                    //       DataCell(
-                                    //         TextField(
-                                    //           obscureText: true,
-                                    //           decoration: InputDecoration(
-                                    //             border: OutlineInputBorder(),
-                                    //             labelText: '',
-                                    //             hintText: 'QTY',
-                                    //           ),
-                                    //         ),
-                                    //       ),
-                                    //       DataCell(
-                                    //         Text('5*'),
-                                    //       ),
-                                    //     ],
-                                    //   ),
-                                    // ],
-                                    ),
+                                    rows: dataRows),
                               ),
                             ),
                           ),

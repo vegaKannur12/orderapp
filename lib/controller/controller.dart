@@ -16,7 +16,6 @@ import '../model/staffarea_model.dart';
 import '../model/staffdetails_model.dart';
 
 class Controller extends ChangeNotifier {
-  
   bool isLoading = false;
   String? sname;
   String? ordernumber;
@@ -25,12 +24,13 @@ class Controller extends ChangeNotifier {
   List<CD> c_d = [];
   String? area;
   String? splittedCode;
-
+  String? splittedCode1;
 
   List<CD> data = [];
   String? sof;
   List<Map<String, dynamic>> staffList = [];
   List<String> productName = [];
+  List<String> productRate = [];
 
   List<Map<String, dynamic>> areaList = [];
   List<Map<String, dynamic>> customerList = [];
@@ -216,13 +216,6 @@ class Controller extends ChangeNotifier {
     notifyListeners();
   }
 
-  /////////////////////////////////////////
-  // setOrdernumber() async {
-  //   final prefs = await SharedPreferences.getInstance();
-  //   String? orderno = prefs.getString("os");
-  //   ordernumber = orderno;
-  //   notifyListeners();
-  // }
   ///////////////////////////////////////////////////////////////
   Future<ProductDetails?> getProductDetails(String cid) async {
     print("cid...............${cid}");
@@ -373,8 +366,10 @@ class Controller extends ChangeNotifier {
 
       for (var item in prodctItems) {
         productName.add(item["code"] + '-' + item["item"]);
+        productRate.add(item['rate1']);
       }
       print("product name----${productName}");
+      print("product productRate----${productRate}");
       notifyListeners();
     } catch (e) {
       print(e);
