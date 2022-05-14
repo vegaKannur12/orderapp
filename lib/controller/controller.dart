@@ -30,7 +30,7 @@ class Controller extends ChangeNotifier {
   List<Map<String, dynamic>> staffList = [];
   List<String> productName = [];
   List<String> areDetails = [];
-  List<String> custmerDetails = [];
+  List<Map<String, dynamic>> custmerDetails = [];
   List<Map<String, dynamic>> areaList = [];
   List<Map<String, dynamic>> customerList = [];
   List<Map<String, dynamic>> copyCus = [];
@@ -329,7 +329,9 @@ class Controller extends ChangeNotifier {
       for (var item in areaList) {
         areDetails.add(item["aid"] + '-' + item["aname"]);
       }
+       print("areaList adding ----${areaList}");
       notifyListeners();
+     
     } catch (e) {
       print(e);
       return null;
@@ -341,13 +343,14 @@ class Controller extends ChangeNotifier {
   getCustomer(String aid) async {
     print("aid...............${aid}");
     try {
-      // customerList.clear();
+      custmerDetails.clear();
+      print("custmerDetails after clear----${custmerDetails}");
       customerList = await OrderAppDB.instance.getCustomer(aid);
       print("customerList----${customerList}");
       for (var item in customerList) {
         custmerDetails.add(item["hname"]);
       }
-
+      print("custmerDetails adding $custmerDetails");
       notifyListeners();
     } catch (e) {
       print(e);

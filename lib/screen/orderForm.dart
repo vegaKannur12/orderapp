@@ -28,6 +28,7 @@ class _OrderFormState extends State<OrderForm> {
   int _randomNumber1 = 0;
   String? staffname;
   bool visible = false;
+  bool dropvisible = true;
   String randnum = "";
   @override
   void initState() {
@@ -103,7 +104,7 @@ class _OrderFormState extends State<OrderForm> {
                     child: Padding(
                       padding: const EdgeInsets.only(left: 5, right: 5),
                       child: Container(
-                        height: size.height * 0.19,
+                        height: size.height * 0.22,
                         color: Colors.white,
                         child: Column(
                           // mainAxisAlignment: MainAxisAlignment.start,
@@ -119,44 +120,64 @@ class _OrderFormState extends State<OrderForm> {
                                 ),
                               ),
                             ),
-                            SizedBox(height: size.height * 0.01),
-                            Center(
-                              child: Container(
-                                height: size.height * 0.04,
-                                width: size.width * 0.75,
-                                child: InputDecorator(
-                                  decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 0, horizontal: 4),
-                                    border: OutlineInputBorder(gapPadding: 1),
-                                    hintText: "Select..",
+                            SizedBox(height: size.height * 0.001),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 12, right: 12),
+                              child: Row(
+                                children: [
+                                  Flexible(
+                                    flex: 3,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 15, right: 40),
+                                      child: Autocomplete<String>(
+                                        optionsBuilder:
+                                            (TextEditingValue value) {
+                                          if (value.text.isEmpty) {
+                                            return [];
+                                          } else {
+                                            print(
+                                                "TextEditingValue---${value.text}");
+                                            Provider.of<Controller>(context,
+                                                    listen: false)
+                                                .getArea(value.text);
+                                            return values.areDetails;
+                                          }
+                                        },
+                                        onSelected: (value) {
+                                          // Provider.of<Controller>(context,
+                                          //           listen: false).custmerDetails.clear();
+                                          setState(() {
+                                            _selectedItem = value;
+                                            print(
+                                                "_selectedItem---${_selectedItem}");
+                                            splitted =
+                                                _selectedItem!.split('-');
+                                            // Provider.of<Controller>(context,
+                                            //         listen: false)
+                                            //     .setSplittedCode(splitted![0]);
+                                            Provider.of<Controller>(context,
+                                                    listen: false)
+                                                .getCustomer(splitted![0]);
+                                          });
+                                        },
+                                      ),
+                                    ),
                                   ),
-                                  child: Autocomplete<String>(
-                                    optionsBuilder: (TextEditingValue value) {
-                                      if (value.text.isEmpty) {
-                                        return [];
-                                      } else {
-                                        print(
-                                            "TextEditingValue---${value.text}");
-                                        return values.areDetails.where((area) =>
-                                            area.toLowerCase().contains(
-                                                value.text.toLowerCase()));
-                                      }
-                                    },
-                                    onSelected: (value) {
-                                      setState(() {
-                                        _selectedItem = value;
-                                      });
-                                      print("_selectedItem---${_selectedItem}");
-                                      splitted = _selectedItem!.split('-');
-
-                                      Provider.of<Controller>(context,
-                                              listen: false)
-                                          .getCustomer(splitted![0]);
-                                      print("splitted---${splitted![0]}");
-                                    },
-                                  ),
-                                ),
+                                  // SizedBox(width: size.width * 0.4),
+                                  // Flexible(
+                                  //   child: ElevatedButton(
+                                  //       onPressed: () {
+                                  //         setState(() {
+                                  //           Provider.of<Controller>(context,
+                                  //                   listen: false)
+                                  //               .getCustomer(splitted![0]);
+                                  //         });
+                                  //       },
+                                  //       child: Text("Ok")),
+                                  // ),
+                                ],
                               ),
                             ),
                             SizedBox(height: size.height * 0.02),
@@ -168,7 +189,31 @@ class _OrderFormState extends State<OrderForm> {
                                   )),
                             ),
                             SizedBox(height: size.height * 0.01),
-                            dropDown2(values.customerList, "customer", size),
+                            Row(
+                              children: [
+                                Flexible(
+                                  flex: 4,
+                                  child: dropDown2(
+                                      values.custmerDetails, "customer", size),
+                                ),
+                                // Flexible(
+                                //   child: ElevatedButton(
+                                //       onPressed: () {
+                                //         setState(() {
+                                //           // Provider.of<Controller>(context,
+                                //           //         listen: false)
+                                //           //     .areaList
+                                //           //     .clear();
+                                //           // Provider.of<Controller>(context,
+                                //           //         listen: false)
+                                //           //     .customerList
+                                //           //     .clear();
+                                //         });
+                                //       },
+                                //       child: Text("Clear")),
+                                // ),
+                              ],
+                            ),
                           ],
                         ),
                       ),
@@ -296,6 +341,7 @@ class _OrderFormState extends State<OrderForm> {
                                       Flexible(
                                         child: TextField(
                                           controller: eanQtyCon,
+                                          keyboardType: TextInputType.number,
                                           decoration: InputDecoration(
                                             hintText: "QTY",
                                             border: UnderlineInputBorder(
@@ -339,8 +385,7 @@ class _OrderFormState extends State<OrderForm> {
                                                       // ),
                                                     ),
                                                     DataCell(
-                                                      Text('T SHIRT H/S')
-                                                    ),
+                                                        Text('T SHIRT H/S')),
                                                     DataCell(
                                                       TextField(
                                                         controller: eanQtyCon,
@@ -585,8 +630,7 @@ class _OrderFormState extends State<OrderForm> {
                 print("selected area..........${selected}");
               });
             }
-            Provider.of<Controller>(context, listen: false)
-                .getCustomer(selected!);
+            // Provider.of<Controller>(context, listen: false).getArea(selected!);
           },
           value: selected,
           // disabledHint: Text(selected ?? "null"),
@@ -633,7 +677,6 @@ class _OrderFormState extends State<OrderForm> {
               .toList(),
 
           onChanged: (cust) {
-            // Provider.of<Controller>(context, listen: false).areaList.clear();
             if (cust != null) {
               setState(() {
                 selectedCus = cust;
@@ -641,7 +684,6 @@ class _OrderFormState extends State<OrderForm> {
                 print("selected cus..........${selected}");
               });
             }
-            // Provider.of<Controller>(context, listen: false).getCustomer(selected!);
           },
           value: selectedCus,
         ),
