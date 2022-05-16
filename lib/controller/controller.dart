@@ -28,9 +28,9 @@ class Controller extends ChangeNotifier {
   List<CD> data = [];
   String? sof;
   List<Map<String, dynamic>> staffList = [];
-  List<String> productName = [];
+  List<Map<String, dynamic>> productName = [];
   List<String> areDetails = [];
- List<String> custmerDetails=[];
+  List<String> custmerDetails = [];
   List<Map<String, dynamic>> areaList = [];
   List<Map<String, dynamic>> customerList = [];
   List<Map<String, dynamic>> copyCus = [];
@@ -341,11 +341,11 @@ class Controller extends ChangeNotifier {
   getCustomer(String aid) async {
     print("aid...............${aid}");
     try {
-      // customerList.clear();
+      customerList.clear();
       customerList = await OrderAppDB.instance.getCustomer(aid);
       print("customerList----${customerList}");
       for (var item in customerList) {
-        custmerDetails.add(item["hname"] );
+        custmerDetails.add(item["hname"]);
       }
 
       notifyListeners();
@@ -371,11 +371,14 @@ class Controller extends ChangeNotifier {
   getProductItems(String product) async {
     print("product...............${product}");
     try {
+      productName.clear();
       prodctItems = await OrderAppDB.instance.getItems(product);
       print("prodctItems----${prodctItems}");
 
       for (var item in prodctItems) {
-        productName.add(item["code"] + '-' + item["item"]);
+        productName.add(item);
+        // productName.add(item["code"] + '-' + item["item"]);
+        // notifyListeners();
       }
       print("product name----${productName}");
       // print("product productRate----${productRate}");

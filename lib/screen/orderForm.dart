@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:orderapp/components/commoncolor.dart';
+import 'package:orderapp/components/listItem.dart';
 import 'package:orderapp/controller/controller.dart';
 import 'package:orderapp/db_helper.dart';
+import 'package:orderapp/model/productdetails_model.dart';
+import 'package:orderapp/screen/cartList.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 // import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class OrderForm extends StatefulWidget {
@@ -15,18 +19,22 @@ class OrderForm extends StatefulWidget {
 
 class _OrderFormState extends State<OrderForm> {
   String? _selectedItem;
-
+  List<Map<String, dynamic>> listWidget = [];
   ValueNotifier<int> dtatableRow = ValueNotifier(0);
   TextEditingController eanQtyCon = TextEditingController();
   TextEditingController eanTextCon = TextEditingController();
+  final TextEditingController _typeAheadController = TextEditingController();
   List? splitted;
   List<DataRow> dataRows = [];
   String? selected;
   String? selectedCus;
   String? common;
-
+  // ListItem listitem = ListItem();
   String? staffname;
   bool visible = false;
+  String itemName = '';
+  double rate1 = 0.0;
+  bool isAdded=false;
   @override
   void initState() {
     // TODO: implement initState
@@ -48,6 +56,7 @@ class _OrderFormState extends State<OrderForm> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      // backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
@@ -55,7 +64,6 @@ class _OrderFormState extends State<OrderForm> {
             child: Consumer<Controller>(builder: (context, values, child) {
               print("value.areaList-----${values.areaList}");
               print("value.custmer-----${values.customerList}");
-              print("value.splitted-----${values.splittedCode}");
 
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -118,46 +126,49 @@ class _OrderFormState extends State<OrderForm> {
                               ),
                             ),
                             SizedBox(height: size.height * 0.01),
-                            Center(
-                              child: Container(
-                                height: size.height * 0.04,
-                                width: size.width * 0.75,
-                                child: InputDecorator(
-                                  decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 0, horizontal: 4),
-                                    border: OutlineInputBorder(gapPadding: 1),
-                                    hintText: "Select..",
-                                  ),
-                                  child: Autocomplete<String>(
-                                    optionsBuilder: (TextEditingValue value) {
-                                      if (value.text.isEmpty) {
-                                        return [];
-                                      } else {
-                                        print(
-                                            "TextEditingValue---${value.text}");
-                                        return values.areDetails.where((area) =>
-                                            area.toLowerCase().contains(
-                                                value.text.toLowerCase()));
-                                      }
-                                    },
-                                    onSelected: (value) {
-                                      setState(() {
-                                        _selectedItem = value;
-                                      });
-                                      print("_selectedItem---${_selectedItem}");
-                                      splitted = _selectedItem!.split('-');
+                            SizedBox(height: size.height * 0.01),
+                            dropDown1(values.areaList, "area", size),
+                            // Center(
+                            //   child: Container(
+                            //     height: size.height * 0.04,
+                            //     width: size.width * 0.75,
+                            //     child: InputDecorator(
+                            //       decoration: InputDecoration(
+                            //         contentPadding: EdgeInsets.symmetric(
+                            //             vertical: 0, horizontal: 4),
+                            //         border: OutlineInputBorder(gapPadding: 1),
+                            //         hintText: "Select..",
+                            //       ),
+                            //       child: Autocomplete<String>(
 
-                                      Provider.of<Controller>(context,
-                                              listen: false)
-                                          .getCustomer(splitted![0]);
-                                      print("splitted---${splitted![0]}");
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: size.height * 0.02),
+                            //         optionsBuilder: (TextEditingValue value) {
+                            //           if (value.text.isEmpty) {
+                            //             return [];
+                            //           } else {
+                            //             print(
+                            //                 "TextEditingValue---${value.text}");
+                            //             return values.areDetails.where((area) =>
+                            //                 area.toLowerCase().contains(
+                            //                     value.text.toLowerCase()));
+                            //           }
+                            //         },
+                            //         onSelected: (value) {
+                            //           setState(() {
+                            //             _selectedItem = value;
+                            //           });
+                            //           print("_selectedItem---${_selectedItem}");
+                            //           splitted = _selectedItem!.split('-');
+
+                            //           Provider.of<Controller>(context,
+                            //                   listen: false)
+                            //               .getCustomer(splitted![0]);
+                            //           print("splitted---${splitted![0]}");
+                            //         },
+                            //       ),
+                            //     ),
+                            //   ),
+                            // ),
+                            SizedBox(height: size.height * 0.01),
                             Padding(
                               padding: const EdgeInsets.only(left: 8.0),
                               child: Text("Customer",
@@ -232,284 +243,229 @@ class _OrderFormState extends State<OrderForm> {
                             ),
                           ),
                           Container(
-                            height: size.height * 0.05,
+                            height: size.height * 0.2,
                             alignment: Alignment.topLeft,
                             child: Padding(
                               padding: const EdgeInsets.all(10.0),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    "Choose Category",
-                                    style: TextStyle(
-                                        color: P_Settings.chooseCategory),
-                                  ),
-                                  SizedBox(
-                                    width: size.width * 0.4,
-                                  ),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      print("splitted0----${splitted![0]}");
-
-                                      setState(() {
-                                        // splitted[0]="";
-                                        dataRows.add(DataRow(cells: [
-                                          DataCell(
-                                            Text(
-                                                values.splittedCode.toString()),
-                                            // TextField(
-                                            //   readOnly: true,
-                                            //   controller: eanTextCon,
-                                            //   decoration: InputDecoration(
-                                            //     border: UnderlineInputBorder(
-                                            //       borderSide: BorderSide(
-                                            //           color: Colors.black),
-                                            //     ),
-                                            //   ),
-                                            //   onChanged: (value) {},
-                                            // ),
-                                          ),
-                                          DataCell(
-                                            Autocomplete<String>(
-                                              optionsBuilder:
-                                                  (TextEditingValue value) {
-                                                if (value.text.isEmpty) {
-                                                  return [];
-                                                } else {
-                                                  print(
-                                                      "TextEditingValue---${value.text}");
-                                                  Provider.of<Controller>(
-                                                          context,
-                                                          listen: false)
-                                                      .getProductItems(
-                                                          value.text);
-                                                  return values.productName;
-                                                }
-                                              },
-                                              onSelected: (value) {
-                                                setState(() {
-                                                  _selectedItem = value;
-                                                  print(
-                                                      "_selectedItem---${_selectedItem}");
-                                                  splitted =
-                                                      _selectedItem!.split('-');
-                                                  Provider.of<Controller>(
-                                                          context,
-                                                          listen: false)
-                                                      .setSplittedCode(
-                                                          splitted![0]);
-                                                });
-
-                                                print(
-                                                    "splitted---${splitted![0]}");
-                                              },
-                                            ),
-                                          ),
-                                          DataCell(
-                                            TextField(
-                                              controller: eanQtyCon,
-                                              decoration: InputDecoration(
-                                                border: UnderlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      color: Colors.black),
-                                                ),
-                                              ),
-                                              onChanged: (value) {},
-                                            ),
-                                          ),
-                                          DataCell(
-                                            TextField(
-                                              readOnly: true,
-                                              obscureText: true,
-                                              decoration: InputDecoration(
-                                                border: UnderlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      color: Colors.black),
-                                                ),
-                                              ),
-                                              onChanged: (value) {},
-                                            ),
-                                          ),
-                                        ]));
-                                      });
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      primary: P_Settings.roundedButtonColor,
-                                      // shape: CircleBorder(),
-                                    ),
-                                    child: Icon(Icons.add,
-                                        size: 20, color: Colors.black),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Container(
-                            height: size.height * 0.25,
-                            width: size.width * 0.9,
-                            child: SingleChildScrollView(
-                              scrollDirection: Axis.vertical,
-                              child: FittedBox(
-                                child: DataTable(
-                                    headingRowHeight: 30,
-                                    decoration: BoxDecoration(
-                                        color: P_Settings.tableheadingColor),
-                                    dataRowColor:
-                                        MaterialStateColor.resolveWith(
-                                            (states) => Colors.white),
-                                    columns: <DataColumn>[
-                                      DataColumn(
-                                        label: Text(
-                                          'EAN',
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: P_Settings.dataTable,
-                                          ),
-                                        ),
-                                      ),
-                                      DataColumn(
-                                        label: Text(
-                                          'Item Name',
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: P_Settings.dataTable,
-                                          ),
-                                        ),
-                                      ),
-                                      DataColumn(
-                                        label: Text(
-                                          'QTY',
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: P_Settings.dataTable,
-                                          ),
-                                        ),
-                                      ),
-                                      DataColumn(
-                                        label: Text(
-                                          'Rate',
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: P_Settings.dataTable,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                    rows: dataRows
-                                    // rows: const <DataRow>[
-                                    //   DataRow(
-                                    //     cells: <DataCell>[
-                                    //       DataCell(
-                                    //         Text('1'),
-                                    //       ),
-                                    //       DataCell(
-                                    //         TextField(
-                                    //           obscureText: true,
-                                    //           decoration: InputDecoration(
-                                    //             border: OutlineInputBorder(),
-                                    //             labelText: '',
-                                    //             hintText: 'Item name',
-                                    //           ),
-                                    //         ),
-                                    //       ),
-                                    //       DataCell(
-                                    //         TextField(
-                                    //           obscureText: true,
-                                    //           decoration: InputDecoration(
-                                    //             border: OutlineInputBorder(),
-                                    //             labelText: '',
-                                    //             hintText: 'QTY',
-                                    //           ),
-                                    //         ),
-                                    //       ),
-                                    //       DataCell(
-                                    //         Text('5*'),
-                                    //       ),
-                                    //     ],
-                                    //   ),
-                                    // ],
-                                    ),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            height: size.height * 0.01,
-                            color: Colors.grey[300],
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(10.0),
-                            child: Container(
-                              height: size.height * 0.2,
                               child: Column(
                                 children: [
                                   Row(
                                     children: [
+                                      Text(
+                                        "Choose Category",
+                                        style: TextStyle(
+                                            color: P_Settings.chooseCategory),
+                                      ),
                                       SizedBox(
-                                        width: size.width * 0.359,
+                                        width: size.width * 0.4,
                                       ),
-                                      Text("Total items:"),
-                                      SizedBox(
-                                        width: size.width * 0.1,
-                                      ),
-                                      Flexible(
-                                        child: TextField(
-                                          readOnly: true,
-                                          decoration: InputDecoration(
-                                              // border: UnderlineInputBorder(
-                                              //   borderSide: BorderSide(
-                                              //       color: Color.fromARGB(
-                                              //           255, 11, 177, 38)),
-                                              // ),
-                                              ),
-                                          onChanged: (value) {},
-                                        ),
-                                      ),
-                                      // Icon(Icons.shopping_cart, size: 19),
                                     ],
+                                  ),
+                                  SizedBox(
+                                    height: size.height * 0.015,
                                   ),
                                   Row(
-                                    // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      SizedBox(
-                                        width: size.width * 0.25,
-                                        height: size.height * 0.04,
-                                      ),
-                                      Text("Appropriate Total : "),
-                                      SizedBox(
-                                        width: size.width * 0.1,
-                                      ),
                                       Flexible(
-                                        child: TextField(
-                                          readOnly: true,
-                                          obscureText: true,
-                                          // decoration: InputDecoration(
-                                          //   // border: UnderlineInputBorder(
-                                          //   //   borderSide: BorderSide(
-                                          //   //       color: Color.fromARGB(
-                                          //   //           255, 11, 177, 38)),
-                                          //   // ),
-                                          // ),
-                                          onChanged: (value) {},
+                                        child: InputDecorator(
+                                          decoration: InputDecoration(
+                                            contentPadding:
+                                                EdgeInsets.symmetric(
+                                                    vertical: 0, horizontal: 4),
+                                            border: OutlineInputBorder(
+                                                gapPadding: 1),
+                                            hintText: "Select..",
+                                          ),
+                                          child: Autocomplete<
+                                              Map<String, dynamic>>(
+                                            optionsBuilder:
+                                                (TextEditingValue value) {
+                                              if (value.text.isEmpty) {
+                                                return [];
+                                              } else {
+                                                print(
+                                                    "TextEditingValue---${value.text}");
+                                                Provider.of<Controller>(context,
+                                                        listen: false)
+                                                    .getProductItems(
+                                                        value.text);
+                                                return values.productName;
+                                              }
+                                            },
+                                            displayStringForOption:
+                                                (Map<String, dynamic> option) =>
+                                                    option["code"] +
+                                                    '-' +
+                                                    option["item"],
+                                            // +
+                                            // '-' +
+                                            // option["rate1"] ,
+                                            onSelected: (value) {
+                                              setState(() {
+                                                print("value----${value}");
+                                                _selectedItem = value["item"];
+                                                itemName = value["item"];
+                                                rate1 = double.parse(
+                                                    value["rate1"]);
+                                                print(
+                                                    "_selectedItem---${_selectedItem}");
+                                                // splitted =
+                                                //     _selectedItem!.split('-');
+                                                // Provider.of<Controller>(context,
+                                                //         listen: false)
+                                                //     .setSplittedCode(
+                                                //         splitted![0]);
+                                              });
+
+                                              print(
+                                                  "splitted---${splitted![0]}");
+                                            },
+                                            optionsViewBuilder: (BuildContext
+                                                    context,
+                                                AutocompleteOnSelected<
+                                                        Map<String, dynamic>>
+                                                    onSelected,
+                                                Iterable<Map<String, dynamic>>
+                                                    options) {
+                                              return Align(
+                                                alignment: Alignment.topLeft,
+                                                child: Material(
+                                                  child: Container(
+                                                    width: size.width * 0.7,
+                                                    // color: Colors.teal,
+                                                    child: ListView.builder(
+                                                      padding:
+                                                          EdgeInsets.all(10.0),
+                                                      itemCount: options.length,
+                                                      itemBuilder:
+                                                          (BuildContext context,
+                                                              int index) {
+                                                        //      print(
+                                                        // "option----${options}");
+                                                        print(
+                                                            "index----${index}");
+                                                        final Map<String,
+                                                                dynamic>
+                                                            option =
+                                                            options.elementAt(
+                                                                index);
+                                                        print(
+                                                            "option----${option}");
+                                                        return ListTile(
+                                                          trailing: IconButton(
+                                                            icon:
+                                                                Icon(Icons.add),
+                                                            onPressed: () {
+                                                              String item =
+                                                                  option[
+                                                                      "item"];
+                                                              double rate1 = double
+                                                                  .parse(option[
+                                                                      "rate1"]);
+                                                              print(
+                                                                  "item----rate---${option["item"]}---${option["rate1"]}");
+                                                              listWidget.add({
+                                                                "item": item,
+                                                                "rate1": rate1
+                                                              });
+                                                              setState(() {
+                                                              isAdded=true;
+                                                                
+                                                              });
+                                                            },
+                                                          ),
+                                                          onTap: () {
+                                                            onSelected(option);
+                                                          },
+                                                          title: Text(
+                                                              option["code"] +
+                                                                  '-' +
+                                                                  option["item"]
+                                                                      .toString(),
+                                                              style: const TextStyle(
+                                                                  color: Colors
+                                                                      .black)),
+                                                        );
+                                                      },
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ),
                                         ),
+                                      ),
+                                      SizedBox(
+                                        width: size.width * 0.03,
+                                      ),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          print(
+                                              " itemName, rate1--${itemName}--${rate1}");
+                                          listWidget.add({
+                                            "item": itemName,
+                                            "rate1": rate1
+                                          });
+                                          setState(() {
+                                            isAdded=true;
+                                          });
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          primary:
+                                              P_Settings.roundedButtonColor,
+                                          // shape: CircleBorder(),
+                                        ),
+                                        child: Icon(Icons.add,
+                                            size: 20, color: Colors.black),
                                       ),
                                     ],
                                   ),
-                                  Padding(
-                                    padding: EdgeInsets.all(8.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        SizedBox(height: size.height * 0.03),
-                                        ElevatedButton(
-                                            onPressed: () {},
-                                            child: Text("Save"),
-                                            style: ElevatedButton.styleFrom(
-                                              primary:
-                                                  P_Settings.chooseCategory,
-                                            ))
-                                      ],
-                                    ),
+                                  SizedBox(
+                                    height: size.height * 0.015,
                                   ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      ElevatedButton.icon(
+                                        icon: Icon(
+                                          Icons.shopping_cart,
+                                          color: Colors.white,
+                                          size: 30.0,
+                                        ),
+                                        label: Text("View bag"),
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => CartList(
+                                                      listWidget: listWidget,
+                                                    )),
+                                          );
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          shape: new RoundedRectangleBorder(
+                                            borderRadius:
+                                                new BorderRadius.circular(10.0),
+                                          ),
+                                        ),
+                                      )
+                                      // IconButton(
+                                      //     onPressed: () {
+                                      //       Navigator.push(
+                                      //         context,
+                                      //         MaterialPageRoute(
+                                      //             builder: (context) =>
+                                      //                 CartList(
+                                      //                   listWidget: listWidget,
+                                      //                 )),
+                                      //       );
+                                      //     },
+                                      //     icon: Icon(
+                                      //       Icons.shopping_cart,
+                                      //       size: 35,
+                                      //     ))
+                                    ],
+                                  )
                                 ],
                               ),
                             ),
@@ -532,51 +488,53 @@ class _OrderFormState extends State<OrderForm> {
     print("value.area-----${items}");
     return Padding(
       padding: EdgeInsets.only(left: 16.0, right: 16),
-      child: Container(
-        height: size.height * 0.045,
-        width: size.width * 0.9,
-        decoration: ShapeDecoration(
-          shape: RoundedRectangleBorder(
-            side: BorderSide(
-              color: P_Settings.orderFormcolor,
-              width: 1.0,
+      child: Center(
+        child: Container(
+          height: size.height * 0.045,
+          width: size.width * 0.75,
+          decoration: ShapeDecoration(
+            shape: RoundedRectangleBorder(
+              side: BorderSide(
+                color: P_Settings.orderFormcolor,
+                width: 1.0,
+              ),
+              borderRadius: BorderRadius.all(Radius.circular(10.0)),
             ),
-            borderRadius: BorderRadius.all(Radius.circular(10.0)),
           ),
-        ),
-        child: DropdownButton<String>(
-          hint: Text("Select"),
-          isExpanded: true,
-          autofocus: false,
-          underline: SizedBox(),
-          elevation: 0,
-          items: items
-              .map((item) => DropdownMenuItem<String>(
-                  value: item["aid"].toString(),
-                  child: Container(
-                    width: size.width * 0.5,
-                    child: Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text(item["aname"].toString())),
-                  )))
-              .toList(),
-          onChanged: (item) {
-            // Provider.of<Controller>(context, listen: false)
-            //     .customerList
-            //     .length = 0;
-            print("clicked");
+          child: DropdownButton<String>(
+            hint: Text("Select"),
+            isExpanded: true,
+            autofocus: false,
+            underline: SizedBox(),
+            elevation: 0,
+            items: items
+                .map((item) => DropdownMenuItem<String>(
+                    value: item["aid"].toString(),
+                    child: Container(
+                      width: size.width * 0.5,
+                      child: Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(item["aname"].toString())),
+                    )))
+                .toList(),
+            onChanged: (item) {
+              // Provider.of<Controller>(context, listen: false)
+              //     .customerList
+              //     .length = 0;
+              print("clicked");
 
-            if (item != null) {
-              setState(() {
-                selected = item;
-                print("selected area..........${selected}");
-              });
-            }
-            Provider.of<Controller>(context, listen: false)
-                .getCustomer(selected!);
-          },
-          value: selected,
-          // disabledHint: Text(selected ?? "null"),
+              if (item != null) {
+                setState(() {
+                  selected = item;
+                  print("selected area..........${selected}");
+                });
+              }
+              Provider.of<Controller>(context, listen: false)
+                  .getCustomer(selected!);
+            },
+            value: selected,
+            // disabledHint: Text(selected ?? "null"),
+          ),
         ),
       ),
     );
@@ -587,50 +545,51 @@ class _OrderFormState extends State<OrderForm> {
     // print("value.custmer-----${items}");
     return Padding(
       padding: const EdgeInsets.only(left: 16.0, right: 16),
-      child: Container(
-        height: size.height * 0.045,
-        width: size.width * 0.75,
-        decoration: ShapeDecoration(
-          shape: RoundedRectangleBorder(
-            side: BorderSide(
-              color: P_Settings.orderFormcolor,
-              width: 1.0,
+      child: Center(
+        child: Container(
+          height: size.height * 0.045,
+          width: size.width * 0.75,
+          decoration: ShapeDecoration(
+            shape: RoundedRectangleBorder(
+              side: BorderSide(
+                color: P_Settings.orderFormcolor,
+                width: 1.0,
+              ),
+              borderRadius: BorderRadius.all(Radius.circular(10.0)),
             ),
-            borderRadius: BorderRadius.all(Radius.circular(10.0)),
           ),
-        ),
-        child: DropdownButton<String>(
-          // disabledHint: customr.isEmpty || customr == null ? Text("Select") : null,
-          hint: Text("Select"),
-          // dropdownColor: Colors.transparent,
-          isExpanded: true,
-          autofocus: false,
-          underline: SizedBox(),
-          elevation: 0,
-          // value: "INDIA",
-          items: customr
-              .map((cust) => DropdownMenuItem<String>(
-                  value: cust["code"].toString(),
-                  child: Container(
-                    width: size.width * 0.5,
-                    child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(cust["hname"].toString())),
-                  )))
-              .toList(),
+          child: DropdownButton<String>(
+            // disabledHint: customr.isEmpty || customr == null ? Text("Select") : null,
+            hint: Text("Select"),
+            // dropdownColor: Colors.transparent,
+            isExpanded: true,
+            autofocus: false,
+            underline: SizedBox(),
+            elevation: 0,
+            // value: "INDIA",
+            items: customr
+                .map((cust) => DropdownMenuItem<String>(
+                    value: cust["code"].toString(),
+                    child: Container(
+                      width: size.width * 0.5,
+                      child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(cust["hname"].toString())),
+                    )))
+                .toList(),
 
-          onChanged: (cust) {
-            // Provider.of<Controller>(context, listen: false).areaList.clear();
-            if (cust != null) {
-              setState(() {
-                selectedCus = cust;
-
-                print("selected cus..........${selected}");
-              });
-            }
-            // Provider.of<Controller>(context, listen: false).getCustomer(selected!);
-          },
-          value: selectedCus,
+            onChanged: (cust) {
+              // Provider.of<Controller>(context, listen: false).areaList.clear();
+              if (cust != null) {
+                setState(() {
+                  selectedCus = cust;
+                  print("selected cus..........${selected}");
+                });
+              }
+              // Provider.of<Controller>(context, listen: false).getCustomer(selected!);
+            },
+            value: selectedCus,
+          ),
         ),
       ),
     );

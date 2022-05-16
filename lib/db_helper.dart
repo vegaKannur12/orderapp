@@ -405,9 +405,9 @@ class OrderAppDB {
     print("product---${product}");
     Database db = await instance.database;
     var res = await db.rawQuery(
-        "SELECT * FROM productDetailsTable WHERE item LIKE '%$product%'");
+        "SELECT A.item, A.ean, A.rate1,A.code FROM productDetailsTable A WHERE A.item LIKE '$product%'");
 
-    print("SELECT * FROM productDetailsTable WHERE item LIKE '%$product%'");
+    print("SELECT * FROM productDetailsTable WHERE item LIKE '$product%'");
     print("items=================${res}");
     return res;
   }
