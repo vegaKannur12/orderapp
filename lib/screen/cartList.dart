@@ -131,10 +131,8 @@ class _CartListState extends State<CartList> {
                                             fontWeight: FontWeight.bold,
                                             fontSize: 16),
                                         keyboardType: TextInputType.number,
-                                        // decoration: new InputDecoration(
-                                        //   border: InputBorder.none,
-                                        // ),
                                         controller: _controller,
+                                        
                                       )),
                                   Text(
                                     "\u{20B9}${rate}",

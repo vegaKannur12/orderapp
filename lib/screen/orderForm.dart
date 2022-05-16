@@ -441,13 +441,60 @@ class _OrderFormState extends State<OrderForm> {
                                                                       "rate1"]);
                                                               print(
                                                                   "item----rate---${option["item"]}---${option["rate1"]}");
-                                                              Provider.of<Controller>(context, listen: false).listWidget.add({
+                                                              Provider.of<Controller>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .listWidget
+                                                                  .add({
                                                                 "item": item,
                                                                 "rate1": rate1
                                                               });
-                                                              setState(() {
-                                                                isAdded = true;
-                                                              });
+                                                              showDialog(
+                                                                context:
+                                                                    context,
+                                                                builder: (ctx) =>
+                                                                    AlertDialog(
+                                                                  // title: Text("Alert Dialog Box"),
+                                                                  content: Text(
+                                                                      "delete?"),
+                                                                  actions: <
+                                                                      Widget>[
+                                                                    Row(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .end,
+                                                                      children: [
+                                                                        ElevatedButton(
+                                                                          style:
+                                                                              ElevatedButton.styleFrom(primary: P_Settings.wavecolor),
+                                                                          onPressed:
+                                                                              () {
+                                                                            Navigator.of(ctx).pop();
+                                                                          },
+                                                                          child:
+                                                                              Text("cancel"),
+                                                                        ),
+                                                                        SizedBox(
+                                                                          width:
+                                                                              size.width * 0.01,
+                                                                        ),
+                                                                        ElevatedButton(
+                                                                          style:
+                                                                              ElevatedButton.styleFrom(primary: P_Settings.wavecolor),
+                                                                          onPressed:
+                                                                              () {
+                                                                            Provider.of<Controller>(context, listen: false).deleteListWidget(index);
+                                                                            Navigator.of(ctx).pop();
+                                                                          },
+                                                                          child:
+                                                                              Text("ok"),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              );
                                                             },
                                                           ),
                                                           onTap: () {
@@ -478,7 +525,10 @@ class _OrderFormState extends State<OrderForm> {
                                         onPressed: () {
                                           print(
                                               " itemName, rate1--${itemName}--${rate1}");
-                                          Provider.of<Controller>(context, listen: false).listWidget.add({
+                                          Provider.of<Controller>(context,
+                                                  listen: false)
+                                              .listWidget
+                                              .add({
                                             "item": itemName,
                                             "rate1": rate1
                                           });
@@ -513,9 +563,8 @@ class _OrderFormState extends State<OrderForm> {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (context) => CartList(
-                                                      
-                                                    )),
+                                                builder: (context) =>
+                                                    CartList()),
                                           );
                                         },
                                         style: ElevatedButton.styleFrom(
