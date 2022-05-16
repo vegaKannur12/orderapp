@@ -98,6 +98,8 @@ class OrderAppDB {
   static final comid = 'comid';
   static final comanme = 'comanme';
 ///////////////// ORDER MASTER ////////////////////
+  static final order_id = 'order_id';
+
   static final ordernum = 'ordernum';
   static final orderdatetime = 'orderdatetime';
   static final customerid = 'customerid';
@@ -237,7 +239,7 @@ class OrderAppDB {
           ''');
     await db.execute('''
           CREATE TABLE orderMasterTable (
-            $id INTEGER PRIMARY KEY AUTOINCREMENT,
+            $order_id INTEGER PRIMARY KEY AUTOINCREMENT,
             $ordernum INTEGER NOT NULL,
             $orderdatetime TEXT,
             $os TEXT NOT NULL,
@@ -246,6 +248,20 @@ class OrderAppDB {
             $areaid TEXT,
             $mstatus INTEGER
 
+          )
+          ''');
+
+    await db.execute('''
+          CREATE TABLE orderDetailTable (
+            $order_id INTEGER ,
+            $ordernum INTEGER NOT NULL,
+            $os TEXT NOT NULL,
+            $customerid TEXT,
+            $cartrowno INTEGER,
+            $code TEXT,
+            $qty REAL,
+            $rate INTEGER,
+            $cstatus INTEGER
           )
           ''');
     await db.execute('''
