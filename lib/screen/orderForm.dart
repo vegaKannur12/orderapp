@@ -133,7 +133,7 @@ class _OrderFormState extends State<OrderForm> {
                                 ),
                               ),
                             ),
-                            SizedBox(height: size.height * 0.001),
+                            SizedBox(height: size.height * 0.01),
                             Padding(
                               padding:
                                   const EdgeInsets.only(left: 12, right: 12),
@@ -142,7 +142,7 @@ class _OrderFormState extends State<OrderForm> {
                                   Flexible(
                                     flex: 5,
                                     child: Padding(
-                                      padding: const EdgeInsets.only(
+                                      padding: EdgeInsets.only(
                                           left: 14.0, right: 40),
                                       child: InputDecorator(
                                         decoration: InputDecoration(
@@ -209,6 +209,7 @@ class _OrderFormState extends State<OrderForm> {
                                     fontSize: 16,
                                   )),
                             ),
+                            SizedBox(height: size.height * 0.01),
                             Row(
                               children: [
                                 Flexible(
@@ -374,9 +375,6 @@ class _OrderFormState extends State<OrderForm> {
                                                     option["code"] +
                                                     '-' +
                                                     option["item"],
-                                            // +
-                                            // '-' +
-                                            // option["rate1"] ,
                                             onSelected: (value) {
                                               setState(() {
                                                 print("value----${value}");
@@ -386,16 +384,7 @@ class _OrderFormState extends State<OrderForm> {
                                                     value["rate1"]);
                                                 print(
                                                     "_selectedItem---${_selectedItem}");
-                                                // splitted =
-                                                //     _selectedItem!.split('-');
-                                                // Provider.of<Controller>(context,
-                                                //         listen: false)
-                                                //     .setSplittedCode(
-                                                //         splitted![0]);
                                               });
-
-                                              print(
-                                                  "splitted---${splitted![0]}");
                                             },
                                             optionsViewBuilder: (BuildContext
                                                     context,
@@ -441,13 +430,20 @@ class _OrderFormState extends State<OrderForm> {
                                                                       "rate1"]);
                                                               print(
                                                                   "item----rate---${option["item"]}---${option["rate1"]}");
-                                                              Provider.of<Controller>(context, listen: false).listWidget.add({
+                                                              Provider.of<Controller>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .listWidget
+                                                                  .add({
                                                                 "item": item,
                                                                 "rate1": rate1
                                                               });
-                                                              setState(() {
-                                                                isAdded = true;
-                                                              });
+                                                              Navigator.pop(context);
+                                                              // setState(() {
+                                                              //   _selectedItem =
+                                                              //       "";
+                                                              // });
                                                             },
                                                           ),
                                                           onTap: () {
@@ -478,7 +474,10 @@ class _OrderFormState extends State<OrderForm> {
                                         onPressed: () {
                                           print(
                                               " itemName, rate1--${itemName}--${rate1}");
-                                          Provider.of<Controller>(context, listen: false).listWidget.add({
+                                          Provider.of<Controller>(context,
+                                                  listen: false)
+                                              .listWidget
+                                              .add({
                                             "item": itemName,
                                             "rate1": rate1
                                           });
@@ -513,9 +512,8 @@ class _OrderFormState extends State<OrderForm> {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (context) => CartList(
-                                                      
-                                                    )),
+                                                builder: (context) =>
+                                                    CartList()),
                                           );
                                         },
                                         style: ElevatedButton.styleFrom(

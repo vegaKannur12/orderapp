@@ -111,7 +111,8 @@ class _CartListState extends State<CartList> {
                 )
               ],
             ),
-            trailing: IconButton(
+            trailing: 
+            IconButton(
               onPressed: () {
                 showDialog(
                   context: context,
