@@ -97,6 +97,19 @@ class OrderAppDB {
   ////////////////// product company ////////////////
   static final comid = 'comid';
   static final comanme = 'comanme';
+///////////////// ORDER MASTER ////////////////////
+  static final ordernum = 'ordernum';
+  static final orderdatetime = 'orderdatetime';
+  static final customerid = 'customerid';
+  static final userid = 'userid';
+  static final areaid = 'areaid';
+  static final mstatus = 'mstatus';
+/////////////////// cart table/////////////
+  static final cartdatetime = 'userid';
+  static final cartrowno = 'areaid';
+  static final qty = 'mstatus';
+  static final rate = 'rate';
+  static final cstatus = 'cstatus';
 
   Future<Database> get database async {
     if (_database != null) return _database!;
@@ -222,7 +235,56 @@ class OrderAppDB {
             $comanme TEXT
           )
           ''');
+    await db.execute('''
+          CREATE TABLE orderMasterTable (
+            $id INTEGER PRIMARY KEY AUTOINCREMENT,
+            $ordernum INTEGER NOT NULL,
+            $orderdatetime TEXT,
+            $os TEXT NOT NULL,
+            $customerid TEXT,
+            $userid TEXT,
+            $areaid TEXT,
+            $mstatus INTEGER
+
+          )
+          ''');
+    await db.execute('''
+          CREATE TABLE orderBagTable (
+            $id INTEGER PRIMARY KEY AUTOINCREMENT,
+            $cartdatetime TEXT,
+            $os TEXT NOT NULL,
+            $customerid TEXT,
+            $cartrowno INTEGER,
+            $code TEXT,
+            $qty REAL,
+            $rate INTEGER,
+            $cstatus INTEGER
+          )
+          ''');
   }
+
+  ////////////// cart order ////////////////////////////
+  Future insertorderBagTable() async {
+    final db = await database;
+    var query2 =
+        'INSERT INTO orderBagTable(cartdatetime, os, customerid, cartrowno, cartrowno, code, qty, rate, cstatus) VALUES("${sdata.sid}", "${sdata.sname}", "${sdata.unme}", "${sdata.pwd}", "${sdata.ad1}", "${sdata.ad2}", "${sdata.ad3}", "${sdata.ph}", "${sdata.area}")';
+    var res = await db.rawInsert(query2);
+    print(query2);
+    // print(res);
+    return res;
+  }
+
+  /////////////////////// order master table insertion//////////////////////
+  // Future insertorderMaster() async {
+  //   final db = await database;
+  //   var query3 =
+  //       'INSERT INTO orderMasterTable(ordernum, orderdatetime, os, customerid, userid, areaid, mstatus) VALUES("${adata.aid}", "${date}")';
+  //   var res = await db.rawInsert(query3);
+  //   print(query3);
+  //   print(res);
+  //   return res;
+  // }
+//////////////////////// insert into bag ////////////////////////////////
 
   ///////////////////// registration details insertion //////////////////////////
   Future insertRegistrationDetails(RegistrationData data) async {

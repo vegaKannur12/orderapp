@@ -42,16 +42,28 @@ class _OrderFormState extends State<OrderForm> {
   int _randomNumber1 = 0;
   bool dropvisible = true;
   String randnum = "";
+  int num = 0;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     Provider.of<Controller>(context, listen: false).getOrderno();
+    num = num + 1;
+    num ++;
+    print("Numsssssssss$num");
+    num = num ;
+    print("Numsssssssss11$num");
+
     sharedPref();
     if (splitted == null || splitted!.isEmpty) {
       splitted = ["", ""];
     }
   }
+
+  // void onChange() {
+  //   num = num + 1;
+  //   print("Numsssssssss$num");
+  // }
 
   sharedPref() async {
     final prefs = await SharedPreferences.getInstance();

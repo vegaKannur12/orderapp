@@ -18,6 +18,7 @@ class _CartListState extends State<CartList> {
         Provider.of<Controller>(context, listen: false).listWidget.length;
     _controller = List.generate(length, (i) => TextEditingController());
   }
+ 
 
   @override
   Widget build(BuildContext context) {
