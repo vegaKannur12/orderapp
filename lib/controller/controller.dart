@@ -24,7 +24,7 @@ class Controller extends ChangeNotifier {
   List<CD> c_d = [];
   String? area;
   String? splittedCode;
- double amt=0.0;
+  double amt = 0.0;
   List<CD> data = [];
   List<Map<String, dynamic>> listWidget = [];
   List<TextEditingController> controller = [];
@@ -421,9 +421,15 @@ class Controller extends ChangeNotifier {
     controller = List.generate(length, (i) => TextEditingController());
     // notifyListeners();
   }
+
   /////////////////////////////////
-  calculateAmt(double rate, String _controller){
+  calculateAmt(double rate, String _controller) {
     amt = rate * double.parse(_controller);
     // notifyListeners();
+  }
+
+  ////////////////////////////////////
+  getBagDetails(String customerId) async {
+    var res = await OrderAppDB.instance.getOrderBagTable(customerId);
   }
 }
