@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:orderapp/components/commoncolor.dart';
+import 'package:orderapp/controller/controller.dart';
+import 'package:provider/provider.dart';
 
 class CartList extends StatefulWidget {
-  List<Map<String, dynamic>> listWidget;
-  CartList({required this.listWidget});
   @override
   State<CartList> createState() => _CartListState();
 }
@@ -14,8 +14,9 @@ class _CartListState extends State<CartList> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _controller =
-        List.generate(widget.listWidget.length, (i) => TextEditingController());
+    var length =
+        Provider.of<Controller>(context, listen: false).listWidget.length;
+    _controller = List.generate(length, (i) => TextEditingController());
   }
 
   @override
@@ -23,19 +24,25 @@ class _CartListState extends State<CartList> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(),
-      body: SafeArea(
-        child: ListView.builder(
-            itemCount: widget.listWidget.length,
-            itemBuilder: (BuildContext context, int index) {
-              return listItemFunction(widget.listWidget[index]["item"],
-                  widget.listWidget[index]["rate1"], size, _controller[index]);
-            }),
-      ),
+      body: Consumer<Controller>(builder: (context, value, child) {
+        return SafeArea(
+            child: ListView.builder(
+          itemCount: value.listWidget.length,
+          itemBuilder: (BuildContext context, int index) {
+            return listItemFunction(
+                value.listWidget[index]["item"],
+                value.listWidget[index]["rate1"],
+                size,
+                _controller[index],
+                index);
+          },
+        ));
+      }),
     );
   }
 
   Widget listItemFunction(String itemName, double rate, Size size,
-      TextEditingController _controller) {
+      TextEditingController _controller, int index) {
     return Container(
       height: size.height * 0.19,
       child: Padding(
@@ -145,11 +152,43 @@ class _CartListState extends State<CartList> {
                         width: size.width * 0.009,
                       ),
                       IconButton(
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.delete,
-                          color: P_Settings.dataTable,
-                        ),
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (ctx) => AlertDialog(
+                              // title: Text("Alert Dialog Box"),
+                              content: Text("delete?"),
+                              actions: <Widget>[
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          primary: P_Settings.wavecolor),
+                                      onPressed: () {
+                                        Navigator.of(ctx).pop();
+                                      },
+                                      child: Text("cancel"),
+                                    ),
+                                    // SizedBox(height: size.height*0.2,),
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          primary: P_Settings.wavecolor),
+                                      onPressed: () {
+                                        Provider.of<Controller>(context,
+                                                listen: false)
+                                            .deleteListWidget(index);
+                                        Navigator.of(ctx).pop();
+                                      },
+                                      child: Text("ok"),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                        icon: Icon(Icons.delete),
                       ),
                     ],
                   ),

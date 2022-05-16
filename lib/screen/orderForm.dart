@@ -21,8 +21,7 @@ class OrderForm extends StatefulWidget {
 
 class _OrderFormState extends State<OrderForm> {
   String? _selectedItem;
-  int count =0;
-  List<Map<String, dynamic>> listWidget = [];
+  // List<Map<String, dynamic>> listWidget = [];
   ValueNotifier<int> dtatableRow = ValueNotifier(0);
   TextEditingController eanQtyCon = TextEditingController();
   TextEditingController eanTextCon = TextEditingController();
@@ -442,7 +441,7 @@ class _OrderFormState extends State<OrderForm> {
                                                                       "rate1"]);
                                                               print(
                                                                   "item----rate---${option["item"]}---${option["rate1"]}");
-                                                              listWidget.add({
+                                                              Provider.of<Controller>(context, listen: false).listWidget.add({
                                                                 "item": item,
                                                                 "rate1": rate1
                                                               });
@@ -479,7 +478,7 @@ class _OrderFormState extends State<OrderForm> {
                                         onPressed: () {
                                           print(
                                               " itemName, rate1--${itemName}--${rate1}");
-                                          listWidget.add({
+                                          Provider.of<Controller>(context, listen: false).listWidget.add({
                                             "item": itemName,
                                             "rate1": rate1
                                           });
@@ -515,7 +514,7 @@ class _OrderFormState extends State<OrderForm> {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) => CartList(
-                                                      listWidget: listWidget,
+                                                      
                                                     )),
                                           );
                                         },

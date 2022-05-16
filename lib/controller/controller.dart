@@ -26,6 +26,9 @@ class Controller extends ChangeNotifier {
   String? splittedCode;
 
   List<CD> data = [];
+  List<Map<String, dynamic>> listWidget = [];
+  List<TextEditingController> _controller = [];
+
   String? sof;
   List<Map<String, dynamic>> staffList = [];
   List<Map<String, dynamic>> productName = [];
@@ -406,4 +409,9 @@ class Controller extends ChangeNotifier {
   }
 
   /////////////////////////////////////
+  deleteListWidget(int index){
+    listWidget.removeAt(index);
+    notifyListeners();
+  }
+
 }
