@@ -342,11 +342,7 @@ class Controller extends ChangeNotifier {
   getCustomer(String aid) async {
     print("aid...............${aid}");
     try {
-<<<<<<< HEAD
-      customerList.clear();
-=======
       print("custmerDetails after clear----${custmerDetails}");
->>>>>>> 896d5e442f55e3f702e1eb6e580bf9cf36760027
       customerList = await OrderAppDB.instance.getCustomer(aid);
       print("customerList----${customerList}");
       for (var item in customerList) {
