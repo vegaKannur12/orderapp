@@ -170,7 +170,7 @@ class _CartListState extends State<CartList> {
                                       },
                                       child: Text("cancel"),
                                     ),
-                                    // SizedBox(height: size.height*0.2,),
+                                    SizedBox(width: size.width*0.01,),
                                     ElevatedButton(
                                       style: ElevatedButton.styleFrom(
                                           primary: P_Settings.wavecolor),
