@@ -23,21 +23,41 @@ class _CartListState extends State<CartList> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(),
-      body: Consumer<Controller>(builder: (context, value, child) {
-        return SafeArea(
-            child: ListView.builder(
-          itemCount: value.listWidget.length,
-          itemBuilder: (BuildContext context, int index) {
-            return listItemFunction(
-                value.listWidget[index]["item"],
-                value.listWidget[index]["rate1"],
-                size,
-                _controller[index],
-                index);
-          },
-        ));
-      }),
+      appBar: AppBar(
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.done,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              // do something
+            },
+          )
+        ],
+      ),
+      body: GestureDetector(
+        onTap: (() {
+          FocusScopeNode currentFocus = FocusScope.of(context);
+          if (!currentFocus.hasPrimaryFocus) {
+            currentFocus.unfocus();
+          }
+        }),
+        child: Consumer<Controller>(builder: (context, value, child) {
+          return SafeArea(
+              child: ListView.builder(
+            itemCount: value.listWidget.length,
+            itemBuilder: (BuildContext context, int index) {
+              return listItemFunction(
+                  value.listWidget[index]["item"],
+                  value.listWidget[index]["rate1"],
+                  size,
+                  _controller[index],
+                  index);
+            },
+          ));
+        }),
+      ),
     );
   }
 
@@ -132,7 +152,6 @@ class _CartListState extends State<CartList> {
                                             fontSize: 16),
                                         keyboardType: TextInputType.number,
                                         controller: _controller,
-                                        
                                       )),
                                   Text(
                                     "\u{20B9}${rate}",
@@ -168,7 +187,9 @@ class _CartListState extends State<CartList> {
                                       },
                                       child: Text("cancel"),
                                     ),
-                                    SizedBox(width: size.width*0.01,),
+                                    SizedBox(
+                                      width: size.width * 0.01,
+                                    ),
                                     ElevatedButton(
                                       style: ElevatedButton.styleFrom(
                                           primary: P_Settings.wavecolor),
@@ -186,7 +207,10 @@ class _CartListState extends State<CartList> {
                             ),
                           );
                         },
-                        icon: Icon(Icons.delete),
+                        icon: Icon(
+                          Icons.delete,
+                          color: P_Settings.extracolor,
+                        ),
                       ),
                     ],
                   ),
