@@ -127,7 +127,7 @@ class _OrderFormState extends State<OrderForm> {
                               child: Row(
                                 children: [
                                   Flexible(
-                                    flex: 3,
+                                    flex: 5,
                                     child: Padding(
                                       padding: const EdgeInsets.only(
                                           left: 15, right: 40),
@@ -142,6 +142,7 @@ class _OrderFormState extends State<OrderForm> {
                                             Provider.of<Controller>(context,
                                                     listen: false)
                                                 .getArea(value.text);
+
                                             return values.areDetails;
                                           }
                                         },
@@ -154,29 +155,27 @@ class _OrderFormState extends State<OrderForm> {
                                                 "_selectedItem---${_selectedItem}");
                                             splitted =
                                                 _selectedItem!.split('-');
-                                            // Provider.of<Controller>(context,
-                                            //         listen: false)
-                                            //     .setSplittedCode(splitted![0]);
-                                            Provider.of<Controller>(context,
-                                                    listen: false)
-                                                .getCustomer(splitted![0]);
                                           });
                                         },
                                       ),
                                     ),
                                   ),
                                   // SizedBox(width: size.width * 0.4),
-                                  // Flexible(
-                                  //   child: ElevatedButton(
-                                  //       onPressed: () {
-                                  //         setState(() {
-                                  //           Provider.of<Controller>(context,
-                                  //                   listen: false)
-                                  //               .getCustomer(splitted![0]);
-                                  //         });
-                                  //       },
-                                  //       child: Text("Ok")),
-                                  // ),
+                                  Flexible(
+                                    child: ElevatedButton(
+                                        onPressed: () {
+                                          Provider.of<Controller>(context,
+                                                  listen: false)
+                                              .custmerDetails
+                                              .clear();
+                                          setState(() {
+                                            Provider.of<Controller>(context,
+                                                    listen: false)
+                                                .getCustomer(splitted![0]);
+                                          });
+                                        },
+                                        child: Text("Ok")),
+                                  ),
                                 ],
                               ),
                             ),
@@ -188,30 +187,37 @@ class _OrderFormState extends State<OrderForm> {
                                     fontSize: 16,
                                   )),
                             ),
-                            SizedBox(height: size.height * 0.01),
                             Row(
                               children: [
                                 Flexible(
                                   flex: 4,
-                                  child: dropDown2(
-                                      values.custmerDetails, "customer", size),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 25, right: 110),
+                                    child: Autocomplete<String>(
+                                      optionsBuilder: (TextEditingValue value) {
+                                        if (value.text.isEmpty) {
+                                          return [];
+                                        } else {
+                                          print(
+                                              "TextEditingValue---${value.text}");
+                                          Provider.of<Controller>(context,
+                                                  listen: false)
+                                              .getCustomer(value.text);
+                                          return values.custmerDetails;
+                                        }
+                                      },
+                                      onSelected: (value) {
+                                        setState(() {
+                                          _selectedItem = value;
+                                          print(
+                                              "_selectedItem---${_selectedItem}");
+                                        });
+                                      },
+                                    ),
+                                  ),
                                 ),
-                                // Flexible(
-                                //   child: ElevatedButton(
-                                //       onPressed: () {
-                                //         setState(() {
-                                //           // Provider.of<Controller>(context,
-                                //           //         listen: false)
-                                //           //     .areaList
-                                //           //     .clear();
-                                //           // Provider.of<Controller>(context,
-                                //           //         listen: false)
-                                //           //     .customerList
-                                //           //     .clear();
-                                //         });
-                                //       },
-                                //       child: Text("Clear")),
-                                // ),
+
                               ],
                             ),
                           ],
@@ -680,7 +686,6 @@ class _OrderFormState extends State<OrderForm> {
             if (cust != null) {
               setState(() {
                 selectedCus = cust;
-
                 print("selected cus..........${selected}");
               });
             }
