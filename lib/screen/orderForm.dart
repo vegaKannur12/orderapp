@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:orderapp/components/commoncolor.dart';
 import 'package:orderapp/components/listItem.dart';
@@ -19,6 +21,7 @@ class OrderForm extends StatefulWidget {
 
 class _OrderFormState extends State<OrderForm> {
   String? _selectedItem;
+  int count =0;
   List<Map<String, dynamic>> listWidget = [];
   ValueNotifier<int> dtatableRow = ValueNotifier(0);
   TextEditingController eanQtyCon = TextEditingController();
