@@ -42,16 +42,28 @@ class _OrderFormState extends State<OrderForm> {
   int _randomNumber1 = 0;
   bool dropvisible = true;
   String randnum = "";
+  int num = 0;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     Provider.of<Controller>(context, listen: false).getOrderno();
+    num = num + 1;
+    num++;
+    print("Numsssssssss$num");
+    num = num;
+    print("Numsssssssss11$num");
+
     sharedPref();
     if (splitted == null || splitted!.isEmpty) {
       splitted = ["", ""];
     }
   }
+
+  // void onChange() {
+  //   num = num + 1;
+  //   print("Numsssssssss$num");
+  // }
 
   sharedPref() async {
     final prefs = await SharedPreferences.getInstance();
@@ -68,6 +80,9 @@ class _OrderFormState extends State<OrderForm> {
       body: GestureDetector(
         onTap: (() {
           FocusScopeNode currentFocus = FocusScope.of(context);
+          if (!currentFocus.hasPrimaryFocus) {
+            currentFocus.unfocus();
+          }
         }),
         child: SingleChildScrollView(
           child: SafeArea(
@@ -76,7 +91,7 @@ class _OrderFormState extends State<OrderForm> {
               child: Consumer<Controller>(builder: (context, values, child) {
                 print("value.areaList-----${values.areaList}");
                 print("value.custmer-----${values.customerList}");
-      
+
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -150,10 +165,11 @@ class _OrderFormState extends State<OrderForm> {
                                             left: 14.0, right: 40),
                                         child: InputDecorator(
                                           decoration: InputDecoration(
-                                            contentPadding: EdgeInsets.symmetric(
-                                                vertical: 0, horizontal: 4),
-                                            border:
-                                                OutlineInputBorder(gapPadding: 1),
+                                            contentPadding:
+                                                EdgeInsets.symmetric(
+                                                    vertical: 0, horizontal: 4),
+                                            border: OutlineInputBorder(
+                                                gapPadding: 1),
                                             hintText: "Select..",
                                           ),
                                           child: Autocomplete<String>(
@@ -167,7 +183,7 @@ class _OrderFormState extends State<OrderForm> {
                                                 Provider.of<Controller>(context,
                                                         listen: false)
                                                     .getArea(value.text);
-      
+
                                                 return values.areDetails;
                                               }
                                             },
@@ -221,37 +237,35 @@ class _OrderFormState extends State<OrderForm> {
                                     child: Padding(
                                       padding: const EdgeInsets.only(
                                           left: 25, right: 110),
-                                      child: InputDecorator(
-                                        decoration: InputDecoration(
-                                          contentPadding: EdgeInsets.symmetric(
-                                              vertical: 0, horizontal: 4),
-                                          border:
-                                              OutlineInputBorder(gapPadding: 1),
-                                          hintText: "Select..",
-                                        ),
-                                        child: Autocomplete<String>(
-                                          optionsBuilder:
-                                              (TextEditingValue value) {
-                                            if (value.text.isEmpty) {
-                                              return [];
-                                            } else {
-                                              print(
-                                                  "TextEditingValue---${value.text}");
-                                              Provider.of<Controller>(context,
-                                                      listen: false)
-                                                  .getCustomer(value.text);
-                                              return values.custmerDetails;
-                                            }
-                                          },
-                                          onSelected: (value) {
-                                            setState(() {
-                                              _selectedItem = value;
-                                              print(
-                                                  "_selectedItem---${_selectedItem}");
-                                            });
-                                          },
-                                        ),
-                                      ),
+                                      // child: InputDecorator(
+                                      //   decoration: InputDecoration(
+                                      //     contentPadding: EdgeInsets.symmetric(
+                                      //         vertical: 0, horizontal: 4),
+                                      //     border:
+                                      //         OutlineInputBorder(gapPadding: 1),
+                                      //     hintText: "Select..",
+                                      //   ),
+                                      //   child: Autocomplete<String>(
+                                      //     optionsBuilder:
+                                      //         (TextEditingValue value) {
+                                      //       if (value.text.isEmpty) {
+                                      //         return [];
+                                      //       } else {
+                                      //         print(
+                                      //             "TextEditingValue---${value.text}");
+                                           
+                                      //         return values.custmerDetails;
+                                      //       }
+                                      //     },
+                                      //     onSelected: (value) {
+                                      //       setState(() {
+                                      //         _selectedItem = value;
+                                      //         print(
+                                      //             "_selectedItem---${_selectedItem}");
+                                      //       });
+                                      //     },
+                                      //   ),
+                                      // ),
                                     ),
                                   ),
                                 ],
@@ -309,12 +323,13 @@ class _OrderFormState extends State<OrderForm> {
                                     Text("ORDER NO:  "),
                                     Text(
                                       values.ordernum.length != 0 &&
-                                              values.ordernum[0]['os'] != null &&
+                                              values.ordernum[0]['os'] !=
+                                                  null &&
                                               values.ordernum.isNotEmpty
                                           ? values.ordernum[0]['os']
                                           : "1",
-                                      style:
-                                          TextStyle(color: P_Settings.extracolor),
+                                      style: TextStyle(
+                                          color: P_Settings.extracolor),
                                     ),
                                     // Text(
                                     //   '\u{20B9}${0}',
@@ -353,7 +368,8 @@ class _OrderFormState extends State<OrderForm> {
                                             decoration: InputDecoration(
                                               contentPadding:
                                                   EdgeInsets.symmetric(
-                                                      vertical: 0, horizontal: 4),
+                                                      vertical: 0,
+                                                      horizontal: 4),
                                               border: OutlineInputBorder(
                                                   gapPadding: 1),
                                               hintText: "Select..",
@@ -367,7 +383,8 @@ class _OrderFormState extends State<OrderForm> {
                                                 } else {
                                                   print(
                                                       "TextEditingValue---${value.text}");
-                                                  Provider.of<Controller>(context,
+                                                  Provider.of<Controller>(
+                                                          context,
                                                           listen: false)
                                                       .getProductItems(
                                                           value.text);
@@ -375,7 +392,8 @@ class _OrderFormState extends State<OrderForm> {
                                                 }
                                               },
                                               displayStringForOption:
-                                                  (Map<String, dynamic> option) =>
+                                                  (Map<String, dynamic>
+                                                          option) =>
                                                       option["code"] +
                                                       '-' +
                                                       option["item"],
@@ -404,11 +422,13 @@ class _OrderFormState extends State<OrderForm> {
                                                       width: size.width * 0.7,
                                                       // color: Colors.teal,
                                                       child: ListView.builder(
-                                                        padding:
-                                                            EdgeInsets.all(10.0),
-                                                        itemCount: options.length,
+                                                        padding: EdgeInsets.all(
+                                                            10.0),
+                                                        itemCount:
+                                                            options.length,
                                                         itemBuilder:
-                                                            (BuildContext context,
+                                                            (BuildContext
+                                                                    context,
                                                                 int index) {
                                                           //      print(
                                                           // "option----${options}");
@@ -422,16 +442,18 @@ class _OrderFormState extends State<OrderForm> {
                                                           print(
                                                               "option----${option}");
                                                           return ListTile(
-                                                            trailing: IconButton(
-                                                              icon:
-                                                                  Icon(Icons.add),
+                                                            trailing:
+                                                                IconButton(
+                                                              icon: Icon(
+                                                                  Icons.add),
                                                               onPressed: () {
                                                                 String item =
                                                                     option[
                                                                         "item"];
-                                                                double rate1 = double
-                                                                    .parse(option[
-                                                                        "rate1"]);
+                                                                double rate1 =
+                                                                    double.parse(
+                                                                        option[
+                                                                            "rate1"]);
                                                                 print(
                                                                     "item----rate---${option["item"]}---${option["rate1"]}");
                                                                 Provider.of<Controller>(
@@ -443,11 +465,11 @@ class _OrderFormState extends State<OrderForm> {
                                                                   "item": item,
                                                                   "rate1": rate1
                                                                 });
-                                                            
                                                               },
                                                             ),
                                                             onTap: () {
-                                                              onSelected(option);
+                                                              onSelected(
+                                                                  option);
                                                             },
                                                             title: Text(
                                                                 option["code"] +
@@ -508,7 +530,10 @@ class _OrderFormState extends State<OrderForm> {
                                             size: 30.0,
                                           ),
                                           label: Text("View bag"),
-                                          onPressed: () {
+                                          onPressed: () async {
+                                            //                                 String customerId=;
+                                            //                                  var res =
+                                            // await OrderAppDB.instance.insertStaffAreaDetails(customerId);
                                             Navigator.push(
                                               context,
                                               MaterialPageRoute(
@@ -519,25 +544,11 @@ class _OrderFormState extends State<OrderForm> {
                                           style: ElevatedButton.styleFrom(
                                             shape: new RoundedRectangleBorder(
                                               borderRadius:
-                                                  new BorderRadius.circular(10.0),
+                                                  new BorderRadius.circular(
+                                                      10.0),
                                             ),
                                           ),
                                         )
-                                        // IconButton(
-                                        //     onPressed: () {
-                                        //       Navigator.push(
-                                        //         context,
-                                        //         MaterialPageRoute(
-                                        //             builder: (context) =>
-                                        //                 CartList(
-                                        //                   listWidget: listWidget,
-                                        //                 )),
-                                        //       );
-                                        //     },
-                                        //     icon: Icon(
-                                        //       Icons.shopping_cart,
-                                        //       size: 35,
-                                        //     ))
                                       ],
                                     )
                                   ],

@@ -19,26 +19,35 @@ class _CartListState extends State<CartList> {
         .generateTextEditingController();
     // _controller = List.generate(length, (i) => TextEditingController());
   }
+ 
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(),
-      body: Consumer<Controller>(builder: (context, value, child) {
-        return SafeArea(
-            child: ListView.builder(
-          itemCount: value.listWidget.length,
-          itemBuilder: (BuildContext context, int index) {
-            return listItemFunction(
-                value.listWidget[index]["item"],
-                value.listWidget[index]["rate1"],
-                size,
-                value.controller[index],
-                index);
-          },
-        ));
-      }),
+      body: GestureDetector(
+                onTap: (() {
+          FocusScopeNode currentFocus = FocusScope.of(context);
+          if (!currentFocus.hasPrimaryFocus) {
+            currentFocus.unfocus();
+          }
+        }),
+        child: Consumer<Controller>(builder: (context, value, child) {
+          return SafeArea(
+              child: ListView.builder(
+            itemCount: value.listWidget.length,
+            itemBuilder: (BuildContext context, int index) {
+              return listItemFunction(
+                  value.listWidget[index]["item"],
+                  value.listWidget[index]["rate1"],
+                  size,
+                  value.controller[index],
+                  index);
+            },
+          ));
+        }),
+      ),
     );
   }
 
@@ -197,7 +206,10 @@ class _CartListState extends State<CartList> {
                             ),
                           );
                         },
-                        icon: Icon(Icons.delete),
+                        icon: Icon(
+                          Icons.delete,
+                          color: P_Settings.extracolor,
+                        ),
                       ),
                     ],
                   ),

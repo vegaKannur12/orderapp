@@ -33,7 +33,7 @@ class Controller extends ChangeNotifier {
   List<Map<String, dynamic>> staffList = [];
   List<Map<String, dynamic>> productName = [];
   List<String> areDetails = [];
-  List<String> custmerDetails = [];
+  List<Map<String, dynamic>> custmerDetails = [];
   List<Map<String, dynamic>> areaList = [];
   List<Map<String, dynamic>> customerList = [];
   List<Map<String, dynamic>> copyCus = [];
@@ -350,7 +350,7 @@ class Controller extends ChangeNotifier {
       customerList = await OrderAppDB.instance.getCustomer(aid);
       print("customerList----${customerList}");
       for (var item in customerList) {
-        custmerDetails.add(item["hname"]);
+        custmerDetails.add(item);
       }
       print("custmerDetails adding $custmerDetails");
       notifyListeners();
