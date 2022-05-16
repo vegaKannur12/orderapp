@@ -394,7 +394,7 @@ class OrderAppDB {
     Database db = await instance.database;
     var hname = await db.rawQuery(
         'SELECT  hname,code FROM accountHeadsTable WHERE area_id="${aid}"');
-    print('SELECT  hname,code FROM accountHeadsTable WHERE area_id="${aid}"');
+    print('SELECT  hname,code FROM accountHeadsTable WHERE area_id="${aid}');
     print("hname===${hname}");
     return hname;
   }

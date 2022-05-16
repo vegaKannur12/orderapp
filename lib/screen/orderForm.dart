@@ -21,10 +21,12 @@ class _OrderFormState extends State<OrderForm> {
   String? _selectedItem;
   List<Map<String, dynamic>> listWidget = [];
   ValueNotifier<int> dtatableRow = ValueNotifier(0);
+  TextEditingController itemName = TextEditingController();
   TextEditingController eanQtyCon = TextEditingController();
   TextEditingController eanTextCon = TextEditingController();
   final TextEditingController _typeAheadController = TextEditingController();
   List? splitted;
+  List? splitted1;
   List<DataRow> dataRows = [];
   String? selected;
   String? selectedCus;
@@ -32,9 +34,13 @@ class _OrderFormState extends State<OrderForm> {
   // ListItem listitem = ListItem();
   String? staffname;
   bool visible = false;
-  String itemName = '';
+  // String itemName = '';
   double rate1 = 0.0;
   bool isAdded=false;
+  int selectedIndex = 0;
+  int _randomNumber1 = 0;
+  bool dropvisible = true;
+  String randnum = "";
   @override
   void initState() {
     // TODO: implement initState
@@ -109,7 +115,7 @@ class _OrderFormState extends State<OrderForm> {
                     child: Padding(
                       padding: const EdgeInsets.only(left: 5, right: 5),
                       child: Container(
-                        height: size.height * 0.19,
+                        height: size.height * 0.22,
                         color: Colors.white,
                         child: Column(
                           // mainAxisAlignment: MainAxisAlignment.start,
@@ -176,8 +182,39 @@ class _OrderFormState extends State<OrderForm> {
                                     fontSize: 16,
                                   )),
                             ),
-                            SizedBox(height: size.height * 0.01),
-                            dropDown2(values.customerList, "customer", size),
+                            Row(
+                              children: [
+                                Flexible(
+                                  flex: 4,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 25, right: 110),
+                                    child: Autocomplete<String>(
+                                      optionsBuilder: (TextEditingValue value) {
+                                        if (value.text.isEmpty) {
+                                          return [];
+                                        } else {
+                                          print(
+                                              "TextEditingValue---${value.text}");
+                                          Provider.of<Controller>(context,
+                                                  listen: false)
+                                              .getCustomer(value.text);
+                                          return values.custmerDetails;
+                                        }
+                                      },
+                                      onSelected: (value) {
+                                        setState(() {
+                                          _selectedItem = value;
+                                          print(
+                                              "_selectedItem---${_selectedItem}");
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                ),
+
+                              ],
+                            ),
                           ],
                         ),
                       ),
