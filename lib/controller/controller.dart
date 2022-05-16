@@ -82,6 +82,7 @@ class Controller extends ChangeNotifier {
           c_d.add(item);
         }
         var res = await OrderAppDB.instance.insertRegistrationDetails(regModel);
+
         print("inserted ${res}");
         isLoading = false;
         notifyListeners();
@@ -390,7 +391,19 @@ class Controller extends ChangeNotifier {
     }
     notifyListeners();
   }
+////////////////////////////////////////////////////////////
+  getOrderno() async {
+    try {
+      ordernum = await OrderAppDB.instance.getOrderNo();
+      print("ordernum----${ordernum}");
+
+      notifyListeners();
+    } catch (e) {
+      print(e);
+      return null;
+    }
+    notifyListeners();
+  }
 
   /////////////////////////////////////
-
 }

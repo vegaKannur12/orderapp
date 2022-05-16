@@ -11,7 +11,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 // import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class OrderForm extends StatefulWidget {
-  const OrderForm({Key? key}) : super(key: key);
+  // const OrderForm({Key? key}) : super(key: key);
 
   @override
   State<OrderForm> createState() => _OrderFormState();
@@ -44,6 +44,7 @@ class _OrderFormState extends State<OrderForm> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    Provider.of<Controller>(context, listen: false).getOrderno();
     sharedPref();
     if (splitted == null || splitted!.isEmpty) {
       splitted = ["", ""];
@@ -300,7 +301,11 @@ class _OrderFormState extends State<OrderForm> {
                                 children: [
                                   Text("ORDER NO:  "),
                                   Text(
-                                    "ESOR4435",
+                                    values.ordernum.length != 0 &&
+                                            values.ordernum[0]['os'] != null &&
+                                            values.ordernum.isNotEmpty
+                                        ? values.ordernum[0]['os']
+                                        : "1",
                                     style:
                                         TextStyle(color: P_Settings.extracolor),
                                   ),
