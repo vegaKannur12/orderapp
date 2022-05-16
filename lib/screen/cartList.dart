@@ -44,7 +44,7 @@ class _CartListState extends State<CartList> {
   Widget listItemFunction(String itemName, double rate, Size size,
       TextEditingController _controller, int index) {
     return Container(
-      height: size.height * 0.15,
+      height: size.height * 0.19,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Ink(
@@ -54,102 +54,151 @@ class _CartListState extends State<CartList> {
             borderRadius: BorderRadius.circular(20),
           ),
           child: ListTile(
-            leading: CircleAvatar(backgroundColor: Colors.green),
+            // leading: CircleAvatar(backgroundColor: Colors.green),
             title: Column(
               children: [
-                Text(
-                  "${itemName}",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                Flexible(
+                  child: Text(
+                    "${itemName}",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        color: P_Settings.wavecolor),
+                  ),
                 ),
                 SizedBox(
-                  height: size.height * 0.02,
+                  height: size.height * 0.001,
                 ),
-                Row(
-                  children: [
-                    Text(
-                      "Rate",
-                      style: TextStyle(fontSize: 13),
-                    ),
-                    Spacer(),
-                    Text(
-                      "Qty",
-                      style: TextStyle(fontSize: 13),
-                    ),
-                    Spacer(),
-                    Text(
-                      "Amt",
-                      style: TextStyle(fontSize: 13),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Text(
-                      "${rate}",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                    ),
-                    Spacer(),
-                    Container(
-                        width: size.width * 0.1,
-                        child: TextFormField(
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
-                          keyboardType: TextInputType.number,
-                          // decoration: new InputDecoration(
-                          //   border: InputBorder.none,
-                          // ),
-                          controller: _controller,
-                        )),
-                    Spacer(),
-                    Text(
-                      "${rate}",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                    ),
-                  ],
-                )
-              ],
-            ),
-            trailing: 
-            IconButton(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (ctx) => AlertDialog(
-                    // title: Text("Alert Dialog Box"),
-                    content: Text("delete?"),
-                    actions: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                primary: P_Settings.wavecolor),
-                            onPressed: () {
-                              Navigator.of(ctx).pop();
-                            },
-                            child: Text("cancel"),
-                          ),
-                          // SizedBox(height: size.height*0.2,),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                primary: P_Settings.wavecolor),
-                            onPressed: () {
-                              Provider.of<Controller>(context, listen: false)
-                                  .deleteListWidget(index);
-                              Navigator.of(ctx).pop();
-                            },
-                            child: Text("ok"),
-                          ),
-                        ],
+                Flexible(
+                  flex: 2,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: Colors.green,
+                        radius: 40,
+                      ),
+                      SizedBox(
+                        width: size.width * 0.05,
+                        height: size.height * 0.001,
+                      ),
+                      Flexible(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            SizedBox(
+                              height: size.height * 0.02,
+                            ),
+                            Flexible(
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Rate",
+                                    style: TextStyle(fontSize: 13),
+                                  ),
+                                  Text(
+                                    "Qty",
+                                    style: TextStyle(fontSize: 13),
+                                  ),
+                                  // Spacer(),
+                                  Text(
+                                    "Amt",
+                                    style: TextStyle(fontSize: 13),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Flexible(
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  // SizedBox(
+                                  //   height: size.height * 0.02,
+                                  // ),
+                                  Text(
+                                    "\u{20B9}${rate}",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                  ),
+                                  Container(
+                                      width: size.width * 0.1,
+                                      child: TextFormField(
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16),
+                                        keyboardType: TextInputType.number,
+                                        // decoration: new InputDecoration(
+                                        //   border: InputBorder.none,
+                                        // ),
+                                        controller: _controller,
+                                      )),
+                                  Text(
+                                    "\u{20B9}${rate}",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        width: size.width * 0.009,
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (ctx) => AlertDialog(
+                              // title: Text("Alert Dialog Box"),
+                              content: Text("delete?"),
+                              actions: <Widget>[
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          primary: P_Settings.wavecolor),
+                                      onPressed: () {
+                                        Navigator.of(ctx).pop();
+                                      },
+                                      child: Text("cancel"),
+                                    ),
+                                    SizedBox(width: size.width*0.01,),
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          primary: P_Settings.wavecolor),
+                                      onPressed: () {
+                                        Provider.of<Controller>(context,
+                                                listen: false)
+                                            .deleteListWidget(index);
+                                        Navigator.of(ctx).pop();
+                                      },
+                                      child: Text("ok"),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                        icon: Icon(Icons.delete),
                       ),
                     ],
                   ),
-                );
-              },
-              icon: Icon(Icons.delete),
+                ),
+              ],
             ),
+            // trailing: IconButton(
+            //   onPressed: () {},
+            //   icon: Icon(Icons.delete),
+            // ),
           ),
         ),
       ),
