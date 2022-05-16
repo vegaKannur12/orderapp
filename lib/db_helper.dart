@@ -413,6 +413,13 @@ class OrderAppDB {
   }
 
   //////////////////////////////////////////////////////////////
+  getOrderNo() async {
+    Database db = await instance.database;
+    var res = await db.rawQuery("SELECT os FROM registrationTable");
+    print(res);
+    print("SELECT os FROM registrationTable");
+    return res;
+  }
   // getCustmer(String aid) async {
   //   print("enteredaid---${aid}");
   //   Database db = await instance.database;
