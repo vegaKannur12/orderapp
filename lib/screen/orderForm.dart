@@ -21,7 +21,6 @@ class _OrderFormState extends State<OrderForm> {
   String? _selectedItem;
   List<Map<String, dynamic>> listWidget = [];
   ValueNotifier<int> dtatableRow = ValueNotifier(0);
-  TextEditingController itemName = TextEditingController();
   TextEditingController eanQtyCon = TextEditingController();
   TextEditingController eanTextCon = TextEditingController();
   final TextEditingController _typeAheadController = TextEditingController();
@@ -34,7 +33,7 @@ class _OrderFormState extends State<OrderForm> {
   // ListItem listitem = ListItem();
   String? staffname;
   bool visible = false;
-  // String itemName = '';
+  String itemName = '';
   double rate1 = 0.0;
   bool isAdded=false;
   int selectedIndex = 0;
@@ -131,50 +130,66 @@ class _OrderFormState extends State<OrderForm> {
                                 ),
                               ),
                             ),
-                            SizedBox(height: size.height * 0.01),
-                            SizedBox(height: size.height * 0.01),
-                            dropDown1(values.areaList, "area", size),
-                            // Center(
-                            //   child: Container(
-                            //     height: size.height * 0.04,
-                            //     width: size.width * 0.75,
-                            //     child: InputDecorator(
-                            //       decoration: InputDecoration(
-                            //         contentPadding: EdgeInsets.symmetric(
-                            //             vertical: 0, horizontal: 4),
-                            //         border: OutlineInputBorder(gapPadding: 1),
-                            //         hintText: "Select..",
-                            //       ),
-                            //       child: Autocomplete<String>(
+                            SizedBox(height: size.height * 0.001),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 12, right: 12),
+                              child: Row(
+                                children: [
+                                  Flexible(
+                                    flex: 5,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 15, right: 40),
+                                      child: Autocomplete<String>(
+                                        optionsBuilder:
+                                            (TextEditingValue value) {
+                                          if (value.text.isEmpty) {
+                                            return [];
+                                          } else {
+                                            print(
+                                                "TextEditingValue---${value.text}");
+                                            Provider.of<Controller>(context,
+                                                    listen: false)
+                                                .getArea(value.text);
 
-                            //         optionsBuilder: (TextEditingValue value) {
-                            //           if (value.text.isEmpty) {
-                            //             return [];
-                            //           } else {
-                            //             print(
-                            //                 "TextEditingValue---${value.text}");
-                            //             return values.areDetails.where((area) =>
-                            //                 area.toLowerCase().contains(
-                            //                     value.text.toLowerCase()));
-                            //           }
-                            //         },
-                            //         onSelected: (value) {
-                            //           setState(() {
-                            //             _selectedItem = value;
-                            //           });
-                            //           print("_selectedItem---${_selectedItem}");
-                            //           splitted = _selectedItem!.split('-');
-
-                            //           Provider.of<Controller>(context,
-                            //                   listen: false)
-                            //               .getCustomer(splitted![0]);
-                            //           print("splitted---${splitted![0]}");
-                            //         },
-                            //       ),
-                            //     ),
-                            //   ),
-                            // ),
-                            SizedBox(height: size.height * 0.01),
+                                            return values.areDetails;
+                                          }
+                                        },
+                                        onSelected: (value) {
+                                          // Provider.of<Controller>(context,
+                                          //           listen: false).custmerDetails.clear();
+                                          setState(() {
+                                            _selectedItem = value;
+                                            print(
+                                                "_selectedItem---${_selectedItem}");
+                                            splitted =
+                                                _selectedItem!.split('-');
+                                          });
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                  // SizedBox(width: size.width * 0.4),
+                                  Flexible(
+                                    child: ElevatedButton(
+                                        onPressed: () {
+                                          Provider.of<Controller>(context,
+                                                  listen: false)
+                                              .custmerDetails
+                                              .clear();
+                                          setState(() {
+                                            Provider.of<Controller>(context,
+                                                    listen: false)
+                                                .getCustomer(splitted![0]);
+                                          });
+                                        },
+                                        child: Text("Ok")),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: size.height * 0.02),
                             Padding(
                               padding: const EdgeInsets.only(left: 8.0),
                               child: Text("Customer",
@@ -560,20 +575,19 @@ class _OrderFormState extends State<OrderForm> {
               //     .length = 0;
               print("clicked");
 
-              if (item != null) {
-                setState(() {
-                  selected = item;
-                  print("selected area..........${selected}");
-                });
-              }
-              Provider.of<Controller>(context, listen: false)
-                  .getCustomer(selected!);
-            },
-            value: selected,
-            // disabledHint: Text(selected ?? "null"),
-          ),
+            if (item != null) {
+              setState(() {
+                selected = item;
+                print("selected area..........${selected}");
+              });
+            }
+            // Provider.of<Controller>(context, listen: false).getArea(selected!);
+          },
+          value: selected,
+          // disabledHint: Text(selected ?? "null"),
         ),
       ),
+      )
     );
   }
 
@@ -615,20 +629,18 @@ class _OrderFormState extends State<OrderForm> {
                     )))
                 .toList(),
 
-            onChanged: (cust) {
-              // Provider.of<Controller>(context, listen: false).areaList.clear();
-              if (cust != null) {
-                setState(() {
-                  selectedCus = cust;
-                  print("selected cus..........${selected}");
-                });
-              }
-              // Provider.of<Controller>(context, listen: false).getCustomer(selected!);
-            },
-            value: selectedCus,
-          ),
+          onChanged: (cust) {
+            if (cust != null) {
+              setState(() {
+                selectedCus = cust;
+                print("selected cus..........${selected}");
+              });
+            }
+          },
+          value: selectedCus,
         ),
       ),
+      )
     );
   }
 }
