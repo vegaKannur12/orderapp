@@ -412,14 +412,7 @@ class OrderAppDB {
     return res;
   }
 
-  ///////////////////////clear staffDetails///////////////////////////////
-  // Future deleteStaffdetails() async {
-  //   final db = await database;
-  //   var res =await db.delete("staffDetailsTable");
-  //   // var res = await db.delete(query);
-  //   print(res);
-  //   return res;
-  // }
+////////////////////////////////////////////////
   Future deleteStaffdetails() async {
     Database db = await instance.database;
     await db.delete('staffDetailsTable');
