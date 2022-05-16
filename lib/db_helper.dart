@@ -112,6 +112,7 @@ class OrderAppDB {
   static final qty = 'mstatus';
   static final rate = 'rate';
   static final cstatus = 'cstatus';
+  static final ordrow_num = 'ordrow_num';
 
   Future<Database> get database async {
     if (_database != null) return _database!;
@@ -254,10 +255,7 @@ class OrderAppDB {
     await db.execute('''
           CREATE TABLE orderDetailTable (
             $order_id INTEGER ,
-            $ordernum INTEGER NOT NULL,
-            $os TEXT NOT NULL,
-            $customerid TEXT,
-            $cartrowno INTEGER,
+            $ordrow_num TEXT,
             $code TEXT,
             $qty REAL,
             $rate INTEGER,
@@ -280,15 +278,15 @@ class OrderAppDB {
   }
 
   ////////////// cart order ////////////////////////////
-  Future insertorderBagTable() async {
-    final db = await database;
-    var query2 =
-        'INSERT INTO orderBagTable(cartdatetime, os, customerid, cartrowno, cartrowno, code, qty, rate, cstatus) VALUES("${sdata.sid}", "${sdata.sname}", "${sdata.unme}", "${sdata.pwd}", "${sdata.ad1}", "${sdata.ad2}", "${sdata.ad3}", "${sdata.ph}", "${sdata.area}")';
-    var res = await db.rawInsert(query2);
-    print(query2);
-    // print(res);
-    return res;
-  }
+  // Future insertorderBagTable() async {
+  //   final db = await database;
+  //   var query2 =
+  //       'INSERT INTO orderBagTable(cartdatetime, os, customerid, cartrowno, cartrowno, code, qty, rate, cstatus) VALUES("${sdata.sid}", "${sdata.sname}", "${sdata.unme}", "${sdata.pwd}", "${sdata.ad1}", "${sdata.ad2}", "${sdata.ad3}", "${sdata.ph}", "${sdata.area}")';
+  //   var res = await db.rawInsert(query2);
+  //   print(query2);
+  //   // print(res);
+  //   return res;
+  // }
 
   /////////////////////// order master table insertion//////////////////////
   // Future insertorderMaster() async {

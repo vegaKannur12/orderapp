@@ -32,7 +32,7 @@ class _OrderFormState extends State<OrderForm> {
   String? selected;
   String? selectedCus;
   String? common;
-  // ListItem listitem = ListItem();
+  String? code;
   String? staffname;
   bool visible = false;
   String itemName = '';
@@ -49,9 +49,9 @@ class _OrderFormState extends State<OrderForm> {
     super.initState();
     Provider.of<Controller>(context, listen: false).getOrderno();
     num = num + 1;
-    num ++;
+    num++;
     print("Numsssssssss$num");
-    num = num ;
+    num = num;
     print("Numsssssssss11$num");
 
     sharedPref();
@@ -232,44 +232,134 @@ class _OrderFormState extends State<OrderForm> {
                               SizedBox(height: size.height * 0.01),
                               Row(
                                 children: [
-                                  Flexible(
-                                    flex: 4,
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 25, right: 110),
-                                      child: InputDecorator(
-                                        decoration: InputDecoration(
-                                          contentPadding: EdgeInsets.symmetric(
-                                              vertical: 0, horizontal: 4),
-                                          border:
-                                              OutlineInputBorder(gapPadding: 1),
-                                          hintText: "Select..",
+                                  Autocomplete<Map<String, dynamic>>(
+                                    optionsBuilder: (TextEditingValue value) {
+                                      if (value.text.isEmpty) {
+                                        return [];
+                                      } else {
+                                        print(
+                                            "TextEditingValue---${value.text}");
+                                        Provider.of<Controller>(context,
+                                                listen: false)
+                                            .getCustomer(value.text);
+                                        return values.customerList;
+                                      }
+                                    },
+                                    displayStringForOption:
+                                        (Map<String, dynamic> option) =>
+                                            option["code"] +
+                                            '-' +
+                                            option["hname"],
+                                    onSelected: (value) {
+                                      setState(() {
+                                        print("value----${value}");
+                                        _selectedItem = value["hname"];
+                                        code = value["code"];
+                                        print(
+                                            "Code .........---${code}");
+                                      });
+                                    },
+                                    optionsViewBuilder: (BuildContext context,
+                                        AutocompleteOnSelected<
+                                                Map<String, dynamic>>
+                                            onSelected,
+                                        Iterable<Map<String, dynamic>>
+                                            options) {
+                                      return Align(
+                                        alignment: Alignment.topLeft,
+                                        child: Material(
+                                          child: Container(
+                                            width: size.width * 0.7,
+                                            // color: Colors.teal,
+                                            child: ListView.builder(
+                                              padding: EdgeInsets.all(10.0),
+                                              itemCount: options.length,
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      int index) {
+                                                //      print(
+                                                // "option----${options}");
+                                                print("index----${index}");
+                                                final Map<String, dynamic>
+                                                    option =
+                                                    options.elementAt(index);
+                                                print("option----${option}");
+                                                return ListTile(
+                                                  // trailing: IconButton(
+                                                  //   icon: Icon(Icons.add),
+                                                  //   onPressed: () {
+                                                  //     String item =
+                                                  //         option["item"];
+                                                  //     double rate1 =
+                                                  //         double.parse(
+                                                  //             option["rate1"]);
+                                                  //     print(
+                                                  //         "item----rate---${option["item"]}---${option["rate1"]}");
+                                                  //     Provider.of<Controller>(
+                                                  //             context,
+                                                  //             listen: false)
+                                                  //         .listWidget
+                                                  //         .add({
+                                                  //       "item": item,
+                                                  //       "rate1": rate1
+                                                  //     });
+                                                  //   },
+                                                  // ),
+                                                  onTap: () {
+                                                    print("optonsssssssssssss$option");
+                                                    onSelected(option);
+                                                  },
+                                                  title: Text(
+                                                      option["hname"]
+                                                          .toString(),
+                                                      style: const TextStyle(
+                                                          color: Colors.black)),
+                                                );
+                                              },
+                                            ),
+                                          ),
                                         ),
-                                        child: Autocomplete<String>(
-                                          optionsBuilder:
-                                              (TextEditingValue value) {
-                                            if (value.text.isEmpty) {
-                                              return [];
-                                            } else {
-                                              print(
-                                                  "TextEditingValue---${value.text}");
-                                              Provider.of<Controller>(context,
-                                                      listen: false)
-                                                  .getCustomer(value.text);
-                                              return values.custmerDetails;
-                                            }
-                                          },
-                                          onSelected: (value) {
-                                            setState(() {
-                                              _selectedItem = value;
-                                              print(
-                                                  "_selectedItem---${_selectedItem}");
-                                            });
-                                          },
-                                        ),
-                                      ),
-                                    ),
+                                      );
+                                    },
                                   ),
+                                  // Flexible(
+                                  //   flex: 4,
+                                  //   child: Padding(
+                                  //     padding: const EdgeInsets.only(
+                                  //         left: 25, right: 110),
+                                  //     child: InputDecorator(
+                                  //       decoration: InputDecoration(
+                                  //         contentPadding: EdgeInsets.symmetric(
+                                  //             vertical: 0, horizontal: 4),
+                                  //         border:
+                                  //             OutlineInputBorder(gapPadding: 1),
+                                  //         hintText: "Select..",
+                                  //       ),
+                                  //       child: Autocomplete<String>(
+                                  //         optionsBuilder:
+                                  //             (TextEditingValue value) {
+                                  //           if (value.text.isEmpty) {
+                                  //             return [];
+                                  //           } else {
+                                  //             print(
+                                  //                 "TextEditingValue---${value.text}");
+                                  //             Provider.of<Controller>(context,
+                                  //                     listen: false)
+                                  //                 .getCustomer(value.text);
+                                  //             return values.custmerDetails;
+                                  //           }
+                                  //         },
+                                  //         onSelected: (value) {
+                                  //           setState(() {
+                                  //             _selectedItem = value;
+                                  //             print(
+                                  //                 "_selectedItem---${_selectedItem}");
+                                  //           });
+                                  //         },
+                                  //       ),
+                                  //     ),
+                                  //   ),
+                                  // ),
                                 ],
                               ),
                             ],
@@ -467,12 +557,6 @@ class _OrderFormState extends State<OrderForm> {
                                                                   "item": item,
                                                                   "rate1": rate1
                                                                 });
-                                                                // onSelected(option);
-                                                                // Navigator.pop(context);
-                                                                // setState(() {
-                                                                //   _selectedItem =
-                                                                //       "";
-                                                                // });
                                                               },
                                                             ),
                                                             onTap: () {
