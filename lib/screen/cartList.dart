@@ -9,14 +9,15 @@ class CartList extends StatefulWidget {
 }
 
 class _CartListState extends State<CartList> {
-  List<TextEditingController> _controller = [];
+  // List<TextEditingController> _controller = [];
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    var length =
-        Provider.of<Controller>(context, listen: false).listWidget.length;
-    _controller = List.generate(length, (i) => TextEditingController());
+
+    Provider.of<Controller>(context, listen: false)
+        .generateTextEditingController();
+    // _controller = List.generate(length, (i) => TextEditingController());
   }
  
 
@@ -24,21 +25,9 @@ class _CartListState extends State<CartList> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.done,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              // do something
-            },
-          )
-        ],
-      ),
+      appBar: AppBar(),
       body: GestureDetector(
-        onTap: (() {
+                onTap: (() {
           FocusScopeNode currentFocus = FocusScope.of(context);
           if (!currentFocus.hasPrimaryFocus) {
             currentFocus.unfocus();
@@ -53,7 +42,7 @@ class _CartListState extends State<CartList> {
                   value.listWidget[index]["item"],
                   value.listWidget[index]["rate1"],
                   size,
-                  _controller[index],
+                  value.controller[index],
                   index);
             },
           ));
@@ -64,6 +53,14 @@ class _CartListState extends State<CartList> {
 
   Widget listItemFunction(String itemName, double rate, Size size,
       TextEditingController _controller, int index) {
+    // print("textEditing value----${_controller.text}");
+
+    if (_controller.text.isEmpty) {
+      // print("if gdrfgdfgde");
+      _controller.text = "1";
+    }
+    Provider.of<Controller>(context,listen: false).calculateAmt(rate,_controller.text);
+
     return Container(
       height: size.height * 0.19,
       child: Padding(
@@ -155,7 +152,8 @@ class _CartListState extends State<CartList> {
                                         controller: _controller,
                                       )),
                                   Text(
-                                    "\u{20B9}${rate}",
+                                    "\u{20B9}${Provider.of<Controller>(context,
+                                                listen: false).amt}",
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 16),

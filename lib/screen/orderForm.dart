@@ -77,250 +77,233 @@ class _OrderFormState extends State<OrderForm> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       // backgroundColor: Colors.white,
-      body: GestureDetector(
-        onTap: (() {
-          FocusScopeNode currentFocus = FocusScope.of(context);
-          if (!currentFocus.hasPrimaryFocus) {
-            currentFocus.unfocus();
-          }
-        }),
-        child: SingleChildScrollView(
-          child: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Consumer<Controller>(builder: (context, values, child) {
-                print("value.areaList-----${values.areaList}");
-                print("value.custmer-----${values.customerList}");
+      body: SingleChildScrollView(
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Consumer<Controller>(builder: (context, values, child) {
+              print("value.areaList-----${values.areaList}");
+              print("value.custmer-----${values.customerList}");
 
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Ink(
-                        decoration:
-                            BoxDecoration(color: P_Settings.orderFormcolor),
-                        child: ListTile(
-                          title: Row(
-                            children: [
-                              Icon(
-                                Icons.person,
-                                // color: Colors.white,
-                              ),
-                              SizedBox(
-                                width: size.width * 0.01,
-                              ),
-                              Text(
-                                "CUSTOMER",
-                                // style: TextStyle(color: Colors.white
-                                // ),
-                              ),
-                            ],
-                          ),
-                          // trailing: IconButton(
-                          //   icon: Icon(
-                          //     visible ? Icons.arrow_upward : Icons.arrow_downward,
-                          //     color: Colors.black,
-                          //   ),
-                          //   onPressed: () {
-                          //     setState(() {
-                          //       visible = !visible;
-                          //     });
-                          //   },
-                          // ),
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Ink(
+                      decoration:
+                          BoxDecoration(color: P_Settings.orderFormcolor),
+                      child: ListTile(
+                        title: Row(
+                          children: [
+                            Icon(
+                              Icons.person,
+                              // color: Colors.white,
+                            ),
+                            SizedBox(
+                              width: size.width * 0.01,
+                            ),
+                            Text(
+                              "CUSTOMER",
+                              // style: TextStyle(color: Colors.white
+                              // ),
+                            ),
+                          ],
                         ),
+                        // trailing: IconButton(
+                        //   icon: Icon(
+                        //     visible ? Icons.arrow_upward : Icons.arrow_downward,
+                        //     color: Colors.black,
+                        //   ),
+                        //   onPressed: () {
+                        //     setState(() {
+                        //       visible = !visible;
+                        //     });
+                        //   },
+                        // ),
                       ),
                     ),
-                    Visibility(
-                      visible: true,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 5, right: 5),
-                        child: Container(
-                          height: size.height * 0.22,
-                          color: Colors.white,
-                          child: Column(
-                            // mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(height: size.height * 0.01),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 8.0),
-                                child: Text(
-                                  "Area/Route",
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                  ),
+                  ),
+                  Visibility(
+                    visible: true,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 5, right: 5),
+                      child: Container(
+                        height: size.height * 0.22,
+                        color: Colors.white,
+                        child: Column(
+                          // mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: size.height * 0.01),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: Text(
+                                "Area/Route",
+                                style: TextStyle(
+                                  fontSize: 16,
                                 ),
                               ),
-                              SizedBox(height: size.height * 0.01),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 12, right: 12),
-                                child: Row(
-                                  children: [
-                                    Flexible(
-                                      flex: 5,
-                                      child: Padding(
-                                        padding: EdgeInsets.only(
-                                            left: 14.0, right: 40),
-                                        child: InputDecorator(
-                                          decoration: InputDecoration(
-                                            contentPadding:
-                                                EdgeInsets.symmetric(
-                                                    vertical: 0, horizontal: 4),
-                                            border: OutlineInputBorder(
-                                                gapPadding: 1),
-                                            hintText: "Select..",
-                                          ),
-                                          child: Autocomplete<String>(
-                                            optionsBuilder:
-                                                (TextEditingValue value) {
-                                              if (value.text.isEmpty) {
-                                                return [];
-                                              } else {
-                                                print(
-                                                    "TextEditingValue---${value.text}");
-                                                Provider.of<Controller>(context,
-                                                        listen: false)
-                                                    .getArea(value.text);
+                            ),
+                            SizedBox(height: size.height * 0.01),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 12, right: 12),
+                              child: Row(
+                                children: [
+                                  Flexible(
+                                    flex: 5,
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                          left: 14.0, right: 40),
+                                      child: InputDecorator(
+                                        decoration: InputDecoration(
+                                          contentPadding: EdgeInsets.symmetric(
+                                              vertical: 0, horizontal: 4),
+                                          border:
+                                              OutlineInputBorder(gapPadding: 1),
+                                          hintText: "Select..",
+                                        ),
+                                        child: Autocomplete<String>(
+                                          optionsBuilder:
+                                              (TextEditingValue value) {
+                                            if (value.text.isEmpty) {
+                                              return [];
+                                            } else {
+                                              print(
+                                                  "TextEditingValue---${value.text}");
+                                              Provider.of<Controller>(context,
+                                                      listen: false)
+                                                  .getArea(value.text);
 
-                                                return values.areDetails;
-                                              }
-                                            },
-                                            onSelected: (value) {
-                                              // Provider.of<Controller>(context,
-                                              //           listen: false).custmerDetails.clear();
-                                              setState(() {
-                                                _selectedItem = value;
-                                                print(
-                                                    "_selectedItem---${_selectedItem}");
-                                                splitted =
-                                                    _selectedItem!.split('-');
-                                              });
-                                            },
-                                          ),
+                                              return values.areDetails;
+                                            }
+                                          },
+                                          onSelected: (value) {
+                                            // Provider.of<Controller>(context,
+                                            //           listen: false).custmerDetails.clear();
+                                            setState(() {
+                                              _selectedItem = value;
+                                              print(
+                                                  "_selectedItem---${_selectedItem}");
+                                              splitted =
+                                                  _selectedItem!.split('-');
+                                            });
+                                          },
                                         ),
                                       ),
                                     ),
-                                    // SizedBox(width: size.width * 0.4),
-                                    Flexible(
-                                      child: ElevatedButton(
-                                          onPressed: () {
+                                  ),
+                                  // SizedBox(width: size.width * 0.4),
+                                  Flexible(
+                                    child: ElevatedButton(
+                                        onPressed: () {
+                                          Provider.of<Controller>(context,
+                                                  listen: false)
+                                              .custmerDetails
+                                              .clear();
+                                          setState(() {
                                             Provider.of<Controller>(context,
                                                     listen: false)
-                                                .custmerDetails
-                                                .clear();
-                                            setState(() {
-                                              Provider.of<Controller>(context,
-                                                      listen: false)
-                                                  .getCustomer(splitted![0]);
-                                            });
-                                          },
-                                          child: Text("Ok")),
-                                    ),
-                                  ],
-                                ),
+                                                .getCustomer(splitted![0]);
+                                          });
+                                        },
+                                        child: Text("Ok")),
+                                  ),
+                                ],
                               ),
-                              SizedBox(height: size.height * 0.02),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 8.0),
-                                child: Text("Customer",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                    )),
-                              ),
-                              SizedBox(height: size.height * 0.01),
-                              Row(
+                            ),
+                            SizedBox(height: size.height * 0.02),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: Text("Customer",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  )),
+                            ),
+                            SizedBox(height: size.height * 0.01),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 28,right: 110),
+                              child: Row(
                                 children: [
-                                  Autocomplete<Map<String, dynamic>>(
-                                    optionsBuilder: (TextEditingValue value) {
-                                      if (value.text.isEmpty) {
-                                        return [];
-                                      } else {
-                                        print(
-                                            "TextEditingValue---${value.text}");
-                                        Provider.of<Controller>(context,
-                                                listen: false)
-                                            .getCustomer(value.text);
-                                        return values.customerList;
-                                      }
-                                    },
-                                    displayStringForOption:
-                                        (Map<String, dynamic> option) =>
-                                            option["code"] +
-                                            '-' +
-                                            option["hname"],
-                                    onSelected: (value) {
-                                      setState(() {
-                                        print("value----${value}");
-                                        _selectedItem = value["hname"];
-                                        code = value["code"];
-                                        print(
-                                            "Code .........---${code}");
-                                      });
-                                    },
-                                    optionsViewBuilder: (BuildContext context,
-                                        AutocompleteOnSelected<
-                                                Map<String, dynamic>>
-                                            onSelected,
-                                        Iterable<Map<String, dynamic>>
-                                            options) {
-                                      return Align(
-                                        alignment: Alignment.topLeft,
-                                        child: Material(
-                                          child: Container(
-                                            width: size.width * 0.7,
-                                            // color: Colors.teal,
-                                            child: ListView.builder(
-                                              padding: EdgeInsets.all(10.0),
-                                              itemCount: options.length,
-                                              itemBuilder:
-                                                  (BuildContext context,
-                                                      int index) {
-                                                //      print(
-                                                // "option----${options}");
-                                                print("index----${index}");
-                                                final Map<String, dynamic>
-                                                    option =
-                                                    options.elementAt(index);
-                                                print("option----${option}");
-                                                return ListTile(
-                                                  // trailing: IconButton(
-                                                  //   icon: Icon(Icons.add),
-                                                  //   onPressed: () {
-                                                  //     String item =
-                                                  //         option["item"];
-                                                  //     double rate1 =
-                                                  //         double.parse(
-                                                  //             option["rate1"]);
-                                                  //     print(
-                                                  //         "item----rate---${option["item"]}---${option["rate1"]}");
-                                                  //     Provider.of<Controller>(
-                                                  //             context,
-                                                  //             listen: false)
-                                                  //         .listWidget
-                                                  //         .add({
-                                                  //       "item": item,
-                                                  //       "rate1": rate1
-                                                  //     });
-                                                  //   },
-                                                  // ),
-                                                  onTap: () {
-                                                    print("optonsssssssssssss$option");
-                                                    onSelected(option);
+                                  Flexible(
+                                    child: InputDecorator(
+                                      decoration: InputDecoration(
+                                        contentPadding: EdgeInsets.symmetric(
+                                            vertical: 0, horizontal: 4),
+                                        border: OutlineInputBorder(gapPadding: 1),
+                                        hintText: "Select..",
+                                      ),
+                                      child: Autocomplete<Map<String, dynamic>>(
+                                        optionsBuilder: (TextEditingValue value) {
+                                          if (value.text.isEmpty) {
+                                            return [];
+                                          } else {
+                                            print(
+                                                "TextEditingValue---${value.text}");
+                                            // Provider.of<Controller>(context,
+                                            //         listen: false)
+                                            //     .getCustomer(value.text);
+                                            return values.custmerDetails;
+                                          }
+                                        },
+                                        displayStringForOption:
+                                            (Map<String, dynamic> option) =>
+                                
+                                                option["hname"],
+                                        onSelected: (value) {
+                                          setState(() {
+                                            print("value----${value}");
+                                            _selectedItem = value["hname"];
+                                            code = value["code"];
+                                            print("Code .........---${code}");
+                                          });
+                                        },
+                                        optionsViewBuilder: (BuildContext context,
+                                            AutocompleteOnSelected<
+                                                    Map<String, dynamic>>
+                                                onSelected,
+                                            Iterable<Map<String, dynamic>>
+                                                options) {
+                                          return Align(
+                                            alignment: Alignment.topLeft,
+                                            child: Material(
+                                              child: Container(
+                                                width: size.width * 0.7,
+                                                // color: Colors.teal,
+                                                child: ListView.builder(
+                                                  padding: EdgeInsets.all(10.0),
+                                                  itemCount: options.length,
+                                                  itemBuilder:
+                                                      (BuildContext context,
+                                                          int index) {
+                                                    //      print(
+                                                    // "option----${options}");
+                                                    print("index----${index}");
+                                                    final Map<String, dynamic>
+                                                        option =
+                                                        options.elementAt(index);
+                                                    print("option----${option}");
+                                                    return ListTile(
+                                                      onTap: () {
+                                                        print(
+                                                            "optonsssssssssssss$option");
+                                                        onSelected(option);
+                                                      },
+                                                      title: Text(
+                                                          option["hname"]
+                                                              .toString(),
+                                                          style: const TextStyle(
+                                                              color: Colors.black)),
+                                                    );
                                                   },
-                                                  title: Text(
-                                                      option["hname"]
-                                                          .toString(),
-                                                      style: const TextStyle(
-                                                          color: Colors.black)),
-                                                );
-                                              },
+                                                ),
+                                              ),
                                             ),
-                                          ),
-                                        ),
-                                      );
-                                    },
+                                          );
+                                        },
+                                      ),
+                                    ),
                                   ),
                                   // Flexible(
                                   //   flex: 4,
@@ -362,311 +345,289 @@ class _OrderFormState extends State<OrderForm> {
                                   // ),
                                 ],
                               ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: size.height * 0.01,
-                    ),
-                    Card(
-                      child: InkWell(
-                        onTap: () {
-                          debugPrint('Card tapped.');
-                        },
-                        child: Column(
-                          children: [
-                            Container(
-                              // color: Colors.grey[300],
-                              color: P_Settings.orderFormcolor,
-                              width: size.width * 0.95,
-                              height: size.height * 0.06,
-                              child: Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: Row(
-                                  children: [
-                                    Text('Orderform'),
-                                    SizedBox(
-                                      width: size.width * 0.3,
-                                    ),
-                                    Text('History'),
-                                    SizedBox(
-                                      width: size.width * 0.03,
-                                    ),
-                                    CircleAvatar(
-                                      radius: 13,
-                                      backgroundColor:
-                                          Color.fromARGB(255, 199, 88, 199),
-                                      child: const Text('0'),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Container(
-                              alignment: Alignment.topLeft,
-                              height: size.height * 0.04,
-                              color: Colors.white,
-                              child: Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: Row(
-                                  children: [
-                                    Text("ORDER NO:  "),
-                                    Text(
-                                      values.ordernum.length != 0 &&
-                                              values.ordernum[0]['os'] !=
-                                                  null &&
-                                              values.ordernum.isNotEmpty
-                                          ? values.ordernum[0]['os']
-                                          : "1",
-                                      style: TextStyle(
-                                          color: P_Settings.extracolor),
-                                    ),
-                                    // Text(
-                                    //   '\u{20B9}${0}',
-                                    //   style: TextStyle(color: Colors.red),
-                                    // ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Container(
-                              height: size.height * 0.2,
-                              alignment: Alignment.topLeft,
-                              child: Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                          "Choose Category",
-                                          style: TextStyle(
-                                              color: P_Settings.chooseCategory),
-                                        ),
-                                        SizedBox(
-                                          width: size.width * 0.4,
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: size.height * 0.015,
-                                    ),
-                                    Row(
-                                      children: [
-                                        Flexible(
-                                          child: InputDecorator(
-                                            decoration: InputDecoration(
-                                              contentPadding:
-                                                  EdgeInsets.symmetric(
-                                                      vertical: 0,
-                                                      horizontal: 4),
-                                              border: OutlineInputBorder(
-                                                  gapPadding: 1),
-                                              hintText: "Select..",
-                                            ),
-                                            child: Autocomplete<
-                                                Map<String, dynamic>>(
-                                              optionsBuilder:
-                                                  (TextEditingValue value) {
-                                                if (value.text.isEmpty) {
-                                                  return [];
-                                                } else {
-                                                  print(
-                                                      "TextEditingValue---${value.text}");
-                                                  Provider.of<Controller>(
-                                                          context,
-                                                          listen: false)
-                                                      .getProductItems(
-                                                          value.text);
-                                                  return values.productName;
-                                                }
-                                              },
-                                              displayStringForOption:
-                                                  (Map<String, dynamic>
-                                                          option) =>
-                                                      option["code"] +
-                                                      '-' +
-                                                      option["item"],
-                                              onSelected: (value) {
-                                                setState(() {
-                                                  print("value----${value}");
-                                                  _selectedItem = value["item"];
-                                                  itemName = value["item"];
-                                                  rate1 = double.parse(
-                                                      value["rate1"]);
-                                                  print(
-                                                      "_selectedItem---${_selectedItem}");
-                                                });
-                                              },
-                                              optionsViewBuilder: (BuildContext
-                                                      context,
-                                                  AutocompleteOnSelected<
-                                                          Map<String, dynamic>>
-                                                      onSelected,
-                                                  Iterable<Map<String, dynamic>>
-                                                      options) {
-                                                return Align(
-                                                  alignment: Alignment.topLeft,
-                                                  child: Material(
-                                                    child: Container(
-                                                      width: size.width * 0.7,
-                                                      // color: Colors.teal,
-                                                      child: ListView.builder(
-                                                        padding: EdgeInsets.all(
-                                                            10.0),
-                                                        itemCount:
-                                                            options.length,
-                                                        itemBuilder:
-                                                            (BuildContext
-                                                                    context,
-                                                                int index) {
-                                                          //      print(
-                                                          // "option----${options}");
-                                                          print(
-                                                              "index----${index}");
-                                                          final Map<String,
-                                                                  dynamic>
-                                                              option =
-                                                              options.elementAt(
-                                                                  index);
-                                                          print(
-                                                              "option----${option}");
-                                                          return ListTile(
-                                                            trailing:
-                                                                IconButton(
-                                                              icon: Icon(
-                                                                  Icons.add),
-                                                              onPressed: () {
-                                                                String item =
-                                                                    option[
-                                                                        "item"];
-                                                                double rate1 =
-                                                                    double.parse(
-                                                                        option[
-                                                                            "rate1"]);
-                                                                print(
-                                                                    "item----rate---${option["item"]}---${option["rate1"]}");
-                                                                Provider.of<Controller>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .listWidget
-                                                                    .add({
-                                                                  "item": item,
-                                                                  "rate1": rate1
-                                                                });
-                                                              },
-                                                            ),
-                                                            onTap: () {
-                                                              onSelected(
-                                                                  option);
-                                                            },
-                                                            title: Text(
-                                                                option["code"] +
-                                                                    '-' +
-                                                                    option["item"]
-                                                                        .toString(),
-                                                                style: const TextStyle(
-                                                                    color: Colors
-                                                                        .black)),
-                                                          );
-                                                        },
-                                                      ),
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: size.width * 0.03,
-                                        ),
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            print(
-                                                " itemName, rate1--${itemName}--${rate1}");
-                                            Provider.of<Controller>(context,
-                                                    listen: false)
-                                                .listWidget
-                                                .add({
-                                              "item": itemName,
-                                              "rate1": rate1
-                                            });
-                                            setState(() {
-                                              isAdded = true;
-                                            });
-                                          },
-                                          style: ElevatedButton.styleFrom(
-                                            primary:
-                                                P_Settings.roundedButtonColor,
-                                            // shape: CircleBorder(),
-                                          ),
-                                          child: Icon(Icons.add,
-                                              size: 20, color: Colors.black),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: size.height * 0.015,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        ElevatedButton.icon(
-                                          icon: Icon(
-                                            Icons.shopping_cart,
-                                            color: Colors.white,
-                                            size: 30.0,
-                                          ),
-                                          label: Text("View bag"),
-                                          onPressed: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      CartList()),
-                                            );
-                                          },
-                                          style: ElevatedButton.styleFrom(
-                                            shape: new RoundedRectangleBorder(
-                                              borderRadius:
-                                                  new BorderRadius.circular(
-                                                      10.0),
-                                            ),
-                                          ),
-                                        )
-                                        // IconButton(
-                                        //     onPressed: () {
-                                        //       Navigator.push(
-                                        //         context,
-                                        //         MaterialPageRoute(
-                                        //             builder: (context) =>
-                                        //                 CartList(
-                                        //                   listWidget: listWidget,
-                                        //                 )),
-                                        //       );
-                                        //     },
-                                        //     icon: Icon(
-                                        //       Icons.shopping_cart,
-                                        //       size: 35,
-                                        //     ))
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              ),
                             ),
                           ],
                         ),
                       ),
                     ),
-                  ],
-                );
-              }),
-            ),
+                  ),
+                  SizedBox(
+                    height: size.height * 0.01,
+                  ),
+                  Card(
+                    child: InkWell(
+                      onTap: () {
+                        debugPrint('Card tapped.');
+                      },
+                      child: Column(
+                        children: [
+                          Container(
+                            // color: Colors.grey[300],
+                            color: P_Settings.orderFormcolor,
+                            width: size.width * 0.95,
+                            height: size.height * 0.06,
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Row(
+                                children: [
+                                  Text('Orderform'),
+                                  SizedBox(
+                                    width: size.width * 0.3,
+                                  ),
+                                  Text('History'),
+                                  SizedBox(
+                                    width: size.width * 0.03,
+                                  ),
+                                  CircleAvatar(
+                                    radius: 13,
+                                    backgroundColor:
+                                        Color.fromARGB(255, 199, 88, 199),
+                                    child: const Text('0'),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                          Container(
+                            alignment: Alignment.topLeft,
+                            height: size.height * 0.04,
+                            color: Colors.white,
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Row(
+                                children: [
+                                  Text("ORDER NO:  "),
+                                  Text(
+                                    values.ordernum.length != 0 &&
+                                            values.ordernum[0]['os'] != null &&
+                                            values.ordernum.isNotEmpty
+                                        ? values.ordernum[0]['os']
+                                        : "1",
+                                    style:
+                                        TextStyle(color: P_Settings.extracolor),
+                                  ),
+                                  // Text(
+                                  //   '\u{20B9}${0}',
+                                  //   style: TextStyle(color: Colors.red),
+                                  // ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Container(
+                            height: size.height * 0.2,
+                            alignment: Alignment.topLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Text(
+                                        "Choose Category",
+                                        style: TextStyle(
+                                            color: P_Settings.chooseCategory),
+                                      ),
+                                      SizedBox(
+                                        width: size.width * 0.4,
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: size.height * 0.015,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Flexible(
+                                        child: InputDecorator(
+                                          decoration: InputDecoration(
+                                            contentPadding:
+                                                EdgeInsets.symmetric(
+                                                    vertical: 0, horizontal: 4),
+                                            border: OutlineInputBorder(
+                                                gapPadding: 1),
+                                            hintText: "Select..",
+                                          ),
+                                          child: Autocomplete<
+                                              Map<String, dynamic>>(
+                                            optionsBuilder:
+                                                (TextEditingValue value) {
+                                              if (value.text.isEmpty) {
+                                                return [];
+                                              } else {
+                                                print(
+                                                    "TextEditingValue---${value.text}");
+                                                Provider.of<Controller>(context,
+                                                        listen: false)
+                                                    .getProductItems(
+                                                        value.text);
+                                                return values.productName;
+                                              }
+                                            },
+                                            displayStringForOption:
+                                                (Map<String, dynamic> option) =>
+                                                    option["code"] +
+                                                    '-' +
+                                                    option["item"],
+                                            onSelected: (value) {
+                                              setState(() {
+                                                print("value----${value}");
+                                                _selectedItem = value["item"];
+                                                itemName = value["item"];
+                                                rate1 = double.parse(
+                                                    value["rate1"]);
+                                                print(
+                                                    "_selectedItem---${_selectedItem}");
+                                              });
+                                            },
+                                            optionsViewBuilder: (BuildContext
+                                                    context,
+                                                AutocompleteOnSelected<
+                                                        Map<String, dynamic>>
+                                                    onSelected,
+                                                Iterable<Map<String, dynamic>>
+                                                    options) {
+                                              return Align(
+                                                alignment: Alignment.topLeft,
+                                                child: Material(
+                                                  child: Container(
+                                                    width: size.width * 0.7,
+                                                    // color: Colors.teal,
+                                                    child: ListView.builder(
+                                                      padding:
+                                                          EdgeInsets.all(10.0),
+                                                      itemCount: options.length,
+                                                      itemBuilder:
+                                                          (BuildContext context,
+                                                              int index) {
+                                                        //      print(
+                                                        // "option----${options}");
+                                                        print(
+                                                            "index----${index}");
+                                                        final Map<String,
+                                                                dynamic>
+                                                            option =
+                                                            options.elementAt(
+                                                                index);
+                                                        print(
+                                                            "option----${option}");
+                                                        return ListTile(
+                                                          trailing: IconButton(
+                                                            icon:
+                                                                Icon(Icons.add),
+                                                            onPressed: () {
+                                                              String item =
+                                                                  option[
+                                                                      "item"];
+                                                              double rate1 = double
+                                                                  .parse(option[
+                                                                      "rate1"]);
+                                                              print(
+                                                                  "item----rate---${option["item"]}---${option["rate1"]}");
+                                                              Provider.of<Controller>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .listWidget
+                                                                  .add({
+                                                                "item": item,
+                                                                "rate1": rate1
+                                                              });
+                                                            },
+                                                          ),
+                                                          onTap: () {
+                                                            onSelected(option);
+                                                          },
+                                                          title: Text(
+                                                              option["code"] +
+                                                                  '-' +
+                                                                  option["item"]
+                                                                      .toString(),
+                                                              style: const TextStyle(
+                                                                  color: Colors
+                                                                      .black)),
+                                                        );
+                                                      },
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: size.width * 0.03,
+                                      ),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          print(
+                                              " itemName, rate1--${itemName}--${rate1}");
+                                          Provider.of<Controller>(context,
+                                                  listen: false)
+                                              .listWidget
+                                              .add({
+                                            "item": itemName,
+                                            "rate1": rate1
+                                          });
+                                          setState(() {
+                                            isAdded = true;
+                                          });
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          primary:
+                                              P_Settings.roundedButtonColor,
+                                          // shape: CircleBorder(),
+                                        ),
+                                        child: Icon(Icons.add,
+                                            size: 20, color: Colors.black),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: size.height * 0.015,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      ElevatedButton.icon(
+                                        icon: Icon(
+                                          Icons.shopping_cart,
+                                          color: Colors.white,
+                                          size: 30.0,
+                                        ),
+                                        label: Text("View bag"),
+                                        onPressed: () async {
+                                          //                                 String customerId=;
+                                          //                                  var res =
+                                          // await OrderAppDB.instance.insertStaffAreaDetails(customerId);
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    CartList()),
+                                          );
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          shape: new RoundedRectangleBorder(
+                                            borderRadius:
+                                                new BorderRadius.circular(10.0),
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            }),
           ),
         ),
       ),

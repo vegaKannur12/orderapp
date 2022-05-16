@@ -24,16 +24,16 @@ class Controller extends ChangeNotifier {
   List<CD> c_d = [];
   String? area;
   String? splittedCode;
-
+ double amt=0.0;
   List<CD> data = [];
   List<Map<String, dynamic>> listWidget = [];
-  List<TextEditingController> _controller = [];
+  List<TextEditingController> controller = [];
 
   String? sof;
   List<Map<String, dynamic>> staffList = [];
   List<Map<String, dynamic>> productName = [];
   List<String> areDetails = [];
-  List<String> custmerDetails = [];
+  List<Map<String, dynamic>> custmerDetails = [];
   List<Map<String, dynamic>> areaList = [];
   List<Map<String, dynamic>> customerList = [];
   List<Map<String, dynamic>> copyCus = [];
@@ -350,7 +350,7 @@ class Controller extends ChangeNotifier {
       customerList = await OrderAppDB.instance.getCustomer(aid);
       print("customerList----${customerList}");
       for (var item in customerList) {
-        custmerDetails.add(item["hname"]);
+        custmerDetails.add(item);
       }
       print("custmerDetails adding $custmerDetails");
       notifyListeners();
@@ -394,6 +394,7 @@ class Controller extends ChangeNotifier {
     }
     notifyListeners();
   }
+
 ////////////////////////////////////////////////////////////
   getOrderno() async {
     try {
@@ -409,9 +410,20 @@ class Controller extends ChangeNotifier {
   }
 
   /////////////////////////////////////
-  deleteListWidget(int index){
+  deleteListWidget(int index) {
     listWidget.removeAt(index);
     notifyListeners();
   }
 
+////////////////////////////////
+  generateTextEditingController() {
+    var length = listWidget.length;
+    controller = List.generate(length, (i) => TextEditingController());
+    // notifyListeners();
+  }
+  /////////////////////////////////
+  calculateAmt(double rate, String _controller){
+    amt = rate * double.parse(_controller);
+    // notifyListeners();
+  }
 }

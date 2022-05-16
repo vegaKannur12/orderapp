@@ -287,18 +287,18 @@ class OrderAppDB {
   //   // print(res);
   //   return res;
   // }
+  Future insertorderBagTable(String cartdatetime,String os,String customerid,int cartrowno,String code,double qt,double rate,int cstatus) async {
+    final db = await database;
+    var query2 =
+        'INSERT INTO orderBagTable(cartdatetime, os, customerid, cartrowno, code, qty, rate, cstatus) VALUES("${cartdatetime}", "${os}", "${customerid}", ${cartrowno}, "${code}", ${qty}, ${rate}, ${cstatus})';
+    var res = await db.rawInsert(query2);
+    print(query2);
+    // print(res);
+    return res;
+  }
 
   /////////////////////// order master table insertion//////////////////////
-  // Future insertorderMaster() async {
-  //   final db = await database;
-  //   var query3 =
-  //       'INSERT INTO orderMasterTable(ordernum, orderdatetime, os, customerid, userid, areaid, mstatus) VALUES("${adata.aid}", "${date}")';
-  //   var res = await db.rawInsert(query3);
-  //   print(query3);
-  //   print(res);
-  //   return res;
-  // }
-//////////////////////// insert into bag ////////////////////////////////
+  
 
   ///////////////////// registration details insertion //////////////////////////
   Future insertRegistrationDetails(RegistrationData data) async {
@@ -311,6 +311,18 @@ class OrderAppDB {
     return res;
   }
 
+////////////////////select from orderBagTable//////////////////////
+
+  Future<List<Map<String, dynamic>>> getOrderBagTable(String customerId) async {
+    print("enteredcustomerId---${customerId}");
+    // Provider.of<Controller>(context, listen: false).customerList.clear();
+    Database db = await instance.database;
+    var res = await db.rawQuery(
+        'SELECT  * FROM orderBagTable WHERE customerid="${customerId}"');
+    print('SELECT  * FROM orderBagTable WHERE customerid="${customerId}');
+
+    return res;
+  }
 ////////////////////// staff details insertion /////////////////////
   Future insertStaffDetails(StaffDetails sdata) async {
     final db = await database;
@@ -496,14 +508,18 @@ class OrderAppDB {
     print("SELECT os FROM registrationTable");
     return res;
   }
-  // getCustmer(String aid) async {
-  //   print("enteredaid---${aid}");
-  //   Database db = await instance.database;
-  //   var res = await db.rawQuery(
-  //       "SELECT * FROM productDetailsTable WHERE item LIKE '%$product%'");
 
-  //   print("SELECT * FROM productDetailsTable WHERE item LIKE '%$product%'");
-  //   print("items=================${res}");
-  //   return res;
-  // }
+  /////////////////////////max of from table//////////////////////
+  getMaxOfFieldValue(
+    String table,
+    String field,
+    String condition,
+  ) async {
+    Database db = await instance.database;
+    var res=db.rawQuery("SELECT MAX($field) FROM $table WHERE $condition");
+    print(res);
+    return res;
+  }
+  /////////////////////////////////////////////////////////////
+  
 }
