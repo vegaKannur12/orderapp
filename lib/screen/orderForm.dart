@@ -443,12 +443,7 @@ class _OrderFormState extends State<OrderForm> {
                                                                   "item": item,
                                                                   "rate1": rate1
                                                                 });
-                                                                // onSelected(option);
-                                                                // Navigator.pop(context);
-                                                                // setState(() {
-                                                                //   _selectedItem =
-                                                                //       "";
-                                                                // });
+                                                            
                                                               },
                                                             ),
                                                             onTap: () {

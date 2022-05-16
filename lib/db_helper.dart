@@ -420,14 +420,18 @@ class OrderAppDB {
     print("SELECT os FROM registrationTable");
     return res;
   }
-  // getCustmer(String aid) async {
-  //   print("enteredaid---${aid}");
-  //   Database db = await instance.database;
-  //   var res = await db.rawQuery(
-  //       "SELECT * FROM productDetailsTable WHERE item LIKE '%$product%'");
 
-  //   print("SELECT * FROM productDetailsTable WHERE item LIKE '%$product%'");
-  //   print("items=================${res}");
-  //   return res;
-  // }
+  /////////////////////////max of from table//////////////////////
+  getMaxOfFieldValue(
+    String table,
+    String field,
+    String condition,
+  ) async {
+    Database db = await instance.database;
+    var res=db.rawQuery("SELECT MAX($field) FROM $table WHERE $condition");
+    print(res);
+    return res;
+  }
+  /////////////////////////////////////////////////////////////
+  
 }

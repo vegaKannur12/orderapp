@@ -24,10 +24,10 @@ class Controller extends ChangeNotifier {
   List<CD> c_d = [];
   String? area;
   String? splittedCode;
-
+ double amt=0.0;
   List<CD> data = [];
   List<Map<String, dynamic>> listWidget = [];
-  List<TextEditingController> _controller = [];
+  List<TextEditingController> controller = [];
 
   String? sof;
   List<Map<String, dynamic>> staffList = [];
@@ -394,6 +394,7 @@ class Controller extends ChangeNotifier {
     }
     notifyListeners();
   }
+
 ////////////////////////////////////////////////////////////
   getOrderno() async {
     try {
@@ -409,9 +410,20 @@ class Controller extends ChangeNotifier {
   }
 
   /////////////////////////////////////
-  deleteListWidget(int index){
+  deleteListWidget(int index) {
     listWidget.removeAt(index);
     notifyListeners();
   }
 
+////////////////////////////////
+  generateTextEditingController() {
+    var length = listWidget.length;
+    controller = List.generate(length, (i) => TextEditingController());
+    // notifyListeners();
+  }
+  /////////////////////////////////
+  calculateAmt(double rate, String _controller){
+    amt = rate * double.parse(_controller);
+    // notifyListeners();
+  }
 }
