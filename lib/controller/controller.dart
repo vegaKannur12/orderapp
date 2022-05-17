@@ -331,7 +331,7 @@ class Controller extends ChangeNotifier {
     print("staff...............${staffName}");
     try {
       areaList = await OrderAppDB.instance.getArea(staffName);
-      print("areaList----${areaList}");
+      // print("areaList----${areaList}");
       for (var item in areaList) {
         areDetails.add(item["aid"] + '-' + item["aname"]);
       }
@@ -420,7 +420,9 @@ class Controller extends ChangeNotifier {
 ////////////////////////////////
   generateTextEditingController() {
     var length = bagList.length;
+    print("text length----$length");
     controller = List.generate(length, (i) => TextEditingController());
+    print("length----$length");
     // notifyListeners();
   }
 
@@ -432,11 +434,37 @@ class Controller extends ChangeNotifier {
 
   ////////////////////////////////////
   getBagDetails(String customerId) async {
+    bagList.clear();
+    isLoading = true;
+    notifyListeners();
+    List<Map<String, dynamic>> res =
+        await OrderAppDB.instance.getOrderBagTable(customerId);
+    for (var item in res) {
+      bagList.add(item);
+    }
+    isLoading = false;
+    notifyListeners();
+
+    print("bagList----$bagList");
+
+    notifyListeners();
+  }
+
+  ///////////////////////////////////
+  deleteFromOrderBagTable(int id, String customerId, int index) async {
+    print("id--$id");
+    await OrderAppDB.instance.deleteFromOrderbagTable(id);
+    controller.removeAt(index);
+    generateTextEditingController();
+    notifyListeners();
+
     List<Map<String, dynamic>> res =
         await OrderAppDB.instance.getOrderBagTable(customerId);
     for (var item in res) {
       bagList.add(item);
     }
     notifyListeners();
+
+    // print("after remove----$length");
   }
 }

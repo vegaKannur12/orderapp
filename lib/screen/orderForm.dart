@@ -37,7 +37,8 @@ class _OrderFormState extends State<OrderForm> {
   String? staffname;
   bool visible = false;
   String itemName = '';
-  double rate1 = 0.0;
+  String? rate1;
+  // double rate1 = 0.0;
   bool isAdded = false;
   int selectedIndex = 0;
   int _randomNumber1 = 0;
@@ -81,8 +82,8 @@ class _OrderFormState extends State<OrderForm> {
           child: Padding(
             padding: const EdgeInsets.all(10.0),
             child: Consumer<Controller>(builder: (context, values, child) {
-              print("value.areaList-----${values.areaList}");
-              print("value.custmer-----${values.customerList}");
+              // print("value.areaList-----${values.areaList}");
+              // print("value.custmer-----${values.customerList}");
 
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -481,8 +482,7 @@ class _OrderFormState extends State<OrderForm> {
                                                 _selectedItem = value["item"];
                                                 itemName = value["item"];
                                                 productCode = value["code"];
-                                                rate1 = double.parse(
-                                                    value["rate1"]);
+                                                rate1 = value["rate1"];
                                                 print(
                                                     "_selectedItem---${_selectedItem}");
                                               });
@@ -527,21 +527,28 @@ class _OrderFormState extends State<OrderForm> {
                                                               String item =
                                                                   option[
                                                                       "item"];
-                                                              double rate1 = double
-                                                                  .parse(option[
-                                                                      "rate1"]);
-                                                              print(
-                                                                  "item----rate---${option["item"]}---${option["rate1"]}");
+                                                              String rate1 =
+                                                                  option[
+                                                                      "rate1"];
+                                                              String
+                                                                  productCode =
+                                                                  option[
+                                                                      "code"];
+                                                                      print("option[code]----$productCode");
+                                                              // print(
+                                                              //     "item----rate---${option["item"]}---${option["rate1"]}");
                                                               int max = await OrderAppDB
                                                                   .instance
                                                                   .getMaxOfFieldValue(
                                                                       values.ordernum[
                                                                               0]
                                                                           [
-                                                                          'os']);
+                                                                          'os'],
+                                                                      custmerId!);
                                                               var res = await OrderAppDB
                                                                   .instance
                                                                   .insertorderBagTable(
+                                                                      item,
                                                                       date!,
                                                                       values.ordernum[
                                                                               0]
@@ -549,19 +556,19 @@ class _OrderFormState extends State<OrderForm> {
                                                                           'os'],
                                                                       custmerId!,
                                                                       max,
-                                                                      productCode!,
+                                                                      productCode,
                                                                       1,
                                                                       rate1,
                                                                       0);
-                                                              // Provider.of<Controller>(
-                                                              //         context,
-                                                              //         listen:
-                                                              //             false)
-                                                              //     .listWidget
-                                                              //     .add({
-                                                              //   "item": item,
-                                                              //   "rate1": rate1
-                                                              // });
+                                                              Provider.of<Controller>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .listWidget
+                                                                  .add({
+                                                                "item": item,
+                                                                "rate1": rate1
+                                                              });
                                                             },
                                                           ),
                                                           onTap: () {
@@ -594,17 +601,19 @@ class _OrderFormState extends State<OrderForm> {
                                               " itemName, rate1--${itemName}--${rate1}");
                                           var max = await OrderAppDB.instance
                                               .getMaxOfFieldValue(
-                                                  values.ordernum[0]['os']);
+                                                  values.ordernum[0]['os'],
+                                                  custmerId!);
                                           // int max1=max[0][""]
                                           var res = await OrderAppDB.instance
                                               .insertorderBagTable(
+                                                  itemName,
                                                   date!,
                                                   values.ordernum[0]['os'],
                                                   custmerId!,
                                                   max,
                                                   productCode!,
                                                   1,
-                                                  rate1,
+                                                  rate1!,
                                                   0);
                                           var res1 = await OrderAppDB.instance
                                               .gettotalSum();
@@ -650,8 +659,9 @@ class _OrderFormState extends State<OrderForm> {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (context) =>
-                                                    CartList()),
+                                                builder: (context) => CartList(
+                                                      custmerId: custmerId!,
+                                                    )),
                                           );
                                         },
                                         style: ElevatedButton.styleFrom(

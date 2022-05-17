@@ -113,6 +113,7 @@ class OrderAppDB {
   static final rate = 'rate';
   static final cstatus = 'cstatus';
   static final ordrow_num = 'ordrow_num';
+  static final itemName = 'itemName';
 
   Future<Database> get database async {
     if (_database != null) return _database!;
@@ -265,13 +266,14 @@ class OrderAppDB {
     await db.execute('''
           CREATE TABLE orderBagTable (
             $id INTEGER PRIMARY KEY AUTOINCREMENT,
+            $itemName TEXT NOT NULL,
             $cartdatetime TEXT,
             $os TEXT NOT NULL,
             $customerid TEXT,
             $cartrowno INTEGER,
             $code TEXT,
             $qty INTEGER,
-            $rate INTEGER,
+            $rate TEXT,
             $cstatus INTEGER
           )
           ''');
@@ -287,11 +289,20 @@ class OrderAppDB {
   //   // print(res);
   //   return res;
   // }
-  Future insertorderBagTable(String cartdatetime, String os, String customerid,
-      int cartrowno, String code, int qty, double rate, int cstatus) async {
+  Future insertorderBagTable(
+      String itemName,
+      String cartdatetime,
+      String os,
+      String customerid,
+      int cartrowno,
+      String code,
+      int qty,
+      String rate,
+      int cstatus) async {
+        print("os--$os");
     final db = await database;
     var query2 =
-        'INSERT INTO orderBagTable(cartdatetime, os, customerid, cartrowno, code, qty, rate, cstatus) VALUES("${cartdatetime}", "${os}", "${customerid}", $cartrowno, "${code}", $qty, $rate, $cstatus)';
+        'INSERT INTO orderBagTable(itemName, cartdatetime, os, customerid, cartrowno, code, qty, rate, cstatus) VALUES("${itemName}","${cartdatetime}", "${os}", "${customerid}", $cartrowno, "${code}", $qty, "${rate}", $cstatus)';
     var res = await db.rawInsert(query2);
     print(query2);
     // print(res);
@@ -504,18 +515,19 @@ class OrderAppDB {
   }
 
   /////////////////////////max of from table//////////////////////
-  getMaxOfFieldValue(
- 
-    String os
-  ) async {
+  getMaxOfFieldValue(String os, String customerId) async {
     var res;
     int max;
     Database db = await instance.database;
     var result = await db.rawQuery("SELECT * FROM orderBagTable");
+    print("result---$result");
     if (result != null && result.isNotEmpty) {
-      res = await db.rawQuery("SELECT MAX(cartrowno) max_val FROM orderBagTable ");
-      max=res[0]["max_val"]+1;
-      print("SELECT MAX(cartrowno) max_val FROM orderBagTable");
+
+      res = await db.rawQuery(
+          "SELECT MAX(cartrowno) max_val FROM orderBagTable WHERE os=$os AND customerid=$customerId ");
+      max = res[0]["max_val"] + 1;
+      print(
+          "SELECT MAX(cartrowno) max_val FROM orderBagTable WHERE os=$os AND customerid=$customerId");
     } else {
       max = 1;
     }
@@ -535,5 +547,11 @@ class OrderAppDB {
     print(res);
     print("SELECT SUM(rate) FROM orderBagTable");
     return res;
+    }
+  ///////////////////////////delete from orderBagTable/////////////////////////
+  deleteFromOrderbagTable(int id) async {
+    Database db = await instance.database;
+    print("DELETE FROM 'orderBagTable' WHERE id = $id");
+    return await db.rawDelete("DELETE FROM 'orderBagTable' WHERE $id = id");
   }
 }
