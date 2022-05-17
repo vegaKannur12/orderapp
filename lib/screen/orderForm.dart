@@ -535,8 +535,8 @@ class _OrderFormState extends State<OrderForm> {
                                                                   option[
                                                                       "code"];
                                                                       print("option[code]----$productCode");
-                                                              // print(
-                                                              //     "item----rate---${option["item"]}---${option["rate1"]}");
+                                                              print(
+                                                                  "item----rate---${option["item"]}---${option["rate1"]}");
                                                               int max = await OrderAppDB
                                                                   .instance
                                                                   .getMaxOfFieldValue(
