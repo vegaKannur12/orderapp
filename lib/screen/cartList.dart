@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:orderapp/components/commoncolor.dart';
 import 'package:orderapp/controller/controller.dart';
+import 'package:orderapp/db_helper.dart';
 import 'package:provider/provider.dart';
 
 class CartList extends StatefulWidget {
+  String custmerId;
+  CartList({required this.custmerId});
   @override
   State<CartList> createState() => _CartListState();
 }
@@ -19,7 +22,6 @@ class _CartListState extends State<CartList> {
         .generateTextEditingController();
     // _controller = List.generate(length, (i) => TextEditingController());
   }
- 
 
   @override
   Widget build(BuildContext context) {
@@ -27,31 +29,34 @@ class _CartListState extends State<CartList> {
     return Scaffold(
       appBar: AppBar(),
       body: GestureDetector(
-                onTap: (() {
+        onTap: (() {
           FocusScopeNode currentFocus = FocusScope.of(context);
           if (!currentFocus.hasPrimaryFocus) {
             currentFocus.unfocus();
           }
         }),
         child: Consumer<Controller>(builder: (context, value, child) {
-        return SafeArea(
-              child: ListView.builder(
-            itemCount: value.bagList.length,
-            itemBuilder: (BuildContext context, int index) {
-              return listItemFunction(
-                  value.bagList[index]["item"],
-                  value.bagList[index]["rate1"],
-                  size,
-                  value.controller[index],
-                  index);
-            },
-          ));
+          return SafeArea(
+              child: value.isLoading
+                  ? CircularProgressIndicator()
+                  : ListView.builder(
+                      itemCount: value.bagList.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return listItemFunction(
+                            value.bagList[index]["id"],
+                            value.bagList[index]["itemName"],
+                            value.bagList[index]["rate"],
+                            size,
+                            value.controller[index],
+                            index);
+                      },
+                    ));
         }),
       ),
     );
   }
 
-  Widget listItemFunction(String itemName, double rate, Size size,
+  Widget listItemFunction(int id, String itemName, String rate, Size size,
       TextEditingController _controller, int index) {
     // print("textEditing value----${_controller.text}");
 
@@ -59,7 +64,7 @@ class _CartListState extends State<CartList> {
       // print("if gdrfgdfgde");
       _controller.text = "1";
     }
-    Provider.of<Controller>(context,listen: false).calculateAmt(rate,_controller.text);
+    // Provider.of<Controller>(context,listen: false).calculateAmt(rate,_controller.text);
 
     return Container(
       height: size.height * 0.19,
@@ -92,6 +97,10 @@ class _CartListState extends State<CartList> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      // Text("${id}"),
+                      // SizedBox(
+                      //   width: size.width * 0.02,
+                      // ),
                       CircleAvatar(
                         backgroundColor: Colors.green,
                         radius: 40,
@@ -152,8 +161,7 @@ class _CartListState extends State<CartList> {
                                         controller: _controller,
                                       )),
                                   Text(
-                                    "\u{20B9}${Provider.of<Controller>(context,
-                                                listen: false).amt}",
+                                    "\u{20B9}${Provider.of<Controller>(context, listen: false).amt}",
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 16),
@@ -192,10 +200,11 @@ class _CartListState extends State<CartList> {
                                     ElevatedButton(
                                       style: ElevatedButton.styleFrom(
                                           primary: P_Settings.wavecolor),
-                                      onPressed: () {
+                                      onPressed: () async {
                                         Provider.of<Controller>(context,
                                                 listen: false)
-                                            .deleteListWidget(index);
+                                            .deleteFromOrderBagTable(
+                                                id, widget.custmerId,index);
                                         Navigator.of(ctx).pop();
                                       },
                                       child: Text("ok"),
@@ -225,5 +234,4 @@ class _CartListState extends State<CartList> {
       ),
     );
   }
-
 }
