@@ -535,9 +535,10 @@ class _OrderFormState extends State<OrderForm> {
                                                               int max = await OrderAppDB
                                                                   .instance
                                                                   .getMaxOfFieldValue(
-                                                                      "orderBagTable",
-                                                                      "id",
-                                                                      "os=${values.ordernum[0]['os']}");
+                                                                      values.ordernum[
+                                                                              0]
+                                                                          [
+                                                                          'os']);
                                                               var res = await OrderAppDB
                                                                   .instance
                                                                   .insertorderBagTable(
@@ -591,11 +592,10 @@ class _OrderFormState extends State<OrderForm> {
                                         onPressed: () async {
                                           print(
                                               " itemName, rate1--${itemName}--${rate1}");
-                                          int max = await OrderAppDB.instance
+                                          var max = await OrderAppDB.instance
                                               .getMaxOfFieldValue(
-                                                  "orderBagTable",
-                                                  "id",
-                                                  "os=${values.ordernum[0]['os']}");
+                                                  values.ordernum[0]['os']);
+                                          // int max1=max[0][""]
                                           var res = await OrderAppDB.instance
                                               .insertorderBagTable(
                                                   date!,
@@ -606,6 +606,8 @@ class _OrderFormState extends State<OrderForm> {
                                                   1,
                                                   rate1,
                                                   0);
+                                          var res1 = await OrderAppDB.instance
+                                              .gettotalSum();
                                           // Provider.of<Controller>(context,
                                           //         listen: false)
                                           //     .listWidget
@@ -684,19 +686,20 @@ class _OrderFormState extends State<OrderForm> {
                                       SizedBox(
                                         width: size.width * 0.1,
                                       ),
-                                      Flexible(
-                                        child: TextField(
-                                          readOnly: true,
-                                          decoration: InputDecoration(
-                                              // border: UnderlineInputBorder(
-                                              //   borderSide: BorderSide(
-                                              //       color: Color.fromARGB(
-                                              //           255, 11, 177, 38)),
-                                              // ),
-                                              ),
-                                          onChanged: (value) {},
-                                        ),
-                                      ),
+                                      Text("hgfvfdhgjdfg"),
+                                      // Flexible(
+                                      //   child: TextField(
+                                      //     readOnly: true,
+                                      //     decoration: InputDecoration(
+                                      //         // border: UnderlineInputBorder(
+                                      //         //   borderSide: BorderSide(
+                                      //         //       color: Color.fromARGB(
+                                      //         //           255, 11, 177, 38)),
+                                      //         // ),
+                                      //         ),
+                                      //     onChanged: (value) {},
+                                      //   ),
+                                      // ),
                                       // Icon(Icons.shopping_cart, size: 19),
                                     ],
                                   ),
