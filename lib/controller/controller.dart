@@ -30,6 +30,8 @@ class Controller extends ChangeNotifier {
   List<TextEditingController> controller = [];
 
   String? sof;
+  List<Map<String, dynamic>> bagList = [];
+
   List<Map<String, dynamic>> staffList = [];
   List<Map<String, dynamic>> productName = [];
   List<String> areDetails = [];
@@ -417,7 +419,7 @@ class Controller extends ChangeNotifier {
 
 ////////////////////////////////
   generateTextEditingController() {
-    var length = listWidget.length;
+    var length = bagList.length;
     controller = List.generate(length, (i) => TextEditingController());
     // notifyListeners();
   }
@@ -430,6 +432,11 @@ class Controller extends ChangeNotifier {
 
   ////////////////////////////////////
   getBagDetails(String customerId) async {
-    var res = await OrderAppDB.instance.getOrderBagTable(customerId);
+    List<Map<String, dynamic>> res =
+        await OrderAppDB.instance.getOrderBagTable(customerId);
+    for (var item in res) {
+      bagList.add(item);
+    }
+    notifyListeners();
   }
 }

@@ -535,9 +535,8 @@ class _OrderFormState extends State<OrderForm> {
                                                               int max = await OrderAppDB
                                                                   .instance
                                                                   .getMaxOfFieldValue(
-                                                                      "orderBagTable",
-                                                                      "id",
-                                                                      "os=${values.ordernum[0]['os']}");
+                                                                     values.ordernum[0]['os']
+                                                                      );
                                                               var res = await OrderAppDB
                                                                   .instance
                                                                   .insertorderBagTable(
@@ -591,11 +590,10 @@ class _OrderFormState extends State<OrderForm> {
                                         onPressed: () async {
                                           print(
                                               " itemName, rate1--${itemName}--${rate1}");
-                                          int max = await OrderAppDB.instance
+                                          var max= await OrderAppDB.instance
                                               .getMaxOfFieldValue(
-                                                  "orderBagTable",
-                                                  "id",
-                                                  "os=${values.ordernum[0]['os']}");
+                                                 values.ordernum[0]['os']);
+                                          // int max1=max[0][""]
                                           var res = await OrderAppDB.instance
                                               .insertorderBagTable(
                                                   date!,
