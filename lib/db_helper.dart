@@ -471,7 +471,7 @@ class OrderAppDB {
     var area = await db.rawQuery(
         'SELECT area FROM staffDetailsTable WHERE sname="${staffName}"');
     if (area[0]["area"] == "") {
-      list = await db.rawQuery('SELECT * FROM areaDetailsTable WHERE');
+      list = await db.rawQuery('SELECT * FROM areaDetailsTable');
     }
 
     print("res===${result}");
@@ -525,10 +525,10 @@ class OrderAppDB {
     if (result != null && result.isNotEmpty) {
       print("if");
       res = await db.rawQuery(
-          "SELECT MAX(cartrowno) max_val FROM orderBagTable WHERE os=$os  ");
+          "SELECT MAX(cartrowno) max_val FROM orderBagTable WHERE os='$os' ");
       max = res[0]["max_val"] + 1;
       print(
-          "SELECT MAX(cartrowno) max_val FROM orderBagTable WHERE os=$os AND customerid=$customerId");
+          "SELECT MAX(cartrowno) max_val FROM orderBagTable WHERE os='$os' AND customerid='$customerId'");
     } else {
       print("else");
 
