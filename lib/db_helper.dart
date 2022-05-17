@@ -514,6 +514,12 @@ class OrderAppDB {
     print(res);
     return res;
   }
-  /////////////////////////////////////////////////////////////
-  
+  ////////////////////////////sum of the product /////////////////////////////////
+    gettotalSum() async {
+    Database db = await instance.database;
+    var res = await db.rawQuery("SELECT SUM(rate) FROM orderBagTable");
+    print(res);
+    print("SELECT SUM(rate) FROM orderBagTable");
+    return res;
+  }
 }
