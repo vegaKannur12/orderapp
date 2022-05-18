@@ -659,6 +659,9 @@ class _OrderFormState extends State<OrderForm> {
                                         flex: 1,
                                         child: ElevatedButton(
                                           onPressed: () async {
+                                            if(qty.text == null || qty.text.isEmpty){
+                                              qty.text="1";
+                                            }
                                             print(
                                                 " itemName, rate1--${itemName}--${rate1}");
                                             var max = await OrderAppDB.instance
@@ -705,6 +708,8 @@ class _OrderFormState extends State<OrderForm> {
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
                                       ElevatedButton.icon(
+                                        
+
                                         icon: Icon(
                                           Icons.shopping_cart,
                                           color: Colors.white,
@@ -725,6 +730,8 @@ class _OrderFormState extends State<OrderForm> {
                                           );
                                         },
                                         style: ElevatedButton.styleFrom(
+                                             primary:
+                                                  P_Settings.wavecolor,
                                           shape: new RoundedRectangleBorder(
                                             borderRadius:
                                                 new BorderRadius.circular(10.0),

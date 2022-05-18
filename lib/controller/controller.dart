@@ -468,10 +468,10 @@ class Controller extends ChangeNotifier {
   }
 
   /////////////////////////////updateqty/////////////////////
-  updateQty(String qty, int cartrowno, String customerId) async {
+  updateQty(String qty, int cartrowno, String customerId,String rate) async {
     // print("qty-----${qty}");
     List<Map<String, dynamic>> res = await OrderAppDB.instance
-        .updateQtyOrderBagTable(qty, cartrowno, customerId);
+        .updateQtyOrderBagTable(qty, cartrowno, customerId, rate);
 
     if (res.length >= 0) {
       bagList.clear();
