@@ -591,7 +591,7 @@ class _OrderFormState extends State<OrderForm> {
                                                                           productCode,
                                                                           1,
                                                                           rate1,
-                                                                          "1",
+                                                                          "",
                                                                           0);
                                                                   Provider.of<Controller>(
                                                                           context,
@@ -638,7 +638,7 @@ class _OrderFormState extends State<OrderForm> {
                                         width: size.width * 0.04,
                                       ),
                                       Container(
-                                        width: size.width * 0.1,
+                                        width: size.width * 0.09,
                                         child: TextFormField(
                                           decoration:
                                               InputDecoration(hintText: 'Qty'),
@@ -647,10 +647,8 @@ class _OrderFormState extends State<OrderForm> {
                                               fontSize: 16),
                                           keyboardType: TextInputType.number,
                                           controller: qty,
-                                          autofocus: true,
-                                          // controller.selection = TextSelection.fromPosition(TextPosition(offset: controller.text.length));
                                           onChanged: (value) {
-                                            qty.text = value;
+                                            value = qty.text;
                                           },
                                         ),
                                       ),
@@ -661,10 +659,6 @@ class _OrderFormState extends State<OrderForm> {
                                         flex: 1,
                                         child: ElevatedButton(
                                           onPressed: () async {
-                                            if (qty.text.isEmpty ||
-                                                qty.text == null) {
-                                              qty.text = "1";
-                                            }
                                             print(
                                                 " itemName, rate1--${itemName}--${rate1}");
                                             var max = await OrderAppDB.instance
@@ -691,6 +685,7 @@ class _OrderFormState extends State<OrderForm> {
                                             Provider.of<Controller>(context,
                                                     listen: false)
                                                 .gettotalSum();
+                                         
                                           },
                                           style: ElevatedButton.styleFrom(
                                             primary:

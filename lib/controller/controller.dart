@@ -421,7 +421,7 @@ class Controller extends ChangeNotifier {
   generateTextEditingController() {
     var length = bagList.length;
     print("text length----$length");
-    controller = List.generate(length, (i) => TextEditingController());
+    controller = List.generate(length, (index) => TextEditingController());
     print("length----$length");
     // notifyListeners();
   }
