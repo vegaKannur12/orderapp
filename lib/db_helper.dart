@@ -304,10 +304,10 @@ class OrderAppDB {
       int cstatus) async {
     print("os--$os");
     final db = await database;
-    
+
     var query2 =
         'INSERT INTO orderBagTable(itemName, cartdatetime, os, customerid, cartrowno, code, qty, rate, totalamount, cstatus) VALUES("${itemName}","${cartdatetime}", "${os}", "${customerid}", $cartrowno, "${code}", $qty, "${rate}", "${totalamount}", $cstatus)';
-    
+
     var res = await db.rawInsert(query2);
     print(query2);
     // print(res);
@@ -523,28 +523,25 @@ class OrderAppDB {
   getMaxOfFieldValue(String os, String customerId) async {
     var res;
     int max;
-    print("os----$os--customerid---$customerId");
+    print("customerid---$customerId");
     Database db = await instance.database;
     var result = await db.rawQuery("SELECT * FROM orderBagTable");
     print("result---$result");
     if (result != null && result.isNotEmpty) {
       print("if");
       res = await db.rawQuery(
-          "SELECT MAX(cartrowno) max_val FROM orderBagTable WHERE os='$os' AND customerid='$customerId' ");
+          "SELECT MAX(cartrowno) max_val FROM orderBagTable WHERE os='$os' ");
       max = res[0]["max_val"] + 1;
       print(
           "SELECT MAX(cartrowno) max_val FROM orderBagTable WHERE os='$os' AND customerid='$customerId'");
     } else {
       print("else");
-
       max = 1;
     }
-
     print(res);
     return max;
     // Database db = await instance.database;
     // var res=db.rawQuery("SELECT (IFNULL(MAX($field),0) +1) FROM $table WHERE os='LF'");
-
     // print(res);
     // return res;
   }
