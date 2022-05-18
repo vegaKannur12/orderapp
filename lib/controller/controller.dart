@@ -453,8 +453,8 @@ class Controller extends ChangeNotifier {
   ///////////////////////////////////
  deleteFromOrderBagTable(int cartrowno, String customerId, int index) async {
     print("cartrowno--$cartrowno--index----$index");
-    List<Map<String, dynamic>> res =
-        await OrderAppDB.instance.deleteFromOrderbagTable(cartrowno,customerId);
+    List<Map<String, dynamic>> res = await OrderAppDB.instance
+        .deleteFromOrderbagTable(cartrowno, customerId);
 
     bagList.clear();
     for (var item in res) {
