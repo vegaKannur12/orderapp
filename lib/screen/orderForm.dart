@@ -660,7 +660,7 @@ class _OrderFormState extends State<OrderForm> {
                                                     values.ordernum[0]['os'],
                                                     custmerId!);
                                             var total = int.parse(rate1!) *
-                                                int.parse(qty.text);
+                                                int.parse(qty.text); 
                                             print("total rate $total");
                                             var res = await OrderAppDB.instance
                                                 .insertorderBagTable(
