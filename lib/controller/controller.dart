@@ -41,7 +41,7 @@ class Controller extends ChangeNotifier {
   List<Map<String, dynamic>> copyCus = [];
   List<Map<String, dynamic>> prodctItems = [];
   List<Map<String, dynamic>> ordernum = [];
-
+  List<Map<String, dynamic>> approximateSum = [];
   StaffDetails staffModel = StaffDetails();
   AccountHead accountHead = AccountHead();
   StaffArea staffArea = StaffArea();
@@ -331,7 +331,7 @@ class Controller extends ChangeNotifier {
     print("staff...............${staffName}");
     try {
       areaList = await OrderAppDB.instance.getArea(staffName);
-      // print("areaList----${areaList}");
+      print("areaList----${areaList}");
       for (var item in areaList) {
         areDetails.add(item["aid"] + '-' + item["aname"]);
       }
@@ -427,8 +427,8 @@ class Controller extends ChangeNotifier {
   }
 
   /////////////////////////////////
-  calculateAmt(double rate, String _controller) {
-    amt = rate * double.parse(_controller);
+  calculateAmt(String rate, String _controller) {
+    amt = double.parse(rate) * double.parse(_controller);
     // notifyListeners();
   }
 
@@ -451,20 +451,52 @@ class Controller extends ChangeNotifier {
   }
 
   ///////////////////////////////////
-  deleteFromOrderBagTable(int id, String customerId, int index) async {
-    print("id--$id");
-    await OrderAppDB.instance.deleteFromOrderbagTable(id);
-    controller.removeAt(index);
-    generateTextEditingController();
-    notifyListeners();
-
+ deleteFromOrderBagTable(int cartrowno, String customerId, int index) async {
+    print("cartrowno--$cartrowno--index----$index");
     List<Map<String, dynamic>> res =
-        await OrderAppDB.instance.getOrderBagTable(customerId);
+        await OrderAppDB.instance.deleteFromOrderbagTable(cartrowno,customerId);
+
+    bagList.clear();
     for (var item in res) {
       bagList.add(item);
     }
+    print("after delete------$res");
+    controller.removeAt(index);
+    print("controllers----$controller");
+    generateTextEditingController();
     notifyListeners();
-
-    // print("after remove----$length");
   }
+
+  /////////////////////////////updateqty/////////////////////
+  updateQty(String qty, int cartrowno, String customerId) async {
+    // print("qty-----${qty}");
+    List<Map<String, dynamic>> res = await OrderAppDB.instance
+        .updateQtyOrderBagTable(qty, cartrowno, customerId);
+
+    if (res.length >= 0) {
+      bagList.clear();
+      for (var item in res) {
+        bagList.add(item);
+      }
+      print("re from controller----$res");
+      notifyListeners();
+    }
+  }
+////////////// total sum /////////////////////////////
+  gettotalSum() async {
+    try {
+      approximateSum = await OrderAppDB.instance.gettotalSum();
+      
+      print("total----${approximateSum}");
+
+      notifyListeners();
+    } catch (e) {
+      print(e);
+      return null;
+    }
+    notifyListeners();
+  }
+
+  /////////////////////////
+  
 }

@@ -21,9 +21,10 @@ class OrderForm extends StatefulWidget {
 
 class _OrderFormState extends State<OrderForm> {
   String? _selectedItem;
-  // List<Map<String, dynamic>> listWidget = [];
+  List<Map<String, dynamic>>? newList = [];
   ValueNotifier<int> dtatableRow = ValueNotifier(0);
   TextEditingController eanQtyCon = TextEditingController();
+  TextEditingController qty = TextEditingController();
   TextEditingController eanTextCon = TextEditingController();
   final TextEditingController _typeAheadController = TextEditingController();
   List? splitted;
@@ -198,6 +199,7 @@ class _OrderFormState extends State<OrderForm> {
                                   Flexible(
                                     child: ElevatedButton(
                                         onPressed: () {
+                                          print("helooo");
                                           Provider.of<Controller>(context,
                                                   listen: false)
                                               .custmerDetails
@@ -446,6 +448,7 @@ class _OrderFormState extends State<OrderForm> {
                                   Row(
                                     children: [
                                       Flexible(
+                                        flex: 3,
                                         child: InputDecorator(
                                           decoration: InputDecoration(
                                             contentPadding:
@@ -502,7 +505,7 @@ class _OrderFormState extends State<OrderForm> {
                                                     // color: Colors.teal,
                                                     child: ListView.builder(
                                                       padding:
-                                                          EdgeInsets.all(10.0),
+                                                          EdgeInsets.all(15.0),
                                                       itemCount: options.length,
                                                       itemBuilder:
                                                           (BuildContext context,
@@ -519,57 +522,96 @@ class _OrderFormState extends State<OrderForm> {
                                                         print(
                                                             "option----${option}");
                                                         return ListTile(
-                                                          trailing: IconButton(
-                                                            icon:
-                                                                Icon(Icons.add),
-                                                            onPressed:
-                                                                () async {
-                                                              String item =
-                                                                  option[
-                                                                      "item"];
-                                                              String rate1 =
-                                                                  option[
-                                                                      "rate1"];
-                                                              String
-                                                                  productCode =
-                                                                  option[
-                                                                      "code"];
-                                                                      print("option[code]----$productCode");
-                                                              print(
-                                                                  "item----rate---${option["item"]}---${option["rate1"]}");
-                                                              int max = await OrderAppDB
-                                                                  .instance
-                                                                  .getMaxOfFieldValue(
-                                                                      values.ordernum[
-                                                                              0]
-                                                                          [
-                                                                          'os'],
-                                                                      custmerId!);
-                                                              var res = await OrderAppDB
-                                                                  .instance
-                                                                  .insertorderBagTable(
-                                                                      item,
-                                                                      date!,
-                                                                      values.ordernum[
-                                                                              0]
-                                                                          [
-                                                                          'os'],
-                                                                      custmerId!,
-                                                                      max,
-                                                                      productCode,
-                                                                      1,
-                                                                      rate1,
-                                                                      0);
-                                                              Provider.of<Controller>(
-                                                                      context,
-                                                                      listen:
-                                                                          false)
-                                                                  .listWidget
-                                                                  .add({
-                                                                "item": item,
-                                                                "rate1": rate1
-                                                              });
-                                                            },
+                                                          trailing: Wrap(
+                                                            children: [
+                                                              // Container(
+                                                              //   width:
+                                                              //       size.width *
+                                                              //           0.09,
+                                                              //   child:
+                                                              //       TextFormField(
+                                                              //     decoration:
+                                                              //         InputDecoration(
+                                                              //             hintText:
+                                                              //                 'Qty'),
+                                                              //     style: TextStyle(
+                                                              //         fontWeight:
+                                                              //             FontWeight
+                                                              //                 .bold,
+                                                              //         fontSize:
+                                                              //             16),
+                                                              //     keyboardType:
+                                                              //         TextInputType
+                                                              //             .number,
+                                                              //     controller:
+                                                              //         qty,
+                                                              //     onChanged:
+                                                              //         (value) {
+                                                              //       value = qty
+                                                              //           .text;
+                                                              //     },
+                                                              //   ),
+                                                              // ),
+                                                              IconButton(
+                                                                icon: Icon(
+                                                                    Icons.add),
+                                                                onPressed:
+                                                                    () async {
+                                                                  String item =
+                                                                      option[
+                                                                          "item"];
+                                                                  String rate1 =
+                                                                      option[
+                                                                          "rate1"];
+                                                                  String
+                                                                      productCode =
+                                                                      option[
+                                                                          "code"];
+                                                                  print(
+                                                                      "option[code]----$productCode");
+                                                                  print(
+                                                                      "item----rate---${option["item"]}---${option["rate1"]}");
+                                                                  int max = await OrderAppDB
+                                                                      .instance
+                                                                      .getMaxOfFieldValue(
+                                                                          values.ordernum[0]
+                                                                              [
+                                                                              'os'],
+                                                                          custmerId!);
+                                                                  var res = await OrderAppDB
+                                                                      .instance
+                                                                      .insertorderBagTable(
+                                                                          item,
+                                                                          date!,
+                                                                          values.ordernum[0]
+                                                                              [
+                                                                              'os'],
+                                                                          custmerId!,
+                                                                          max,
+                                                                          productCode,
+                                                                          1,
+                                                                          rate1,
+                                                                          "1",
+                                                                          0);
+                                                                  Provider.of<Controller>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .listWidget
+                                                                      .add({
+                                                                    "item":
+                                                                        item,
+                                                                    "rate1":
+                                                                        rate1
+                                                                  });
+                                                                  Provider.of<Controller>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .gettotalSum();
+                                                                },
+                                                              ),
+                                                            ],
                                                           ),
                                                           onTap: () {
                                                             onSelected(option);
@@ -593,48 +635,71 @@ class _OrderFormState extends State<OrderForm> {
                                         ),
                                       ),
                                       SizedBox(
+                                        width: size.width * 0.04,
+                                      ),
+                                      Container(
+                                        width: size.width * 0.1,
+                                        child: TextFormField(
+                                          decoration:
+                                              InputDecoration(hintText: 'Qty'),
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16),
+                                          keyboardType: TextInputType.number,
+                                          controller: qty,
+                                          autofocus: true,
+                                          // controller.selection = TextSelection.fromPosition(TextPosition(offset: controller.text.length));
+                                          onChanged: (value) {
+                                            qty.text = value;
+                                          },
+                                        ),
+                                      ),
+                                      SizedBox(
                                         width: size.width * 0.03,
                                       ),
-                                      ElevatedButton(
-                                        onPressed: () async {
-                                          print(
-                                              " itemName, rate1--${itemName}--${rate1}");
-                                          var max = await OrderAppDB.instance
-                                              .getMaxOfFieldValue(
-                                                  values.ordernum[0]['os'],
-                                                  custmerId!);
-                                          // int max1=max[0][""]
-                                          var res = await OrderAppDB.instance
-                                              .insertorderBagTable(
-                                                  itemName,
-                                                  date!,
-                                                  values.ordernum[0]['os'],
-                                                  custmerId!,
-                                                  max,
-                                                  productCode!,
-                                                  1,
-                                                  rate1!,
-                                                  0);
-                                          var res1 = await OrderAppDB.instance
-                                              .gettotalSum();
-                                          // Provider.of<Controller>(context,
-                                          //         listen: false)
-                                          //     .listWidget
-                                          //     .add({
-                                          //   "item": itemName,
-                                          //   "rate1": rate1
-                                          // });
-                                          // setState(() {
-                                          //   isAdded = true;
-                                          // });
-                                        },
-                                        style: ElevatedButton.styleFrom(
-                                          primary:
-                                              P_Settings.roundedButtonColor,
-                                          // shape: CircleBorder(),
+                                      Flexible(
+                                        flex: 1,
+                                        child: ElevatedButton(
+                                          onPressed: () async {
+                                            if (qty.text.isEmpty ||
+                                                qty.text == null) {
+                                              qty.text = "1";
+                                            }
+                                            print(
+                                                " itemName, rate1--${itemName}--${rate1}");
+                                            var max = await OrderAppDB.instance
+                                                .getMaxOfFieldValue(
+                                                    values.ordernum[0]['os'],
+                                                    custmerId!);
+                                            var total = int.parse(rate1!) *
+                                                int.parse(qty.text);
+                                            print("total rate $total");
+                                            var res = await OrderAppDB.instance
+                                                .insertorderBagTable(
+                                                    itemName,
+                                                    date!,
+                                                    values.ordernum[0]['os'],
+                                                    custmerId!,
+                                                    max,
+                                                    productCode!,
+                                                    int.parse(qty.text),
+                                                    rate1!,
+                                                    total.toString(),
+                                                    0);
+                                            var res1 = await OrderAppDB.instance
+                                                .gettotalSum();
+                                            Provider.of<Controller>(context,
+                                                    listen: false)
+                                                .gettotalSum();
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            primary:
+                                                P_Settings.roundedButtonColor,
+                                            // shape: CircleBorder(),
+                                          ),
+                                          child: Icon(Icons.add,
+                                              size: 20, color: Colors.black),
                                         ),
-                                        child: Icon(Icons.add,
-                                            size: 20, color: Colors.black),
                                       ),
                                     ],
                                   ),
@@ -696,7 +761,7 @@ class _OrderFormState extends State<OrderForm> {
                                       SizedBox(
                                         width: size.width * 0.1,
                                       ),
-                                      Text("hgfvfdhgjdfg"),
+                                      Text(""),
                                       // Flexible(
                                       //   child: TextField(
                                       //     readOnly: true,
@@ -720,24 +785,32 @@ class _OrderFormState extends State<OrderForm> {
                                         width: size.width * 0.25,
                                         height: size.height * 0.04,
                                       ),
-                                      Text("Appropriate Total : "),
+                                      Text("Approximate Total : "),
                                       SizedBox(
                                         width: size.width * 0.1,
                                       ),
                                       Flexible(
-                                        child: TextField(
-                                          readOnly: true,
-                                          obscureText: true,
-                                          // decoration: InputDecoration(
-                                          //   // border: UnderlineInputBorder(
-                                          //   //   borderSide: BorderSide(
-                                          //   //       color: Color.fromARGB(
-                                          //   //           255, 11, 177, 38)),
-                                          //   // ),
-                                          // ),
-                                          onChanged: (value) {},
-                                        ),
-                                      ),
+                                          child: Text(""
+                                              // values.approximateSum.length != 0 &&
+                                              //         values.approximateSum[0]
+                                              //                 ['s'] !=
+                                              //             null &&
+                                              //         values.approximateSum.isNotEmpty
+                                              //     ? values.approximateSum[0]['s']
+                                              //     : "0.00",
+                                              )
+                                          // values.approximateSum
+                                          //               .length !=
+                                          //           0 &&
+                                          //       values.approximateSum[0]
+                                          //               ['rate'] !=
+                                          //           null &&
+                                          //       values.approximateSum.isNotEmpty
+                                          //   ? values.approximateSum[0]['rate']
+                                          //   : values.approximateSum[0]['rate']
+                                          //   ),
+
+                                          ),
                                     ],
                                   ),
                                   Padding(

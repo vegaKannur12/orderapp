@@ -111,6 +111,7 @@ class OrderAppDB {
   static final cartrowno = 'cartrowno';
   static final qty = 'qty';
   static final rate = 'rate';
+  static final totalamount = 'totalamount';
   static final cstatus = 'cstatus';
   static final ordrow_num = 'ordrow_num';
   static final itemName = 'itemName';
@@ -274,6 +275,7 @@ class OrderAppDB {
             $code TEXT,
             $qty INTEGER,
             $rate TEXT,
+            $totalamount TEXT,
             $cstatus INTEGER
           )
           ''');
@@ -298,11 +300,14 @@ class OrderAppDB {
       String code,
       int qty,
       String rate,
+      String totalamount,
       int cstatus) async {
     print("os--$os");
     final db = await database;
+    
     var query2 =
-        'INSERT INTO orderBagTable(itemName, cartdatetime, os, customerid, cartrowno, code, qty, rate, cstatus) VALUES("${itemName}","${cartdatetime}", "${os}", "${customerid}", $cartrowno, "${code}", $qty, "${rate}", $cstatus)';
+        'INSERT INTO orderBagTable(itemName, cartdatetime, os, customerid, cartrowno, code, qty, rate, totalamount, cstatus) VALUES("${itemName}","${cartdatetime}", "${os}", "${customerid}", $cartrowno, "${code}", $qty, "${rate}", "${totalamount}", $cstatus)';
+    
     var res = await db.rawInsert(query2);
     print(query2);
     // print(res);
@@ -498,7 +503,7 @@ class OrderAppDB {
     print("product---${product}");
     Database db = await instance.database;
     var res = await db.rawQuery(
-        "SELECT A.item, A.ean, A.rate1,A.code FROM productDetailsTable A WHERE A.item LIKE '$product%'");
+        "SELECT A.item, A.ean, A.rate1,A.code FROM productDetailsTable A WHERE A.code || A.item LIKE '%$product%'");
 
     print("SELECT * FROM productDetailsTable WHERE item LIKE '$product%'");
     print("items=================${res}");
@@ -543,18 +548,57 @@ class OrderAppDB {
     // print(res);
     // return res;
   }
+
   ////////////////////////////sum of the product /////////////////////////////////
-    gettotalSum() async {
+  gettotalSum() async {
     Database db = await instance.database;
-    var res = await db.rawQuery("SELECT SUM(rate) FROM orderBagTable");
-    print(res);
-    print("SELECT SUM(rate) FROM orderBagTable");
-    return res;
+    var result;
+    var res = await db.rawQuery('SELECT SUM(rate) FROM orderBagTable');
+    if (res != null && res.isNotEmpty) {
+      result = await db.rawQuery('SELECT SUM(rate) s FROM orderBagTable');
+    } else {
+      print("else");
+      result = 1;
     }
-  ///////////////////////////delete from orderBagTable/////////////////////////
-  deleteFromOrderbagTable(int id) async {
+    return result;
+  }
+
+  ////////////// delete//////////////////////////////////////
+  deleteFromOrderbagTable(int cartrowno, String customerId) async {
+    var res1;
     Database db = await instance.database;
-    print("DELETE FROM 'orderBagTable' WHERE id = $id");
-    return await db.rawDelete("DELETE FROM 'orderBagTable' WHERE $id = id");
+    print("DELETE FROM 'orderBagTable' WHERE cartrowno = $cartrowno");
+    var res = await db.rawDelete(
+        "DELETE FROM 'orderBagTable' WHERE cartrowno = $cartrowno AND customerid='$customerId'");
+    if (res == 1) {
+      res1 = await db.rawQuery(
+          "SELECT * FROM orderBagTable WHERE customerid='$customerId'");
+      print(res1);
+    }
+    return res1;
+  }
+
+  /////////////////////////update qty///////////////////////////////////
+  updateQtyOrderBagTable(String qty, int cartrowno, String customerId) async {
+    Database db = await instance.database;
+    var res1;
+    int updatedQty = int.parse(qty);
+    print("updatedqty----$updatedQty");
+    var res = await db.rawUpdate(
+        'UPDATE orderBagTable SET qty=$updatedQty WHERE cartrowno=$cartrowno AND customerid="$customerId"');
+    print("response-------$res");
+    if (res == 1) {
+      res1 = await db.rawQuery(
+          "SELECT * FROM orderBagTable WHERE customerid='$customerId'");
+      print(res1);
+    }
+
+    return res1;
+  }
+
+  /////////////////////////////////////////////////////////////////////
+  deleteCommonQuery(String table) async {
+    Database db = await instance.database;
+    await db.delete('$table');
   }
 }

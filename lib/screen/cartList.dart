@@ -17,7 +17,6 @@ class _CartListState extends State<CartList> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
     Provider.of<Controller>(context, listen: false)
         .generateTextEditingController();
     // _controller = List.generate(length, (i) => TextEditingController());
@@ -36,6 +35,7 @@ class _CartListState extends State<CartList> {
           }
         }),
         child: Consumer<Controller>(builder: (context, value, child) {
+          print("value.baglist.length-----${value.bagList.length}");
           return SafeArea(
               child: value.isLoading
                   ? CircularProgressIndicator()
@@ -43,9 +43,11 @@ class _CartListState extends State<CartList> {
                       itemCount: value.bagList.length,
                       itemBuilder: (BuildContext context, int index) {
                         return listItemFunction(
-                            value.bagList[index]["id"],
+                            value.bagList[index]["cartrowno"],
                             value.bagList[index]["itemName"],
                             value.bagList[index]["rate"],
+                            value.bagList[index]["totalamount"],
+                            value.bagList[index]["qty"],
                             size,
                             value.controller[index],
                             index);
@@ -56,15 +58,17 @@ class _CartListState extends State<CartList> {
     );
   }
 
-  Widget listItemFunction(int id, String itemName, String rate, Size size,
-      TextEditingController _controller, int index) {
-    // print("textEditing value----${_controller.text}");
-
-    if (_controller.text.isEmpty) {
-      // print("if gdrfgdfgde");
-      _controller.text = "1";
-    }
-    // Provider.of<Controller>(context,listen: false).calculateAmt(rate,_controller.text);
+  Widget listItemFunction(
+      int cartrowno,
+      String itemName,
+      String rate,
+      String totalamount,
+      int qty,
+      Size size,
+      TextEditingController _controller,
+      int index) {
+    print("qty-------$qty");
+    _controller.text = qty.toString();
 
     return Container(
       height: size.height * 0.19,
@@ -154,6 +158,21 @@ class _CartListState extends State<CartList> {
                                   Container(
                                       width: size.width * 0.1,
                                       child: TextFormField(
+                                        // initialValue: "hello",
+                                        onFieldSubmitted: (value) async {
+                                          print("helooo");
+                                          _controller.text = value;
+                                          print(
+                                              "helloo-----${_controller.text}");
+                                          // await OrderAppDB.instance.updateQtyOrderBagTable(value, cartrowno,widget.custmerId);
+                                          Provider.of<Controller>(context,
+                                                  listen: false)
+                                              .updateQty(value, cartrowno,
+                                                  widget.custmerId);
+                                        },
+                                        //  onChanged: (value){
+                                        //       print(value);
+                                        //  },
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 16),
@@ -161,7 +180,7 @@ class _CartListState extends State<CartList> {
                                         controller: _controller,
                                       )),
                                   Text(
-                                    "\u{20B9}${Provider.of<Controller>(context, listen: false).amt}",
+                                    "\u{20B9}${totalamount}",
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 16),
@@ -203,8 +222,8 @@ class _CartListState extends State<CartList> {
                                       onPressed: () async {
                                         Provider.of<Controller>(context,
                                                 listen: false)
-                                            .deleteFromOrderBagTable(
-                                                id, widget.custmerId,index);
+                                            .deleteFromOrderBagTable(cartrowno,
+                                                widget.custmerId, index);
                                         Navigator.of(ctx).pop();
                                       },
                                       child: Text("ok"),
