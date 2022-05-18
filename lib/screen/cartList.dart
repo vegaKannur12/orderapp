@@ -81,18 +81,38 @@ class _CartListState extends State<CartList> {
                 children: [
                   GestureDetector(
                     child: Container(
-                      width: size.width*0.5,
+                      width: size.width * 0.5,
                       height: size.height * 0.07,
                       color: Colors.yellow,
-                      child: Center(child: Text(" Order Total")),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(" Order Total   : ",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 18)),
+                                  Text("34",style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 18))
+                        ],
+                      ),
                     ),
                   ),
                   GestureDetector(
                     child: Container(
-                      width: size.width*0.5,
+                      width: size.width * 0.5,
                       height: size.height * 0.07,
                       color: P_Settings.roundedButtonColor,
-                      child: Center(child: Text("Place Order",style: TextStyle(fontWeight: FontWeight.bold),)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Place Order",
+                            style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 18),
+                          ),
+                          SizedBox(width: size.width*0.01,),
+                          Icon(Icons.shopping_basket)
+                        ],
+                      ),
                     ),
                   )
                 ],
