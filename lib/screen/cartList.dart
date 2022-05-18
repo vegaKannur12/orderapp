@@ -125,7 +125,7 @@ class _CartListState extends State<CartList> {
                           height: size.height * 0.3,
                           width: size.width * 0.2,
                           child: Image.network(
-                              'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg'),
+                              'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg',fit: BoxFit.cover,),
                           color: Colors.grey,
                         ),
                       ),
