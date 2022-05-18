@@ -34,74 +34,87 @@ class _CartListState extends State<CartList> {
             currentFocus.unfocus();
           }
         }),
-        child: Consumer<Controller>(builder: (context, value, child) {
-          print("value.baglist.length-----${value.bagList.length}");
-          return SafeArea(
-              child: value.isLoading
-                  ? CircularProgressIndicator()
-                  : ListView.builder(
-                      itemCount: value.bagList.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return listItemFunction(
-                            value.bagList[index]["cartrowno"],
-                            value.bagList[index]["itemName"],
-                            value.bagList[index]["rate"],
-                            value.bagList[index]["qty"],
-                            size,
-                            value.controller[index],
-                            index);
-                      },
-                    ));
-        }),
+        child: Column(
+          children: [
+            Expanded(
+              child: Consumer<Controller>(builder: (context, value, child) {
+                print("value.baglist.length-----${value.bagList.length}");
+                return SafeArea(
+                    child: value.isLoading
+                        ? CircularProgressIndicator()
+                        : ListView.builder(
+                            itemCount: value.bagList.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return listItemFunction(
+                                  value.bagList[index]["cartrowno"],
+                                  value.bagList[index]["itemName"],
+                                  value.bagList[index]["rate"],
+                                  value.bagList[index]["qty"],
+                                  size,
+                                  value.controller[index],
+                                  index);
+                            },
+                          ));
+              }),
+            ),
+            Container(height: size.height * 0.06, color: P_Settings.bottomColor)
+          ],
+        ),
       ),
     );
   }
 
   Widget listItemFunction(int cartrowno, String itemName, String rate, int qty,
       Size size, TextEditingController _controller, int index) {
-
     print("qty-------$qty");
     _controller.text = qty.toString();
 
     return Container(
-      height: size.height * 0.19,
+      height: size.height * 0.15,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Ink(
           // color: Colors.grey[100],
           decoration: BoxDecoration(
             color: Colors.grey[100],
-            borderRadius: BorderRadius.circular(20),
+            // borderRadius: BorderRadius.circular(20),
           ),
           child: ListTile(
             // leading: CircleAvatar(backgroundColor: Colors.green),
             title: Column(
               children: [
+                // Flexible(
+                //   child: Text(
+                //     "${itemName}",
+                //     style: TextStyle(
+                //         fontWeight: FontWeight.bold,
+                //         fontSize: 18,
+                //         color: P_Settings.wavecolor),
+                //   ),
+                // ),
+                // SizedBox(
+                //   height: size.height * 0.001,
+                // ),
                 Flexible(
-                  child: Text(
-                    "${itemName}",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                        color: P_Settings.wavecolor),
-                  ),
-                ),
-                SizedBox(
-                  height: size.height * 0.001,
-                ),
-                Flexible(
-                  flex: 2,
+                  flex: 1,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom:8.0,),
+                        child: Container(
+                          height: size.height*0.3,
+                          width: size.width*0.2,
+                        color: Colors.grey,),
+                      ),
                       // Text("${id}"),
                       // SizedBox(
                       //   width: size.width * 0.02,
                       // ),
-                      CircleAvatar(
-                        backgroundColor: Colors.green,
-                        radius: 40,
-                      ),
+                      // CircleAvatar(
+                      //   backgroundColor: Colors.green,
+                      //   radius: 40,
+                      // ),
                       SizedBox(
                         width: size.width * 0.05,
                         height: size.height * 0.001,
@@ -110,8 +123,15 @@ class _CartListState extends State<CartList> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
+                              Text(
+                                "${itemName}",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                    color: P_Settings.wavecolor),
+                              ),
                             SizedBox(
-                              height: size.height * 0.02,
+                              height: size.height * 0.006,
                             ),
                             Flexible(
                               child: Row(
@@ -134,6 +154,9 @@ class _CartListState extends State<CartList> {
                                 ],
                               ),
                             ),
+                            // SizedBox(
+                            //   height: size.height * 0.001,
+                            // ),
                             Flexible(
                               child: Row(
                                 mainAxisAlignment:
@@ -151,20 +174,20 @@ class _CartListState extends State<CartList> {
                                   Container(
                                       width: size.width * 0.1,
                                       child: TextFormField(
-                                       
-                                        onFieldSubmitted: (value) async{
+                                        onFieldSubmitted: (value) async {
                                           print("helooo");
-                                          _controller.text=value;
-                                          print("helloo-----${_controller.text}");
+                                          _controller.text = value;
+                                          print(
+                                              "helloo-----${_controller.text}");
                                           // await OrderAppDB.instance.updateQtyOrderBagTable(value, cartrowno,widget.custmerId);
                                           Provider.of<Controller>(context,
                                                   listen: false)
                                               .updateQty(value, cartrowno,
                                                   widget.custmerId);
                                         },
-                                      //  onChanged: (value){
-                                      //       print(value);
-                                      //  },
+                                        //  onChanged: (value){
+                                        //       print(value);
+                                        //  },
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 16),
@@ -184,7 +207,7 @@ class _CartListState extends State<CartList> {
                         ),
                       ),
                       SizedBox(
-                        width: size.width * 0.009,
+                        width: size.width * 0.01,
                       ),
                       IconButton(
                         onPressed: () {
@@ -236,10 +259,6 @@ class _CartListState extends State<CartList> {
                 ),
               ],
             ),
-            // trailing: IconButton(
-            //   onPressed: () {},
-            //   icon: Icon(Icons.delete),
-            // ),
           ),
         ),
       ),

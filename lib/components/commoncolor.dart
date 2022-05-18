@@ -29,6 +29,9 @@ class P_Settings {
   static Color get tableheadingColor => Color.fromARGB(255, 236, 243, 243);
   static Color get chooseCategory => Color.fromRGBO(230, 81, 0, 1);
 
+  static Color get bottomColor => Colors.yellow;
+
+
 
 
 /////////////////////////level1///////////////////////////////////////////////
