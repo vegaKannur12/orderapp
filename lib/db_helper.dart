@@ -591,13 +591,16 @@ class OrderAppDB {
   }
 
   /////////////////////////update qty///////////////////////////////////
-  updateQtyOrderBagTable(String qty, int cartrowno, String customerId) async {
+  updateQtyOrderBagTable(String qty, int cartrowno, String customerId,String rate) async {
     Database db = await instance.database;
     var res1;
+    double rate1=double.parse(rate);
     int updatedQty = int.parse(qty);
+    double amount=(rate1*updatedQty);
+    print("amoiunt-----$amount");
     print("updatedqty----$updatedQty");
     var res = await db.rawUpdate(
-        'UPDATE orderBagTable SET qty=$updatedQty WHERE cartrowno=$cartrowno AND customerid="$customerId"');
+        'UPDATE orderBagTable SET qty=$updatedQty , totalamount="${amount}" WHERE cartrowno=$cartrowno AND customerid="$customerId"');
     print("response-------$res");
     if (res == 1) {
       res1 = await db.rawQuery(

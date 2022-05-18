@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:orderapp/components/commoncolor.dart';
 import 'package:orderapp/controller/controller.dart';
 import 'package:orderapp/db_helper.dart';
+import 'package:orderapp/service/tableList.dart';
 import 'package:provider/provider.dart';
 
 class CartList extends StatefulWidget {
@@ -26,7 +27,22 @@ class _CartListState extends State<CartList> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: P_Settings.wavecolor,
+        actions: [
+          IconButton(
+            onPressed: () async {
+              List<Map<String, dynamic>> list =
+                  await OrderAppDB.instance.getListOfTables();
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => TableList(list: list)),
+              );
+            },
+            icon: Icon(Icons.table_bar),
+          ),
+        ],
+      ),
       body: GestureDetector(
         onTap: (() {
           FocusScopeNode currentFocus = FocusScope.of(context);
@@ -34,26 +50,76 @@ class _CartListState extends State<CartList> {
             currentFocus.unfocus();
           }
         }),
-        child: Consumer<Controller>(builder: (context, value, child) {
-          print("value.baglist.length-----${value.bagList.length}");
-          return SafeArea(
-              child: value.isLoading
-                  ? CircularProgressIndicator()
-                  : ListView.builder(
-                      itemCount: value.bagList.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return listItemFunction(
-                            value.bagList[index]["cartrowno"],
-                            value.bagList[index]["itemName"],
-                            value.bagList[index]["rate"],
-                            value.bagList[index]["totalamount"],
-                            value.bagList[index]["qty"],
-                            size,
-                            value.controller[index],
-                            index);
-                      },
-                    ));
-        }),
+        child: Column(
+          children: [
+            Expanded(
+              child: Consumer<Controller>(builder: (context, value, child) {
+                print("value.baglist.length-----${value.bagList.length}");
+                return SafeArea(
+                    child: value.isLoading
+                        ? CircularProgressIndicator()
+                        : ListView.builder(
+                            itemCount: value.bagList.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return listItemFunction(
+                                  value.bagList[index]["cartrowno"],
+                                  value.bagList[index]["itemName"],
+                                  value.bagList[index]["rate"],
+                                  value.bagList[index]["totalamount"],
+                                  value.bagList[index]["qty"],
+                                  size,
+                                  value.controller[index],
+                                  index);
+                            },
+                          ));
+              }),
+            ),
+            Container(
+              height: size.height * 0.07,
+              color: Colors.yellow,
+              child: Row(
+                children: [
+                  GestureDetector(
+                    child: Container(
+                      width: size.width * 0.5,
+                      height: size.height * 0.07,
+                      color: Colors.yellow,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(" Order Total   : ",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 18)),
+                                  Text("34",style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 18))
+                        ],
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    child: Container(
+                      width: size.width * 0.5,
+                      height: size.height * 0.07,
+                      color: P_Settings.roundedButtonColor,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Place Order",
+                            style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 18),
+                          ),
+                          SizedBox(width: size.width*0.01,),
+                          Icon(Icons.shopping_basket)
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -102,11 +168,18 @@ class _CartListState extends State<CartList> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(bottom:8.0,),
+                        padding: const EdgeInsets.only(
+                          bottom: 8.0,
+                        ),
                         child: Container(
-                          height: size.height*0.3,
-                          width: size.width*0.2,
-                        color: Colors.grey,),
+                          height: size.height * 0.3,
+                          width: size.width * 0.2,
+                          child: Image.network(
+                            'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg',
+                            fit: BoxFit.cover,
+                          ),
+                          color: Colors.grey,
+                        ),
                       ),
                       // Text("${id}"),
                       // SizedBox(
@@ -124,86 +197,78 @@ class _CartListState extends State<CartList> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                              Text(
-                                "${itemName}",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18,
-                                    color: P_Settings.wavecolor),
-                              ),
+                            Text(
+                              "${itemName}",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                  color: P_Settings.wavecolor),
+                            ),
                             SizedBox(
                               height: size.height * 0.006,
                             ),
-                            Flexible(
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "Rate",
-                                    style: TextStyle(fontSize: 13),
-                                  ),
-                                  Text(
-                                    "Qty",
-                                    style: TextStyle(fontSize: 13),
-                                  ),
-                                  // Spacer(),
-                                  Text(
-                                    "Amt",
-                                    style: TextStyle(fontSize: 13),
-                                  ),
-                                ],
-                              ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Rate",
+                                  style: TextStyle(fontSize: 13),
+                                ),
+                                Text(
+                                  "Qty",
+                                  style: TextStyle(fontSize: 13),
+                                ),
+                                // Spacer(),
+                                Text(
+                                  "Amt",
+                                  style: TextStyle(fontSize: 13),
+                                ),
+                              ],
                             ),
-                            // SizedBox(
-                            //   height: size.height * 0.001,
-                            // ),
-                            Flexible(
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  // SizedBox(
-                                  //   height: size.height * 0.02,
-                                  // ),
-                                  Text(
-                                    "\u{20B9}${rate}",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16),
-                                  ),
-                                  Container(
-                                      width: size.width * 0.1,
-                                      child: TextFormField(
-                                        // initialValue: "hello",
-                                        onFieldSubmitted: (value) async {
-                                          print("helooo");
-                                          _controller.text = value;
-                                          print(
-                                              "helloo-----${_controller.text}");
-                                          // await OrderAppDB.instance.updateQtyOrderBagTable(value, cartrowno,widget.custmerId);
-                                          Provider.of<Controller>(context,
-                                                  listen: false)
-                                              .updateQty(value, cartrowno,
-                                                  widget.custmerId);
-                                        },
-                                        //  onChanged: (value){
-                                        //       print(value);
-                                        //  },
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16),
-                                        keyboardType: TextInputType.number,
-                                        controller: _controller,
-                                      )),
-                                  Text(
-                                    "\u{20B9}${totalamount}",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16),
-                                  ),
-                                ],
-                              ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                // SizedBox(
+                                //   height: size.height * 0.02,
+                                // ),
+                                Text(
+                                  "\u{20B9}${rate}",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16),
+                                ),
+                                Container(
+                                    width: size.width * 0.08,
+                                    child: TextFormField(
+                                      decoration: InputDecoration(
+                                          // border: InputBorder.none,
+                                          ),
+                                      onFieldSubmitted: (value) async {
+                                        print("helooo");
+                                        _controller.text = value;
+                                        print("helloo-----${_controller.text}");
+                                        // await OrderAppDB.instance.updateQtyOrderBagTable(value, cartrowno,widget.custmerId);
+                                        Provider.of<Controller>(context,
+                                                listen: false)
+                                            .updateQty(value, cartrowno,
+                                                widget.custmerId, rate);
+                                      },
+                                      //  onChanged: (value){
+                                      //       print(value);
+                                      //  },
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16),
+                                      keyboardType: TextInputType.number,
+                                      controller: _controller,
+                                    )),
+                                Text(
+                                  "\u{20B9}${totalamount}",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16),
+                                ),
+                              ],
                             )
                           ],
                         ),
