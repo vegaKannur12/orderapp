@@ -596,19 +596,10 @@ class _OrderFormState extends State<OrderForm> {
                                                                   Provider.of<Controller>(
                                                                           context,
                                                                           listen:
-                                                                              false)
-                                                                      .listWidget
-                                                                      .add({
-                                                                    "item":
-                                                                        item,
-                                                                    "rate1":
-                                                                        rate1
-                                                                  });
-                                                                  Provider.of<Controller>(
-                                                                          context,
-                                                                          listen:
-                                                                              false)
-                                                                      .gettotalSum();
+                                                                              false).calculateTotal(values.ordernum[0]
+                                                                              [
+                                                                              'os'],custmerId! );
+                                                                      
                                                                 },
                                                               ),
                                                             ],
@@ -683,11 +674,9 @@ class _OrderFormState extends State<OrderForm> {
                                                     rate1!,
                                                     total.toString(),
                                                     0);
-                                            var res1 = await OrderAppDB.instance
-                                                .gettotalSum();
+                                           
                                             Provider.of<Controller>(context,
-                                                    listen: false)
-                                                .gettotalSum();
+                                                    listen: false).calculateTotal(values.ordernum[0]['os'], custmerId!);
                                          
                                           },
                                           style: ElevatedButton.styleFrom(
@@ -726,6 +715,9 @@ class _OrderFormState extends State<OrderForm> {
                                             MaterialPageRoute(
                                                 builder: (context) => CartList(
                                                       custmerId: custmerId!,
+                                                      os: values.ordernum[0]
+                                                                              [
+                                                                              'os'],
                                                     )),
                                           );
                                         },
@@ -763,7 +755,7 @@ class _OrderFormState extends State<OrderForm> {
                                       SizedBox(
                                         width: size.width * 0.1,
                                       ),
-                                      Text(""),
+                                      Text("${Provider.of<Controller>(context, listen: false).count}"),
                                       // Flexible(
                                       //   child: TextField(
                                       //     readOnly: true,
@@ -789,10 +781,10 @@ class _OrderFormState extends State<OrderForm> {
                                       ),
                                       Text("Approximate Total : "),
                                       SizedBox(
-                                        width: size.width * 0.1,
+                                        width: size.width * 0.06,
                                       ),
                                       Flexible(
-                                          child: Text(""
+                                          child: Text("\u{20B9}${Provider.of<Controller>(context, listen: false).orderTotal}"
                                               // values.approximateSum.length != 0 &&
                                               //         values.approximateSum[0]
                                               //                 ['s'] !=

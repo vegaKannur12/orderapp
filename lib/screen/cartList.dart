@@ -7,7 +7,8 @@ import 'package:provider/provider.dart';
 
 class CartList extends StatefulWidget {
   String custmerId;
-  CartList({required this.custmerId});
+  String os;
+  CartList({required this.custmerId, required this.os});
   @override
   State<CartList> createState() => _CartListState();
 }
@@ -20,6 +21,8 @@ class _CartListState extends State<CartList> {
     super.initState();
     Provider.of<Controller>(context, listen: false)
         .generateTextEditingController();
+    Provider.of<Controller>(context, listen: false)
+        .calculateTotal(widget.os, widget.custmerId);
     // _controller = List.generate(length, (i) => TextEditingController());
   }
 
@@ -43,36 +46,29 @@ class _CartListState extends State<CartList> {
           ),
         ],
       ),
-      body: GestureDetector(
-        onTap: (() {
-          FocusScopeNode currentFocus = FocusScope.of(context);
-          if (!currentFocus.hasPrimaryFocus) {
-            currentFocus.unfocus();
-          }
-        }),
-        child: Column(
+      body: GestureDetector(onTap: (() {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      }), child: Consumer<Controller>(builder: (context, value, child) {
+        return Column(
           children: [
             Expanded(
-              child: Consumer<Controller>(builder: (context, value, child) {
-                print("value.baglist.length-----${value.bagList.length}");
-                return SafeArea(
-                    child: value.isLoading
-                        ? CircularProgressIndicator()
-                        : ListView.builder(
-                            itemCount: value.bagList.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return listItemFunction(
-                                  value.bagList[index]["cartrowno"],
-                                  value.bagList[index]["itemName"],
-                                  value.bagList[index]["rate"],
-                                  value.bagList[index]["totalamount"],
-                                  value.bagList[index]["qty"],
-                                  size,
-                                  value.controller[index],
-                                  index);
-                            },
-                          ));
-              }),
+              child: ListView.builder(
+                itemCount: value.bagList.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return listItemFunction(
+                      value.bagList[index]["cartrowno"],
+                      value.bagList[index]["itemName"],
+                      value.bagList[index]["rate"],
+                      value.bagList[index]["totalamount"],
+                      value.bagList[index]["qty"],
+                      size,
+                      value.controller[index],
+                      index);
+                },
+              ),
             ),
             Container(
               height: size.height * 0.07,
@@ -90,37 +86,38 @@ class _CartListState extends State<CartList> {
                           Text(" Order Total   : ",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 18)),
-                                  Text("34",style: TextStyle(
+                          Text("\u{20B9}${value.orderTotal}",
+                              style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 18))
                         ],
                       ),
                     ),
                   ),
-                  GestureDetector(
-                    child: Container(
-                      width: size.width * 0.5,
-                      height: size.height * 0.07,
-                      color: P_Settings.roundedButtonColor,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Place Order",
-                            style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 18),
-                          ),
-                          SizedBox(width: size.width*0.01,),
-                          Icon(Icons.shopping_basket)
-                        ],
-                      ),
+                  Container(
+                    width: size.width * 0.5,
+                    height: size.height * 0.07,
+                    color: P_Settings.roundedButtonColor,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Place Order",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18),
+                        ),
+                        SizedBox(
+                          width: size.width * 0.01,
+                        ),
+                        Icon(Icons.shopping_basket)
+                      ],
                     ),
                   )
                 ],
               ),
             )
           ],
-        ),
-      ),
+        );
+      })),
     );
   }
 
@@ -247,7 +244,8 @@ class _CartListState extends State<CartList> {
                                         print("helooo");
                                         _controller.text = value;
                                         print("helloo-----${_controller.text}");
-                                        // await OrderAppDB.instance.updateQtyOrderBagTable(value, cartrowno,widget.custmerId);
+                                         Provider.of<Controller>(context,
+                                                listen: false).calculateTotal(widget.os, widget.custmerId);
                                         Provider.of<Controller>(context,
                                                 listen: false)
                                             .updateQty(value, cartrowno,

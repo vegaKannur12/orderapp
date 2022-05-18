@@ -18,6 +18,7 @@ import '../model/staffdetails_model.dart';
 class Controller extends ChangeNotifier {
   bool isLoading = false;
   String? sname;
+  String? orderTotal;
   String? ordernumber;
   String? cid;
   String? cname;
@@ -28,7 +29,7 @@ class Controller extends ChangeNotifier {
   List<CD> data = [];
   List<Map<String, dynamic>> listWidget = [];
   List<TextEditingController> controller = [];
-
+  String? count;
   String? sof;
   List<Map<String, dynamic>> bagList = [];
 
@@ -483,20 +484,29 @@ class Controller extends ChangeNotifier {
     }
   }
 ////////////// total sum /////////////////////////////
-  gettotalSum() async {
-    try {
-      approximateSum = await OrderAppDB.instance.gettotalSum();
+  // gettotalSum() async {
+  //   try {
+  //     approximateSum = await OrderAppDB.instance.gettotalSum();
       
-      print("total----${approximateSum}");
+  //     print("total----${approximateSum}");
 
-      notifyListeners();
-    } catch (e) {
-      print(e);
-      return null;
-    }
+  //     notifyListeners();
+  //   } catch (e) {
+  //     print(e);
+  //     return null;
+  //   }
+  //   notifyListeners();
+  // }
+
+  /////////calculate total////////////////
+  calculateTotal(String os, String customerId)async{
+    orderTotal= await OrderAppDB.instance.gettotalSum(os,customerId);
+    print("orderTotal---$orderTotal");
     notifyListeners();
   }
-
-  /////////////////////////
-  
+  ////////////////count from table///////
+  countFromTable(String table)async{
+   count=  await OrderAppDB.instance.countCommonQuery(table);
+    notifyListeners();
+  }
 }
