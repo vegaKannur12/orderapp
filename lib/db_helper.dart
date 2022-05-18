@@ -259,8 +259,8 @@ class OrderAppDB {
             $order_id INTEGER ,
             $ordrow_num TEXT,
             $code TEXT,
-            $qty REAL,
-            $rate INTEGER,
+            $qty INTEGER,
+            $rate TEXT,
             $cstatus INTEGER
           )
           ''');
@@ -281,16 +281,31 @@ class OrderAppDB {
           ''');
   }
 
+  ///////////////////////////////////////////////////////////
+  Future insertorderDetailsTable(
+      String ordrow_num, String code, int qty, String rate, int cstatus) async {
+    final db = await database;
+    var query2 =
+        'INSERT INTO orderDetailTable(ordrow_num, code, qty, rate, cstatus) VALUES("${ordrow_num}","${code}", ${qty}, "${rate}", ${cstatus})';
+    var res = await db.rawInsert(query2);
+    print(query2);
+    // print(res);
+    return res;
+  }
+
   ////////////// cart order ////////////////////////////
-  // Future insertorderBagTable() async {
-  //   final db = await database;
-  //   var query2 =
-  //       'INSERT INTO orderBagTable(cartdatetime, os, customerid, cartrowno, cartrowno, code, qty, rate, cstatus) VALUES("${sdata.sid}", "${sdata.sname}", "${sdata.unme}", "${sdata.pwd}", "${sdata.ad1}", "${sdata.ad2}", "${sdata.ad3}", "${sdata.ph}", "${sdata.area}")';
-  //   var res = await db.rawInsert(query2);
-  //   print(query2);
-  //   // print(res);
-  //   return res;
-  // }
+  Future insertorderMasterTable(String ordernum, String orderdate, String os,
+      String customerid, String userid, String areaid, int status) async {
+    final db = await database;
+    var query2 =
+        'INSERT INTO orderMasterTable(ordernum, orderdatetime, os, customerid, userid, areaid, mstatus) VALUES("${ordernum}", "${orderdate}", "${os}", "${customerid}", "${userid}", "${areaid}", ${status})';
+    var res = await db.rawInsert(query2);
+    print(query2);
+    // print(res);
+    return res;
+  }
+
+  //////////////////////////////////////////////
   Future insertorderBagTable(
       String itemName,
       String cartdatetime,

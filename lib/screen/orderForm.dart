@@ -659,6 +659,7 @@ class _OrderFormState extends State<OrderForm> {
                                         flex: 1,
                                         child: ElevatedButton(
                                           onPressed: () async {
+                                            
                                             print(
                                                 " itemName, rate1--${itemName}--${rate1}");
                                             var max = await OrderAppDB.instance
@@ -666,7 +667,7 @@ class _OrderFormState extends State<OrderForm> {
                                                     values.ordernum[0]['os'],
                                                     custmerId!);
                                             var total = int.parse(rate1!) *
-                                                int.parse(qty.text);
+                                                int.parse(qty.text); 
                                             print("total rate $total");
                                             var res = await OrderAppDB.instance
                                                 .insertorderBagTable(
