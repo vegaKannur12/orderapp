@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:orderapp/components/commoncolor.dart';
 import 'package:orderapp/controller/controller.dart';
 import 'package:orderapp/db_helper.dart';
+import 'package:orderapp/service/tableList.dart';
 import 'package:provider/provider.dart';
 
 class CartList extends StatefulWidget {
@@ -26,7 +27,22 @@ class _CartListState extends State<CartList> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: [
+           IconButton(
+              onPressed: () async {
+                List<Map<String, dynamic>> list =
+                    await OrderAppDB.instance.getListOfTables();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => TableList(list: list)),
+                );
+              },
+              icon: Icon(Icons.table_bar),
+            ),
+        ],
+      ),
       body: GestureDetector(
         onTap: (() {
           FocusScopeNode currentFocus = FocusScope.of(context);
@@ -102,11 +118,16 @@ class _CartListState extends State<CartList> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(bottom:8.0,),
+                        padding: const EdgeInsets.only(
+                          bottom: 8.0,
+                        ),
                         child: Container(
-                          height: size.height*0.3,
-                          width: size.width*0.2,
-                        color: Colors.grey,),
+                          height: size.height * 0.3,
+                          width: size.width * 0.2,
+                          child: Image.network(
+                              'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg'),
+                          color: Colors.grey,
+                        ),
                       ),
                       // Text("${id}"),
                       // SizedBox(
@@ -124,13 +145,13 @@ class _CartListState extends State<CartList> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                              Text(
-                                "${itemName}",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18,
-                                    color: P_Settings.wavecolor),
-                              ),
+                            Text(
+                              "${itemName}",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                  color: P_Settings.wavecolor),
+                            ),
                             SizedBox(
                               height: size.height * 0.006,
                             ),
