@@ -77,47 +77,70 @@ class _CartListState extends State<CartList> {
             Container(
               height: size.height * 0.07,
               color: Colors.yellow,
-              child: Row(
-                children: [
-                  GestureDetector(
-                    child: Container(
-                      width: size.width * 0.5,
-                      height: size.height * 0.07,
-                      color: Colors.yellow,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(" Order Total   : ",
+              child: Consumer<Controller>(builder: (context, value, child) {
+                return Row(
+                  children: [
+                    GestureDetector(
+                      child: Container(
+                        width: size.width * 0.5,
+                        height: size.height * 0.07,
+                        color: Colors.yellow,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(" Order Total   : ",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 18)),
+                            Text("34",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 18))
+                          ],
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () async {
+                        var res = await OrderAppDB.instance
+                            .insertorderMasterandDetailsTable(
+                                " ", "", "", "", "", "", "", 1, "", 1);
+                        var res1 = await OrderAppDB.instance
+                            .insertorderMasterandDetailsTable(
+                          "",
+                          "",
+                          "",
+                          "",
+                          "",
+                          "",
+                          "1",
+                          1,
+                          "1",
+                          1,
+                        );
+                      },
+                      child: Container(
+                        width: size.width * 0.5,
+                        height: size.height * 0.07,
+                        color: P_Settings.roundedButtonColor,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Place Order",
                               style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 18)),
-                                  Text("34",style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 18))
-                        ],
+                                  fontWeight: FontWeight.bold, fontSize: 18),
+                            ),
+                            SizedBox(
+                              width: size.width * 0.01,
+                            ),
+                            Icon(Icons.shopping_basket)
+                          ],
+                        ),
                       ),
-                    ),
-                  ),
-                  GestureDetector(
-                    child: Container(
-                      width: size.width * 0.5,
-                      height: size.height * 0.07,
-                      color: P_Settings.roundedButtonColor,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Place Order",
-                            style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 18),
-                          ),
-                          SizedBox(width: size.width*0.01,),
-                          Icon(Icons.shopping_basket)
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            )
+                    )
+                  ],
+                );
+              }),
+            ),
           ],
         ),
       ),

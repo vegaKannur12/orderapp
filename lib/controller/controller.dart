@@ -31,6 +31,8 @@ class Controller extends ChangeNotifier {
 
   String? sof;
   List<Map<String, dynamic>> bagList = [];
+  List<Map<String, dynamic>> masterList = [];
+  List<Map<String, dynamic>> orderdetailsList = [];
 
   List<Map<String, dynamic>> staffList = [];
   List<Map<String, dynamic>> productName = [];
@@ -451,7 +453,7 @@ class Controller extends ChangeNotifier {
   }
 
   ///////////////////////////////////
- deleteFromOrderBagTable(int cartrowno, String customerId, int index) async {
+  deleteFromOrderBagTable(int cartrowno, String customerId, int index) async {
     print("cartrowno--$cartrowno--index----$index");
     List<Map<String, dynamic>> res = await OrderAppDB.instance
         .deleteFromOrderbagTable(cartrowno, customerId);
@@ -468,7 +470,7 @@ class Controller extends ChangeNotifier {
   }
 
   /////////////////////////////updateqty/////////////////////
-  updateQty(String qty, int cartrowno, String customerId,String rate) async {
+  updateQty(String qty, int cartrowno, String customerId, String rate) async {
     // print("qty-----${qty}");
     List<Map<String, dynamic>> res = await OrderAppDB.instance
         .updateQtyOrderBagTable(qty, cartrowno, customerId, rate);
@@ -482,11 +484,12 @@ class Controller extends ChangeNotifier {
       notifyListeners();
     }
   }
+
 ////////////// total sum /////////////////////////////
   gettotalSum() async {
     try {
       approximateSum = await OrderAppDB.instance.gettotalSum();
-      
+
       print("total----${approximateSum}");
 
       notifyListeners();
@@ -498,5 +501,5 @@ class Controller extends ChangeNotifier {
   }
 
   /////////////////////////
-  
+
 }

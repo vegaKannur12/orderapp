@@ -105,7 +105,7 @@ class OrderAppDB {
   static final customerid = 'customerid';
   static final userid = 'userid';
   static final areaid = 'areaid';
-  static final mstatus = 'mstatus';
+  static final status = 'status';
 /////////////////// cart table/////////////
   static final cartdatetime = 'cartdatetime';
   static final cartrowno = 'cartrowno';
@@ -115,7 +115,7 @@ class OrderAppDB {
   static final cstatus = 'cstatus';
   static final ordrow_num = 'ordrow_num';
   static final itemName = 'itemName';
-
+  static final numberof_items = 'numberof_items';
   Future<Database> get database async {
     if (_database != null) return _database!;
     _database = await _initDB("orderapp.db");
@@ -243,25 +243,26 @@ class OrderAppDB {
     await db.execute('''
           CREATE TABLE orderMasterTable (
             $order_id INTEGER PRIMARY KEY AUTOINCREMENT,
-            $ordernum INTEGER NOT NULL,
+            $ordernum INTEGER,
             $orderdatetime TEXT,
             $os TEXT NOT NULL,
             $customerid TEXT,
             $userid TEXT,
             $areaid TEXT,
-            $mstatus INTEGER
+            $status INTEGER
 
           )
           ''');
 
     await db.execute('''
           CREATE TABLE orderDetailTable (
-            $order_id INTEGER ,
-            $ordrow_num TEXT,
+            $order_id INTEGER,
+            $ordernum INTEGER PRIMARY KEY,
+            $numberof_items INTEGER,
             $code TEXT,
             $qty INTEGER,
             $rate TEXT,
-            $cstatus INTEGER
+            $status INTEGER
           )
           ''');
     await db.execute('''
@@ -282,28 +283,31 @@ class OrderAppDB {
   }
 
   ///////////////////////////////////////////////////////////
-  Future insertorderDetailsTable(
-      String ordrow_num, String code, int qty, String rate, int cstatus) async {
+  Future insertorderMasterandDetailsTable(
+      String ordrow_num, String orderdate, String os, String customerid, String code, String userid, String areaid, int qty, String rate, int status,) async {
     final db = await database;
     var query2 =
-        'INSERT INTO orderDetailTable(ordrow_num, code, qty, rate, cstatus) VALUES("${ordrow_num}","${code}", ${qty}, "${rate}", ${cstatus})';
+        'INSERT INTO orderDetailTable(numberof_items, code, qty, rate, cstatus) VALUES(${ordrow_num},"${code}", ${qty}, "${rate}", ${status})';
+       var query3 =
+        'INSERT INTO orderMasterTable(ordernum, orderdatetime, os, customerid, userid, areaid, mstatus) VALUES("${ordernum}", "${orderdate}", "${os}", "${customerid}", "${userid}", "${areaid}", ${status})';
     var res = await db.rawInsert(query2);
+    var res1 = await db.rawInsert(query3);
     print(query2);
     // print(res);
     return res;
   }
 
   ////////////// cart order ////////////////////////////
-  Future insertorderMasterTable(String ordernum, String orderdate, String os,
-      String customerid, String userid, String areaid, int status) async {
-    final db = await database;
-    var query2 =
-        'INSERT INTO orderMasterTable(ordernum, orderdatetime, os, customerid, userid, areaid, mstatus) VALUES("${ordernum}", "${orderdate}", "${os}", "${customerid}", "${userid}", "${areaid}", ${status})';
-    var res = await db.rawInsert(query2);
-    print(query2);
-    // print(res);
-    return res;
-  }
+  // Future insertorderMasterTable(String ordernum, String orderdate, String os,
+  //     String customerid, String userid, String areaid, int status) async {
+  //   final db = await database;
+  //   var query2 =
+  //       'INSERT INTO orderMasterTable(ordernum, orderdatetime, os, customerid, userid, areaid, mstatus) VALUES("${ordernum}", "${orderdate}", "${os}", "${customerid}", "${userid}", "${areaid}", ${status})';
+  //   var res = await db.rawInsert(query2);
+  //   print(query2);
+  //   // print(res);
+  //   return res;
+  // }
 
   //////////////////////////////////////////////
   Future insertorderBagTable(
@@ -591,12 +595,13 @@ class OrderAppDB {
   }
 
   /////////////////////////update qty///////////////////////////////////
-  updateQtyOrderBagTable(String qty, int cartrowno, String customerId,String rate) async {
+  updateQtyOrderBagTable(
+      String qty, int cartrowno, String customerId, String rate) async {
     Database db = await instance.database;
     var res1;
-    double rate1=double.parse(rate);
+    double rate1 = double.parse(rate);
     int updatedQty = int.parse(qty);
-    double amount=(rate1*updatedQty);
+    double amount = (rate1 * updatedQty);
     print("amoiunt-----$amount");
     print("updatedqty----$updatedQty");
     var res = await db.rawUpdate(
