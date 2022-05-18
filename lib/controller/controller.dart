@@ -421,7 +421,7 @@ class Controller extends ChangeNotifier {
   generateTextEditingController() {
     var length = bagList.length;
     print("text length----$length");
-    controller = List.generate(length, (i) => TextEditingController());
+    controller = List.generate(length, (index) => TextEditingController());
     print("length----$length");
     // notifyListeners();
   }
@@ -451,20 +451,34 @@ class Controller extends ChangeNotifier {
   }
 
   ///////////////////////////////////
-  deleteFromOrderBagTable(int id, String customerId, int index) async {
-    print("id--$id");
-    await OrderAppDB.instance.deleteFromOrderbagTable(id);
-    controller.removeAt(index);
-    generateTextEditingController();
-    notifyListeners();
-
+  deleteFromOrderBagTable(int cartrowno, String customerId, int index) async {
+    print("cartrowno--$cartrowno--index----$index");
     List<Map<String, dynamic>> res =
-        await OrderAppDB.instance.getOrderBagTable(customerId);
+        await OrderAppDB.instance.deleteFromOrderbagTable(cartrowno,customerId);
+
+    bagList.clear();
     for (var item in res) {
       bagList.add(item);
     }
+    print("after delete------$res");
+    controller.removeAt(index);
+    print("controllers----$controller");
+    generateTextEditingController();
     notifyListeners();
+  }
 
-    // print("after remove----$length");
+  /////////////////////////////updateqty/////////////////////
+  updateQty(String qty, int cartrowno, String customerId) async {
+    // print("qty-----${qty}");
+    List<Map<String, dynamic>> res = await OrderAppDB.instance
+        .updateQtyOrderBagTable(qty, cartrowno, customerId);
+    if (res.length >= 0) {
+      bagList.clear();
+      for (var item in res) {
+        bagList.add(item);
+      }
+      print("re from controller----$res");
+      notifyListeners();
+    }
   }
 }

@@ -466,7 +466,7 @@ class OrderAppDB {
   Future<List<Map<String, dynamic>>> getArea(String staffName) async {
     List<Map<String, dynamic>> list = [];
     String result = "";
-    print("uname---${staffName}");
+    print("staffName---${staffName}");
     Database db = await instance.database;
     var area = await db.rawQuery(
         'SELECT area FROM staffDetailsTable WHERE sname="${staffName}"');
@@ -524,12 +524,11 @@ class OrderAppDB {
     print("result---$result");
     if (result != null && result.isNotEmpty) {
       print("if");
-      
-      // res = await db.rawQuery(
-      //     "SELECT MAX(cartrowno) max_val FROM orderBagTable WHERE os=$os  ");
+      res = await db.rawQuery(
+          "SELECT MAX(cartrowno) max_val FROM orderBagTable WHERE os='$os' AND customerid='$customerId' ");
       max = res[0]["max_val"] + 1;
       print(
-          "SELECT MAX(cartrowno) max_val FROM orderBagTable WHERE os=$os AND customerid=$customerId");
+          "SELECT MAX(cartrowno) max_val FROM orderBagTable WHERE os='$os' AND customerid='$customerId'");
     } else {
       print("else");
 
@@ -545,10 +544,51 @@ class OrderAppDB {
     // return res;
   }
 
-  ///////////////////////////delete from orderBagTable/////////////////////////
-  deleteFromOrderbagTable(int id) async {
+  ////////////////////////////sum of the product /////////////////////////////////
+  gettotalSum() async {
     Database db = await instance.database;
-    print("DELETE FROM 'orderBagTable' WHERE id = $id");
-    return await db.rawDelete("DELETE FROM 'orderBagTable' WHERE $id = id");
+    var res = await db.rawQuery("SELECT SUM(rate) FROM orderBagTable");
+    print(res);
+    print("SELECT SUM(rate) FROM orderBagTable");
+    return res;
+  }
+
+  ///////////////////////////delete from orderBagTable/////////////////////////
+  deleteFromOrderbagTable(int cartrowno, String customerId) async {
+    var res1;
+    Database db = await instance.database;
+    print("DELETE FROM 'orderBagTable' WHERE cartrowno = $cartrowno");
+    var res = await db.rawDelete(
+        "DELETE FROM 'orderBagTable' WHERE cartrowno = $cartrowno AND customerid='$customerId'");
+    if (res == 1) {
+      res1 = await db.rawQuery(
+          "SELECT * FROM orderBagTable WHERE customerid='$customerId'");
+      print(res1);
+    }
+    return res1;
+  }
+
+  /////////////////////////update qty///////////////////////////////////
+  updateQtyOrderBagTable(String qty, int cartrowno, String customerId) async {
+    Database db = await instance.database;
+    var res1;
+    int updatedQty = int.parse(qty);
+    print("updatedqty----$updatedQty");
+    var res = await db.rawUpdate(
+        'UPDATE orderBagTable SET qty=$updatedQty WHERE cartrowno=$cartrowno AND customerid="$customerId"');
+    print("response-------$res");
+    if (res == 1) {
+      res1 = await db.rawQuery(
+          "SELECT * FROM orderBagTable WHERE customerid='$customerId'");
+      print(res1);
+    }
+
+    return res1;
+  }
+
+  /////////////////////////////////////////////////////////////////////
+  deleteCommonQuery(String table) async {
+    Database db = await instance.database;
+    await db.delete('$table');
   }
 }

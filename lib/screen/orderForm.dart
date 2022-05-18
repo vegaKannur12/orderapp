@@ -615,6 +615,8 @@ class _OrderFormState extends State<OrderForm> {
                                                   1,
                                                   rate1!,
                                                   0);
+                                          var res1 = await OrderAppDB.instance
+                                              .gettotalSum();
                                           // Provider.of<Controller>(context,
                                           //         listen: false)
                                           //     .listWidget
@@ -671,6 +673,90 @@ class _OrderFormState extends State<OrderForm> {
                                       )
                                     ],
                                   )
+                                ],
+                              ),
+                            ),
+                          ),
+                          Container(
+                            height: size.height * 0.01,
+                            color: Colors.grey[300],
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(10.0),
+                            child: Container(
+                              height: size.height * 0.2,
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      SizedBox(
+                                        width: size.width * 0.359,
+                                      ),
+                                      Text("Total items:"),
+                                      SizedBox(
+                                        width: size.width * 0.1,
+                                      ),
+                                      Text("hgfvfdhgjdfg"),
+                                      // Flexible(
+                                      //   child: TextField(
+                                      //     readOnly: true,
+                                      //     decoration: InputDecoration(
+                                      //         // border: UnderlineInputBorder(
+                                      //         //   borderSide: BorderSide(
+                                      //         //       color: Color.fromARGB(
+                                      //         //           255, 11, 177, 38)),
+                                      //         // ),
+                                      //         ),
+                                      //     onChanged: (value) {},
+                                      //   ),
+                                      // ),
+                                      // Icon(Icons.shopping_cart, size: 19),
+                                    ],
+                                  ),
+                                  Row(
+                                    // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      SizedBox(
+                                        width: size.width * 0.25,
+                                        height: size.height * 0.04,
+                                      ),
+                                      Text("Appropriate Total : "),
+                                      SizedBox(
+                                        width: size.width * 0.1,
+                                      ),
+                                      Flexible(
+                                        child: TextField(
+                                          readOnly: true,
+                                          obscureText: true,
+                                          // decoration: InputDecoration(
+                                          //   // border: UnderlineInputBorder(
+                                          //   //   borderSide: BorderSide(
+                                          //   //       color: Color.fromARGB(
+                                          //   //           255, 11, 177, 38)),
+                                          //   // ),
+                                          // ),
+                                          onChanged: (value) {},
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        SizedBox(height: size.height * 0.03),
+                                        ElevatedButton(
+                                            onPressed: () {},
+                                            child: Text("Save"),
+                                            style: ElevatedButton.styleFrom(
+                                              primary:
+                                                  P_Settings.chooseCategory,
+                                            ))
+                                      ],
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),

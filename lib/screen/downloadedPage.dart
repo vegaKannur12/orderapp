@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:orderapp/components/commoncolor.dart';
+import 'package:orderapp/db_helper.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -69,17 +70,21 @@ class _DownloadedPageState extends State<DownloadedPage> {
                                 await SharedPreferences.getInstance();
                             String? cid = prefs.getString("cid");
                             if (downloadItems[index] == "Account Heads") {
+                               await OrderAppDB.instance.deleteCommonQuery("accountHeadsTable");
                               Provider.of<Controller>(context, listen: false)
                                   .getaccountHeadsDetails(cid!);
                             }
                             if (downloadItems[index] == "Product category") {
+                              await OrderAppDB.instance.deleteCommonQuery("productsCategory");
                               Provider.of<Controller>(context, listen: false)
                                   .getProductCategory(cid!);
                             }
                             if (downloadItems[index] == "Company") {
+                              await OrderAppDB.instance.deleteCommonQuery("companyTable");
                               Provider.of<Controller>(context, listen: false)
                                   .getProductCompany(cid!);
                             } if (downloadItems[index] == "Product Details") {
+                              await OrderAppDB.instance.deleteCommonQuery("productDetailsTable");
                               Provider.of<Controller>(context, listen: false)
                                   .getProductDetails(cid!);
                             }
