@@ -352,6 +352,7 @@ class Controller extends ChangeNotifier {
     print("aid...............${aid}");
     try {
       print("custmerDetails after clear----${custmerDetails}");
+      custmerDetails.clear();
       customerList = await OrderAppDB.instance.getCustomer(aid);
       print("customerList----${customerList}");
       for (var item in customerList) {
@@ -512,6 +513,52 @@ class Controller extends ChangeNotifier {
   countFromTable(String table, String os, String customerId) async {
     print("table---$table");
     count = await OrderAppDB.instance.countCommonQuery(table, os, customerId);
+    notifyListeners();
+  }
+
+  //////////////insert to order master and details///////////////////////
+
+  insertToOrderbagAndMaster(String os, String date, String customer_id,
+      String user_id, String aid) async {
+    int order_id = await OrderAppDB.instance
+        .getMaxCommonQuery('orderDetailTable', 'order_id', "os='${os}'");
+    int rowNum = 1;
+    if (bagList.length > 0) {
+      await OrderAppDB.instance.insertorderMasterandDetailsTable(
+          order_id,
+          0,
+          " ",
+          " ",
+          date,
+          os,
+          customer_id,
+          user_id,
+          aid,
+          1,
+          rowNum,
+          "orderMasterTable");
+
+      for (var item in bagList) {
+        print("orderid---$order_id");
+        await OrderAppDB.instance.insertorderMasterandDetailsTable(
+            order_id,
+            item["qty"],
+            item["rate"],
+            item["code"],
+            date,
+            os,
+            customer_id,
+            user_id,
+            aid,
+            1,
+            rowNum,
+            "orderDetailTable");
+        rowNum = rowNum + 1;
+      }
+    }
+    await OrderAppDB.instance
+        .deleteFromTableCommonQuery("orderBagTable", os, "customerId");
+    bagList.clear();
     notifyListeners();
   }
 

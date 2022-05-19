@@ -10,7 +10,7 @@ class CartList extends StatefulWidget {
   String custmerId;
   String os;
   String areaId;
-  CartList({required this.areaId,required this.custmerId, required this.os});
+  CartList({required this.areaId, required this.custmerId, required this.os});
   @override
   State<CartList> createState() => _CartListState();
 }
@@ -18,6 +18,7 @@ class CartList extends StatefulWidget {
 class _CartListState extends State<CartList> {
   DateTime now = DateTime.now();
   String? date;
+  var sname;
   // List<TextEditingController> _controller = [];
   @override
   void initState() {
@@ -29,11 +30,11 @@ class _CartListState extends State<CartList> {
         .generateTextEditingController();
     Provider.of<Controller>(context, listen: false)
         .calculateTotal(widget.os, widget.custmerId);
-    Provider.of<Controller>(context, listen: false).setSname();
-        
+    sname = Provider.of<Controller>(context, listen: false).sname;
+    print("sname-----${sname}");
     // _controller = List.generate(length, (i) => TextEditingController());
   }
-  
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -41,9 +42,11 @@ class _CartListState extends State<CartList> {
       appBar: AppBar(
         backgroundColor: P_Settings.wavecolor,
         actions: [
-          IconButton(onPressed: ()async{
-await OrderAppDB.instance.deleteTabCommonQuery("orderBagTable");
-          }, icon: Icon(Icons.delete)),
+          IconButton(
+              onPressed: () async {
+                await OrderAppDB.instance.deleteTabCommonQuery("orderBagTable");
+              },
+              icon: Icon(Icons.delete)),
           IconButton(
             onPressed: () async {
               List<Map<String, dynamic>> list =
@@ -103,8 +106,32 @@ await OrderAppDB.instance.deleteTabCommonQuery("orderBagTable");
                     ),
                   ),
                   GestureDetector(
-                    onTap: (() async{
-                       await OrderAppDB.instance.deleteFromTableCommonQuery("orderBagTable",widget.os, widget.custmerId);
+                    onTap: (() {
+                      Provider.of<Controller>(context, listen: false)
+                          .insertToOrderbagAndMaster(widget.os, date!,
+                              widget.custmerId, sname, widget.areaId);
+
+                     Provider.of<Controller>(context, listen: false).bagList.length>0? showDialog(
+                          context: context,
+                          builder: (context) {
+                            Future.delayed(Duration(milliseconds: 600), () {
+                              Navigator.of(context).pop(true);
+                            });
+                            return AlertDialog(
+                                content: Row(
+                              children: [
+                                Text(
+                                  'Order Placed!!!!',
+                                  style:
+                                      TextStyle(color: P_Settings.extracolor),
+                                ),
+                                Icon(
+                                  Icons.done,
+                                  color: Colors.green,
+                                )
+                              ],
+                            ));
+                          }):null;
                     }),
                     child: Container(
                       width: size.width * 0.5,
@@ -301,7 +328,6 @@ await OrderAppDB.instance.deleteTabCommonQuery("orderBagTable");
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-
                                     ElevatedButton(
                                       style: ElevatedButton.styleFrom(
                                           primary: P_Settings.wavecolor),

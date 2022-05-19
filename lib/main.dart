@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Raleway',
         primaryColor: P_Settings.bodycolor,
         colorScheme: ColorScheme.fromSwatch(
-          // primarySwatch: Colors.indigo,
+          primarySwatch: Colors.indigo,
         ),
         scaffoldBackgroundColor: P_Settings.bodycolor,
         textTheme: const TextTheme(

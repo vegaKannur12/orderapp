@@ -113,7 +113,7 @@ class OrderAppDB {
   static final rate = 'rate';
   static final totalamount = 'totalamount';
   static final cstatus = 'cstatus';
-  static final ordrow_num = 'ordrow_num';
+  static final row_num = 'row_num';
   static final itemName = 'itemName';
   static final numberof_items = 'numberof_items';
   Future<Database> get database async {
@@ -257,8 +257,9 @@ class OrderAppDB {
     await db.execute('''
           CREATE TABLE orderDetailTable (
             $id INTEGER PRIMARY KEY AUTOINCREMENT,
+            $os TEXT NOT NULL,
             $order_id INTEGER,
-            $numberof_items INTEGER,
+            $row_num INTEGER,
             $code TEXT,
             $qty INTEGER,
             $rate TEXT,
@@ -322,36 +323,36 @@ class OrderAppDB {
 
   /////////////////////// order master table insertion//////////////////////
   Future insertorderMasterandDetailsTable(
-    String orderdate,
-    String os,
-    String customerid,
-    String userid,
-    String areaid,
-    int status,
-  ) async {
+      int order_id,
+      int? qty,
+      String? rate,
+      String? code,
+      String orderdate,
+      String os,
+      String customerid,
+      String userid,
+      String areaid,
+      int status,
+      int rowNum,
+      String table) async {
     final db = await database;
-    List<Map<String, dynamic>> res = await db.rawQuery(
-        'SELECT  code, qty, rate FROM orderBagTable WHERE customerid="${customerid}" AND os = "${os}"');
-    if (res.length > 0) {
-      for (var item in res) {
-        String code = item["code"];
-        int qty = item["qty"];
-        String rate = item["rate"];
-        
-        var query2 =
-            'INSERT INTO orderDetailTable(order_id,code, qty, rate, status) VALUES("${order_id}","${code}", ${qty}, "${rate}", ${status})';
-        var res2 = await db.rawInsert(query2);
-      }
+    var res2;
+    var res3;
+
+    if (table == "orderDetailTable") {
+      var query2 =
+          'INSERT INTO orderDetailTable(order_id, row_num,os,code, qty, rate, status) VALUES(${order_id},${rowNum},"${os}","${code}", ${qty}, "${rate}", ${status})';
+      print(query2);
+      res2 = await db.rawInsert(query2);
+    } else if (table == "orderMasterTable") {
+      var query3 =
+          'INSERT INTO orderMasterTable(order_id, orderdatetime, os, customerid, userid, areaid, status) VALUES("${order_id}", "${orderdate}", "${os}", "${customerid}", "${userid}", "${areaid}", ${status})';
+      res2 = await db.rawInsert(query3);
+      print(query3);
     }
-
-    var query3 =
-        'INSERT INTO orderMasterTable(order_id, orderdatetime, os, customerid, userid, areaid, status) VALUES("${order_id}", "${orderdate}", "${os}", "${customerid}", "${userid}", "${areaid}", ${status})';
-
-    var res1 = await db.rawInsert(query3);
-    print(query3);
-    // print(res);
-    return res;
+    
   }
+  //////////////////////////master table/////////////////////////////////////
 
   ///////////////////// registration details insertion //////////////////////////
   Future insertRegistrationDetails(RegistrationData data) async {
@@ -657,6 +658,7 @@ class OrderAppDB {
     Database db = await instance.database;
     await db.delete('$table');
   }
+
 //////////////////////////////
   ////////////count from table/////////////////////////////////////////
   countCommonQuery(String table, String os, String customerId) async {
@@ -682,7 +684,7 @@ class OrderAppDB {
       print("if");
       res = await db.rawQuery(
           "SELECT MAX($field) max_val FROM '$table' WHERE $condition");
-      print("max common-----$res");   
+      print("max common-----$res");
       print('res[0]["max_val"] ----${res[0]["max_val"]}');
       // int convertedMax = int.parse(res[0]["max_val"]);
       max = res[0]["max_val"] + 1;
