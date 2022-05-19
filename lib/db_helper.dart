@@ -105,7 +105,7 @@ class OrderAppDB {
   static final customerid = 'customerid';
   static final userid = 'userid';
   static final areaid = 'areaid';
-  static final mstatus = 'mstatus';
+  static final status = 'status';
 /////////////////// cart table/////////////
   static final cartdatetime = 'cartdatetime';
   static final cartrowno = 'cartrowno';
@@ -115,7 +115,7 @@ class OrderAppDB {
   static final cstatus = 'cstatus';
   static final ordrow_num = 'ordrow_num';
   static final itemName = 'itemName';
-
+  static final numberof_items = 'numberof_items';
   Future<Database> get database async {
     if (_database != null) return _database!;
     _database = await _initDB("orderapp.db");
@@ -242,26 +242,27 @@ class OrderAppDB {
           ''');
     await db.execute('''
           CREATE TABLE orderMasterTable (
-            $order_id INTEGER PRIMARY KEY AUTOINCREMENT,
-            $ordernum INTEGER NOT NULL,
+            $id INTEGER PRIMARY KEY AUTOINCREMENT,
+            $order_id INTEGER,
             $orderdatetime TEXT,
             $os TEXT NOT NULL,
             $customerid TEXT,
             $userid TEXT,
             $areaid TEXT,
-            $mstatus INTEGER
+            $status INTEGER
 
           )
           ''');
 
     await db.execute('''
           CREATE TABLE orderDetailTable (
-            $order_id INTEGER ,
-            $ordrow_num TEXT,
+            $id INTEGER PRIMARY KEY AUTOINCREMENT,
+            $order_id INTEGER,
+            $numberof_items INTEGER,
             $code TEXT,
             $qty INTEGER,
             $rate TEXT,
-            $cstatus INTEGER
+            $status INTEGER
           )
           ''');
     await db.execute('''
@@ -282,28 +283,18 @@ class OrderAppDB {
   }
 
   ///////////////////////////////////////////////////////////
-  Future insertorderDetailsTable(
-      String ordrow_num, String code, int qty, String rate, int cstatus) async {
-    final db = await database;
-    var query2 =
-        'INSERT INTO orderDetailTable(ordrow_num, code, qty, rate, cstatus) VALUES("${ordrow_num}","${code}", ${qty}, "${rate}", ${cstatus})';
-    var res = await db.rawInsert(query2);
-    print(query2);
-    // print(res);
-    return res;
-  }
 
   ////////////// cart order ////////////////////////////
-  Future insertorderMasterTable(String ordernum, String orderdate, String os,
-      String customerid, String userid, String areaid, int status) async {
-    final db = await database;
-    var query2 =
-        'INSERT INTO orderMasterTable(ordernum, orderdatetime, os, customerid, userid, areaid, mstatus) VALUES("${ordernum}", "${orderdate}", "${os}", "${customerid}", "${userid}", "${areaid}", ${status})';
-    var res = await db.rawInsert(query2);
-    print(query2);
-    // print(res);
-    return res;
-  }
+  // Future insertorderMasterTable(String ordernum, String orderdate, String os,
+  //     String customerid, String userid, String areaid, int status) async {
+  //   final db = await database;
+  //   var query2 =
+  //       'INSERT INTO orderMasterTable(ordernum, orderdatetime, os, customerid, userid, areaid, mstatus) VALUES("${ordernum}", "${orderdate}", "${os}", "${customerid}", "${userid}", "${areaid}", ${status})';
+  //   var res = await db.rawInsert(query2);
+  //   print(query2);
+  //   // print(res);
+  //   return res;
+  // }
 
   //////////////////////////////////////////////
   Future insertorderBagTable(
@@ -325,11 +316,42 @@ class OrderAppDB {
 
     var res = await db.rawInsert(query2);
     print(query2);
-    // print(res);
+    print(res);
     return res;
   }
 
   /////////////////////// order master table insertion//////////////////////
+  Future insertorderMasterandDetailsTable(
+    String orderdate,
+    String os,
+    String customerid,
+    String userid,
+    String areaid,
+    int status,
+  ) async {
+    final db = await database;
+    List<Map<String, dynamic>> res = await db.rawQuery(
+        'SELECT  code, qty, rate FROM orderBagTable WHERE customerid="${customerid}" AND os = "${os}"');
+    if (res.length > 0) {
+      for (var item in res) {
+        String code = item["code"];
+        int qty = item["qty"];
+        String rate = item["rate"];
+        
+        var query2 =
+            'INSERT INTO orderDetailTable(order_id,code, qty, rate, status) VALUES("${order_id}","${code}", ${qty}, "${rate}", ${status})';
+        var res2 = await db.rawInsert(query2);
+      }
+    }
+
+    var query3 =
+        'INSERT INTO orderMasterTable(order_id, orderdatetime, os, customerid, userid, areaid, status) VALUES("${order_id}", "${orderdate}", "${os}", "${customerid}", "${userid}", "${areaid}", ${status})';
+
+    var res1 = await db.rawInsert(query3);
+    print(query3);
+    // print(res);
+    return res;
+  }
 
   ///////////////////// registration details insertion //////////////////////////
   Future insertRegistrationDetails(RegistrationData data) async {
@@ -344,13 +366,15 @@ class OrderAppDB {
 
 ////////////////////select from orderBagTable//////////////////////
 
-  Future<List<Map<String, dynamic>>> getOrderBagTable(String customerId) async {
+  Future<List<Map<String, dynamic>>> getOrderBagTable(
+      String customerId, String os) async {
     print("enteredcustomerId---${customerId}");
     // Provider.of<Controller>(context, listen: false).customerList.clear();
     Database db = await instance.database;
     var res = await db.rawQuery(
-        'SELECT  * FROM orderBagTable WHERE customerid="${customerId}"');
-    print('SELECT  * FROM orderBagTable WHERE customerid="${customerId}"');
+        'SELECT  * FROM orderBagTable WHERE customerid="${customerId}" AND os = "${os}"');
+    print(
+        'SELECT  * FROM orderBagTable WHERE customerid="${customerId}" AND os = "${os}"');
     print(res);
     return res;
   }
@@ -633,7 +657,7 @@ class OrderAppDB {
     Database db = await instance.database;
     await db.delete('$table');
   }
-
+//////////////////////////////
   ////////////count from table/////////////////////////////////////////
   countCommonQuery(String table, String os, String customerId) async {
     String count;

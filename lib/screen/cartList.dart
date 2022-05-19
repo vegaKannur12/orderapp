@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:orderapp/components/commoncolor.dart';
 import 'package:orderapp/controller/controller.dart';
 import 'package:orderapp/db_helper.dart';
@@ -8,24 +9,31 @@ import 'package:provider/provider.dart';
 class CartList extends StatefulWidget {
   String custmerId;
   String os;
-  CartList({required this.custmerId, required this.os});
+  String areaId;
+  CartList({required this.areaId,required this.custmerId, required this.os});
   @override
   State<CartList> createState() => _CartListState();
 }
 
 class _CartListState extends State<CartList> {
+  DateTime now = DateTime.now();
+  String? date;
   // List<TextEditingController> _controller = [];
   @override
   void initState() {
+    date = DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
+    Provider.of<Controller>(context, listen: false).getOrderno();
     // TODO: implement initState
     super.initState();
     Provider.of<Controller>(context, listen: false)
         .generateTextEditingController();
     Provider.of<Controller>(context, listen: false)
         .calculateTotal(widget.os, widget.custmerId);
+    Provider.of<Controller>(context, listen: false).setSname();
+        
     // _controller = List.generate(length, (i) => TextEditingController());
   }
-
+  
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -250,8 +258,10 @@ await OrderAppDB.instance.deleteTabCommonQuery("orderBagTable");
                                         print("helooo");
                                         _controller.text = value;
                                         print("helloo-----${_controller.text}");
-                                         Provider.of<Controller>(context,
-                                                listen: false).calculateTotal(widget.os, widget.custmerId);
+                                        Provider.of<Controller>(context,
+                                                listen: false)
+                                            .calculateTotal(
+                                                widget.os, widget.custmerId);
                                         Provider.of<Controller>(context,
                                                 listen: false)
                                             .updateQty(value, cartrowno,

@@ -41,6 +41,7 @@ class _OrderFormState extends State<OrderForm> {
   String? rate1;
   // double rate1 = 0.0;
   bool isAdded = false;
+  bool alertvisible = false;
   int selectedIndex = 0;
   int _randomNumber1 = 0;
   bool dropvisible = true;
@@ -199,7 +200,6 @@ class _OrderFormState extends State<OrderForm> {
                                   Flexible(
                                     child: ElevatedButton(
                                         onPressed: () {
-                                          print("helooo");
                                           Provider.of<Controller>(context,
                                                   listen: false)
                                               .custmerDetails
@@ -576,8 +576,7 @@ class _OrderFormState extends State<OrderForm> {
                                                                       .getMaxCommonQuery(
                                                                           'orderBagTable',
                                                                           'cartrowno',
-                                                                           "os='${values.ordernum[0]["os"]}'");
-
+                                                                          "os='${values.ordernum[0]["os"]}'");
                                                                   var res = await OrderAppDB
                                                                       .instance
                                                                       .insertorderBagTable(
@@ -593,25 +592,34 @@ class _OrderFormState extends State<OrderForm> {
                                                                           rate1,
                                                                           "",
                                                                           0);
-                                                                  Provider.of<Controller>(
+                                                                  showDialog(
+                                                                      context:
                                                                           context,
-                                                                          listen:
-                                                                              false)
-                                                                      .countFromTable(
-                                                                          "orderBagTable",
-                                                                          values.ordernum[0]
-                                                                              [
-                                                                              'os'],
-                                                                          custmerId!);
-                                                                  Provider.of<Controller>(
-                                                                          context,
-                                                                          listen:
-                                                                              false)
-                                                                      .calculateTotal(
-                                                                          values.ordernum[0]
-                                                                              [
-                                                                              'os'],
-                                                                          custmerId!);
+                                                                      builder:
+                                                                          (context) {
+                                                                        Future.delayed(
+                                                                            Duration(milliseconds: 400),
+                                                                            () {
+                                                                          Navigator.of(context)
+                                                                              .pop(true);
+                                                                        });
+                                                                        return AlertDialog(
+                                                                          content:
+                                                                              Text(
+                                                                            'Added to cart',
+                                                                            style:
+                                                                                TextStyle(color: P_Settings.extracolor),
+                                                                          ),
+                                                                        );
+                                                                      });
+                                                                  //                        Provider.of<Controller>(context,
+                                                                  // listen: false).countFromTable("orderBagTable");
+                                                                  //               Provider.of<Controller>(
+                                                                  //                       context,
+                                                                  //                       listen:
+                                                                  //                           false).calculateTotal(values.ordernum[0]
+                                                                  //                           [
+                                                                  //                           'os'],custmerId! );
                                                                 },
                                                               ),
                                                             ],
@@ -662,13 +670,15 @@ class _OrderFormState extends State<OrderForm> {
                                         flex: 1,
                                         child: ElevatedButton(
                                           onPressed: () async {
+                                            setState(() {
+                                              alertvisible = !alertvisible;
+                                            });
                                             if (qty.text == null ||
                                                 qty.text.isEmpty) {
                                               qty.text = "1";
                                             }
                                             print(
                                                 " itemName, rate1--${itemName}--${rate1}");
-                                                // int max=await OrderAppDB.instance.getMaxOfFieldValue()
                                             int max = await OrderAppDB.instance
                                                 .getMaxCommonQuery(
                                                     'orderBagTable',
@@ -689,17 +699,38 @@ class _OrderFormState extends State<OrderForm> {
                                                     rate1!,
                                                     total.toString(),
                                                     0);
-                                            Provider.of<Controller>(context,
-                                                    listen: false)
-                                                .countFromTable(
-                                                    "orderBagTable",
-                                                    values.ordernum[0]['os'],
-                                                    custmerId!);
+                                            print("result........... $res");
+                                            //  Provider.of<Controller>(context,
+                                            //           listen: false).countFromTable("orderBagTable");
                                             Provider.of<Controller>(context,
                                                     listen: false)
                                                 .calculateTotal(
                                                     values.ordernum[0]['os'],
                                                     custmerId!);
+
+                                            /////////////////////////
+
+                                            alertvisible == true
+                                                ? showDialog(
+                                                    context: context,
+                                                    builder: (context) {
+                                                      Future.delayed(
+                                                          Duration(
+                                                              milliseconds:
+                                                                  400), () {
+                                                        Navigator.of(context)
+                                                            .pop(true);
+                                                      });
+                                                      return AlertDialog(
+                                                        content: Text(
+                                                          'Added to cart',
+                                                          style: TextStyle(
+                                                              color: P_Settings
+                                                                  .extracolor),
+                                                        ),
+                                                      );
+                                                    })
+                                                : Text("helooo");
                                           },
                                           style: ElevatedButton.styleFrom(
                                             primary:
@@ -728,12 +759,14 @@ class _OrderFormState extends State<OrderForm> {
                                         onPressed: () async {
                                           Provider.of<Controller>(context,
                                                   listen: false)
-                                              .getBagDetails(custmerId!);
+                                              .getBagDetails(custmerId!,
+                                                  values.ordernum[0]['os']);
 
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) => CartList(
+                                                      areaId: splitted![0],
                                                       custmerId: custmerId!,
                                                       os: values.ordernum[0]
                                                           ['os'],
@@ -773,12 +806,8 @@ class _OrderFormState extends State<OrderForm> {
                                       SizedBox(
                                         width: size.width * 0.1,
                                       ),
-                                      Text(Provider.of<Controller>(context,
-                                                      listen: false)
-                                                  .count ==
-                                              null
-                                          ? "0"
-                                          : "${Provider.of<Controller>(context, listen: false).count}"),
+                                      Text(
+                                          "${Provider.of<Controller>(context, listen: false).count}"),
                                       // Flexible(
                                       //   child: TextField(
                                       //     readOnly: true,
@@ -807,13 +836,8 @@ class _OrderFormState extends State<OrderForm> {
                                         width: size.width * 0.06,
                                       ),
                                       Flexible(
-                                          child: Text(Provider.of<Controller>(
-                                                              context,
-                                                              listen: false)
-                                                          .orderTotal ==
-                                                      null
-                                                  ? "0.0"
-                                                  : "\u{20B9}${Provider.of<Controller>(context, listen: false).orderTotal}"
+                                          child: Text(
+                                              "\u{20B9}${Provider.of<Controller>(context, listen: false).orderTotal}"
                                               // values.approximateSum.length != 0 &&
                                               //         values.approximateSum[0]
                                               //                 ['s'] !=

@@ -32,6 +32,8 @@ class Controller extends ChangeNotifier {
   String? count;
   String? sof;
   List<Map<String, dynamic>> bagList = [];
+  List<Map<String, dynamic>> masterList = [];
+  List<Map<String, dynamic>> orderdetailsList = [];
 
   List<Map<String, dynamic>> staffList = [];
   List<Map<String, dynamic>> productName = [];
@@ -434,12 +436,12 @@ class Controller extends ChangeNotifier {
   }
 
   ////////////////////////////////////
-  getBagDetails(String customerId) async {
+  getBagDetails(String customerId,String os) async {
     bagList.clear();
     isLoading = true;
     notifyListeners();
     List<Map<String, dynamic>> res =
-        await OrderAppDB.instance.getOrderBagTable(customerId);
+        await OrderAppDB.instance.getOrderBagTable(customerId,os);
     for (var item in res) {
       bagList.add(item);
     }
@@ -483,6 +485,7 @@ class Controller extends ChangeNotifier {
       notifyListeners();
     }
   }
+
 ////////////// total sum /////////////////////////////
   // gettotalSum() async {
   //   try {
