@@ -571,6 +571,13 @@ class _OrderFormState extends State<OrderForm> {
                                                                       "option[code]----$productCode");
                                                                   print(
                                                                       "item----rate---${option["item"]}---${option["rate1"]}");
+                                                                  if (qty.text ==
+                                                                          null ||
+                                                                      qty.text
+                                                                          .isEmpty) {
+                                                                    qty.text =
+                                                                        "1";
+                                                                  }
                                                                   int max = await OrderAppDB
                                                                       .instance
                                                                       .getMaxCommonQuery(
@@ -582,6 +589,7 @@ class _OrderFormState extends State<OrderForm> {
                                                                               rate1) *
                                                                       int.parse(
                                                                           qty.text);
+
                                                                   print(
                                                                       "total rate $total");
                                                                   var res = await OrderAppDB.instance.insertorderBagTable(
