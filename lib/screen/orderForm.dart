@@ -577,21 +577,28 @@ class _OrderFormState extends State<OrderForm> {
                                                                           'orderBagTable',
                                                                           'cartrowno',
                                                                           "os='${values.ordernum[0]["os"]}'");
-                                                                  var res = await OrderAppDB
-                                                                      .instance
-                                                                      .insertorderBagTable(
-                                                                          item,
-                                                                          date!,
-                                                                          values.ordernum[0]
-                                                                              [
-                                                                              'os'],
-                                                                          custmerId!,
-                                                                          max,
-                                                                          productCode,
-                                                                          1,
-                                                                          rate1,
-                                                                          "",
-                                                                          0);
+                                                                  var total = int
+                                                                          .parse(
+                                                                              rate1) *
+                                                                      int.parse(
+                                                                          qty.text);
+                                                                  print(
+                                                                      "total rate $total");
+                                                                  var res = await OrderAppDB.instance.insertorderBagTable(
+                                                                      item,
+                                                                      date!,
+                                                                      values.ordernum[
+                                                                              0]
+                                                                          [
+                                                                          'os'],
+                                                                      custmerId!,
+                                                                      max,
+                                                                      productCode,
+                                                                      1,
+                                                                      rate1,
+                                                                      total
+                                                                          .toString(),
+                                                                      0);
                                                                   showDialog(
                                                                       context:
                                                                           context,
