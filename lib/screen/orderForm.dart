@@ -23,7 +23,7 @@ class _OrderFormState extends State<OrderForm> {
   String? _selectedItemarea;
   String? _selectedItemcus;
   String? _selectedItem;
-  
+
   List<Map<String, dynamic>>? newList = [];
   ValueNotifier<int> dtatableRow = ValueNotifier(0);
   ValueNotifier<bool> visibleValidation = ValueNotifier(false);
@@ -194,7 +194,8 @@ class _OrderFormState extends State<OrderForm> {
                                         _selectedItemarea = value;
                                         print(
                                             "_selectedItem---${_selectedItemarea}");
-                                        splitted = _selectedItemarea!.split('-');
+                                        splitted =
+                                            _selectedItemarea!.split('-');
 
                                         Provider.of<Controller>(context,
                                                 listen: false)
@@ -206,6 +207,15 @@ class _OrderFormState extends State<OrderForm> {
                                             FocusNode fieldFocusNode,
                                             VoidCallback onFieldSubmitted) {
                                       return TextField(
+                                        decoration: InputDecoration(
+                                          // hintText: 'Enter a message',
+                                          suffixIcon: IconButton(
+                                            onPressed:
+                                                fieldTextEditingController
+                                                    .clear,
+                                            icon: Icon(Icons.clear),
+                                          ),
+                                        ),
                                         controller: fieldTextEditingController,
                                         focusNode: fieldFocusNode,
                                         style: const TextStyle(
@@ -279,6 +289,15 @@ class _OrderFormState extends State<OrderForm> {
                                               //     : null,
                                               controller:
                                                   fieldTextEditingController,
+                                              decoration: InputDecoration(
+                                                // hintText: 'Enter a message',
+                                                suffixIcon: IconButton(
+                                                  onPressed:
+                                                      fieldTextEditingController
+                                                          .clear,
+                                                  icon: Icon(Icons.clear),
+                                                ),
+                                              ),
                                               focusNode: fieldFocusNode,
                                               style: const TextStyle(
                                                   fontWeight:
@@ -337,7 +356,9 @@ class _OrderFormState extends State<OrderForm> {
                                         ),
                                       ),
                                     ),
-                                    SizedBox(height: size.height*0.005,),
+                                    SizedBox(
+                                      height: size.height * 0.005,
+                                    ),
                                     ValueListenableBuilder(
                                         valueListenable: visibleValidation,
                                         builder: (BuildContext context, bool v,
@@ -444,8 +465,8 @@ class _OrderFormState extends State<OrderForm> {
                                           ),
                                           label: Text("View bag"),
                                           onPressed: () async {
-                                            if ( _selectedItemcus== null || _selectedItemcus!.isEmpty 
-                                                ) {
+                                            if (_selectedItemcus == null ||
+                                                _selectedItemcus!.isEmpty) {
                                               visibleValidation.value = true;
                                             } else {
                                               Provider.of<Controller>(context,
@@ -600,6 +621,38 @@ class _OrderFormState extends State<OrderForm> {
                                                   return values.productName;
                                                 }
                                               },
+                                              fieldViewBuilder: (BuildContext
+                                                  context,
+                                              TextEditingController
+                                                  fieldTextEditingController,
+                                              FocusNode fieldFocusNode,
+                                              VoidCallback onFieldSubmitted) {
+                                            return TextFormField(
+                                              // validator: (val) => val!.isEmpty
+                                              //     ? 'Please select customer...'
+                                              //     : null,
+                                              controller:
+                                                  fieldTextEditingController,
+                                                  
+                                              decoration: InputDecoration(
+                                                // hintText: 'Enter a message',
+                                                suffixIcon: IconButton(
+                                                  onPressed:() =>  
+                                                   fieldTextEditingController
+                                                          .clear,
+                                                  // Provider.of<Controller>(context,
+                                                  //                   listen: false).prodctItems.clear() ,
+                                                     
+                                                     
+                                                  icon: Icon(Icons.clear),
+                                                ),
+                                              ),
+                                              focusNode: fieldFocusNode,
+                                              style: const TextStyle(
+                                                  fontWeight:
+                                                      FontWeight.normal),
+                                            );
+                                          },
                                               displayStringForOption:
                                                   (Map<String, dynamic>
                                                           option) =>
