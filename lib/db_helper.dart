@@ -242,8 +242,8 @@ class OrderAppDB {
           ''');
     await db.execute('''
           CREATE TABLE orderMasterTable (
-            $order_id INTEGER PRIMARY KEY AUTOINCREMENT,
-            $ordernum INTEGER,
+            $id INTEGER PRIMARY KEY AUTOINCREMENT,
+            $order_id INTEGER,
             $orderdatetime TEXT,
             $os TEXT NOT NULL,
             $customerid TEXT,
@@ -256,8 +256,8 @@ class OrderAppDB {
 
     await db.execute('''
           CREATE TABLE orderDetailTable (
+            $id INTEGER PRIMARY KEY AUTOINCREMENT,
             $order_id INTEGER,
-            $ordernum INTEGER PRIMARY KEY,
             $numberof_items INTEGER,
             $code TEXT,
             $qty INTEGER,
@@ -283,19 +283,6 @@ class OrderAppDB {
   }
 
   ///////////////////////////////////////////////////////////
-  Future insertorderMasterandDetailsTable(
-      String ordrow_num, String orderdate, String os, String customerid, String code, String userid, String areaid, int qty, String rate, int status,) async {
-    final db = await database;
-    var query2 =
-        'INSERT INTO orderDetailTable(numberof_items, code, qty, rate, cstatus) VALUES(${ordrow_num},"${code}", ${qty}, "${rate}", ${status})';
-       var query3 =
-        'INSERT INTO orderMasterTable(ordernum, orderdatetime, os, customerid, userid, areaid, mstatus) VALUES("${ordernum}", "${orderdate}", "${os}", "${customerid}", "${userid}", "${areaid}", ${status})';
-    var res = await db.rawInsert(query2);
-    var res1 = await db.rawInsert(query3);
-    print(query2);
-    // print(res);
-    return res;
-  }
 
   ////////////// cart order ////////////////////////////
   // Future insertorderMasterTable(String ordernum, String orderdate, String os,
@@ -329,11 +316,42 @@ class OrderAppDB {
 
     var res = await db.rawInsert(query2);
     print(query2);
-    // print(res);
+    print(res);
     return res;
   }
 
   /////////////////////// order master table insertion//////////////////////
+  Future insertorderMasterandDetailsTable(
+    String orderdate,
+    String os,
+    String customerid,
+    String userid,
+    String areaid,
+    int status,
+  ) async {
+    final db = await database;
+    List<Map<String, dynamic>> res = await db.rawQuery(
+        'SELECT  code, qty, rate FROM orderBagTable WHERE customerid="${customerid}" AND os = "${os}"');
+    if (res.length > 0) {
+      for (var item in res) {
+        String code = item["code"];
+        int qty = item["qty"];
+        String rate = item["rate"];
+        
+        var query2 =
+            'INSERT INTO orderDetailTable(order_id,code, qty, rate, status) VALUES("${order_id}","${code}", ${qty}, "${rate}", ${status})';
+        var res2 = await db.rawInsert(query2);
+      }
+    }
+
+    var query3 =
+        'INSERT INTO orderMasterTable(order_id, orderdatetime, os, customerid, userid, areaid, status) VALUES("${order_id}", "${orderdate}", "${os}", "${customerid}", "${userid}", "${areaid}", ${status})';
+
+    var res1 = await db.rawInsert(query3);
+    print(query3);
+    // print(res);
+    return res;
+  }
 
   ///////////////////// registration details insertion //////////////////////////
   Future insertRegistrationDetails(RegistrationData data) async {
@@ -348,13 +366,15 @@ class OrderAppDB {
 
 ////////////////////select from orderBagTable//////////////////////
 
-  Future<List<Map<String, dynamic>>> getOrderBagTable(String customerId) async {
+  Future<List<Map<String, dynamic>>> getOrderBagTable(
+      String customerId, String os) async {
     print("enteredcustomerId---${customerId}");
     // Provider.of<Controller>(context, listen: false).customerList.clear();
     Database db = await instance.database;
     var res = await db.rawQuery(
-        'SELECT  * FROM orderBagTable WHERE customerid="${customerId}"');
-    print('SELECT  * FROM orderBagTable WHERE customerid="${customerId}"');
+        'SELECT  * FROM orderBagTable WHERE customerid="${customerId}" AND os = "${os}"');
+    print(
+        'SELECT  * FROM orderBagTable WHERE customerid="${customerId}" AND os = "${os}"');
     print(res);
     return res;
   }
@@ -539,17 +559,18 @@ class OrderAppDB {
   }
 
   /////////////////////////max of from table//////////////////////
-  getMaxOfFieldValue(String os, String customerId) async {
+  getMaxOfFieldValue(String os, String customerId ) async {
     var res;
     int max;
     print("customerid---$customerId");
     Database db = await instance.database;
-    var result = await db.rawQuery("SELECT * FROM orderBagTable");
+    var result = await db.rawQuery(
+        "SELECT * FROM orderBagTable WHERE os='$os' AND customerid='$customerId'");
     print("result---$result");
     if (result != null && result.isNotEmpty) {
       print("if");
       res = await db.rawQuery(
-          "SELECT MAX(cartrowno) max_val FROM orderBagTable WHERE os='$os' ");
+          "SELECT MAX(cartrowno) max_val FROM orderBagTable WHERE os='$os' AND customerid='$customerId'");
       max = res[0]["max_val"] + 1;
       print(
           "SELECT MAX(cartrowno) max_val FROM orderBagTable WHERE os='$os' AND customerid='$customerId'");
@@ -564,19 +585,27 @@ class OrderAppDB {
     // print(res);
     // return res;
   }
+  /////////////////////////////////////////////////////////////
+  
 
   ////////////////////////////sum of the product /////////////////////////////////
-  gettotalSum() async {
+  gettotalSum(String os, String customerId) async {
+    // double sum=0.0;
+    String sum;
     Database db = await instance.database;
-    var result;
-    var res = await db.rawQuery('SELECT SUM(rate) FROM orderBagTable');
-    if (res != null && res.isNotEmpty) {
-      result = await db.rawQuery('SELECT SUM(rate) s FROM orderBagTable');
+    var result = await db.rawQuery(
+        "SELECT * FROM orderBagTable WHERE os='$os' AND customerid='$customerId'");
+
+    if (result != null && result.isNotEmpty) {
+      List<Map<String, dynamic>> res = await db.rawQuery(
+          "SELECT SUM(totalamount) s FROM orderBagTable WHERE os='$os' AND customerid='$customerId'");
+      sum = res[0]["s"].toString();
+      print("sum from db----$sum");
     } else {
-      print("else");
-      result = 1;
+      sum = "0.0";
     }
-    return result;
+
+    return sum;
   }
 
   ////////////// delete//////////////////////////////////////
@@ -604,9 +633,11 @@ class OrderAppDB {
     double amount = (rate1 * updatedQty);
     print("amoiunt-----$amount");
     print("updatedqty----$updatedQty");
+    // gettotalSum(String os, String customerId);
     var res = await db.rawUpdate(
         'UPDATE orderBagTable SET qty=$updatedQty , totalamount="${amount}" WHERE cartrowno=$cartrowno AND customerid="$customerId"');
     print("response-------$res");
+
     if (res == 1) {
       res1 = await db.rawQuery(
           "SELECT * FROM orderBagTable WHERE customerid='$customerId'");
@@ -621,4 +652,13 @@ class OrderAppDB {
     Database db = await instance.database;
     await db.delete('$table');
   }
+//////////////////////////////
+  ////////////count from table/////////////////////////////////////////
+  // countCommonQuery(String table) async {
+  //   Database db = await instance.database;
+
+  //   final result = await db.rawQuery('SELECT COUNT(*) FROM $table');
+
+  //   return result;
+  // }
 }
