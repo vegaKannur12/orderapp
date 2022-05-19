@@ -266,7 +266,7 @@ class OrderAppDB {
             $status INTEGER
           )
           ''');
-    await db.execute('''
+    await db.execute(''' 
           CREATE TABLE orderBagTable (
             $id INTEGER PRIMARY KEY AUTOINCREMENT,
             $itemName TEXT NOT NULL,

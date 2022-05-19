@@ -10,6 +10,8 @@ import 'package:orderapp/screen/cartList.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+
+import '../components/customPopup.dart';
 // import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class OrderForm extends StatefulWidget {
@@ -21,6 +23,7 @@ class OrderForm extends StatefulWidget {
 
 class _OrderFormState extends State<OrderForm> {
   String? _selectedItemarea;
+  CustomPopup popup = CustomPopup();
   String? _selectedItemcus;
   String? _selectedItem;
 
@@ -44,7 +47,7 @@ class _OrderFormState extends State<OrderForm> {
   String? staffname;
   bool visible = false;
   String itemName = '';
-  String? rate1;
+  String rate1 = "1";
   // double rate1 = 0.0;
   bool isAdded = false;
   bool alertvisible = false;
@@ -55,7 +58,6 @@ class _OrderFormState extends State<OrderForm> {
   int num = 0;
   DateTime now = DateTime.now();
   String? date;
-  List<String> areaDetails = [];
   @override
   void initState() {
     // TODO: implement initState
@@ -78,7 +80,6 @@ class _OrderFormState extends State<OrderForm> {
     final prefs = await SharedPreferences.getInstance();
     staffname = prefs.getString('st_username');
     print("staffname---${staffname}");
-
     Provider.of<Controller>(context, listen: false).getArea(staffname!);
   }
 
@@ -148,12 +149,14 @@ class _OrderFormState extends State<OrderForm> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               SizedBox(height: size.height * 0.01),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 8.0),
-                                child: Text(
-                                  "Area/Route",
-                                  style: TextStyle(
-                                    fontSize: 16,
+                              Flexible(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Text(
+                                    "Area/Route",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -521,57 +524,66 @@ class _OrderFormState extends State<OrderForm> {
                                                         'orderBagTable',
                                                         'cartrowno',
                                                         "os='${values.ordernum[0]["os"]}' AND customerid='$custmerId'");
-                                                var total = int.parse(rate1!) *
+                                                var total = int.parse(rate1) *
                                                     int.parse(qty.text);
                                                 print("total rate $total");
-                                                var res = await OrderAppDB
-                                                    .instance
-                                                    .insertorderBagTable(
-                                                        itemName,
-                                                        date!,
-                                                        values.ordernum[0]
-                                                            ['os'],
-                                                        custmerId!,
-                                                        max,
-                                                        productCode!,
-                                                        int.parse(qty.text),
-                                                        rate1!,
-                                                        total.toString(),
-                                                        0);
+                                                var res = custmerId == null ||
+                                                        custmerId!.isEmpty ||
+                                                        selectedCus == null ||
+                                                        selectedCus!.isEmpty ||
+                                                        productCode == null ||
+                                                        productCode!.isEmpty
+                                                    ? visibleValidation.value =
+                                                        true
+                                                    : await OrderAppDB.instance
+                                                        .insertorderBagTable(
+                                                            itemName,
+                                                            date!,
+                                                            values.ordernum[0]
+                                                                ['os'],
+                                                            custmerId!,
+                                                            max,
+                                                            productCode!,
+                                                            int.parse(qty.text),
+                                                            rate1,
+                                                            total.toString(),
+                                                            0);
                                                 print("result........... $res");
                                                 //  Provider.of<Controller>(context,
                                                 //           listen: false).countFromTable("orderBagTable");
-                                                Provider.of<Controller>(context,
-                                                        listen: false)
-                                                    .calculateTotal(
-                                                        values.ordernum[0]
-                                                            ['os'],
-                                                        custmerId!);
+                                                custmerId == null ||
+                                                        custmerId!.isEmpty ||
+                                                        productCode == null ||
+                                                        productCode!.isEmpty
+                                                    ? Text("Select customer")
+                                                    : Provider.of<Controller>(
+                                                            context,
+                                                            listen: false)
+                                                        .calculateTotal(
+                                                            values.ordernum[0]
+                                                                ['os'],
+                                                            custmerId!);
 
                                                 /////////////////////////
 
-                                                alertvisible == true
-                                                    ? showDialog(
-                                                        context: context,
-                                                        builder: (context) {
-                                                          Future.delayed(
-                                                              Duration(
-                                                                  milliseconds:
-                                                                      400), () {
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pop(true);
-                                                          });
-                                                          return AlertDialog(
-                                                            content: Text(
-                                                              'Added to cart',
-                                                              style: TextStyle(
-                                                                  color: P_Settings
-                                                                      .extracolor),
-                                                            ),
-                                                          );
-                                                        })
-                                                    : Text("helooo");
+                                              alertvisible?  showDialog(
+                                                    context: context,
+                                                    builder: (context) {
+                                                      Future.delayed(
+                                                          Duration(milliseconds: 400),
+                                                          () {
+                                                        Navigator.of(context)
+                                                            .pop(true);
+                                                      });
+                                                      return AlertDialog(
+                                                        content: Text(
+                                                          'Added to cart',
+                                                          style: TextStyle(
+                                                              color: P_Settings
+                                                                  .extracolor),
+                                                        ),
+                                                      );
+                                                    }):Text("No data");
                                               },
                                               style: ElevatedButton.styleFrom(
                                                 primary: P_Settings

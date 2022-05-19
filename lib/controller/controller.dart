@@ -381,8 +381,8 @@ class Controller extends ChangeNotifier {
   ///////////////////////////////////////////////////////
   getProductItems(String product) async {
     print("product...............${product}");
+    productName.clear();
     try {
-      productName.clear();
       prodctItems = await OrderAppDB.instance.getItems(product);
       print("prodctItems----${prodctItems}");
 
@@ -561,4 +561,6 @@ class Controller extends ChangeNotifier {
     bagList.clear();
     notifyListeners();
   }
+
+  //////      /////////////////////////////
 }
