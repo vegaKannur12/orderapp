@@ -535,32 +535,32 @@ class OrderAppDB {
   }
 
   /////////////////////////max of from table//////////////////////
-  getMaxOfFieldValue(String os, String customerId) async {
-    var res;
-    int max;
-    print("customerid---$customerId");
-    Database db = await instance.database;
-    var result = await db.rawQuery(
-        "SELECT * FROM orderBagTable WHERE os='$os' AND customerid='$customerId'");
-    print("result---$result");
-    if (result != null && result.isNotEmpty) {
-      print("if");
-      res = await db.rawQuery(
-          "SELECT MAX(cartrowno) max_val FROM orderBagTable WHERE os='$os' AND customerid='$customerId'");
-      max = res[0]["max_val"] + 1;
-      print(
-          "SELECT MAX(cartrowno) max_val FROM orderBagTable WHERE os='$os' AND customerid='$customerId'");
-    } else {
-      print("else");
-      max = 1;
-    }
-    print(res);
-    return max;
-    // Database db = await instance.database;
-    // var res=db.rawQuery("SELECT (IFNULL(MAX($field),0) +1) FROM $table WHERE os='LF'");
-    // print(res);
-    // return res;
-  }
+  // getMaxOfFieldValue(String os, String customerId) async {
+  //   var res;
+  //   int max;
+  //   print("customerid---$customerId");
+  //   Database db = await instance.database;
+  //   var result = await db.rawQuery(
+  //       "SELECT * FROM orderBagTable WHERE os='$os' AND customerid='$customerId'");
+  //   print("result---$result");
+  //   if (result != null && result.isNotEmpty) {
+  //     print("if");
+  //     res = await db.rawQuery(
+  //         "SELECT MAX(cartrowno) max_val FROM orderBagTable WHERE os='$os' AND customerid='$customerId'");
+  //     max = res[0]["max_val"] + 1;
+  //     print(
+  //         "SELECT MAX(cartrowno) max_val FROM orderBagTable WHERE os='$os' AND customerid='$customerId'");
+  //   } else {
+  //     print("else");
+  //     max = 1;
+  //   }
+  //   print(res);
+  //   return max;
+  //   // Database db = await instance.database;
+  //   // var res=db.rawQuery("SELECT (IFNULL(MAX($field),0) +1) FROM $table WHERE os='LF'");
+  //   // print(res);
+  //   // return res;
+  // }
 
   ////////////////////////////sum of the product /////////////////////////////////
   gettotalSum(String os, String customerId) async {
@@ -622,17 +622,48 @@ class OrderAppDB {
   }
 
   /////////////////////////////////////////////////////////////////////
-  deleteCommonQuery(String table) async {
+  deleteFromTableCommonQuery(String table, String os, String customerId) async {
+    Database db = await instance.database;
+    await db.rawDelete(
+        'DELETE FROM $table WHERE os="$os" AND customerid="$customerId"');
+  }
+
+  /////////////////////////////////////////////////////////////////////
+  deleteTabCommonQuery(String table) async {
     Database db = await instance.database;
     await db.delete('$table');
   }
 
   ////////////count from table/////////////////////////////////////////
-  countCommonQuery(String table) async {
+  countCommonQuery(String table, String os, String customerId) async {
+    String count;
     Database db = await instance.database;
 
-    final result = await db.rawQuery('SELECT COUNT(*) FROM $table');
+    final result = await db.rawQuery(
+        'SELECT COUNT(*) c FROM $table WHERE os="$os" AND customerid="$customerId"');
+    count = result[0]["c"].toString();
+    print("result---count---$result");
+    return count;
+  }
 
-    return result;
+  getMaxCommonQuery(String table, String field, String condition) async {
+    var res;
+    int max;
+    Database db = await instance.database;
+    print("field----condition---table ----${field}---${condition}----${table}");
+    var result = await db.rawQuery("SELECT * FROM '$table' WHERE $condition");
+    print("result max---$result");
+    if (result != null && result.isNotEmpty) {
+      print("if");
+      res = await db.rawQuery(
+          "SELECT MAX('$field') max_val FROM '$table' WHERE $condition");
+      max = res[0]["max_val"] + 1;
+      print("SELECT MAX('$field') max_val FROM '$table' WHERE '$condition'");
+    } else {
+      print("else");
+      max = 1;
+    }
+    print(res);
+    return max;
   }
 }

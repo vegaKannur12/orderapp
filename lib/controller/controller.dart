@@ -452,7 +452,7 @@ class Controller extends ChangeNotifier {
   }
 
   ///////////////////////////////////
- deleteFromOrderBagTable(int cartrowno, String customerId, int index) async {
+  deleteFromOrderBagTable(int cartrowno, String customerId, int index) async {
     print("cartrowno--$cartrowno--index----$index");
     List<Map<String, dynamic>> res = await OrderAppDB.instance
         .deleteFromOrderbagTable(cartrowno, customerId);
@@ -469,7 +469,7 @@ class Controller extends ChangeNotifier {
   }
 
   /////////////////////////////updateqty/////////////////////
-  updateQty(String qty, int cartrowno, String customerId,String rate) async {
+  updateQty(String qty, int cartrowno, String customerId, String rate) async {
     // print("qty-----${qty}");
     List<Map<String, dynamic>> res = await OrderAppDB.instance
         .updateQtyOrderBagTable(qty, cartrowno, customerId, rate);
@@ -487,7 +487,7 @@ class Controller extends ChangeNotifier {
   // gettotalSum() async {
   //   try {
   //     approximateSum = await OrderAppDB.instance.gettotalSum();
-      
+
   //     print("total----${approximateSum}");
 
   //     notifyListeners();
@@ -499,14 +499,16 @@ class Controller extends ChangeNotifier {
   // }
 
   /////////calculate total////////////////
-  calculateTotal(String os, String customerId)async{
-    orderTotal= await OrderAppDB.instance.gettotalSum(os,customerId);
+  calculateTotal(String os, String customerId) async {
+    orderTotal = await OrderAppDB.instance.gettotalSum(os, customerId);
     print("orderTotal---$orderTotal");
     notifyListeners();
   }
+
   ////////////////count from table///////
-  countFromTable(String table)async{
-   count=  await OrderAppDB.instance.countCommonQuery(table);
+  countFromTable(String table,String os, String customerId) async {
+    print("table---$table");
+    count = await OrderAppDB.instance.countCommonQuery(table,os,customerId);
     notifyListeners();
   }
 }
