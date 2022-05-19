@@ -380,8 +380,8 @@ class Controller extends ChangeNotifier {
   ///////////////////////////////////////////////////////
   getProductItems(String product) async {
     print("product...............${product}");
+    productName.clear();
     try {
-      productName.clear();
       prodctItems = await OrderAppDB.instance.getItems(product);
       print("prodctItems----${prodctItems}");
 
@@ -436,12 +436,12 @@ class Controller extends ChangeNotifier {
   }
 
   ////////////////////////////////////
-  getBagDetails(String customerId,String os) async {
+  getBagDetails(String customerId, String os) async {
     bagList.clear();
     isLoading = true;
     notifyListeners();
     List<Map<String, dynamic>> res =
-        await OrderAppDB.instance.getOrderBagTable(customerId,os);
+        await OrderAppDB.instance.getOrderBagTable(customerId, os);
     for (var item in res) {
       bagList.add(item);
     }
@@ -509,9 +509,11 @@ class Controller extends ChangeNotifier {
   }
 
   ////////////////count from table///////
-  countFromTable(String table,String os, String customerId) async {
+  countFromTable(String table, String os, String customerId) async {
     print("table---$table");
-    count = await OrderAppDB.instance.countCommonQuery(table,os,customerId);
+    count = await OrderAppDB.instance.countCommonQuery(table, os, customerId);
     notifyListeners();
   }
+
+  //////      /////////////////////////////
 }

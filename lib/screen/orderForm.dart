@@ -10,6 +10,8 @@ import 'package:orderapp/screen/cartList.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+
+import '../components/customPopup.dart';
 // import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class OrderForm extends StatefulWidget {
@@ -20,7 +22,10 @@ class OrderForm extends StatefulWidget {
 }
 
 class _OrderFormState extends State<OrderForm> {
+  CustomPopup popup = CustomPopup();
   String? _selectedItem;
+  final _formKey = GlobalKey<FormState>();
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   List<Map<String, dynamic>>? newList = [];
   ValueNotifier<int> dtatableRow = ValueNotifier(0);
   TextEditingController eanQtyCon = TextEditingController();
@@ -38,7 +43,7 @@ class _OrderFormState extends State<OrderForm> {
   String? staffname;
   bool visible = false;
   String itemName = '';
-  String? rate1;
+  String rate1 = "1";
   // double rate1 = 0.0;
   bool isAdded = false;
   bool alertvisible = false;
@@ -78,6 +83,7 @@ class _OrderFormState extends State<OrderForm> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      key: _scaffoldKey,
       // backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: SafeArea(
@@ -445,318 +451,366 @@ class _OrderFormState extends State<OrderForm> {
                                   SizedBox(
                                     height: size.height * 0.015,
                                   ),
-                                  Row(
-                                    children: [
-                                      Flexible(
-                                        flex: 3,
-                                        child: InputDecorator(
-                                          decoration: InputDecoration(
-                                            contentPadding:
-                                                EdgeInsets.symmetric(
-                                                    vertical: 0, horizontal: 4),
-                                            border: OutlineInputBorder(
-                                                gapPadding: 1),
-                                            hintText: "Select..",
-                                          ),
-                                          child: Autocomplete<
-                                              Map<String, dynamic>>(
-                                            optionsBuilder:
-                                                (TextEditingValue value) {
-                                              if (value.text.isEmpty) {
-                                                return [];
-                                              } else {
-                                                print(
-                                                    "TextEditingValue---${value.text}");
-                                                Provider.of<Controller>(context,
-                                                        listen: false)
-                                                    .getProductItems(
-                                                        value.text);
-                                                return values.productName;
-                                              }
-                                            },
-                                            displayStringForOption:
-                                                (Map<String, dynamic> option) =>
-                                                    option["code"] +
-                                                    '-' +
-                                                    option["item"],
-                                            onSelected: (value) {
-                                              setState(() {
-                                                print("value----${value}");
-                                                _selectedItem = value["item"];
-                                                itemName = value["item"];
-                                                productCode = value["code"];
-                                                rate1 = value["rate1"];
-                                                print(
-                                                    "_selectedItem---${_selectedItem}");
-                                              });
-                                            },
-                                            optionsViewBuilder: (BuildContext
-                                                    context,
-                                                AutocompleteOnSelected<
-                                                        Map<String, dynamic>>
-                                                    onSelected,
-                                                Iterable<Map<String, dynamic>>
-                                                    options) {
-                                              return Align(
-                                                alignment: Alignment.topLeft,
-                                                child: Material(
-                                                  child: Container(
-                                                    width: size.width * 0.7,
-                                                    // color: Colors.teal,
-                                                    child: ListView.builder(
-                                                      padding:
-                                                          EdgeInsets.all(15.0),
-                                                      itemCount: options.length,
-                                                      itemBuilder:
-                                                          (BuildContext context,
-                                                              int index) {
-                                                        //      print(
-                                                        // "option----${options}");
-                                                        print(
-                                                            "index----${index}");
-                                                        final Map<String,
-                                                                dynamic>
-                                                            option =
-                                                            options.elementAt(
-                                                                index);
-                                                        print(
-                                                            "option----${option}");
-                                                        return ListTile(
-                                                          trailing: Wrap(
-                                                            children: [
-                                                              // Container(
-                                                              //   width:
-                                                              //       size.width *
-                                                              //           0.09,
-                                                              //   child:
-                                                              //       TextFormField(
-                                                              //     decoration:
-                                                              //         InputDecoration(
-                                                              //             hintText:
-                                                              //                 'Qty'),
-                                                              //     style: TextStyle(
-                                                              //         fontWeight:
-                                                              //             FontWeight
-                                                              //                 .bold,
-                                                              //         fontSize:
-                                                              //             16),
-                                                              //     keyboardType:
-                                                              //         TextInputType
-                                                              //             .number,
-                                                              //     controller:
-                                                              //         qty,
-                                                              //     onChanged:
-                                                              //         (value) {
-                                                              //       value = qty
-                                                              //           .text;
-                                                              //     },
-                                                              //   ),
-                                                              // ),
-                                                              IconButton(
-                                                                icon: Icon(
-                                                                    Icons.add),
-                                                                onPressed:
-                                                                    () async {
-                                                                  String item =
-                                                                      option[
-                                                                          "item"];
-                                                                  String rate1 =
-                                                                      option[
-                                                                          "rate1"];
-                                                                  String
-                                                                      productCode =
-                                                                      option[
-                                                                          "code"];
-                                                                  print(
-                                                                      "option[code]----$productCode");
-                                                                  print(
-                                                                      "item----rate---${option["item"]}---${option["rate1"]}");
-                                                                  if (qty.text ==
-                                                                          null ||
-                                                                      qty.text
-                                                                          .isEmpty) {
-                                                                    qty.text =
-                                                                        "1";
-                                                                  }
-                                                                  int max = await OrderAppDB
-                                                                      .instance
-                                                                      .getMaxCommonQuery(
-                                                                          'orderBagTable',
-                                                                          'cartrowno',
-                                                                          "os='${values.ordernum[0]["os"]}'");
-                                                                  var total = int
-                                                                          .parse(
-                                                                              rate1) *
-                                                                      int.parse(
-                                                                          qty.text);
+                                  Form(
+                                    key: _formKey,
+                                    child: Row(
+                                      children: [
+                                        Flexible(
+                                          flex: 3,
+                                          child: InputDecorator(
+                                            decoration: InputDecoration(
+                                              contentPadding:
+                                                  EdgeInsets.symmetric(
+                                                      vertical: 0,
+                                                      horizontal: 4),
+                                              border: OutlineInputBorder(
+                                                  gapPadding: 1),
+                                              hintText: "Select..",
+                                            ),
+                                            child: Autocomplete<
+                                                Map<String, dynamic>>(
+                                              optionsBuilder:
+                                                  (TextEditingValue value) {
+                                                if (value.text.isEmpty) {
+                                                  return [];
+                                                } else {
+                                                  print(
+                                                      "TextEditingValue---${value.text}");
+                                                  Provider.of<Controller>(
+                                                          context,
+                                                          listen: false)
+                                                      .getProductItems(
+                                                          value.text);
+                                                  return values.productName;
+                                                }
+                                              },
+                                              displayStringForOption:
+                                                  (Map<String, dynamic>
+                                                          option) =>
+                                                      option["code"] +
+                                                      '-' +
+                                                      option["item"],
+                                              onSelected: (value) {
+                                                setState(() {
+                                                  print("value----${value}");
+                                                  _selectedItem = value["item"];
+                                                  itemName = value["item"];
+                                                  productCode = value["code"];
+                                                  rate1 = value["rate1"];
+                                                  print(
+                                                      "_selectedItem---${_selectedItem}");
+                                                });
+                                              },
+                                              optionsViewBuilder: (BuildContext
+                                                      context,
+                                                  AutocompleteOnSelected<
+                                                          Map<String, dynamic>>
+                                                      onSelected,
+                                                  Iterable<Map<String, dynamic>>
+                                                      options) {
+                                                return Align(
+                                                  alignment: Alignment.topLeft,
+                                                  child: Material(
+                                                    child: Container(
+                                                      width: size.width * 0.7,
+                                                      // color: Colors.teal,
+                                                      child: ListView.builder(
+                                                        padding: EdgeInsets.all(
+                                                            15.0),
+                                                        itemCount:
+                                                            options.length,
+                                                        itemBuilder:
+                                                            (BuildContext
+                                                                    context,
+                                                                int index) {
+                                                          //      print(
+                                                          // "option----${options}");
+                                                          print(
+                                                              "index----${index}");
+                                                          final Map<String,
+                                                                  dynamic>
+                                                              option =
+                                                              options.elementAt(
+                                                                  index);
+                                                          print(
+                                                              "option----${option}");
+                                                          return ListTile(
+                                                            trailing: Wrap(
+                                                              children: [
+                                                                // Container(
+                                                                //   width:
+                                                                //       size.width *
+                                                                //           0.09,
+                                                                //   child:
+                                                                //       TextFormField(
+                                                                //     decoration:
+                                                                //         InputDecoration(
+                                                                //             hintText:
+                                                                //                 'Qty'),
+                                                                //     style: TextStyle(
+                                                                //         fontWeight:
+                                                                //             FontWeight
+                                                                //                 .bold,
+                                                                //         fontSize:
+                                                                //             16),
+                                                                //     keyboardType:
+                                                                //         TextInputType
+                                                                //             .number,
+                                                                //     controller:
+                                                                //         qty,
+                                                                //     onChanged:
+                                                                //         (value) {
+                                                                //       value = qty
+                                                                //           .text;
+                                                                //     },
+                                                                //   ),
+                                                                // ),
+                                                                IconButton(
+                                                                  icon: Icon(
+                                                                      Icons
+                                                                          .add),
+                                                                  onPressed:
+                                                                      () async {
+                                                                    String
+                                                                        item =
+                                                                        option[
+                                                                            "item"];
+                                                                    String
+                                                                        rate1 =
+                                                                        option[
+                                                                            "rate1"];
+                                                                    String
+                                                                        productCode =
+                                                                        option[
+                                                                            "code"];
+                                                                    print(
+                                                                        "option[code]----$productCode");
+                                                                    print(
+                                                                        "item----rate---${option["item"]}---${option["rate1"]}");
+                                                                    if (qty.text ==
+                                                                            null ||
+                                                                        qty.text
+                                                                            .isEmpty) {
+                                                                      qty.text =
+                                                                          "1";
+                                                                    }
+                                                                    int max = await OrderAppDB
+                                                                        .instance
+                                                                        .getMaxCommonQuery(
+                                                                            'orderBagTable',
+                                                                            'cartrowno',
+                                                                            "os='${values.ordernum[0]["os"]}'");
+                                                                    var total = int.parse(
+                                                                            rate1) *
+                                                                        int.parse(
+                                                                            qty.text);
 
-                                                                  print(
-                                                                      "total rate $total");
-                                                                  var res = await OrderAppDB.instance.insertorderBagTable(
-                                                                      item,
-                                                                      date!,
-                                                                      values.ordernum[
-                                                                              0]
-                                                                          [
-                                                                          'os'],
-                                                                      custmerId!,
-                                                                      max,
-                                                                      productCode,
-                                                                      1,
-                                                                      rate1,
-                                                                      total
-                                                                          .toString(),
-                                                                      0);
-                                                                  showDialog(
-                                                                      context:
-                                                                          context,
-                                                                      builder:
-                                                                          (context) {
-                                                                        Future.delayed(
-                                                                            Duration(milliseconds: 400),
-                                                                            () {
-                                                                          Navigator.of(context)
-                                                                              .pop(true);
+                                                                    print(
+                                                                        "total rate $total");
+                                                                    var res = await OrderAppDB.instance.insertorderBagTable(
+                                                                        item,
+                                                                        date!,
+                                                                        values.ordernum[0]
+                                                                            [
+                                                                            'os'],
+                                                                        custmerId!,
+                                                                        max,
+                                                                        productCode,
+                                                                        1,
+                                                                        rate1,
+                                                                        total
+                                                                            .toString(),
+                                                                        0);
+                                                                    ////////////////////////////
+                                                                    showDialog(
+                                                                        context:
+                                                                            context,
+                                                                        builder:
+                                                                            (context) {
+                                                                          Future.delayed(
+                                                                              Duration(milliseconds: 400),
+                                                                              () {
+                                                                            Navigator.of(context).pop(true);
+                                                                          });
+                                                                          return AlertDialog(
+                                                                            content:
+                                                                                Text(
+                                                                              'Added to cart',
+                                                                              style: TextStyle(color: P_Settings.extracolor),
+                                                                            ),
+                                                                          );
                                                                         });
-                                                                        return AlertDialog(
-                                                                          content:
-                                                                              Text(
-                                                                            'Added to cart',
-                                                                            style:
-                                                                                TextStyle(color: P_Settings.extracolor),
-                                                                          ),
-                                                                        );
-                                                                      });
-                                                                  //                        Provider.of<Controller>(context,
-                                                                  // listen: false).countFromTable("orderBagTable");
-                                                                  //               Provider.of<Controller>(
-                                                                  //                       context,
-                                                                  //                       listen:
-                                                                  //                           false).calculateTotal(values.ordernum[0]
-                                                                  //                           [
-                                                                  //                           'os'],custmerId! );
-                                                                },
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          onTap: () {
-                                                            onSelected(option);
-                                                          },
-                                                          title: Text(
+                                                                    /////////////////////////////
+                                                                    //                        Provider.of<Controller>(context,
+                                                                    // listen: false).countFromTable("orderBagTable");
+                                                                    //               Provider.of<Controller>(
+                                                                    //                       context,
+                                                                    //                       listen:
+                                                                    //                           false).calculateTotal(values.ordernum[0]
+                                                                    //                           [
+                                                                    //                           'os'],custmerId! );
+                                                                  },
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            onTap: () {
+                                                              onSelected(
+                                                                  option);
+                                                            },
+                                                            title: Text(
                                                               option["code"] +
                                                                   '-' +
                                                                   option["item"]
                                                                       .toString(),
                                                               style: const TextStyle(
                                                                   color: Colors
-                                                                      .black)),
-                                                        );
-                                                      },
+                                                                      .black),
+                                                            ),
+                                                          );
+                                                        },
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
-                                              );
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: size.width * 0.04,
+                                        ),
+                                        Container(
+                                          width: size.width * 0.09,
+                                          child: TextFormField(
+                                            decoration: InputDecoration(
+                                                hintText: 'Qty'),
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16),
+                                            keyboardType: TextInputType.number,
+                                            controller: qty,
+                                            onChanged: (value) {
+                                              value = qty.text;
                                             },
+                                            // validator: (text) {
+                                            //   if (qty.text == null ||
+                                            //       qty.text.isEmpty) {
+                                            //     return 'Enter Quantity';
+                                            //   }
+                                            //   return null;
+                                            // },
                                           ),
                                         ),
-                                      ),
-                                      SizedBox(
-                                        width: size.width * 0.04,
-                                      ),
-                                      Container(
-                                        width: size.width * 0.09,
-                                        child: TextFormField(
-                                          decoration:
-                                              InputDecoration(hintText: 'Qty'),
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 16),
-                                          keyboardType: TextInputType.number,
-                                          controller: qty,
-                                          onChanged: (value) {
-                                            value = qty.text;
-                                          },
+                                        SizedBox(
+                                          width: size.width * 0.03,
                                         ),
-                                      ),
-                                      SizedBox(
-                                        width: size.width * 0.03,
-                                      ),
-                                      Flexible(
-                                        flex: 1,
-                                        child: ElevatedButton(
-                                          onPressed: () async {
-                                            setState(() {
-                                              alertvisible = !alertvisible;
-                                            });
-                                            if (qty.text == null ||
-                                                qty.text.isEmpty) {
-                                              qty.text = "1";
-                                            }
-                                            print(
-                                                " itemName, rate1--${itemName}--${rate1}");
-                                            int max = await OrderAppDB.instance
-                                                .getMaxCommonQuery(
-                                                    'orderBagTable',
-                                                    'cartrowno',
-                                                    "os='${values.ordernum[0]["os"]}'");
-                                            var total = int.parse(rate1!) *
-                                                int.parse(qty.text);
-                                            print("total rate $total");
-                                            var res = await OrderAppDB.instance
-                                                .insertorderBagTable(
-                                                    itemName,
-                                                    date!,
-                                                    values.ordernum[0]['os'],
-                                                    custmerId!,
-                                                    max,
-                                                    productCode!,
-                                                    int.parse(qty.text),
-                                                    rate1!,
-                                                    total.toString(),
-                                                    0);
-                                            print("result........... $res");
-                                            //  Provider.of<Controller>(context,
-                                            //           listen: false).countFromTable("orderBagTable");
-                                            Provider.of<Controller>(context,
-                                                    listen: false)
-                                                .calculateTotal(
-                                                    values.ordernum[0]['os'],
-                                                    custmerId!);
+                                        Flexible(
+                                          flex: 1,
+                                          child: ElevatedButton(
+                                            onPressed: () async {
+                                              if (_formKey.currentState!
+                                                  .validate()) {
+                                                if (qty.text == null ||
+                                                    qty.text.isEmpty) {
+                                                  qty.text = "1";
+                                                }
 
-                                            /////////////////////////
+                                                setState(() {
+                                                  alertvisible = !alertvisible;
+                                                });
 
-                                            alertvisible == true
-                                                ? showDialog(
-                                                    context: context,
-                                                    builder: (context) {
-                                                      Future.delayed(
-                                                          Duration(
-                                                              milliseconds:
-                                                                  400), () {
-                                                        Navigator.of(context)
-                                                            .pop(true);
-                                                      });
-                                                      return AlertDialog(
-                                                        content: Text(
-                                                          'Added to cart',
-                                                          style: TextStyle(
-                                                              color: P_Settings
-                                                                  .extracolor),
-                                                        ),
-                                                      );
-                                                    })
-                                                : Text("helooo");
-                                          },
-                                          style: ElevatedButton.styleFrom(
-                                            primary:
-                                                P_Settings.roundedButtonColor,
-                                            // shape: CircleBorder(),
+                                                print(
+                                                    " itemName, rate1--${itemName}--${rate1}");
+                                                custmerId == null ||
+                                                        custmerId!.isNotEmpty
+                                                    ? Text("Customer")
+                                                    : Provider.of<Controller>(
+                                                            context,
+                                                            listen: false)
+                                                        .calculateTotal(
+                                                            values.ordernum[0]
+                                                                ['os'],
+                                                            custmerId!);
+                                                int max = await OrderAppDB
+                                                    .instance
+                                                    .getMaxCommonQuery(
+                                                        'orderBagTable',
+                                                        'cartrowno',
+                                                        "os='${values.ordernum[0]["os"]}'");
+                                                var total = int.parse(rate1) *
+                                                    int.parse(qty.text);
+                                                print("total rate $total");
+                                                var res = custmerId == null ||
+                                                        custmerId!.isEmpty ||
+                                                        productCode == null ||
+                                                        productCode!.isEmpty
+                                                    ? showDialog(
+                                                        context: context,
+                                                        builder: (BuildContext
+                                                            context) {
+                                                          return popup
+                                                              .buildPopupDialog(
+                                                                  context,
+                                                                  "Select Customer");
+                                                        })
+                                                    : await OrderAppDB.instance
+                                                        .insertorderBagTable(
+                                                            itemName,
+                                                            date!,
+                                                            values.ordernum[0]
+                                                                ['os'],
+                                                            custmerId!,
+                                                            max,
+                                                            productCode!,
+                                                            int.parse(qty.text),
+                                                            rate1,
+                                                            total.toString(),
+                                                            0);
+                                                print("result........... $res");
+                                                //  Provider.of<Controller>(context,
+                                                //           listen: false).countFromTable("orderBagTable");
+
+                                                /////////////////////////
+
+                                                alertvisible == true &&
+                                                            custmerId != null ||
+                                                        custmerId!.isEmpty ||
+                                                        productCode != null ||
+                                                        productCode!.isEmpty
+                                                    ? showDialog(
+                                                        context: context,
+                                                        builder: (context) {
+                                                          Future.delayed(
+                                                              Duration(
+                                                                  milliseconds:
+                                                                      400), () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop(true);
+                                                          });
+                                                          return AlertDialog(
+                                                            content: Text(
+                                                              'Added to cart',
+                                                              style: TextStyle(
+                                                                  color: P_Settings
+                                                                      .extracolor),
+                                                            ),
+                                                          );
+                                                        })
+                                                    : Text("helooo");
+                                              }
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                              primary:
+                                                  P_Settings.roundedButtonColor,
+                                              // shape: CircleBorder(),
+                                            ),
+                                            child: Icon(Icons.add,
+                                                size: 20, color: Colors.black),
                                           ),
-                                          child: Icon(Icons.add,
-                                              size: 20, color: Colors.black),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                   SizedBox(
                                     height: size.height * 0.015,
@@ -772,21 +826,39 @@ class _OrderFormState extends State<OrderForm> {
                                         ),
                                         label: Text("View bag"),
                                         onPressed: () async {
-                                          Provider.of<Controller>(context,
-                                                  listen: false)
-                                              .getBagDetails(custmerId!,
-                                                  values.ordernum[0]['os']);
+                                          custmerId == null ||
+                                                  custmerId!.isEmpty
+                                              ? showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return popup
+                                                        .buildPopupDialog(
+                                                            context,
+                                                            "Select Customer");
+                                                  })
+                                              : Provider.of<Controller>(context,
+                                                      listen: false)
+                                                  .getBagDetails(custmerId!,
+                                                      values.ordernum[0]['os']);
 
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) => CartList(
-                                                      areaId: splitted![0],
-                                                      custmerId: custmerId!,
-                                                      os: values.ordernum[0]
-                                                          ['os'],
-                                                    )),
-                                          );
+                                          custmerId == null ||
+                                                  custmerId!.isEmpty
+                                              ? Text("Add data")
+                                              : Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          CartList(
+                                                            areaId:
+                                                                splitted![0],
+                                                            custmerId:
+                                                                custmerId!,
+                                                            os: values
+                                                                    .ordernum[0]
+                                                                ['os'],
+                                                          )),
+                                                );
                                         },
                                         style: ElevatedButton.styleFrom(
                                           primary: P_Settings.wavecolor,
@@ -807,9 +879,9 @@ class _OrderFormState extends State<OrderForm> {
                             color: Colors.grey[300],
                           ),
                           Padding(
-                            padding: EdgeInsets.all(10.0),
+                            padding: EdgeInsets.all(15.0),
                             child: Container(
-                              height: size.height * 0.2,
+                              height: size.height * 0.15,
                               child: Column(
                                 children: [
                                   Row(
@@ -882,13 +954,13 @@ class _OrderFormState extends State<OrderForm> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         SizedBox(height: size.height * 0.03),
-                                        ElevatedButton(
-                                            onPressed: () {},
-                                            child: Text("Save"),
-                                            style: ElevatedButton.styleFrom(
-                                              primary:
-                                                  P_Settings.chooseCategory,
-                                            ))
+                                        // ElevatedButton(
+                                        //     onPressed: () {},
+                                        //     child: Text("Save"),
+                                        //     style: ElevatedButton.styleFrom(
+                                        //       primary:
+                                        //           P_Settings.chooseCategory,
+                                        //     ))
                                       ],
                                     ),
                                   ),
