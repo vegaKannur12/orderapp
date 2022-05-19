@@ -583,7 +583,7 @@ class _OrderFormState extends State<OrderForm> {
                                                                       .getMaxCommonQuery(
                                                                           'orderBagTable',
                                                                           'cartrowno',
-                                                                          "os='${values.ordernum[0]["os"]}'");
+                                                                          "os='${values.ordernum[0]["os"]}' AND customerid='$custmerId'");
                                                                   var total = int
                                                                           .parse(
                                                                               rate1) *
@@ -613,7 +613,7 @@ class _OrderFormState extends State<OrderForm> {
                                                                       builder:
                                                                           (context) {
                                                                         Future.delayed(
-                                                                            Duration(milliseconds: 400),
+                                                                            Duration(milliseconds: 500),
                                                                             () {
                                                                           Navigator.of(context)
                                                                               .pop(true);
@@ -698,7 +698,7 @@ class _OrderFormState extends State<OrderForm> {
                                                 .getMaxCommonQuery(
                                                     'orderBagTable',
                                                     'cartrowno',
-                                                    "os='${values.ordernum[0]["os"]}'");
+                                                    "os='${values.ordernum[0]["os"]}' AND customerid='$custmerId'");
                                             var total = int.parse(rate1!) *
                                                 int.parse(qty.text);
                                             print("total rate $total");
@@ -875,23 +875,23 @@ class _OrderFormState extends State<OrderForm> {
                                           ),
                                     ],
                                   ),
-                                  Padding(
-                                    padding: EdgeInsets.all(8.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        SizedBox(height: size.height * 0.03),
-                                        ElevatedButton(
-                                            onPressed: () {},
-                                            child: Text("Save"),
-                                            style: ElevatedButton.styleFrom(
-                                              primary:
-                                                  P_Settings.chooseCategory,
-                                            ))
-                                      ],
-                                    ),
-                                  ),
+                                  // Padding(
+                                  //   padding: EdgeInsets.all(8.0),
+                                  //   child: Row(
+                                  //     mainAxisAlignment:
+                                  //         MainAxisAlignment.spaceBetween,
+                                  //     children: [
+                                  //       SizedBox(height: size.height * 0.03),
+                                  //       ElevatedButton(
+                                  //           onPressed: () {},
+                                  //           child: Text("Save"),
+                                  //           style: ElevatedButton.styleFrom(
+                                  //             primary:
+                                  //                 P_Settings.chooseCategory,
+                                  //           ))
+                                  //     ],
+                                  //   ),
+                                  // ),
                                 ],
                               ),
                             ),

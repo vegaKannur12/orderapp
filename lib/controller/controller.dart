@@ -436,12 +436,12 @@ class Controller extends ChangeNotifier {
   }
 
   ////////////////////////////////////
-  getBagDetails(String customerId,String os) async {
+  getBagDetails(String customerId, String os) async {
     bagList.clear();
     isLoading = true;
     notifyListeners();
     List<Map<String, dynamic>> res =
-        await OrderAppDB.instance.getOrderBagTable(customerId,os);
+        await OrderAppDB.instance.getOrderBagTable(customerId, os);
     for (var item in res) {
       bagList.add(item);
     }
@@ -509,9 +509,55 @@ class Controller extends ChangeNotifier {
   }
 
   ////////////////count from table///////
-  countFromTable(String table,String os, String customerId) async {
+  countFromTable(String table, String os, String customerId) async {
     print("table---$table");
-    count = await OrderAppDB.instance.countCommonQuery(table,os,customerId);
+    count = await OrderAppDB.instance.countCommonQuery(table, os, customerId);
+    notifyListeners();
+  }
+
+  //////////////insert to order master and details///////////////////////
+
+  insertToOrderbagAndMaster(String os, String date, String customer_id,
+      String user_id, String aid) async {
+    int order_id = await OrderAppDB.instance
+        .getMaxCommonQuery('orderDetailTable', 'order_id', "os='${os}'");
+    int rowNum = 1;
+    if (bagList.length > 0) {
+      await OrderAppDB.instance.insertorderMasterandDetailsTable(
+          order_id,
+          0,
+          " ",
+          " ",
+          date,
+          os,
+          customer_id,
+          user_id,
+          aid,
+          1,
+          rowNum,
+          "orderMasterTable");
+
+      for (var item in bagList) {
+        print("orderid---$order_id");
+        await OrderAppDB.instance.insertorderMasterandDetailsTable(
+            order_id,
+            item["qty"],
+            item["rate"],
+            item["code"],
+            date,
+            os,
+            customer_id,
+            user_id,
+            aid,
+            1,
+            rowNum,
+            "orderDetailTable");
+        rowNum = rowNum + 1;
+      }
+    }
+    await OrderAppDB.instance
+        .deleteFromTableCommonQuery("orderBagTable", os, "customerId");
+    bagList.clear();
     notifyListeners();
   }
 }
