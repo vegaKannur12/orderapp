@@ -490,7 +490,7 @@ class Controller extends ChangeNotifier {
   // gettotalSum() async {
   //   try {
   //     approximateSum = await OrderAppDB.instance.gettotalSum();
-      
+
   //     print("total----${approximateSum}");
 
   //     notifyListeners();
@@ -502,14 +502,16 @@ class Controller extends ChangeNotifier {
   // }
 
   /////////calculate total////////////////
-  calculateTotal(String os, String customerId)async{
-    orderTotal= await OrderAppDB.instance.gettotalSum(os,customerId);
+  calculateTotal(String os, String customerId) async {
+    orderTotal = await OrderAppDB.instance.gettotalSum(os, customerId);
     print("orderTotal---$orderTotal");
     notifyListeners();
   }
+
   ////////////////count from table///////
-  // countFromTable(String table)async{
-  //  count=  await OrderAppDB.instance.countCommonQuery(table);
-  //   notifyListeners();
-  // }
+  countFromTable(String table,String os, String customerId) async {
+    print("table---$table");
+    count = await OrderAppDB.instance.countCommonQuery(table,os,customerId);
+    notifyListeners();
+  }
 }

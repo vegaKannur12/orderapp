@@ -41,6 +41,9 @@ class _CartListState extends State<CartList> {
       appBar: AppBar(
         backgroundColor: P_Settings.wavecolor,
         actions: [
+          IconButton(onPressed: ()async{
+await OrderAppDB.instance.deleteTabCommonQuery("orderBagTable");
+          }, icon: Icon(Icons.delete)),
           IconButton(
             onPressed: () async {
               List<Map<String, dynamic>> list =
@@ -81,60 +84,51 @@ class _CartListState extends State<CartList> {
             Container(
               height: size.height * 0.07,
               color: Colors.yellow,
-              child: Consumer<Controller>(builder: (context, value, child) {
-                return Row(
-                  children: [
-                    GestureDetector(
-                      child: Container(
-                        width: size.width * 0.5,
-                        height: size.height * 0.07,
-                        color: Colors.yellow,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(" Order Total   : ",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 18)),
-                            Text("\u{20B9}${value.orderTotal}",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 18))
-                          ],
-                        ),
+              child: Row(
+                children: [
+                  Container(
+                    width: size.width * 0.5,
+                    height: size.height * 0.07,
+                    color: Colors.yellow,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(" Order Total   : ",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 18)),
+                        Text("\u{20B9}${value.orderTotal}",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 18))
+                      ],
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: (() async{
+                       await OrderAppDB.instance.deleteFromTableCommonQuery("orderBagTable",widget.os, widget.custmerId);
+                    }),
+                    child: Container(
+                      width: size.width * 0.5,
+                      height: size.height * 0.07,
+                      color: P_Settings.roundedButtonColor,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Place Order",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 18),
+                          ),
+                          SizedBox(
+                            width: size.width * 0.01,
+                          ),
+                          Icon(Icons.shopping_basket)
+                        ],
                       ),
                     ),
-                    GestureDetector(
-                        onTap: () async {
-                          Provider.of<Controller>(context, listen: false)
-                              .getBagDetails;
-                        
-                          var res1 = await OrderAppDB.instance
-                              .insertorderMasterandDetailsTable(
-                           date!,widget.os,widget.custmerId,value.sname!,widget.areaId,1
-                          );
-                        },
-                        child: Container(
-                          width: size.width * 0.5,
-                          height: size.height * 0.07,
-                          color: P_Settings.roundedButtonColor,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Place Order",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 18),
-                              ),
-                              SizedBox(
-                                width: size.width * 0.01,
-                              ),
-                              Icon(Icons.shopping_basket)
-                            ],
-                          ),
-                        )),
-                  ],
-                );
-              }),
-            ),
+                  )
+                ],
+              ),
+            )
           ],
         );
       })),
@@ -307,6 +301,7 @@ class _CartListState extends State<CartList> {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
+
                                     ElevatedButton(
                                       style: ElevatedButton.styleFrom(
                                           primary: P_Settings.wavecolor),

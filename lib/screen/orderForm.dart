@@ -573,11 +573,10 @@ class _OrderFormState extends State<OrderForm> {
                                                                       "item----rate---${option["item"]}---${option["rate1"]}");
                                                                   int max = await OrderAppDB
                                                                       .instance
-                                                                      .getMaxOfFieldValue(
-                                                                          values.ordernum[0]
-                                                                              [
-                                                                              'os'],
-                                                                          custmerId!);
+                                                                      .getMaxCommonQuery(
+                                                                          'orderBagTable',
+                                                                          'cartrowno',
+                                                                          "os='${values.ordernum[0]["os"]}'");
                                                                   var res = await OrderAppDB
                                                                       .instance
                                                                       .insertorderBagTable(
@@ -680,10 +679,11 @@ class _OrderFormState extends State<OrderForm> {
                                             }
                                             print(
                                                 " itemName, rate1--${itemName}--${rate1}");
-                                            var max = await OrderAppDB.instance
-                                                .getMaxOfFieldValue(
-                                                    values.ordernum[0]['os'],
-                                                    custmerId!);
+                                            int max = await OrderAppDB.instance
+                                                .getMaxCommonQuery(
+                                                    'orderBagTable',
+                                                    'cartrowno',
+                                                    "os='${values.ordernum[0]["os"]}'");
                                             var total = int.parse(rate1!) *
                                                 int.parse(qty.text);
                                             print("total rate $total");
