@@ -189,22 +189,18 @@ class _OrderFormState extends State<OrderForm> {
                                               listen: false)
                                           .getCustomer(splitted![0]);
                                     });
-                                  }, 
-                                  fieldViewBuilder: (BuildContext context,
+                                  }, fieldViewBuilder: (BuildContext context,
                                           TextEditingController
                                               fieldTextEditingController,
                                           FocusNode fieldFocusNode,
                                           VoidCallback onFieldSubmitted) {
                                     return TextField(
-                                      
                                       controller: fieldTextEditingController,
                                       focusNode: fieldFocusNode,
                                       style: const TextStyle(
                                           fontWeight: FontWeight.normal),
                                     );
-                                  }
-                                  
-                                  ),
+                                  }),
                                 ),
                               ),
                             ),
@@ -262,10 +258,9 @@ class _OrderFormState extends State<OrderForm> {
                                         controller: fieldTextEditingController,
                                         focusNode: fieldFocusNode,
                                         style: const TextStyle(
-                                            fontWeight: FontWeight.bold),
+                                            fontWeight: FontWeight.normal),
                                       );
                                     },
-                                    
                                     optionsViewBuilder: (BuildContext context,
                                         AutocompleteOnSelected<
                                                 Map<String, dynamic>>
@@ -385,18 +380,129 @@ class _OrderFormState extends State<OrderForm> {
                             height: size.height * 0.2,
                             alignment: Alignment.topLeft,
                             child: Padding(
-                              padding: const EdgeInsets.all(10.0),
+                              padding: const EdgeInsets.only(left: 10),
                               child: Column(
                                 children: [
                                   Row(
+                                    // mainAxisAlignment: ,
                                     children: [
                                       Text(
                                         "Choose Category",
                                         style: TextStyle(
                                             color: P_Settings.chooseCategory),
+                                      ),Spacer(),
+                                       ElevatedButton.icon(
+                                        icon: Icon(
+                                          Icons.shopping_cart,
+                                          color: Colors.white,
+                                          size: 30.0,
+                                        ),
+                                        label: Text("View bag"),
+                                        onPressed: () async {
+                                          Provider.of<Controller>(context,
+                                                  listen: false)
+                                              .getBagDetails(custmerId!,
+                                                  values.ordernum[0]['os']);
+
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => CartList(
+                                                      areaId: splitted![0],
+                                                      custmerId: custmerId!,
+                                                      os: values.ordernum[0]
+                                                          ['os'],
+                                                    )),
+                                          );
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          primary: P_Settings.wavecolor,
+                                          shape: new RoundedRectangleBorder(
+                                            borderRadius:
+                                                new BorderRadius.circular(10.0),
+                                          ),
+                                        ),
                                       ),
                                       SizedBox(
-                                        width: size.width * 0.4,
+                                        width: size.width * 0.05,
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(right: 5),
+                                        child: Container(
+                                          height: size.height * 0.04,
+                                          child: ElevatedButton(
+                                            onPressed: () async {
+                                              setState(() {
+                                                alertvisible = !alertvisible;
+                                              });
+                                              if (qty.text == null ||
+                                                  qty.text.isEmpty) {
+                                                qty.text = "1";
+                                              }
+                                              print(
+                                                  " itemName, rate1--${itemName}--${rate1}");
+                                              int max = await OrderAppDB.instance
+                                                  .getMaxCommonQuery(
+                                                      'orderBagTable',
+                                                      'cartrowno',
+                                                      "os='${values.ordernum[0]["os"]}' AND customerid='$custmerId'");
+                                              var total = int.parse(rate1!) *
+                                                  int.parse(qty.text);
+                                              print("total rate $total");
+                                              var res = await OrderAppDB.instance
+                                                  .insertorderBagTable(
+                                                      itemName,
+                                                      date!,
+                                                      values.ordernum[0]['os'],
+                                                      custmerId!,
+                                                      max,
+                                                      productCode!,
+                                                      int.parse(qty.text),
+                                                      rate1!,
+                                                      total.toString(),
+                                                      0);
+                                              print("result........... $res");
+                                              //  Provider.of<Controller>(context,
+                                              //           listen: false).countFromTable("orderBagTable");
+                                              Provider.of<Controller>(context,
+                                                      listen: false)
+                                                  .calculateTotal(
+                                                      values.ordernum[0]['os'],
+                                                      custmerId!);
+
+                                              /////////////////////////
+
+                                              alertvisible == true
+                                                  ? showDialog(
+                                                      context: context,
+                                                      builder: (context) {
+                                                        Future.delayed(
+                                                            Duration(
+                                                                milliseconds:
+                                                                    400), () {
+                                                          Navigator.of(context)
+                                                              .pop(true);
+                                                        });
+                                                        return AlertDialog(
+                                                          content: Text(
+                                                            'Added to cart',
+                                                            style: TextStyle(
+                                                                color: P_Settings
+                                                                    .extracolor),
+                                                          ),
+                                                        );
+                                                      })
+                                                  : Text("helooo");
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                              primary:
+                                                  P_Settings.roundedButtonColor,
+                                              // shape: CircleBorder(),
+                                            ),
+                                            child: Icon(Icons.add,
+                                                size: 20, color: Colors.black),
+                                          ),
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -405,8 +511,9 @@ class _OrderFormState extends State<OrderForm> {
                                   ),
                                   Row(
                                     children: [
-                                      Flexible(
-                                        flex: 3,
+                                      Container(
+                                        height: size.height*0.05,
+                                        width: size.width*0.7,
                                         child: InputDecorator(
                                           decoration: InputDecoration(
                                             contentPadding:
@@ -639,123 +746,12 @@ class _OrderFormState extends State<OrderForm> {
                                       SizedBox(
                                         width: size.width * 0.03,
                                       ),
-                                      Flexible(
-                                        flex: 1,
-                                        child: ElevatedButton(
-                                          onPressed: () async {
-                                            setState(() {
-                                              alertvisible = !alertvisible;
-                                            });
-                                            if (qty.text == null ||
-                                                qty.text.isEmpty) {
-                                              qty.text = "1";
-                                            }
-                                            print(
-                                                " itemName, rate1--${itemName}--${rate1}");
-                                            int max = await OrderAppDB.instance
-                                                .getMaxCommonQuery(
-                                                    'orderBagTable',
-                                                    'cartrowno',
-                                                    "os='${values.ordernum[0]["os"]}' AND customerid='$custmerId'");
-                                            var total = int.parse(rate1!) *
-                                                int.parse(qty.text);
-                                            print("total rate $total");
-                                            var res = await OrderAppDB.instance
-                                                .insertorderBagTable(
-                                                    itemName,
-                                                    date!,
-                                                    values.ordernum[0]['os'],
-                                                    custmerId!,
-                                                    max,
-                                                    productCode!,
-                                                    int.parse(qty.text),
-                                                    rate1!,
-                                                    total.toString(),
-                                                    0);
-                                            print("result........... $res");
-                                            //  Provider.of<Controller>(context,
-                                            //           listen: false).countFromTable("orderBagTable");
-                                            Provider.of<Controller>(context,
-                                                    listen: false)
-                                                .calculateTotal(
-                                                    values.ordernum[0]['os'],
-                                                    custmerId!);
-
-                                            /////////////////////////
-
-                                            alertvisible == true
-                                                ? showDialog(
-                                                    context: context,
-                                                    builder: (context) {
-                                                      Future.delayed(
-                                                          Duration(
-                                                              milliseconds:
-                                                                  400), () {
-                                                        Navigator.of(context)
-                                                            .pop(true);
-                                                      });
-                                                      return AlertDialog(
-                                                        content: Text(
-                                                          'Added to cart',
-                                                          style: TextStyle(
-                                                              color: P_Settings
-                                                                  .extracolor),
-                                                        ),
-                                                      );
-                                                    })
-                                                : Text("helooo");
-                                          },
-                                          style: ElevatedButton.styleFrom(
-                                            primary:
-                                                P_Settings.roundedButtonColor,
-                                            // shape: CircleBorder(),
-                                          ),
-                                          child: Icon(Icons.add,
-                                              size: 20, color: Colors.black),
-                                        ),
-                                      ),
                                     ],
                                   ),
                                   SizedBox(
                                     height: size.height * 0.015,
                                   ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      ElevatedButton.icon(
-                                        icon: Icon(
-                                          Icons.shopping_cart,
-                                          color: Colors.white,
-                                          size: 30.0,
-                                        ),
-                                        label: Text("View bag"),
-                                        onPressed: () async {
-                                          Provider.of<Controller>(context,
-                                                  listen: false)
-                                              .getBagDetails(custmerId!,
-                                                  values.ordernum[0]['os']);
-
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) => CartList(
-                                                      areaId: splitted![0],
-                                                      custmerId: custmerId!,
-                                                      os: values.ordernum[0]
-                                                          ['os'],
-                                                    )),
-                                          );
-                                        },
-                                        style: ElevatedButton.styleFrom(
-                                          primary: P_Settings.wavecolor,
-                                          shape: new RoundedRectangleBorder(
-                                            borderRadius:
-                                                new BorderRadius.circular(10.0),
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  )
+                                  
                                 ],
                               ),
                             ),
@@ -767,7 +763,7 @@ class _OrderFormState extends State<OrderForm> {
                           Padding(
                             padding: EdgeInsets.all(10.0),
                             child: Container(
-                              height: size.height * 0.2,
+                              height: size.height * 0.1,
                               child: Column(
                                 children: [
                                   Row(
