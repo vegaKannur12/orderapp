@@ -352,6 +352,7 @@ class Controller extends ChangeNotifier {
     print("aid...............${aid}");
     try {
       print("custmerDetails after clear----${custmerDetails}");
+      custmerDetails.clear();
       customerList = await OrderAppDB.instance.getCustomer(aid);
       print("customerList----${customerList}");
       for (var item in customerList) {

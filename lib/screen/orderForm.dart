@@ -49,6 +49,7 @@ class _OrderFormState extends State<OrderForm> {
   int num = 0;
   DateTime now = DateTime.now();
   String? date;
+  List<String> areaDetails = [];
   @override
   void initState() {
     // TODO: implement initState
@@ -71,6 +72,7 @@ class _OrderFormState extends State<OrderForm> {
     final prefs = await SharedPreferences.getInstance();
     staffname = prefs.getString('st_username');
     print("staffname---${staffname}");
+
     Provider.of<Controller>(context, listen: false).getArea(staffname!);
   }
 
@@ -150,69 +152,60 @@ class _OrderFormState extends State<OrderForm> {
                             SizedBox(height: size.height * 0.01),
                             Padding(
                               padding:
-                                  const EdgeInsets.only(left: 12, right: 12),
-                              child: Row(
-                                children: [
-                                  Flexible(
-                                    flex: 5,
-                                    child: Padding(
-                                      padding: EdgeInsets.only(
-                                          left: 14.0, right: 40),
-                                      child: InputDecorator(
-                                        decoration: InputDecoration(
-                                          contentPadding: EdgeInsets.symmetric(
-                                              vertical: 0, horizontal: 4),
-                                          border:
-                                              OutlineInputBorder(gapPadding: 1),
-                                          hintText: "Select..",
-                                        ),
-                                        child: Autocomplete<String>(
-                                          optionsBuilder:
-                                              (TextEditingValue value) {
-                                            if (value.text.isEmpty) {
-                                              return [];
-                                            } else {
-                                              print(
-                                                  "TextEditingValue---${value.text}");
-                                              Provider.of<Controller>(context,
-                                                      listen: false)
-                                                  .getArea(value.text);
+                                  const EdgeInsets.only(left: 30.0, right: 15),
+                              child: Container(
+                                height: size.height * 0.05,
+                                child: InputDecorator(
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 0, horizontal: 4),
+                                    border: OutlineInputBorder(gapPadding: 1),
+                                    hintText: "Select..",
+                                  ),
+                                  child: Autocomplete<String>(
+                                      // initialValue: ,
+                                      optionsBuilder: (TextEditingValue value) {
+                                    if (value.text.isEmpty) {
+                                      return [];
+                                    } else {
+                                      print("TextEditingValue---${value.text}");
+                                      Provider.of<Controller>(context,
+                                              listen: false)
+                                          .getArea(value.text);
 
-                                              return values.areDetails;
-                                            }
-                                          },
-                                          onSelected: (value) {
-                                            // Provider.of<Controller>(context,
-                                            //           listen: false).custmerDetails.clear();
-                                            setState(() {
-                                              _selectedItem = value;
-                                              print(
-                                                  "_selectedItem---${_selectedItem}");
-                                              splitted =
-                                                  _selectedItem!.split('-');
-                                            });
-                                          },
-                                        ),
-                                      ),
-                                    ),
+                                      return values.areDetails.where(
+                                          (suggestion) => suggestion
+                                              .toLowerCase()
+                                              .contains(
+                                                  value.text.toLowerCase()));
+                                    }
+                                  }, onSelected: (value) {
+                                    setState(() {
+                                      _selectedItem = value;
+                                      print("_selectedItem---${_selectedItem}");
+                                      splitted = _selectedItem!.split('-');
+
+                                      Provider.of<Controller>(context,
+                                              listen: false)
+                                          .getCustomer(splitted![0]);
+                                    });
+                                  }, 
+                                  fieldViewBuilder: (BuildContext context,
+                                          TextEditingController
+                                              fieldTextEditingController,
+                                          FocusNode fieldFocusNode,
+                                          VoidCallback onFieldSubmitted) {
+                                    return TextField(
+                                      
+                                      controller: fieldTextEditingController,
+                                      focusNode: fieldFocusNode,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.normal),
+                                    );
+                                  }
+                                  
                                   ),
-                                  // SizedBox(width: size.width * 0.4),
-                                  Flexible(
-                                    child: ElevatedButton(
-                                        onPressed: () {
-                                          Provider.of<Controller>(context,
-                                                  listen: false)
-                                              .custmerDetails
-                                              .clear();
-                                          setState(() {
-                                            Provider.of<Controller>(context,
-                                                    listen: false)
-                                                .getCustomer(splitted![0]);
-                                          });
-                                        },
-                                        child: Text("Ok")),
-                                  ),
-                                ],
+                                ),
                               ),
                             ),
                             SizedBox(height: size.height * 0.02),
@@ -226,133 +219,98 @@ class _OrderFormState extends State<OrderForm> {
                             SizedBox(height: size.height * 0.01),
                             Padding(
                               padding:
-                                  const EdgeInsets.only(left: 28, right: 110),
-                              child: Row(
-                                children: [
-                                  Flexible(
-                                    child: InputDecorator(
-                                      decoration: InputDecoration(
-                                        contentPadding: EdgeInsets.symmetric(
-                                            vertical: 0, horizontal: 4),
-                                        border:
-                                            OutlineInputBorder(gapPadding: 1),
-                                        hintText: "Select..",
-                                      ),
-                                      child: Autocomplete<Map<String, dynamic>>(
-                                        optionsBuilder:
-                                            (TextEditingValue value) {
-                                          if (value.text.isEmpty) {
-                                            return [];
-                                          } else {
-                                            print(
-                                                "TextEditingValue---${value.text}");
-                                            // Provider.of<Controller>(context,
-                                            //         listen: false)
-                                            //     .getCustomer(value.text);
-                                            return values.custmerDetails;
-                                          }
-                                        },
-                                        displayStringForOption:
-                                            (Map<String, dynamic> option) =>
-                                                option["hname"],
-                                        onSelected: (value) {
-                                          setState(() {
-                                            print("value----${value}");
-                                            _selectedItem = value["hname"];
-                                            custmerId = value["code"];
-                                            print(
-                                                "Code .........---${custmerId}");
-                                          });
-                                        },
-                                        optionsViewBuilder:
-                                            (BuildContext context,
-                                                AutocompleteOnSelected<
-                                                        Map<String, dynamic>>
-                                                    onSelected,
-                                                Iterable<Map<String, dynamic>>
-                                                    options) {
-                                          return Align(
-                                            alignment: Alignment.topLeft,
-                                            child: Material(
-                                              child: Container(
-                                                width: size.width * 0.7,
-                                                // color: Colors.teal,
-                                                child: ListView.builder(
-                                                  padding: EdgeInsets.all(10.0),
-                                                  itemCount: options.length,
-                                                  itemBuilder:
-                                                      (BuildContext context,
-                                                          int index) {
-                                                    //      print(
-                                                    // "option----${options}");
-                                                    print("index----${index}");
-                                                    final Map<String, dynamic>
-                                                        option = options
-                                                            .elementAt(index);
-                                                    print(
-                                                        "option----${option}");
-                                                    return ListTile(
-                                                      onTap: () {
-                                                        print(
-                                                            "optonsssssssssssss$option");
-                                                        onSelected(option);
-                                                      },
-                                                      title: Text(
-                                                          option["hname"]
-                                                              .toString(),
-                                                          style:
-                                                              const TextStyle(
-                                                                  color: Colors
-                                                                      .black)),
-                                                    );
-                                                  },
-                                                ),
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    ),
+                                  const EdgeInsets.only(left: 30.0, right: 15),
+                              child: Container(
+                                height: size.height * 0.05,
+                                child: InputDecorator(
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 0, horizontal: 4),
+                                    border: OutlineInputBorder(gapPadding: 1),
+                                    hintText: "Select..",
                                   ),
-                                  // Flexible(
-                                  //   flex: 4,
-                                  //   child: Padding(
-                                  //     padding: const EdgeInsets.only(
-                                  //         left: 25, right: 110),
-                                  //     child: InputDecorator(
-                                  //       decoration: InputDecoration(
-                                  //         contentPadding: EdgeInsets.symmetric(
-                                  //             vertical: 0, horizontal: 4),
-                                  //         border:
-                                  //             OutlineInputBorder(gapPadding: 1),
-                                  //         hintText: "Select..",
-                                  //       ),
-                                  //       child: Autocomplete<String>(
-                                  //         optionsBuilder:
-                                  //             (TextEditingValue value) {
-                                  //           if (value.text.isEmpty) {
-                                  //             return [];
-                                  //           } else {
-                                  //             print(
-                                  //                 "TextEditingValue---${value.text}");
-                                  //             Provider.of<Controller>(context,
-                                  //                     listen: false)
-                                  //                 .getCustomer(value.text);
-                                  //             return values.custmerDetails;
-                                  //           }
-                                  //         },
-                                  //         onSelected: (value) {
-                                  //           setState(() {
-                                  //             _selectedItem = value;
-                                  //             print(
-                                  //                 "_selectedItem---${_selectedItem}");
-                                  //           });
-                                  //         },
-                                  //       ),
-                                  //     ),
-                                  //   ),
-                                  // ),
-                                ],
+                                  child: Autocomplete<Map<String, dynamic>>(
+                                    optionsBuilder: (TextEditingValue value) {
+                                      if (value.text.isEmpty) {
+                                        return [];
+                                      } else {
+                                        print(
+                                            "TextEditingValue---${value.text}");
+                                        // Provider.of<Controller>(context,
+                                        //         listen: false)
+                                        //     .getCustomer(value.text);
+                                        return values.custmerDetails;
+                                      }
+                                    },
+                                    displayStringForOption:
+                                        (Map<String, dynamic> option) =>
+                                            option["hname"],
+                                    onSelected: (value) {
+                                      setState(() {
+                                        print("value----${value}");
+                                        _selectedItem = value["hname"];
+                                        custmerId = value["code"];
+                                        print("Code .........---${custmerId}");
+                                      });
+                                    },
+                                    fieldViewBuilder: (BuildContext context,
+                                        TextEditingController
+                                            fieldTextEditingController,
+                                        FocusNode fieldFocusNode,
+                                        VoidCallback onFieldSubmitted) {
+                                      return TextField(
+                                        controller: fieldTextEditingController,
+                                        focusNode: fieldFocusNode,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      );
+                                    },
+                                    
+                                    optionsViewBuilder: (BuildContext context,
+                                        AutocompleteOnSelected<
+                                                Map<String, dynamic>>
+                                            onSelected,
+                                        Iterable<Map<String, dynamic>>
+                                            options) {
+                                      return Align(
+                                        alignment: Alignment.topLeft,
+                                        child: Material(
+                                          child: Container(
+                                            width: size.width * 0.7,
+                                            // color: Colors.teal,
+                                            child: ListView.builder(
+                                              padding: EdgeInsets.all(10.0),
+                                              itemCount: options.length,
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      int index) {
+                                                //      print(
+                                                // "option----${options}");
+                                                print("index----${index}");
+                                                final Map<String, dynamic>
+                                                    option =
+                                                    options.elementAt(index);
+                                                print("option----${option}");
+                                                return ListTile(
+                                                  onTap: () {
+                                                    print(
+                                                        "optonsssssssssssss$option");
+                                                    onSelected(option);
+                                                  },
+                                                  title: Text(
+                                                      option["hname"]
+                                                          .toString(),
+                                                      style: const TextStyle(
+                                                          color: Colors.black)),
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
                               ),
                             ),
                           ],
