@@ -576,7 +576,7 @@ class _OrderFormState extends State<OrderForm> {
                                                                       .getMaxCommonQuery(
                                                                           'orderBagTable',
                                                                           'cartrowno',
-                                                                          'os=${values.ordernum[0]["os"]}');
+                                                                           "os='${values.ordernum[0]["os"]}'");
 
                                                                   var res = await OrderAppDB
                                                                       .instance

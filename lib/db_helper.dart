@@ -645,7 +645,7 @@ class OrderAppDB {
     print("result---count---$result");
     return count;
   }
-
+//////////////////////////////////////////////////////////////////
   getMaxCommonQuery(String table, String field, String condition) async {
     var res;
     int max;
@@ -657,8 +657,10 @@ class OrderAppDB {
       print("if");
       res = await db.rawQuery(
           "SELECT MAX('$field') max_val FROM '$table' WHERE $condition");
-      max = res[0]["max_val"] + 1;
-      print("SELECT MAX('$field') max_val FROM '$table' WHERE '$condition'");
+
+      int convertedMax=int.parse(res[0]["max_val"])  ;  
+      max = convertedMax + 1;
+      print("SELECT MAX('$field') max_val FROM '$table' WHERE $condition");
     } else {
       print("else");
       max = 1;

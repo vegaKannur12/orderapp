@@ -33,6 +33,9 @@ class _CartListState extends State<CartList> {
       appBar: AppBar(
         backgroundColor: P_Settings.wavecolor,
         actions: [
+          IconButton(onPressed: ()async{
+await OrderAppDB.instance.deleteTabCommonQuery("orderBagTable");
+          }, icon: Icon(Icons.delete)),
           IconButton(
             onPressed: () async {
               List<Map<String, dynamic>> list =
@@ -288,6 +291,7 @@ class _CartListState extends State<CartList> {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
+
                                     ElevatedButton(
                                       style: ElevatedButton.styleFrom(
                                           primary: P_Settings.wavecolor),
