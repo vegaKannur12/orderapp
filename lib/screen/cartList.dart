@@ -111,27 +111,32 @@ class _CartListState extends State<CartList> {
                           .insertToOrderbagAndMaster(widget.os, date!,
                               widget.custmerId, sname, widget.areaId);
 
-                     Provider.of<Controller>(context, listen: false).bagList.length>0? showDialog(
-                          context: context,
-                          builder: (context) {
-                            Future.delayed(Duration(milliseconds: 600), () {
-                              Navigator.of(context).pop(true);
-                            });
-                            return AlertDialog(
-                                content: Row(
-                              children: [
-                                Text(
-                                  'Order Placed!!!!',
-                                  style:
-                                      TextStyle(color: P_Settings.extracolor),
-                                ),
-                                Icon(
-                                  Icons.done,
-                                  color: Colors.green,
-                                )
-                              ],
-                            ));
-                          }):null;
+                      Provider.of<Controller>(context, listen: false)
+                                  .bagList
+                                  .length >
+                              0
+                          ? showDialog(
+                              context: context,
+                              builder: (context) {
+                                Future.delayed(Duration(milliseconds: 600), () {
+                                  Navigator.of(context).pop(true);
+                                });
+                                return AlertDialog(
+                                    content: Row(
+                                  children: [
+                                    Text(
+                                      'Order Placed!!!!',
+                                      style: TextStyle(
+                                          color: P_Settings.extracolor),
+                                    ),
+                                    Icon(
+                                      Icons.done,
+                                      color: Colors.green,
+                                    )
+                                  ],
+                                ));
+                              })
+                          : null;
                     }),
                     child: Container(
                       width: size.width * 0.5,
@@ -188,18 +193,6 @@ class _CartListState extends State<CartList> {
             // leading: CircleAvatar(backgroundColor: Colors.green),
             title: Column(
               children: [
-                // Flexible(
-                //   child: Text(
-                //     "${itemName}",
-                //     style: TextStyle(
-                //         fontWeight: FontWeight.bold,
-                //         fontSize: 18,
-                //         color: P_Settings.wavecolor),
-                //   ),
-                // ),
-                // SizedBox(
-                //   height: size.height * 0.001,
-                // ),
                 Flexible(
                   flex: 1,
                   child: Row(

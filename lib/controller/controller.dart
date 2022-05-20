@@ -11,6 +11,7 @@ import 'package:orderapp/model/registration_model.dart';
 import 'package:orderapp/screen/companyDetailsscreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../components/network_connectivity.dart';
 import '../model/productdetails_model.dart';
 import '../model/staffarea_model.dart';
 import '../model/staffdetails_model.dart';
@@ -52,60 +53,66 @@ class Controller extends ChangeNotifier {
 ////////////////////////////////////////////////////////////////////////
   Future<RegistrationData?> postRegistration(
       String company_code, BuildContext context) async {
-    try {
-      Uri url = Uri.parse("http://trafiqerp.in/order/fj/get_registration.php");
-      Map body = {
-        'company_code': company_code,
-      };
-      print("compny----${company_code}");
-      isLoading = true;
-      notifyListeners();
-      http.Response response = await http.post(
-        url,
-        body: body,
-      );
+    NetConnection.networkConnection(context).then((value) async {
+      if (value == true) {
+        try {
+          Uri url =
+              Uri.parse("http://trafiqerp.in/order/fj/get_registration.php");
+          Map body = {
+            'company_code': company_code,
+          };
+          print("compny----${company_code}");
+          isLoading = true;
+          notifyListeners();
+          http.Response response = await http.post(
+            url,
+            body: body,
+          );
 
-      print("body ${body}");
-      var map = jsonDecode(response.body);
-      print("map ${map}");
-      // print("response ${response}");
-      RegistrationData regModel = RegistrationData.fromJson(map);
-      sof = regModel.sof;
-      print("sof----${sof}");
-      if (sof == "0") {
-        CustomSnackbar snackbar = CustomSnackbar();
-        snackbar.showSnackbar(context, "Invalid Company Key");
-      }
+          print("body ${body}");
+          var map = jsonDecode(response.body);
+          print("map ${map}");
+          // print("response ${response}");
+          RegistrationData regModel = RegistrationData.fromJson(map);
+          sof = regModel.sof;
+          print("sof----${sof}");
+          if (sof == "0") {
+            CustomSnackbar snackbar = CustomSnackbar();
+            snackbar.showSnackbar(context, "Invalid Company Key");
+          }
 
-      if (sof == "1") {
-        /////////////// insert into local db /////////////////////
-        late CD dataDetails;
-        String? fp = regModel.fp;
-        String? os = regModel.os;
-        regModel.c_d![0].cid;
-        cid = regModel.cid;
-        cname = regModel.c_d![0].cnme;
-        notifyListeners();
-        for (var item in regModel.c_d!) {
-          c_d.add(item);
+          if (sof == "1") {
+            /////////////// insert into local db /////////////////////
+            late CD dataDetails;
+            String? fp = regModel.fp;
+            String? os = regModel.os;
+            regModel.c_d![0].cid;
+            cid = regModel.cid;
+            cname = regModel.c_d![0].cnme;
+            notifyListeners();
+            for (var item in regModel.c_d!) {
+              c_d.add(item);
+            }
+            var res =
+                await OrderAppDB.instance.insertRegistrationDetails(regModel);
+
+            print("inserted ${res}");
+            isLoading = false;
+            notifyListeners();
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            prefs.setString("company_id", company_code);
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => CompanyDetails()),
+            );
+          }
+          notifyListeners();
+        } catch (e) {
+          print(e);
+          return null;
         }
-        var res = await OrderAppDB.instance.insertRegistrationDetails(regModel);
-
-        print("inserted ${res}");
-        isLoading = false;
-        notifyListeners();
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.setString("company_id", company_code);
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => CompanyDetails()),
-        );
       }
-      notifyListeners();
-    } catch (e) {
-      print(e);
-      return null;
-    }
+    });
   }
 
   /////////////////////// Staff details////////////////////////////////

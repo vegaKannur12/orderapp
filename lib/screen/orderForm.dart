@@ -12,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 import '../components/customPopup.dart';
+import '../components/customSnackbar.dart';
 // import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class OrderForm extends StatefulWidget {
@@ -26,7 +27,7 @@ class _OrderFormState extends State<OrderForm> {
   CustomPopup popup = CustomPopup();
   String? _selectedItemcus;
   String? _selectedItem;
-
+  CustomSnackbar snackbar = CustomSnackbar();
   List<Map<String, dynamic>>? newList = [];
   ValueNotifier<int> dtatableRow = ValueNotifier(0);
   ValueNotifier<bool> visibleValidation = ValueNotifier(false);
@@ -58,6 +59,7 @@ class _OrderFormState extends State<OrderForm> {
   int num = 0;
   DateTime now = DateTime.now();
   String? date;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -404,12 +406,28 @@ class _OrderFormState extends State<OrderForm> {
                                 child: Row(
                                   children: [
                                     Text('Orderform'),
-                                    SizedBox(
-                                      width: size.width * 0.3,
-                                    ),
-                                    Text('History'),
-                                    SizedBox(
-                                      width: size.width * 0.03,
+                                    GestureDetector(
+                                      onTap: (() {
+                                        print("Hello");
+                                      }),
+                                      child: Container(
+                                        width: size.width * 0.5,
+                                        height: size.height * 0.09,
+                                        color: P_Settings.orderFormcolor,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            SizedBox(
+                                              width: size.width * 0.3,
+                                            ),
+                                            Text(
+                                              "History",
+                                              style: TextStyle(fontSize: 15),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                     ),
                                     CircleAvatar(
                                       radius: 13,
@@ -529,8 +547,6 @@ class _OrderFormState extends State<OrderForm> {
                                                 print("total rate $total");
                                                 var res = custmerId == null ||
                                                         custmerId!.isEmpty ||
-                                                        selectedCus == null ||
-                                                        selectedCus!.isEmpty ||
                                                         productCode == null ||
                                                         productCode!.isEmpty
                                                     ? visibleValidation.value =
@@ -566,24 +582,16 @@ class _OrderFormState extends State<OrderForm> {
 
                                                 /////////////////////////
 
-                                              alertvisible?  showDialog(
-                                                    context: context,
-                                                    builder: (context) {
-                                                      Future.delayed(
-                                                          Duration(milliseconds: 400),
-                                                          () {
-                                                        Navigator.of(context)
-                                                            .pop(true);
-                                                      });
-                                                      return AlertDialog(
-                                                        content: Text(
-                                                          'Added to cart',
-                                                          style: TextStyle(
-                                                              color: P_Settings
-                                                                  .extracolor),
-                                                        ),
-                                                      );
-                                                    }):Text("No data");
+                                                (custmerId!.isNotEmpty ||
+                                                            custmerId !=
+                                                                null) &&
+                                                        (productCode!
+                                                                .isNotEmpty ||
+                                                            productCode != null)
+                                                    ? snackbar.showSnackbar(
+                                                        context,
+                                                        "Added to cart")
+                                                    : Text("No data");
                                               },
                                               style: ElevatedButton.styleFrom(
                                                 primary: P_Settings
@@ -603,6 +611,7 @@ class _OrderFormState extends State<OrderForm> {
                                     ),
                                     Row(
                                       children: [
+                                        //////////////// select product name //////////////////////
                                         Container(
                                           height: size.height * 0.05,
                                           width: size.width * 0.7,
@@ -634,37 +643,29 @@ class _OrderFormState extends State<OrderForm> {
                                                 }
                                               },
                                               fieldViewBuilder: (BuildContext
-                                                  context,
-                                              TextEditingController
-                                                  fieldTextEditingController,
-                                              FocusNode fieldFocusNode,
-                                              VoidCallback onFieldSubmitted) {
-                                            return TextFormField(
-                                              // validator: (val) => val!.isEmpty
-                                              //     ? 'Please select customer...'
-                                              //     : null,
-                                              controller:
-                                                  fieldTextEditingController,
-                                                  
-                                              decoration: InputDecoration(
-                                                // hintText: 'Enter a message',
-                                                suffixIcon: IconButton(
-                                                  onPressed:() =>  
-                                                   fieldTextEditingController
-                                                          .clear,
-                                                  // Provider.of<Controller>(context,
-                                                  //                   listen: false).prodctItems.clear() ,
-                                                     
-                                                     
-                                                  icon: Icon(Icons.clear),
-                                                ),
-                                              ),
-                                              focusNode: fieldFocusNode,
-                                              style: const TextStyle(
-                                                  fontWeight:
-                                                      FontWeight.normal),
-                                            );
-                                          },
+                                                      context,
+                                                  TextEditingController
+                                                      fieldTextEditingController,
+                                                  FocusNode fieldFocusNode,
+                                                  VoidCallback
+                                                      onFieldSubmitted) {
+                                                return TextFormField(
+                                                  controller:
+                                                      fieldTextEditingController,
+                                                  decoration: InputDecoration(
+                                                    suffixIcon: IconButton(
+                                                      onPressed:
+                                                          fieldTextEditingController
+                                                              .clear,
+                                                      icon: Icon(Icons.clear),
+                                                    ),
+                                                  ),
+                                                  focusNode: fieldFocusNode,
+                                                  style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.normal),
+                                                );
+                                              },
                                               displayStringForOption:
                                                   (Map<String, dynamic>
                                                           option) =>
@@ -718,34 +719,6 @@ class _OrderFormState extends State<OrderForm> {
                                                           return ListTile(
                                                             trailing: Wrap(
                                                               children: [
-                                                                // Container(
-                                                                //   width:
-                                                                //       size.width *
-                                                                //           0.09,
-                                                                //   child:
-                                                                //       TextFormField(
-                                                                //     decoration:
-                                                                //         InputDecoration(
-                                                                //             hintText:
-                                                                //                 'Qty'),
-                                                                //     style: TextStyle(
-                                                                //         fontWeight:
-                                                                //             FontWeight
-                                                                //                 .bold,
-                                                                //         fontSize:
-                                                                //             16),
-                                                                //     keyboardType:
-                                                                //         TextInputType
-                                                                //             .number,
-                                                                //     controller:
-                                                                //         qty,
-                                                                //     onChanged:
-                                                                //         (value) {
-                                                                //       value = qty
-                                                                //           .text;
-                                                                //     },
-                                                                //   ),
-                                                                // ),
                                                                 IconButton(
                                                                   icon: Icon(
                                                                       Icons
@@ -788,6 +761,7 @@ class _OrderFormState extends State<OrderForm> {
 
                                                                     print(
                                                                         "total rate $total");
+
                                                                     var res = await OrderAppDB.instance.insertorderBagTable(
                                                                         item,
                                                                         date!,
@@ -802,6 +776,7 @@ class _OrderFormState extends State<OrderForm> {
                                                                         total
                                                                             .toString(),
                                                                         0);
+
                                                                     showDialog(
                                                                         context:
                                                                             context,
@@ -813,10 +788,16 @@ class _OrderFormState extends State<OrderForm> {
                                                                             Navigator.of(context).pop(true);
                                                                           });
                                                                           return AlertDialog(
+                                                                            alignment:
+                                                                                Alignment.centerRight,
                                                                             content:
+                                                                                Row(
+                                                                              children: [
                                                                                 Text(
-                                                                              'Added to cart',
-                                                                              style: TextStyle(color: P_Settings.extracolor),
+                                                                                  'Added to cart',
+                                                                                  style: TextStyle(color: P_Settings.extracolor),
+                                                                                ),
+                                                                              ],
                                                                             ),
                                                                           );
                                                                         });
@@ -894,33 +875,33 @@ class _OrderFormState extends State<OrderForm> {
                                 height: size.height * 0.1,
                                 child: Column(
                                   children: [
-                                    Row(
-                                      children: [
-                                        SizedBox(
-                                          width: size.width * 0.359,
-                                        ),
-                                        Text("Total items:"),
-                                        SizedBox(
-                                          width: size.width * 0.1,
-                                        ),
-                                        Text(
-                                            "${Provider.of<Controller>(context, listen: false).count}"),
-                                        // Flexible(
-                                        //   child: TextField(
-                                        //     readOnly: true,
-                                        //     decoration: InputDecoration(
-                                        //         // border: UnderlineInputBorder(
-                                        //         //   borderSide: BorderSide(
-                                        //         //       color: Color.fromARGB(
-                                        //         //           255, 11, 177, 38)),
-                                        //         // ),
-                                        //         ),
-                                        //     onChanged: (value) {},
-                                        //   ),
-                                        // ),
-                                        // Icon(Icons.shopping_cart, size: 19),
-                                      ],
-                                    ),
+                                    // Row(
+                                    //   children: [
+                                    //     SizedBox(
+                                    //       width: size.width * 0.359,
+                                    //     ),
+                                    //     Text("Total items:"),
+                                    //     SizedBox(
+                                    //       width: size.width * 0.1,
+                                    //     ),
+                                    //     Text(
+                                    //         "${Provider.of<Controller>(context, listen: false).count}"),
+                                    //     // Flexible(
+                                    //     //   child: TextField(
+                                    //     //     readOnly: true,
+                                    //     //     decoration: InputDecoration(
+                                    //     //         // border: UnderlineInputBorder(
+                                    //     //         //   borderSide: BorderSide(
+                                    //     //         //       color: Color.fromARGB(
+                                    //     //         //           255, 11, 177, 38)),
+                                    //     //         // ),
+                                    //     //         ),
+                                    //     //     onChanged: (value) {},
+                                    //     //   ),
+                                    //     // ),
+                                    //     // Icon(Icons.shopping_cart, size: 19),
+                                    //   ],
+                                    // ),
                                     Row(
                                       // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                       children: [
@@ -934,27 +915,8 @@ class _OrderFormState extends State<OrderForm> {
                                         ),
                                         Flexible(
                                             child: Text(
-                                                "\u{20B9}${Provider.of<Controller>(context, listen: false).orderTotal}"
-                                                // values.approximateSum.length != 0 &&
-                                                //         values.approximateSum[0]
-                                                //                 ['s'] !=
-                                                //             null &&
-                                                //         values.approximateSum.isNotEmpty
-                                                //     ? values.approximateSum[0]['s']
-                                                //     : "0.00",
-                                                )
-                                            // values.approximateSum
-                                            //               .length !=
-                                            //           0 &&
-                                            //       values.approximateSum[0]
-                                            //               ['rate'] !=
-                                            //           null &&
-                                            //       values.approximateSum.isNotEmpty
-                                            //   ? values.approximateSum[0]['rate']
-                                            //   : values.approximateSum[0]['rate']
-                                            //   ),
-
-                                            ),
+                                          "\u{20B9}${Provider.of<Controller>(context, listen: false).orderTotal}",
+                                        )),
                                       ],
                                     ),
                                     // Padding(
