@@ -39,6 +39,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         key: _scaffoldKey,
         resizeToAvoidBottomInset: false,
         body: SingleChildScrollView(
+          reverse: true,
           child: Column(
             children: [
               Form(

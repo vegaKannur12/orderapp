@@ -5,6 +5,7 @@ import 'package:orderapp/controller/controller.dart';
 import 'package:orderapp/screen/companyRegistrationScreen.dart';
 import 'package:orderapp/screen/dashboard.dart';
 import 'package:orderapp/screen/downloadedPage.dart';
+import 'package:orderapp/screen/itemSelection.dart';
 import 'package:orderapp/screen/orderForm.dart';
 import 'package:orderapp/screen/splashScreen.dart';
 import 'package:orderapp/screen/staffLoginScreen.dart';
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSwatch(
           primarySwatch: Colors.indigo,
         ),
-        scaffoldBackgroundColor: P_Settings.bodycolor,
+        // scaffoldBackgroundColor: P_Settings.bodycolor,
         textTheme: const TextTheme(
           headline1: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
           headline6: TextStyle(
@@ -49,7 +50,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: SplashScreen(),
+      home: ItemSelection(),
       // home: MyWaveClipper(),
     );
   }

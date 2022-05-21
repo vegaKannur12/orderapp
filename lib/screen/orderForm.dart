@@ -92,6 +92,7 @@ class _OrderFormState extends State<OrderForm> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
+        reverse: true,
         child: SafeArea(
           child: Consumer<Controller>(builder: (context, values, child) {
             return Form(
