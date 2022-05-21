@@ -12,6 +12,7 @@ class ItemSelection extends StatefulWidget {
 }
 
 class _ItemSelectionState extends State<ItemSelection> {
+  TextEditingController qty = TextEditingController();
   List<Map<String, dynamic>> products = [];
   int? selected;
 
@@ -36,8 +37,24 @@ class _ItemSelectionState extends State<ItemSelection> {
               color: Colors.white,
               size: 25,
             ),
-            onPressed: () {
-              // do something
+            onPressed: () async {
+              
+              // if (custmerId == null || custmerId!.isEmpty) {
+              //   visibleValidation.value = true;
+              // } else {
+              //   Provider.of<Controller>(context, listen: false)
+              //       .getBagDetails(custmerId!, values.ordernum[0]['os']);
+              //   visibleValidation.value = false;
+              //   Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //         builder: (context) => CartList(
+              //               areaId: splitted![0],
+              //               custmerId: custmerId!,
+              //               os: values.ordernum[0]['os'],
+              //             )),
+              //   );
+              // }
             },
           )
         ],
@@ -62,7 +79,9 @@ class _ItemSelectionState extends State<ItemSelection> {
                     padding: const EdgeInsets.only(left: 0.4, right: 0.4),
                     child: ListTile(
                       title: Text(
-                        '${products[index]["code"]}' + '-'  + '${products[index]["item"]}',
+                        '${products[index]["code"]}' +
+                            '-' +
+                            '${products[index]["item"]}',
                         style:
                             TextStyle(color: Colors.green[800], fontSize: 18),
                       ),
@@ -70,12 +89,22 @@ class _ItemSelectionState extends State<ItemSelection> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Container(
-                              width: size.width * 0.09,
-                              child: TextFormField(
-                                keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
-                                    border: InputBorder.none, hintText: "qty"),
-                              )),
+                            width: size.width * 0.09,
+                            child: TextFormField(
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                  border: InputBorder.none, hintText: "qty"),
+                              controller: qty,
+                              onChanged: (value) {
+                                setState(() {
+                                  value = qty.text;
+                                });
+                              },
+                              // onChanged: (value) {
+                              //   value = qty.text;
+                              // },
+                            ),
+                          ),
                           SizedBox(
                             width: 10,
                           ),
@@ -83,10 +112,12 @@ class _ItemSelectionState extends State<ItemSelection> {
                             icon: Icon(Icons.add),
                             onPressed: () {
                               setState(() {
-                                selected=index;
+                                selected = index;
                               });
                             },
-                            color: selected== index ? P_Settings.addbutonColor:Colors.black,
+                            color: selected == index
+                                ? P_Settings.addbutonColor
+                                : Colors.black,
                           ),
                           IconButton(
                             icon: Icon(Icons.delete),

@@ -38,6 +38,7 @@ class _OrderFormState extends State<OrderForm> {
   TextEditingController qty = TextEditingController();
   TextEditingController eanTextCon = TextEditingController();
   final TextEditingController _typeAheadController = TextEditingController();
+
   final formGlobalKey = GlobalKey<FormState>();
   List? splitted;
   List? splitted1;
@@ -398,12 +399,17 @@ class _OrderFormState extends State<OrderForm> {
                                                   visibleValidation.value =
                                                       true;
                                                 } else {
-                                                  Provider.of<Controller>(context, listen: false).getProductItems('productDetailsTable',);
+                                                  Provider.of<Controller>(
+                                                          context,
+                                                          listen: false)
+                                                      .getProductItems(
+                                                    'productDetailsTable',
+                                                  );
                                                   Navigator.push(
                                                       context,
                                                       MaterialPageRoute(
                                                           builder: (context) =>
-                                                              ItemSelection( )));
+                                                              ItemSelection(customerId: custmerId.toString())));
                                                 }
                                               },
                                               style: ElevatedButton.styleFrom(
