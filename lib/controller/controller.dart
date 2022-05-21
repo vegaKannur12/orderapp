@@ -33,6 +33,7 @@ class Controller extends ChangeNotifier {
   String? count;
   String? sof;
   List<Map<String, dynamic>> bagList = [];
+  List<Map<String, dynamic>> newList = [];
   List<Map<String, dynamic>> masterList = [];
   List<Map<String, dynamic>> orderdetailsList = [];
 
@@ -408,11 +409,10 @@ class Controller extends ChangeNotifier {
   //   notifyListeners();
   // }
 /////////////////////////////////////////////////////////////
-  getProductItems(String table ) async {
+  getProductItems(String table) async {
     productName.clear();
     try {
-      prodctItems =
-          await OrderAppDB.instance.selectCommonquery(table,'');
+      prodctItems = await OrderAppDB.instance.selectCommonquery(table, '');
       print("prodctItems----${prodctItems}");
 
       for (var item in prodctItems) {
@@ -591,5 +591,18 @@ class Controller extends ChangeNotifier {
     notifyListeners();
   }
 
+  searchProcess(String searchkey) {
+    if (searchkey.isEmpty) {
+      // if the search field is empty or only contains white-space, we'll display all users
+      newList = productName;
+    } else {
+      newList = productName
+          .where((product) =>
+              product["item"].toLowerCase().contains(searchkey.toLowerCase()))
+          .toList();
+    }
+    // print("nw list---$newList");
+    notifyListeners();
+  }
   //////      /////////////////////////////
 }

@@ -92,7 +92,7 @@ class _OrderFormState extends State<OrderForm> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: P_Settings.bodycolor,
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: SafeArea(
           child: Consumer<Controller>(builder: (context, values, child) {
@@ -140,8 +140,7 @@ class _OrderFormState extends State<OrderForm> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
-                          height: size.height * 0.35,
-                          color: Colors.white,
+                          height: size.height * 0.9,
                           child: Column(
                             // mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -409,7 +408,17 @@ class _OrderFormState extends State<OrderForm> {
                                                       context,
                                                       MaterialPageRoute(
                                                           builder: (context) =>
-                                                              ItemSelection(customerId: custmerId.toString())));
+                                                              ItemSelection(
+                                                                customerId:
+                                                                    custmerId
+                                                                        .toString(),
+                                                                areaId:
+                                                                    splitted![
+                                                                        0],
+                                                                os: values
+                                                                        .ordernum[
+                                                                    0]['os'],
+                                                              )));
                                                 }
                                               },
                                               style: ElevatedButton.styleFrom(
