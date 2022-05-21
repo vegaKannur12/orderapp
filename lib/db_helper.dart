@@ -319,7 +319,7 @@ class OrderAppDB {
         'INSERT INTO orderBagTable (itemName, cartdatetime, os, customerid, cartrowno, code, qty, rate, totalamount, cstatus) VALUES ("${itemName}","${cartdatetime}", "${os}", "${customerid}", $cartrowno, "${code}", $qty, "${rate}", "${totalamount}", $cstatus) ON CONFLICT (code) DO UPDATE SET qty=$qty, totalamount="${totalamount}"';
     res = await db.rawInsert(query2);
     print("insert query result $res");
-    print(res);
+    print("insert-----$query2");
     return res;
   }
 

@@ -489,7 +489,7 @@ class Controller extends ChangeNotifier {
 
     isLoading = false;
     notifyListeners();
-    
+
     print("bagList----$bagList");
 
     notifyListeners();
@@ -607,12 +607,20 @@ class Controller extends ChangeNotifier {
     print("searchkey----$searchkey");
     if (searchkey.isEmpty) {
       newList = productName;
+
+      var length = newList.length;
+      print("text length----$length");
+      qty = List.generate(length, (index) => TextEditingController());
     } else {
       isSearch = true;
       newList = productName
           .where((product) =>
               product["item"].toLowerCase().contains(searchkey.toLowerCase()))
           .toList();
+
+      var length = newList.length;
+      print("text length----$length");
+      qty = List.generate(length, (index) => TextEditingController());
     }
     print("nw list---$newList");
     notifyListeners();
