@@ -18,6 +18,7 @@ import '../model/staffdetails_model.dart';
 
 class Controller extends ChangeNotifier {
   bool isLoading = false;
+  bool isSearch=false;
   String? sname;
   String? orderTotal;
   String? ordernumber;
@@ -412,6 +413,8 @@ class Controller extends ChangeNotifier {
   getProductItems(String table) async {
     productName.clear();
     try {
+      isLoading=true;
+      // notifyListeners();
       prodctItems = await OrderAppDB.instance.selectCommonquery(table, '');
       print("prodctItems----${prodctItems}");
 
@@ -420,6 +423,9 @@ class Controller extends ChangeNotifier {
         // productName.add(item["code"] + '-' + item["item"]);
         // notifyListeners();
       }
+
+      isLoading=false;
+      notifyListeners();
       print("product name----${productName}");
       // print("product productRate----${productRate}");
       notifyListeners();
@@ -592,16 +598,19 @@ class Controller extends ChangeNotifier {
   }
 
   searchProcess(String searchkey) {
+    
+    print("searchkey----$searchkey");
     if (searchkey.isEmpty) {
-      // if the search field is empty or only contains white-space, we'll display all users
+    
       newList = productName;
     } else {
+      isSearch=true;
       newList = productName
           .where((product) =>
               product["item"].toLowerCase().contains(searchkey.toLowerCase()))
           .toList();
     }
-    // print("nw list---$newList");
+    print("nw list---$newList");
     notifyListeners();
   }
   //////      /////////////////////////////
