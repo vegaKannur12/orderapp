@@ -414,7 +414,7 @@ class Controller extends ChangeNotifier {
     productName.clear();
     try {
       isLoading=true;
-      notifyListeners();
+      // notifyListeners();
       prodctItems = await OrderAppDB.instance.selectCommonquery(table, '');
       print("prodctItems----${prodctItems}");
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:orderapp/components/commoncolor.dart';
 import 'package:orderapp/components/customSearchTile.dart';
 import 'package:provider/provider.dart';
@@ -20,6 +21,9 @@ class _ItemSelectionState extends State<ItemSelection> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    Provider.of<Controller>(context, listen: false).getProductItems(
+      'productDetailsTable',
+    );
     // products = Provider.of<Controller>(context, listen: false).productName;
   }
 
@@ -58,109 +62,118 @@ class _ItemSelectionState extends State<ItemSelection> {
                       labelText: 'Search', suffixIcon: Icon(Icons.search)),
                 ),
               ),
-              Expanded(
-                child: value.isSearch
-                    ? ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: value.newList.length,
-                        itemBuilder: (BuildContext context, index) {
-                          return Padding(
-                            padding:
-                                const EdgeInsets.only(left: 0.4, right: 0.4),
-                            child: ListTile(
-                              title: Text(
-                                '${value.newList[index]["code"]}' +
-                                    '-' +
-                                    '${value.newList[index]["item"]}',
-                                style: TextStyle(
-                                    color: Colors.green[800], fontSize: 18),
-                              ),
-                              trailing: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Container(
-                                      width: size.width * 0.09,
-                                      child: TextFormField(
-                                        keyboardType: TextInputType.number,
-                                        decoration: InputDecoration(
-                                            border: InputBorder.none,
-                                            hintText: "qty"),
-                                      )),
-                                  SizedBox(
-                                    width: 10,
+              value.isLoading
+                  ? Container(
+                      height: size.height * 0.6,
+                      child: CircularProgressIndicator(
+                          color: P_Settings.wavecolor))
+                  : Expanded(
+                      child: value.isSearch
+                          ? ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: value.newList.length,
+                              itemBuilder: (BuildContext context, index) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 0.4, right: 0.4),
+                                  child: ListTile(
+                                    title: Text(
+                                      '${value.newList[index]["code"]}' +
+                                          '-' +
+                                          '${value.newList[index]["item"]}',
+                                      style: TextStyle(
+                                          color: Colors.green[800],
+                                          fontSize: 18),
+                                    ),
+                                    trailing: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Container(
+                                            width: size.width * 0.09,
+                                            child: TextFormField(
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              decoration: InputDecoration(
+                                                  border: InputBorder.none,
+                                                  hintText: "qty"),
+                                            )),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        IconButton(
+                                          icon: Icon(Icons.add),
+                                          onPressed: () {
+                                            setState(() {
+                                              selected = index;
+                                            });
+                                          },
+                                          color: selected == index
+                                              ? P_Settings.addbutonColor
+                                              : Colors.black,
+                                        ),
+                                        IconButton(
+                                          icon: Icon(Icons.delete),
+                                          onPressed: () {},
+                                          color: Theme.of(context).errorColor,
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                  IconButton(
-                                    icon: Icon(Icons.add),
-                                    onPressed: () {
-                                      setState(() {
-                                        selected = index;
-                                      });
-                                    },
-                                    color: selected == index
-                                        ? P_Settings.addbutonColor
-                                        : Colors.black,
+                                );
+                              })
+                          : ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: value.productName.length,
+                              itemBuilder: (BuildContext context, index) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 0.4, right: 0.4),
+                                  child: ListTile(
+                                    title: Text(
+                                      '${value.productName[index]["code"]}' +
+                                          '-' +
+                                          '${value.productName[index]["item"]}',
+                                      style: TextStyle(
+                                          color: Colors.green[800],
+                                          fontSize: 18),
+                                    ),
+                                    trailing: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Container(
+                                            width: size.width * 0.09,
+                                            child: TextFormField(
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              decoration: InputDecoration(
+                                                  border: InputBorder.none,
+                                                  hintText: "qty"),
+                                            )),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        IconButton(
+                                          icon: Icon(Icons.add),
+                                          onPressed: () {
+                                            setState(() {
+                                              selected = index;
+                                            });
+                                          },
+                                          color: selected == index
+                                              ? P_Settings.addbutonColor
+                                              : Colors.black,
+                                        ),
+                                        IconButton(
+                                          icon: Icon(Icons.delete),
+                                          onPressed: () {},
+                                          color: Theme.of(context).errorColor,
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                  IconButton(
-                                    icon: Icon(Icons.delete),
-                                    onPressed: () {},
-                                    color: Theme.of(context).errorColor,
-                                  )
-                                ],
-                              ),
-                            ),
-                          );
-                        })
-                    : ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: value.productName.length,
-                        itemBuilder: (BuildContext context, index) {
-                          return Padding(
-                            padding:
-                                const EdgeInsets.only(left: 0.4, right: 0.4),
-                            child: ListTile(
-                              title: Text(
-                                '${value.productName[index]["code"]}' +
-                                    '-' +
-                                    '${value.productName[index]["item"]}',
-                                style: TextStyle(
-                                    color: Colors.green[800], fontSize: 18),
-                              ),
-                              trailing: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Container(
-                                      width: size.width * 0.09,
-                                      child: TextFormField(
-                                        keyboardType: TextInputType.number,
-                                        decoration: InputDecoration(
-                                            border: InputBorder.none,
-                                            hintText: "qty"),
-                                      )),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  IconButton(
-                                    icon: Icon(Icons.add),
-                                    onPressed: () {
-                                      setState(() {
-                                        selected = index;
-                                      });
-                                    },
-                                    color: selected == index
-                                        ? P_Settings.addbutonColor
-                                        : Colors.black,
-                                  ),
-                                  IconButton(
-                                    icon: Icon(Icons.delete),
-                                    onPressed: () {},
-                                    color: Theme.of(context).errorColor,
-                                  )
-                                ],
-                              ),
-                            ),
-                          );
-                        }),
-              ),
+                                );
+                              }),
+                    ),
               Container(
                 width: size.width * 0.95,
                 height: size.height * 0.06,
