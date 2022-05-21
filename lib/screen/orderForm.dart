@@ -90,62 +90,61 @@ class _OrderFormState extends State<OrderForm> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      // backgroundColor: Colors.white,
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Consumer<Controller>(builder: (context, values, child) {
-              // print("value.areaList-----${values.areaList}");
-              // print("value.custmer-----${values.customerList}");
-
-              return Form(
-                key: formGlobalKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Ink(
-                        decoration:
-                            BoxDecoration(color: P_Settings.orderFormcolor),
+          child: Consumer<Controller>(builder: (context, values, child) {
+            return Form(
+              key: formGlobalKey,
+              child: Column(
+                children: [
+                  // SizedBox(height: size.height * 0.04),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        height: size.height * 0.2,
+                        decoration: BoxDecoration(
+                          color: P_Settings.wavecolor,
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(50),
+                            bottomRight: Radius.circular(50),
+                          ),
+                        ),
                         child: ListTile(
                           title: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Icon(
-                                Icons.person,
+                                Icons.person, color: Colors.yellow,
                                 // color: Colors.white,
                               ),
                               SizedBox(
                                 width: size.width * 0.01,
                               ),
-                              Text(
-                                "CUSTOMER",
-                                // style: TextStyle(color: Colors.white
-                                // ),
-                              ),
+                              Text("CUSTOMER",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold)
+                                  // ),
+                                  ),
                             ],
                           ),
-                          // trailing: IconButton(
-                          //   icon: Icon(
-                          //     visible ? Icons.arrow_upward : Icons.arrow_downward,
-                          //     color: Colors.black,
-                          //   ),
-                          //   onPressed: () {
-                          //     setState(() {
-                          //       visible = !visible;
-                          //     });
-                          //   },
-                          // ),
                         ),
                       ),
-                    ),
-                    Visibility(
-                      visible: true,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 5, right: 5),
+                      // Padding(
+                      //   padding: const EdgeInsets.all(5.0),
+                      //   child: Ink(
+                      //     decoration:
+                      //         BoxDecoration(color: P_Settings.orderFormcolor),
+                      //     child:
+                      //   ),
+                      // ),
+                      // SizedBox(height: size.height * 0.16),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
                         child: Container(
-                          height: size.height * 0.22,
+                          height: size.height * 0.35,
                           color: Colors.white,
                           child: Column(
                             // mainAxisAlignment: MainAxisAlignment.start,
@@ -154,7 +153,7 @@ class _OrderFormState extends State<OrderForm> {
                               SizedBox(height: size.height * 0.01),
                               Flexible(
                                 child: Padding(
-                                  padding: const EdgeInsets.only(left: 8.0),
+                                  padding: EdgeInsets.only(left: 8.0),
                                   child: Text(
                                     "Area/Route",
                                     style: TextStyle(
@@ -232,12 +231,14 @@ class _OrderFormState extends State<OrderForm> {
                                 ),
                               ),
                               SizedBox(height: size.height * 0.02),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 8.0),
-                                child: Text("Customer",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                    )),
+                              Flexible(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Text("Customer",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                      )),
+                                ),
                               ),
                               SizedBox(height: size.height * 0.01),
                               Padding(
@@ -363,7 +364,7 @@ class _OrderFormState extends State<OrderForm> {
                                       ),
                                     ),
                                     SizedBox(
-                                      height: size.height * 0.005,
+                                      height: size.height * 0.01,
                                     ),
                                     ValueListenableBuilder(
                                         valueListenable: visibleValidation,
@@ -378,703 +379,90 @@ class _OrderFormState extends State<OrderForm> {
                                                   TextStyle(color: Colors.red),
                                             ),
                                           );
-                                        })
+                                        }),
+                                    SizedBox(
+                                      height: size.height * 0.02,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 100, right: 100),
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            height: size.height * 0.045,
+                                            child: ElevatedButton.icon(
+                                              icon: Icon(
+                                                Icons.library_add_check,
+                                                color: Colors.white,
+                                                size: 30.0,
+                                              ),
+                                              label: Text("Add Items"),
+                                              onPressed: () async {
+                                                if (custmerId == null ||
+                                                    custmerId!.isEmpty) {
+                                                  visibleValidation.value =
+                                                      true;
+                                                } else {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            CartList(
+                                                              areaId:
+                                                                  splitted![0],
+                                                              custmerId:
+                                                                  custmerId!,
+                                                              os: values
+                                                                      .ordernum[
+                                                                  0]['os'],
+                                                            )),
+                                                  );
+                                                }
+                                              },
+                                              style: ElevatedButton.styleFrom(
+                                                primary: P_Settings.wavecolor,
+                                                shape:
+                                                    new RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      new BorderRadius.circular(
+                                                          10.0),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),
+                              // Column(
+                              //   children: [
+                              //     Container(
+                              //       height: size.height * 0.2,
+                              //       alignment: Alignment.topLeft,
+                              //       child: Padding(
+                              //         padding: const EdgeInsets.only(left: 10),
+                              //         child:
+                              //       ),
+                              //     ),
+                              //   ],
+                              // ),
                             ],
                           ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      height: size.height * 0.01,
-                    ),
-                    Card(
-                      child: InkWell(
-                        onTap: () {
-                          debugPrint('Card tapped.');
-                        },
-                        child: Column(
-                          children: [
-                            Container(
-                              // color: Colors.grey[300],
-                              color: P_Settings.orderFormcolor,
-                              width: size.width * 0.95,
-                              height: size.height * 0.06,
-                              child: Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: Row(
-                                  children: [
-                                    Text('Orderform'),
-                                    GestureDetector(
-                                      onTap: (() {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  HistoryPage()),
-                                        );
-                                      }),
-                                      child: Container(
-                                        width: size.width * 0.5,
-                                        height: size.height * 0.09,
-                                        color: P_Settings.orderFormcolor,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            SizedBox(
-                                              width: size.width * 0.3,
-                                            ),
-                                            Text(
-                                              "History",
-                                              style: TextStyle(fontSize: 15),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    CircleAvatar(
-                                      radius: 13,
-                                      backgroundColor:
-                                          Color.fromARGB(255, 199, 88, 199),
-                                      child: const Text('0'),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Container(
-                              alignment: Alignment.topLeft,
-                              height: size.height * 0.04,
-                              color: Colors.white,
-                              child: Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: Row(
-                                  children: [
-                                    Text("ORDER NO:  "),
-                                    Text(
-                                      values.ordernum.length != 0 &&
-                                              values.ordernum[0]['os'] !=
-                                                  null &&
-                                              values.ordernum.isNotEmpty
-                                          ? values.ordernum[0]['os']
-                                          : "1",
-                                      style: TextStyle(
-                                          color: P_Settings.extracolor),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Container(
-                              height: size.height * 0.2,
-                              alignment: Alignment.topLeft,
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 10),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      // mainAxisAlignment: ,
-                                      children: [
-                                        Text(
-                                          "Choose Category",
-                                          style: TextStyle(
-                                              color: P_Settings.chooseCategory),
-                                        ),
-                                        Spacer(),
-                                        ElevatedButton.icon(
-                                          icon: Icon(
-                                            Icons.shopping_cart,
-                                            color: Colors.white,
-                                            size: 30.0,
-                                          ),
-                                          label: Text("View bag"),
-                                          onPressed: () async {
-                                            if (_selectedItemcus == null ||
-                                                _selectedItemcus!.isEmpty) {
-                                              visibleValidation.value = true;
-                                            } else {
-                                              Provider.of<Controller>(context,
-                                                      listen: false)
-                                                  .getBagDetails(custmerId!,
-                                                      values.ordernum[0]['os']);
-                                              visibleValidation.value = false;
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        CartList(
-                                                          areaId: splitted![0],
-                                                          custmerId: custmerId!,
-                                                          os: values.ordernum[0]
-                                                              ['os'],
-                                                        )),
-                                              );
-                                            }
-                                          },
-                                          style: ElevatedButton.styleFrom(
-                                            primary: P_Settings.wavecolor,
-                                            shape: new RoundedRectangleBorder(
-                                              borderRadius:
-                                                  new BorderRadius.circular(
-                                                      10.0),
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: size.width * 0.05,
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(right: 5),
-                                          child: Container(
-                                            height: size.height * 0.04,
-                                            child: ElevatedButton(
-                                              onPressed: () async {
-                                                setState(() {
-                                                  alertvisible = !alertvisible;
-                                                });
-                                                if (qty.text == null ||
-                                                    qty.text.isEmpty) {
-                                                  qty.text = "1";
-                                                }
-                                                print(
-                                                    " itemName, rate1--${itemName}--${rate1}");
-                                                int max = await OrderAppDB
-                                                    .instance
-                                                    .getMaxCommonQuery(
-                                                        'orderBagTable',
-                                                        'cartrowno',
-                                                        "os='${values.ordernum[0]["os"]}' AND customerid='$custmerId'");
-                                                var total = int.parse(rate1) *
-                                                    int.parse(qty.text);
-                                                print("total rate $total");
-                                                var res = custmerId == null ||
-                                                        custmerId!.isEmpty ||
-                                                        productCode == null ||
-                                                        productCode!.isEmpty
-                                                    ? visibleValidation.value =
-                                                        true
-                                                    // : await OrderAppDB.instance
-                                                    //     .insertCommonQuery(
-                                                    //         'orderBagTable',
-                                                    //         'itemName, cartdatetime, os, customerid, cartrowno, code, qty, rate, totalamount, cstatus',
-                                                    //         "'$itemName','$date!','1','$custmerId!',$max,'$productCode!',2,'$rate1','46',0");
-                                                    : await OrderAppDB.instance
-                                                        .insertorderBagTable(
-                                                            itemName,
-                                                            date!,
-                                                            values.ordernum[0]
-                                                                ['os'],
-                                                            custmerId!,
-                                                            max,
-                                                            productCode!,
-                                                            int.parse(qty.text),
-                                                            rate1,
-                                                            total.toString(),
-                                                            0);
-                                                print("result........... $res");
-                                                //  Provider.of<Controller>(context,
-                                                //           listen: false).countFromTable("orderBagTable");
-                                                custmerId == null ||
-                                                        custmerId!.isEmpty ||
-                                                        productCode == null ||
-                                                        productCode!.isEmpty
-                                                    ? Text("Select customer")
-                                                    : Provider.of<Controller>(
-                                                            context,
-                                                            listen: false)
-                                                        .calculateTotal(
-                                                            values.ordernum[0]
-                                                                ['os'],
-                                                            custmerId!);
-
-                                                /////////////////////////
-
-                                                (custmerId!.isNotEmpty ||
-                                                            custmerId !=
-                                                                null) &&
-                                                        (productCode!
-                                                                .isNotEmpty ||
-                                                            productCode != null)
-                                                    ? snackbar.showSnackbar(
-                                                        context,
-                                                        "Added to cart")
-                                                    : Text("No data");
-                                              },
-                                              style: ElevatedButton.styleFrom(
-                                                primary: P_Settings
-                                                    .roundedButtonColor,
-                                                // shape: CircleBorder(),
-                                              ),
-                                              child: Icon(Icons.add,
-                                                  size: 20,
-                                                  color: Colors.black),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: size.height * 0.015,
-                                    ),
-                                    Row(
-                                      children: [
-                                        //////////////// select product name //////////////////////
-                                        Container(
-                                          height: size.height * 0.05,
-                                          width: size.width * 0.7,
-                                          child: InputDecorator(
-                                            decoration: InputDecoration(
-                                              contentPadding:
-                                                  EdgeInsets.symmetric(
-                                                      vertical: 0,
-                                                      horizontal: 4),
-                                              border: OutlineInputBorder(
-                                                  gapPadding: 1),
-                                              hintText: "Select..",
-                                            ),
-                                            child: Autocomplete<
-                                                Map<String, dynamic>>(
-                                              optionsBuilder:
-                                                  (TextEditingValue value) {
-                                                if (value.text.isEmpty) {
-                                                  return [];
-                                                } else {
-                                                  print(
-                                                      "TextEditingValue---${value.text}");
-                                                  Provider.of<Controller>(
-                                                          context,
-                                                          listen: false)
-                                                      .getProductItems(
-                                                          value.text);
-                                                  return values.productName;
-                                                }
-                                              },
-                                              fieldViewBuilder: (BuildContext
-                                                      context,
-                                                  TextEditingController
-                                                      fieldTextEditingController,
-                                                  FocusNode fieldFocusNode,
-                                                  VoidCallback
-                                                      onFieldSubmitted) {
-                                                return TextFormField(
-                                                  controller:
-                                                      fieldTextEditingController,
-                                                  decoration: InputDecoration(
-                                                    suffixIcon: IconButton(
-                                                      onPressed:
-                                                          fieldTextEditingController
-                                                              .clear,
-                                                      icon: Icon(Icons.clear),
-                                                    ),
-                                                  ),
-                                                  focusNode: fieldFocusNode,
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.normal),
-                                                );
-                                              },
-                                              displayStringForOption:
-                                                  (Map<String, dynamic>
-                                                          option) =>
-                                                      option["code"] +
-                                                      '-' +
-                                                      option["item"],
-                                              onSelected: (value) {
-                                                setState(() {
-                                                  print("value----${value}");
-                                                  _selectedItem = value["item"];
-                                                  itemName = value["item"];
-                                                  productCode = value["code"];
-                                                  rate1 = value["rate1"];
-                                                  print(
-                                                      "_selectedItem---${_selectedItem}");
-                                                });
-                                              },
-                                              optionsViewBuilder: (BuildContext
-                                                      context,
-                                                  AutocompleteOnSelected<
-                                                          Map<String, dynamic>>
-                                                      onSelected,
-                                                  Iterable<Map<String, dynamic>>
-                                                      options) {
-                                                return Align(
-                                                  alignment: Alignment.topLeft,
-                                                  child: Material(
-                                                    child: Container(
-                                                      width: size.width * 0.7,
-                                                      // color: Colors.teal,
-                                                      child: ListView.builder(
-                                                        padding: EdgeInsets.all(
-                                                            15.0),
-                                                        itemCount:
-                                                            options.length,
-                                                        itemBuilder:
-                                                            (BuildContext
-                                                                    context,
-                                                                int index) {
-                                                          //      print(
-                                                          // "option----${options}");
-                                                          print(
-                                                              "index----${index}");
-                                                          final Map<String,
-                                                                  dynamic>
-                                                              option =
-                                                              options.elementAt(
-                                                                  index);
-                                                          print(
-                                                              "option----${option}");
-                                                          return ListTile(
-                                                            trailing: Wrap(
-                                                              children: [
-                                                                IconButton(
-                                                                  icon: Icon(
-                                                                      Icons
-                                                                          .add),
-                                                                  onPressed:
-                                                                      () async {
-                                                                    String
-                                                                        item =
-                                                                        option[
-                                                                            "item"];
-                                                                    String
-                                                                        rate1 =
-                                                                        option[
-                                                                            "rate1"];
-                                                                    String
-                                                                        productCode =
-                                                                        option[
-                                                                            "code"];
-                                                                    print(
-                                                                        "option[code]----$productCode");
-                                                                    print(
-                                                                        "item----rate---${option["item"]}---${option["rate1"]}");
-                                                                    if (qty.text ==
-                                                                            null ||
-                                                                        qty.text
-                                                                            .isEmpty) {
-                                                                      qty.text =
-                                                                          "1";
-                                                                    }
-                                                                    int max = await OrderAppDB
-                                                                        .instance
-                                                                        .getMaxCommonQuery(
-                                                                            'orderBagTable',
-                                                                            'cartrowno',
-                                                                            "os='${values.ordernum[0]["os"]}' AND customerid='$custmerId'");
-                                                                    var total = int.parse(
-                                                                            rate1) *
-                                                                        int.parse(
-                                                                            qty.text);
-
-                                                                    print(
-                                                                        "total rate $total");
-                                                                    // var res = await OrderAppDB
-                                                                    //     .instance
-                                                                    //     .insertCommonQuery(
-                                                                    //         'orderBagTable',
-                                                                    //         'itemName, cartdatetime, os, customerid, cartrowno, code, qty, rate, totalamount, cstatus',
-                                                                    //         "'$itemName','$date!','TX','$custmerId!',$max,'$productCode!',1,'$rate1','$total',0");
-
-                                                                    var res = await OrderAppDB.instance.insertorderBagTable(
-                                                                        item,
-                                                                        date!,
-                                                                        values.ordernum[0]
-                                                                            [
-                                                                            'os'],
-                                                                        custmerId!,
-                                                                        max,
-                                                                        productCode,
-                                                                        1,
-                                                                        rate1,
-                                                                        total
-                                                                            .toString(),
-                                                                        0);
-
-                                                                    showDialog(
-                                                                        context:
-                                                                            context,
-                                                                        builder:
-                                                                            (context) {
-                                                                          Future.delayed(
-                                                                              Duration(milliseconds: 500),
-                                                                              () {
-                                                                            Navigator.of(context).pop(true);
-                                                                          });
-                                                                          return AlertDialog(
-                                                                            alignment:
-                                                                                Alignment.centerRight,
-                                                                            content:
-                                                                                Row(
-                                                                              children: [
-                                                                                Text(
-                                                                                  'Added to cart',
-                                                                                  style: TextStyle(color: P_Settings.extracolor),
-                                                                                ),
-                                                                              ],
-                                                                            ),
-                                                                          );
-                                                                        });
-                                                                    //                        Provider.of<Controller>(context,
-                                                                    // listen: false).countFromTable("orderBagTable");
-                                                                    //               Provider.of<Controller>(
-                                                                    //                       context,
-                                                                    //                       listen:
-                                                                    //                           false).calculateTotal(values.ordernum[0]
-                                                                    //                           [
-                                                                    //                           'os'],custmerId! );
-                                                                  },
-                                                                ),
-                                                              ],
-                                                            ),
-                                                            onTap: () {
-                                                              onSelected(
-                                                                  option);
-                                                            },
-                                                            title: Text(
-                                                                option["code"] +
-                                                                    '-' +
-                                                                    option["item"]
-                                                                        .toString(),
-                                                                style: const TextStyle(
-                                                                    color: Colors
-                                                                        .black)),
-                                                          );
-                                                        },
-                                                      ),
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: size.width * 0.04,
-                                        ),
-                                        Container(
-                                          width: size.width * 0.09,
-                                          child: TextFormField(
-                                            decoration: InputDecoration(
-                                                hintText: 'Qty'),
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 16),
-                                            keyboardType: TextInputType.number,
-                                            controller: qty,
-                                            onChanged: (value) {
-                                              value = qty.text;
-                                            },
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: size.width * 0.03,
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: size.height * 0.015,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Container(
-                              height: size.height * 0.01,
-                              color: Colors.grey[300],
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(10.0),
-                              child: Container(
-                                height: size.height * 0.1,
-                                child: Column(
-                                  children: [
-                                    // Row(
-                                    //   children: [
-                                    //     SizedBox(
-                                    //       width: size.width * 0.359,
-                                    //     ),
-                                    //     Text("Total items:"),
-                                    //     SizedBox(
-                                    //       width: size.width * 0.1,
-                                    //     ),
-                                    //     Text(
-                                    //         "${Provider.of<Controller>(context, listen: false).count}"),
-                                    //     // Flexible(
-                                    //     //   child: TextField(
-                                    //     //     readOnly: true,
-                                    //     //     decoration: InputDecoration(
-                                    //     //         // border: UnderlineInputBorder(
-                                    //     //         //   borderSide: BorderSide(
-                                    //     //         //       color: Color.fromARGB(
-                                    //     //         //           255, 11, 177, 38)),
-                                    //     //         // ),
-                                    //     //         ),
-                                    //     //     onChanged: (value) {},
-                                    //     //   ),
-                                    //     // ),
-                                    //     // Icon(Icons.shopping_cart, size: 19),
-                                    //   ],
-                                    // ),
-                                    Row(
-                                      // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        SizedBox(
-                                          width: size.width * 0.25,
-                                          height: size.height * 0.04,
-                                        ),
-                                        Text("Approximate Total : "),
-                                        SizedBox(
-                                          width: size.width * 0.06,
-                                        ),
-                                        Flexible(
-                                            child: Text(
-                                          "\u{20B9}${Provider.of<Controller>(context, listen: false).orderTotal}",
-                                        )),
-                                      ],
-                                    ),
-                                    // Padding(
-                                    //   padding: EdgeInsets.all(8.0),
-                                    //   child: Row(
-                                    //     mainAxisAlignment:
-                                    //         MainAxisAlignment.spaceBetween,
-                                    //     children: [
-                                    //       SizedBox(height: size.height * 0.03),
-                                    //       ElevatedButton(
-                                    //           onPressed: () {},
-                                    //           child: Text("Save"),
-                                    //           style: ElevatedButton.styleFrom(
-                                    //             primary:
-                                    //                 P_Settings.chooseCategory,
-                                    //           ))
-                                    //     ],
-                                    //   ),
-                                    // ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            }),
-          ),
+                    ],
+                  ),
+                ],
+              ),
+            );
+          }),
         ),
       ),
     );
   }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-  Widget dropDown1(List<Map<String, dynamic>> items, String type, Size size) {
-    print("value.area-----${items}");
-    return Padding(
-        padding: EdgeInsets.only(left: 16.0, right: 16),
-        child: Center(
-          child: Container(
-            height: size.height * 0.045,
-            width: size.width * 0.75,
-            decoration: ShapeDecoration(
-              shape: RoundedRectangleBorder(
-                side: BorderSide(
-                  color: P_Settings.orderFormcolor,
-                  width: 1.0,
-                ),
-                borderRadius: BorderRadius.all(Radius.circular(10.0)),
-              ),
-            ),
-            child: DropdownButton<String>(
-              hint: Text("Select"),
-              isExpanded: true,
-              autofocus: false,
-              underline: SizedBox(),
-              elevation: 0,
-              items: items
-                  .map((item) => DropdownMenuItem<String>(
-                      value: item["aid"].toString(),
-                      child: Container(
-                        width: size.width * 0.5,
-                        child: Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Text(item["aname"].toString())),
-                      )))
-                  .toList(),
-              onChanged: (item) {
-                // Provider.of<Controller>(context, listen: false)
-                //     .customerList
-                //     .length = 0;
-                print("clicked");
+///////////////////////////////////////////////////////////////////
 
-                if (item != null) {
-                  setState(() {
-                    selected = item;
-                    print("selected area..........${selected}");
-                  });
-                }
-                // Provider.of<Controller>(context, listen: false).getArea(selected!);
-              },
-              value: selected,
-              // disabledHint: Text(selected ?? "null"),
-            ),
-          ),
-        ));
-  }
-
-  //////////////////////////////////////////////////////////
-  Widget dropDown2(List<Map<String, dynamic>> customr, String type, Size size) {
-    // print("value.custmer-----${items}");
-    return Padding(
-        padding: const EdgeInsets.only(left: 16.0, right: 16),
-        child: Center(
-          child: Container(
-            height: size.height * 0.045,
-            width: size.width * 0.75,
-            decoration: ShapeDecoration(
-              shape: RoundedRectangleBorder(
-                side: BorderSide(
-                  color: P_Settings.orderFormcolor,
-                  width: 1.0,
-                ),
-                borderRadius: BorderRadius.all(Radius.circular(10.0)),
-              ),
-            ),
-            child: DropdownButton<String>(
-              // disabledHint: customr.isEmpty || customr == null ? Text("Select") : null,
-              hint: Text("Select"),
-              // dropdownColor: Colors.transparent,
-              isExpanded: true,
-              autofocus: false,
-              underline: SizedBox(),
-              elevation: 0,
-              // value: "INDIA",
-              items: customr
-                  .map((cust) => DropdownMenuItem<String>(
-                      value: cust["code"].toString(),
-                      child: Container(
-                        width: size.width * 0.5,
-                        child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(cust["hname"].toString())),
-                      )))
-                  .toList(),
-
-              onChanged: (cust) {
-                if (cust != null) {
-                  setState(() {
-                    selectedCus = cust;
-                    print("selected cus..........${selected}");
-                  });
-                }
-              },
-              value: selectedCus,
-            ),
-          ),
-        ));
-  }
 }
