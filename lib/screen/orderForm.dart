@@ -8,6 +8,7 @@ import 'package:orderapp/db_helper.dart';
 import 'package:orderapp/model/productdetails_model.dart';
 import 'package:orderapp/screen/cartList.dart';
 import 'package:orderapp/screen/historypage.dart';
+import 'package:orderapp/screen/itemSelection.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
@@ -92,7 +93,6 @@ class _OrderFormState extends State<OrderForm> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
-        reverse: true,
         child: SafeArea(
           child: Consumer<Controller>(builder: (context, values, child) {
             return Form(
@@ -408,15 +408,7 @@ class _OrderFormState extends State<OrderForm> {
                                                     context,
                                                     MaterialPageRoute(
                                                         builder: (context) =>
-                                                            CartList(
-                                                              areaId:
-                                                                  splitted![0],
-                                                              custmerId:
-                                                                  custmerId!,
-                                                              os: values
-                                                                      .ordernum[
-                                                                  0]['os'],
-                                                            )),
+                                                            ItemSelection())
                                                   );
                                                 }
                                               },
