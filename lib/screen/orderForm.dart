@@ -106,6 +106,15 @@ class _OrderFormState extends State<OrderForm> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
+                        decoration: BoxDecoration(
+                          color: P_Settings.wavecolor,
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(50),
+                            bottomRight: Radius.circular(50),
+                          ),
+                        ),
+                      ),
+                      Container(
                         height: size.height * 0.15,
                         decoration: BoxDecoration(
                           color: P_Settings.wavecolor,

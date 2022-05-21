@@ -87,6 +87,18 @@ class _ItemSelectionState extends State<ItemSelection> {
           return Column(
             children: [
               Container(
+                  alignment: Alignment.center,
+                  height: size.height * 0.045,
+                  width: size.width * 0.2,
+                  child: Text("Count"),
+                  decoration: BoxDecoration(
+                    color: P_Settings.roundedButtonColor,
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(50),
+                      bottomRight: Radius.circular(50),
+                    ),
+                  )),
+              Container(
                 width: size.width * 0.95,
                 height: size.height * 0.09,
                 child: TextField(
@@ -360,23 +372,6 @@ class _ItemSelectionState extends State<ItemSelection> {
                                 );
                               }),
                     ),
-              Container(
-                width: size.width * 0.95,
-                height: size.height * 0.06,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                ),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      shape: const CircleBorder(),
-                      padding: const EdgeInsets.all(10)),
-                  child: const Icon(
-                    Icons.add,
-                    size: 30,
-                  ),
-                  onPressed: () {},
-                ),
-              ),
             ],
           );
         },
