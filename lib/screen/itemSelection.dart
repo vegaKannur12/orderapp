@@ -150,8 +150,8 @@ class _ItemSelectionState extends State<ItemSelection> {
                                         ),
                                         IconButton(
                                           icon: Icon(Icons.add),
-                                          onPressed: () async{
-                                           setState(() {
+                                          onPressed: () async {
+                                            setState(() {
                                               selected = index;
                                               if (value.qty[index].text ==
                                                       null ||
@@ -169,9 +169,9 @@ class _ItemSelectionState extends State<ItemSelection> {
 
                                             print("max----$max");
                                             // print("value.qty[index].text---${value.qty[index].text}");
-                                           
-                                            rate1 = value.newList[index]
-                                                ["rate1"];
+
+                                            rate1 =
+                                                value.newList[index]["rate1"];
                                             var total = int.parse(rate1) *
                                                 int.parse(
                                                     value.qty[index].text);
@@ -230,10 +230,10 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                         context,
                                                         listen: false)
                                                     .countFromTable(
-                                                        "orderBagTable",
-                                                         widget.os,
-                                                        widget.customerId,
-                                                       )
+                                                    "orderBagTable",
+                                                    widget.os,
+                                                    widget.customerId,
+                                                  )
                                                 // snackbar.showSnackbar(
                                                 //     context, "Added to cart")
                                                 : Text("No data");
@@ -305,7 +305,7 @@ class _ItemSelectionState extends State<ItemSelection> {
 
                                             print("max----$max");
                                             // print("value.qty[index].text---${value.qty[index].text}");
-                                           
+
                                             rate1 = value.productName[index]
                                                 ["rate1"];
                                             var total = int.parse(rate1) *
@@ -349,10 +349,10 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                         context,
                                                         listen: false)
                                                     .countFromTable(
-                                                        "orderBagTable",
-                                                         widget.os,
-                                                        widget.customerId,
-                                                       );
+                                                    "orderBagTable",
+                                                    widget.os,
+                                                    widget.customerId,
+                                                  );
 
                                             /////////////////////////
 
