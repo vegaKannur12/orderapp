@@ -51,7 +51,9 @@ class _ItemSelectionState extends State<ItemSelection> {
                 width: size.width * 0.95,
                 height: size.height * 0.1,
                 child: TextField(
-                  onChanged: (value) => Provider.of<Controller>(context, listen: false).searchProcess( value),
+                  onChanged: (value) =>
+                      Provider.of<Controller>(context, listen: false)
+                          .searchProcess(value),
                   decoration: const InputDecoration(
                       labelText: 'Search', suffixIcon: Icon(Icons.search)),
                 ),
@@ -107,19 +109,26 @@ class _ItemSelectionState extends State<ItemSelection> {
                       );
                     }),
               ),
+              Container(
+                width: size.width * 0.95,
+                height: size.height * 0.06,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                ),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      shape: const CircleBorder(),
+                      padding: const EdgeInsets.all(10)),
+                  child: const Icon(
+                    Icons.add,
+                    size: 30,
+                  ),
+                  onPressed: () {},
+                ),
+              ),
             ],
           );
         },
-      ),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(left: 100, right: 150),
-        child: FloatingActionButton(
-          onPressed: () {
-            // Add your onPressed code here!
-          },
-          backgroundColor: P_Settings.addbutonColor,
-          child: Text("Count"),
-        ),
       ),
     );
   }
