@@ -25,7 +25,7 @@ class ItemSelection extends StatefulWidget {
 
 class _ItemSelectionState extends State<ItemSelection> {
   String rate1 = "1";
-  TextEditingController qty = TextEditingController();
+
   List<Map<String, dynamic>> products = [];
   int? selected;
   SearchTile search = SearchTile();
@@ -42,6 +42,9 @@ class _ItemSelectionState extends State<ItemSelection> {
     Provider.of<Controller>(context, listen: false).getProductItems(
       'productDetailsTable',
     );
+    var length =
+        Provider.of<Controller>(context, listen: false).productName.length;
+    List.generate(length, (index) => TextEditingController());
     // products = Provider.of<Controller>(context, listen: false).productName;
   }
 
@@ -108,7 +111,7 @@ class _ItemSelectionState extends State<ItemSelection> {
               ),
               value.isLoading
                   ? Container(
-                      // height: size.height * 0.6,
+                      
                       child: CircularProgressIndicator(
                           color: P_Settings.wavecolor))
                   : Expanded(
@@ -135,6 +138,7 @@ class _ItemSelectionState extends State<ItemSelection> {
                                         Container(
                                             width: size.width * 0.09,
                                             child: TextFormField(
+                                              controller: value.qty[index],
                                               keyboardType:
                                                   TextInputType.number,
                                               decoration: InputDecoration(
@@ -187,6 +191,7 @@ class _ItemSelectionState extends State<ItemSelection> {
                                         Container(
                                             width: size.width * 0.09,
                                             child: TextFormField(
+                                              controller: value.qty[index],
                                               keyboardType:
                                                   TextInputType.number,
                                               decoration: InputDecoration(
@@ -201,9 +206,11 @@ class _ItemSelectionState extends State<ItemSelection> {
                                           onPressed: () async {
                                             setState(() {
                                               selected = index;
-                                              if (qty.text == null ||
-                                                  qty.text.isEmpty) {
-                                                qty.text = "1";
+                                              if (value.qty[index].text ==
+                                                      null ||
+                                                  value.qty[index].text
+                                                      .isEmpty) {
+                                                value.qty[index].text = "1";
                                               }
                                             });
 
@@ -211,10 +218,15 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                 .getMaxCommonQuery(
                                                     'orderBagTable',
                                                     'cartrowno',
-                                                    "os='${value.ordernum[0]["os"]}' AND customerid='$widget.customerId'");
+                                                    "os='${value.ordernum[0]["os"]}' AND customerid='${widget.customerId}'");
+
+                                            print("max----$max");
                                             var total = int.parse(rate1) *
-                                                int.parse(qty.text);
+                                                int.parse(
+                                                    value.qty[index].text);
                                             print("total rate $total");
+
+
                                             var res = widget.customerId ==
                                                         null ||
                                                     widget.customerId.isEmpty
@@ -232,7 +244,8 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                         widget.customerId,
                                                         max,
                                                         products[index]["code"],
-                                                        int.parse(qty.text),
+                                                        int.parse(value
+                                                            .qty[index].text),
                                                         rate1,
                                                         total.toString(),
                                                         0);

@@ -80,7 +80,7 @@ class _CartListState extends State<CartList> {
                       value.bagList[index]["qty"],
                       size,
                       value.controller[index],
-                      index);
+                      index,value.bagList[index]["code"]);
                 },
               ),
             ),
@@ -175,7 +175,7 @@ class _CartListState extends State<CartList> {
       int qty,
       Size size,
       TextEditingController _controller,
-      int index) {
+      int index,String code) {
     print("qty-------$qty");
     _controller.text = qty.toString();
 
@@ -228,12 +228,23 @@ class _CartListState extends State<CartList> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Text(
-                              "${itemName}",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                  color: P_Settings.wavecolor),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "${itemName} ",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                      color: P_Settings.wavecolor),
+                                ),Text(
+                                  " (${code})",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                      color: Colors.grey),
+                                ),
+                              ],
                             ),
                             SizedBox(
                               height: size.height * 0.006,

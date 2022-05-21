@@ -18,7 +18,7 @@ import '../model/staffdetails_model.dart';
 
 class Controller extends ChangeNotifier {
   bool isLoading = false;
-  bool isSearch=false;
+  bool isSearch = false;
   String? sname;
   String? orderTotal;
   String? ordernumber;
@@ -31,6 +31,8 @@ class Controller extends ChangeNotifier {
   List<CD> data = [];
   List<Map<String, dynamic>> listWidget = [];
   List<TextEditingController> controller = [];
+  List<TextEditingController> qty = [];
+
   String? count;
   String? sof;
   List<Map<String, dynamic>> bagList = [];
@@ -413,7 +415,7 @@ class Controller extends ChangeNotifier {
   getProductItems(String table) async {
     productName.clear();
     try {
-      isLoading=true;
+      isLoading = true;
       // notifyListeners();
       prodctItems = await OrderAppDB.instance.selectCommonquery(table, '');
       print("prodctItems----${prodctItems}");
@@ -423,8 +425,10 @@ class Controller extends ChangeNotifier {
         // productName.add(item["code"] + '-' + item["item"]);
         // notifyListeners();
       }
-
-      isLoading=false;
+      var length = productName.length;
+      print("text length----$length");
+      qty = List.generate(length, (index) => TextEditingController());
+      isLoading = false;
       notifyListeners();
       print("product name----${productName}");
       // print("product productRate----${productRate}");
@@ -481,9 +485,11 @@ class Controller extends ChangeNotifier {
     for (var item in res) {
       bagList.add(item);
     }
+    generateTextEditingController();
+
     isLoading = false;
     notifyListeners();
-
+    
     print("bagList----$bagList");
 
     notifyListeners();
@@ -598,13 +604,11 @@ class Controller extends ChangeNotifier {
   }
 
   searchProcess(String searchkey) {
-    
     print("searchkey----$searchkey");
     if (searchkey.isEmpty) {
-    
       newList = productName;
     } else {
-      isSearch=true;
+      isSearch = true;
       newList = productName
           .where((product) =>
               product["item"].toLowerCase().contains(searchkey.toLowerCase()))
