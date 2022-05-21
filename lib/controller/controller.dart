@@ -408,11 +408,11 @@ class Controller extends ChangeNotifier {
   //   notifyListeners();
   // }
 /////////////////////////////////////////////////////////////
-  getProductItems(String table, String? condition) async {
+  getProductItems(String table ) async {
     productName.clear();
     try {
       prodctItems =
-          await OrderAppDB.instance.selectCommonquery(table, condition);
+          await OrderAppDB.instance.selectCommonquery(table,'');
       print("prodctItems----${prodctItems}");
 
       for (var item in prodctItems) {

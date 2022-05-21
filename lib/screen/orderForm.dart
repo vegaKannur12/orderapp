@@ -91,7 +91,7 @@ class _OrderFormState extends State<OrderForm> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: P_Settings.bodycolor,
       body: SingleChildScrollView(
         child: SafeArea(
           child: Consumer<Controller>(builder: (context, values, child) {
@@ -104,7 +104,7 @@ class _OrderFormState extends State<OrderForm> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
-                        height: size.height * 0.2,
+                        height: size.height * 0.15,
                         decoration: BoxDecoration(
                           color: P_Settings.wavecolor,
                           borderRadius: BorderRadius.only(
@@ -117,7 +117,7 @@ class _OrderFormState extends State<OrderForm> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Icon(
-                                Icons.person, color: Colors.yellow,
+                                Icons.person, color: P_Settings.bottomColor,
                                 // color: Colors.white,
                               ),
                               SizedBox(
@@ -125,7 +125,7 @@ class _OrderFormState extends State<OrderForm> {
                               ),
                               Text("CUSTOMER",
                                   style: TextStyle(
-                                      color: Colors.white,
+                                      color: P_Settings.bodycolor,
                                       fontWeight: FontWeight.bold)
                                   // ),
                                   ),
@@ -133,15 +133,9 @@ class _OrderFormState extends State<OrderForm> {
                           ),
                         ),
                       ),
-                      // Padding(
-                      //   padding: const EdgeInsets.all(5.0),
-                      //   child: Ink(
-                      //     decoration:
-                      //         BoxDecoration(color: P_Settings.orderFormcolor),
-                      //     child:
-                      //   ),
-                      // ),
-                      // SizedBox(height: size.height * 0.16),
+                      SizedBox(
+                        height: size.height * 0.1,
+                      ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
@@ -404,12 +398,12 @@ class _OrderFormState extends State<OrderForm> {
                                                   visibleValidation.value =
                                                       true;
                                                 } else {
-                                                 List<Map<String,dynamic>> itemList= Provider.of<Controller>(context, listen: false).getProductItems('productDetailsTable', " ");
+                                                  Provider.of<Controller>(context, listen: false).getProductItems('productDetailsTable',);
                                                   Navigator.push(
                                                       context,
                                                       MaterialPageRoute(
                                                           builder: (context) =>
-                                                              ItemSelection( products: itemList,)));
+                                                              ItemSelection( )));
                                                 }
                                               },
                                               style: ElevatedButton.styleFrom(

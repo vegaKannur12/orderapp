@@ -662,9 +662,14 @@ class OrderAppDB {
 
 //////////////////////////////selectCommonQuery///////////////////
   selectCommonquery(String table, String? condition) async {
+    List<Map<String, dynamic>> result;
     Database db = await instance.database;
     print("----condition---table -------${condition}----${table}");
-    List<Map<String,dynamic>> result = await db.rawQuery("SELECT * FROM '$table' WHERE $condition");
+    if (condition == null || condition.isEmpty) {
+      result = await db.rawQuery("SELECT * FROM '$table'");
+    } else {
+      result = await db.rawQuery("SELECT * FROM '$table' WHERE $condition");
+    }
     print("result----$result");
     return result;
   }
