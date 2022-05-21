@@ -309,7 +309,7 @@ class OrderAppDB {
       String rate,
       String totalamount,
       int cstatus) async {
-    print("os--$os");
+    print("qty--$qty");
     print("code...........$code");
     final db = await database;
     var res;
