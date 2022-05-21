@@ -645,12 +645,12 @@
 //                                                 } else {
 //                                                   print(
 //                                                       "TextEditingValue---${value.text}");
-//                                                   Provider.of<Controller>(
-//                                                           context,
-//                                                           listen: false)
-//                                                       .getProductItems(
-//                                                           value.text);
-//                                                   return values.productName;
+//                                                   // Provider.of<Controller>(
+//                                                   //         context,
+//                                                   //         listen: false)
+//                                                   //     .getProductItems(
+//                                                   //         value.text);
+//                                                   // return values.productName;
 //                                                 }
 //                                               },
 //                                               fieldViewBuilder: (BuildContext

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class ItemSelection extends StatefulWidget {
-  // List products;
-  // ItemSelection({required this.products});
+  List<Map<String,dynamic>>  products;
+  ItemSelection({required this.products});
   @override
   State<ItemSelection> createState() => _ItemSelectionState();
 }
@@ -33,7 +33,7 @@ class _ItemSelectionState extends State<ItemSelection> {
           Expanded(
             child: ListView.builder(
                 shrinkWrap: true,
-                itemCount: 10,
+                itemCount: widget.products.length,
                 itemBuilder: (BuildContext context, index) {
                   return Padding(
                     padding: const EdgeInsets.only(left: 0.4, right: 0.4),

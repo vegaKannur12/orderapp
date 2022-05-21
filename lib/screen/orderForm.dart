@@ -404,12 +404,12 @@ class _OrderFormState extends State<OrderForm> {
                                                   visibleValidation.value =
                                                       true;
                                                 } else {
+                                                 List<Map<String,dynamic>> itemList= Provider.of<Controller>(context, listen: false).getProductItems('productDetailsTable', " ");
                                                   Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            ItemSelection())
-                                                  );
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              ItemSelection( products: itemList,)));
                                                 }
                                               },
                                               style: ElevatedButton.styleFrom(
