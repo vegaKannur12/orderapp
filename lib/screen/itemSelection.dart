@@ -99,7 +99,6 @@ class _ItemSelectionState extends State<ItemSelection> {
               ),
               value.isLoading
                   ? Container(
-                      
                       child: CircularProgressIndicator(
                           color: P_Settings.wavecolor))
                   : Expanded(
@@ -138,10 +137,85 @@ class _ItemSelectionState extends State<ItemSelection> {
                                         ),
                                         IconButton(
                                           icon: Icon(Icons.add),
-                                          onPressed: () {
-                                            setState(() {
+                                          onPressed: () async{
+                                           setState(() {
                                               selected = index;
+                                              if (value.qty[index].text ==
+                                                      null ||
+                                                  value.qty[index].text
+                                                      .isEmpty) {
+                                                value.qty[index].text = "1";
+                                              }
                                             });
+
+                                            int max = await OrderAppDB.instance
+                                                .getMaxCommonQuery(
+                                                    'orderBagTable',
+                                                    'cartrowno',
+                                                    "os='${value.ordernum[0]["os"]}' AND customerid='${widget.customerId}'");
+
+                                            print("max----$max");
+                                            // print("value.qty[index].text---${value.qty[index].text}");
+                                           
+                                            rate1 = value.newList[index]
+                                                ["rate1"];
+                                            var total = int.parse(rate1) *
+                                                int.parse(
+                                                    value.qty[index].text);
+                                            print("total rate $total");
+
+                                            var res = widget.customerId ==
+                                                        null ||
+                                                    widget.customerId.isEmpty
+                                                ? null
+                                                // : await OrderAppDB.instance
+                                                //     .insertCommonQuery(
+                                                //         'orderBagTable',
+                                                //         'itemName, cartdatetime, os, customerid, cartrowno, code, qty, rate, totalamount, cstatus',
+                                                //         "'$itemName','$date!','1','$custmerId!',$max,'$productCode!',2,'$rate1','46',0");
+                                                : await OrderAppDB.instance
+                                                    .insertorderBagTable(
+                                                        products[index]["item"],
+                                                        date!,
+                                                        value.ordernum[0]["os"],
+                                                        widget.customerId,
+                                                        max,
+                                                        products[index]["code"],
+                                                        int.parse(value
+                                                            .qty[index].text),
+                                                        rate1,
+                                                        total.toString(),
+                                                        0);
+                                            print("result........... $res");
+                                            //  Provider.of<Controller>(context,
+                                            //           listen: false).countFromTable("orderBagTable");
+                                            widget.customerId == null ||
+                                                    widget.customerId.isEmpty ||
+                                                    products[index]["code"] ==
+                                                        null ||
+                                                    products[index]["code"]!
+                                                        .isEmpty
+                                                ? Text("Select customer")
+                                                : Provider.of<Controller>(
+                                                        context,
+                                                        listen: false)
+                                                    .calculateTotal(
+                                                        value.ordernum[0]['os'],
+                                                        widget.customerId);
+
+                                            /////////////////////////
+
+                                            (widget.customerId.isNotEmpty ||
+                                                        widget.customerId !=
+                                                            null) &&
+                                                    (products[index]["code"]
+                                                            .isNotEmpty ||
+                                                        products[index]
+                                                                ["code"] !=
+                                                            null)
+                                                ? snackbar.showSnackbar(
+                                                    context, "Added to cart")
+                                                : Text("No data");
                                           },
                                           color: selected == index
                                               ? P_Settings.addbutonColor
@@ -209,11 +283,14 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                     "os='${value.ordernum[0]["os"]}' AND customerid='${widget.customerId}'");
 
                                             print("max----$max");
+                                            // print("value.qty[index].text---${value.qty[index].text}");
+                                           
+                                            rate1 = value.productName[index]
+                                                ["rate1"];
                                             var total = int.parse(rate1) *
                                                 int.parse(
                                                     value.qty[index].text);
                                             print("total rate $total");
-
 
                                             var res = widget.customerId ==
                                                         null ||
