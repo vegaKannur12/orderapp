@@ -89,6 +89,7 @@ class _OrderFormState extends State<OrderForm> {
     return Scaffold(
       // backgroundColor: Colors.white,
       body: SingleChildScrollView(
+        reverse: true,
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(10.0),
@@ -649,6 +650,7 @@ class _OrderFormState extends State<OrderForm> {
                                               decoration: InputDecoration(
                                                 // hintText: 'Enter a message',
                                                 suffixIcon: IconButton(
+                                                  
                                                   onPressed:() =>  
                                                    fieldTextEditingController
                                                           .clear,
