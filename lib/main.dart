@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: ItemSelection(),
+      home: Dashboard(),
       // home: MyWaveClipper(),
     );
   }
