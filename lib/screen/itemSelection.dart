@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:orderapp/components/commoncolor.dart';
+import 'package:orderapp/db_helper.dart';
 import 'package:provider/provider.dart';
 
 import '../controller/controller.dart';
 
 class ItemSelection extends StatefulWidget {
   // List<Map<String,dynamic>>  products;
-  // ItemSelection({required this.products});
+  String customerId;
+  ItemSelection({required this.customerId});
   @override
   State<ItemSelection> createState() => _ItemSelectionState();
 }
@@ -110,10 +112,78 @@ class _ItemSelectionState extends State<ItemSelection> {
                           ),
                           IconButton(
                             icon: Icon(Icons.add),
-                            onPressed: () {
+                            onPressed: () async {
                               setState(() {
                                 selected = index;
+                                
                               });
+                              if (qty.text == null ||
+                                                    qty.text.isEmpty) {
+                                                  qty.text = "1";
+                                                }
+                                                // print(
+                                                //     " itemName, rate1--${itemName}--${rate1}");
+                                                int max = await OrderAppDB
+                                                    .instance
+                                                    .getMaxCommonQuery(
+                                                        'orderBagTable',
+                                                        'cartrowno',
+                                                        "os='${values.ordernum[0]["os"]}' AND customerid='$custmerId'");
+                                                var total = int.parse(rate1) *
+                                                    int.parse(qty.text);
+                                                print("total rate $total");
+                                                var res = widget.customerId == null ||
+                                                        widget.customerId.isEmpty ||
+                                                        productCode == null ||
+                                                        productCode!.isEmpty
+                                                    ? visibleValidation.value =
+                                                        true
+                                                    // : await OrderAppDB.instance
+                                                    //     .insertCommonQuery(
+                                                    //         'orderBagTable',
+                                                    //         'itemName, cartdatetime, os, customerid, cartrowno, code, qty, rate, totalamount, cstatus',
+                                                    //         "'$itemName','$date!','1','$custmerId!',$max,'$productCode!',2,'$rate1','46',0");
+                                                    : await OrderAppDB.instance
+                                                        .insertorderBagTable(
+                                                            itemName,
+                                                            date!,
+                                                            values.ordernum[0]
+                                                                ['os'],
+                                                            custmerId!,
+                                                            max,
+                                                            productCode!,
+                                                            int.parse(qty.text),
+                                                            rate1,
+                                                            total.toString(),
+                                                            0);
+                                                print("result........... $res");
+                                                //  Provider.of<Controller>(context,
+                                                //           listen: false).countFromTable("orderBagTable");
+                                                custmerId == null ||
+                                                        custmerId!.isEmpty ||
+                                                        productCode == null ||
+                                                        productCode!.isEmpty
+                                                    ? Text("Select customer")
+                                                    : Provider.of<Controller>(
+                                                            context,
+                                                            listen: false)
+                                                        .calculateTotal(
+                                                            values.ordernum[0]
+                                                                ['os'],
+                                                            custmerId!);
+
+                                                /////////////////////////
+
+                                                (custmerId!.isNotEmpty ||
+                                                            custmerId !=
+                                                                null) &&
+                                                        (productCode!
+                                                                .isNotEmpty ||
+                                                            productCode != null)
+                                                    ? snackbar.showSnackbar(
+                                                        context,
+                                                        "Added to cart")
+                                                    : Text("No data");
                             },
                             color: selected == index
                                 ? P_Settings.addbutonColor
