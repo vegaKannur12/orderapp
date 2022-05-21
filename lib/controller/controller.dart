@@ -223,7 +223,7 @@ class Controller extends ChangeNotifier {
     notifyListeners();
   }
 
-  ///////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////// 
   setSname() async {
     final prefs = await SharedPreferences.getInstance();
     String? same = prefs.getString("st_username");

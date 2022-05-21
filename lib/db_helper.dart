@@ -700,14 +700,14 @@ class OrderAppDB {
   }
 
 ///////////////////////////////////////////////////////
-  Future insertCommonQuery(String table, String field, String values) async {
-    final db = await database;
-    var query = 'INSERT INTO table($field) VALUES($values)';
-    var res = await db.rawInsert(query);
-    print("query.........$query");
-    // print(res);
-    return res;
-  }
+  // Future insertCommonQuery(String table, String field, String values) async {
+  //   final db = await database;
+  //   var query = 'INSERT INTO $table($field) VALUES($values)';
+  //   var res = await db.rawInsert(query);
+  //   print("query.........$query");
+  //   // print(res);
+  //   return res;
+  // }
 }
 
 //////////////////////////////////////////////////////////////

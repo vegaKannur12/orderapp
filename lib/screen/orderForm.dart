@@ -7,6 +7,7 @@ import 'package:orderapp/controller/controller.dart';
 import 'package:orderapp/db_helper.dart';
 import 'package:orderapp/model/productdetails_model.dart';
 import 'package:orderapp/screen/cartList.dart';
+import 'package:orderapp/screen/historypage.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
@@ -408,7 +409,12 @@ class _OrderFormState extends State<OrderForm> {
                                     Text('Orderform'),
                                     GestureDetector(
                                       onTap: (() {
-                                        print("Hello");
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  HistoryPage()),
+                                        );
                                       }),
                                       child: Container(
                                         width: size.width * 0.5,
@@ -551,6 +557,11 @@ class _OrderFormState extends State<OrderForm> {
                                                         productCode!.isEmpty
                                                     ? visibleValidation.value =
                                                         true
+                                                    // : await OrderAppDB.instance
+                                                    //     .insertCommonQuery(
+                                                    //         'orderBagTable',
+                                                    //         'itemName, cartdatetime, os, customerid, cartrowno, code, qty, rate, totalamount, cstatus',
+                                                    //         "'$itemName','$date!','1','$custmerId!',$max,'$productCode!',2,'$rate1','46',0");
                                                     : await OrderAppDB.instance
                                                         .insertorderBagTable(
                                                             itemName,
@@ -761,6 +772,12 @@ class _OrderFormState extends State<OrderForm> {
 
                                                                     print(
                                                                         "total rate $total");
+                                                                    // var res = await OrderAppDB
+                                                                    //     .instance
+                                                                    //     .insertCommonQuery(
+                                                                    //         'orderBagTable',
+                                                                    //         'itemName, cartdatetime, os, customerid, cartrowno, code, qty, rate, totalamount, cstatus',
+                                                                    //         "'$itemName','$date!','TX','$custmerId!',$max,'$productCode!',1,'$rate1','$total',0");
 
                                                                     var res = await OrderAppDB.instance.insertorderBagTable(
                                                                         item,
