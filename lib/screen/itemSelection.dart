@@ -16,7 +16,8 @@ class ItemSelection extends StatefulWidget {
   String os;
   String areaId;
 
-  ItemSelection({required this.customerId, required this.areaId,required this.os});
+  ItemSelection(
+      {required this.customerId, required this.areaId, required this.os});
 
   @override
   State<ItemSelection> createState() => _ItemSelectionState();
@@ -201,7 +202,7 @@ class _ItemSelectionState extends State<ItemSelection> {
               ),
               value.isLoading
                   ? Container(
-                      height: size.height * 0.6,
+                      // height: size.height * 0.6,
                       child: CircularProgressIndicator(
                           color: P_Settings.wavecolor))
                   : Expanded(
