@@ -187,12 +187,12 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                 //         "'$itemName','$date!','1','$custmerId!',$max,'$productCode!',2,'$rate1','46',0");
                                                 : await OrderAppDB.instance
                                                     .insertorderBagTable(
-                                                        products[index]["item"],
+                                                        value.newList[index]["item"],
                                                         date!,
-                                                        value.ordernum[0]["os"],
+                                                        widget.os,
                                                         widget.customerId,
                                                         max,
-                                                        products[index]["code"],
+                                                        value.newList[index]["code"],
                                                         int.parse(value
                                                             .qty[index].text),
                                                         rate1,
@@ -220,9 +220,9 @@ class _ItemSelectionState extends State<ItemSelection> {
                                             (widget.customerId.isNotEmpty ||
                                                         widget.customerId !=
                                                             null) &&
-                                                    (products[index]["code"]
+                                                    (value.newList[index]["code"]
                                                             .isNotEmpty ||
-                                                        products[index]
+                                                        value.newList[index]
                                                                 ["code"] !=
                                                             null)
                                                 ? snackbar.showSnackbar(
