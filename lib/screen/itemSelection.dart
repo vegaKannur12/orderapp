@@ -33,17 +33,6 @@ class _ItemSelectionState extends State<ItemSelection> {
       ),
       body: Column(
         children: [
-          // Container(
-          //   height: size.height * 0.04,
-          //   decoration: BoxDecoration(
-          //     color: Colors.indigo,
-          //     borderRadius: BorderRadius.only(
-          //       // bottomLeft: Radius.circular(50),
-          //       // bottomRight: Radius.circular(50),
-          //     ),
-          //   ),
-          //   // child: Text("Count"),
-          // ),
           Container(
             width: size.width * 0.95,
             height: size.height * 0.1,
@@ -95,18 +84,35 @@ class _ItemSelectionState extends State<ItemSelection> {
                   );
                 }),
           ),
+          Container(
+            width: size.width * 0.95,
+            height: size.height * 0.06,
+            decoration: BoxDecoration(
+              color: Colors.white,
+            ),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  shape: const CircleBorder(),
+                  padding: const EdgeInsets.all(10)),
+              child: const Icon(
+                Icons.add,
+                size: 30,
+              ),
+              onPressed: () {},
+            ),
+          ),
         ],
       ),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(left: 100, right: 150),
-        child: FloatingActionButton(
-          onPressed: () {
-            // Add your onPressed code here!
-          },
-          backgroundColor: P_Settings.addbutonColor,
-          child: Text("Count"),
-        ),
-      ),
+      // floatingActionButton: Padding(
+      //   padding: const EdgeInsets.only(left: 100, right: 150),
+      //   child: FloatingActionButton(
+      //     onPressed: () {
+      //       // Add your onPressed code here!
+      //     },
+      //     backgroundColor: P_Settings.addbutonColor,
+      //     child: Text("Count"),
+      //   ),
+      // ),
     );
   }
 }
