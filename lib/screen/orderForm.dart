@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:orderapp/components/commoncolor.dart';
@@ -398,12 +399,20 @@ class _OrderFormState extends State<OrderForm> {
                                                   visibleValidation.value =
                                                       true;
                                                 } else {
-                                                  Provider.of<Controller>(context, listen: false).getProductItems('productDetailsTable',);
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              ItemSelection( )));
+                                                  Provider.of<Controller>(
+                                                          context,
+                                                          listen: false)
+                                                      .getProductItems(
+                                                    'productDetailsTable',
+                                                  );
+                                                  print("values.isLoading---${values.isLoading}");
+                                                 
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                ItemSelection()));
+                                                  
                                                 }
                                               },
                                               style: ElevatedButton.styleFrom(

@@ -18,6 +18,7 @@ import '../model/staffdetails_model.dart';
 
 class Controller extends ChangeNotifier {
   bool isLoading = false;
+  bool isSearch=false;
   String? sname;
   String? orderTotal;
   String? ordernumber;
@@ -423,7 +424,7 @@ class Controller extends ChangeNotifier {
         // notifyListeners();
       }
 
-            isLoading=false;
+      isLoading=false;
       notifyListeners();
       print("product name----${productName}");
       // print("product productRate----${productRate}");
@@ -597,16 +598,19 @@ class Controller extends ChangeNotifier {
   }
 
   searchProcess(String searchkey) {
+    
+    print("searchkey----$searchkey");
     if (searchkey.isEmpty) {
-      // if the search field is empty or only contains white-space, we'll display all users
+    
       newList = productName;
     } else {
+      isSearch=true;
       newList = productName
           .where((product) =>
               product["item"].toLowerCase().contains(searchkey.toLowerCase()))
           .toList();
     }
-    // print("nw list---$newList");
+    print("nw list---$newList");
     notifyListeners();
   }
   //////      /////////////////////////////
