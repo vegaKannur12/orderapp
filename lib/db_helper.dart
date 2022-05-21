@@ -274,7 +274,7 @@ class OrderAppDB {
             $os TEXT NOT NULL,
             $customerid TEXT,
             $cartrowno INTEGER,
-            $code TEXT,
+            $code TEXT UNIQUE,
             $qty INTEGER,
             $rate TEXT,
             $totalamount TEXT,
@@ -310,13 +310,15 @@ class OrderAppDB {
       String totalamount,
       int cstatus) async {
     print("os--$os");
+    print("code...........$code");
     final db = await database;
-
-    var query2 =
-        'INSERT INTO orderBagTable(itemName, cartdatetime, os, customerid, cartrowno, code, qty, rate, totalamount, cstatus) VALUES("${itemName}","${cartdatetime}", "${os}", "${customerid}", $cartrowno, "${code}", $qty, "${rate}", "${totalamount}", $cstatus)';
-
-    var res = await db.rawInsert(query2);
-    print(query2);
+    var res;
+    var query3;
+    var query2;
+    query2 =
+        'INSERT INTO orderBagTable (itemName, cartdatetime, os, customerid, cartrowno, code, qty, rate, totalamount, cstatus) VALUES ("${itemName}","${cartdatetime}", "${os}", "${customerid}", $cartrowno, "${code}", $qty, "${rate}", "${totalamount}", $cstatus) ON CONFLICT (code) DO UPDATE SET qty=$qty, totalamount="${totalamount}"';
+    res = await db.rawInsert(query2);
+    print("insert query result $res");
     print(res);
     return res;
   }
@@ -350,7 +352,6 @@ class OrderAppDB {
       res2 = await db.rawInsert(query3);
       print(query3);
     }
-    
   }
   //////////////////////////master table/////////////////////////////////////
 
@@ -677,6 +678,7 @@ class OrderAppDB {
     var res;
     int max;
     Database db = await instance.database;
+
     print("field----condition---table ----${field}---${condition}----${table}");
     var result = await db.rawQuery("SELECT * FROM '$table' WHERE $condition");
     print("result max---$result");
@@ -696,4 +698,16 @@ class OrderAppDB {
     print(res);
     return max;
   }
+
+///////////////////////////////////////////////////////
+  // Future insertCommonQuery(String table, String field, String values) async {
+  //   final db = await database;
+  //   var query = 'INSERT INTO $table($field) VALUES($values)';
+  //   var res = await db.rawInsert(query);
+  //   print("query.........$query");
+  //   // print(res);
+  //   return res;
+  // }
 }
+
+//////////////////////////////////////////////////////////////

@@ -10,6 +10,7 @@ import '../components/waveclipper.dart';
 import 'companyDetailsscreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 class RegistrationScreen extends StatefulWidget {
   @override
@@ -38,6 +39,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         key: _scaffoldKey,
         resizeToAvoidBottomInset: false,
         body: SingleChildScrollView(
+          reverse: true,
           child: Column(
             children: [
               Form(
