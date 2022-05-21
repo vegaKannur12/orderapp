@@ -91,7 +91,7 @@ class _OrderFormState extends State<OrderForm> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: P_Settings.bodycolor,
       body: SingleChildScrollView(
         child: SafeArea(
           child: Consumer<Controller>(builder: (context, values, child) {

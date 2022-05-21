@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:orderapp/components/commoncolor.dart';
 
 class ItemSelection extends StatefulWidget {
   // List products;
@@ -8,57 +9,86 @@ class ItemSelection extends StatefulWidget {
 }
 
 class _ItemSelectionState extends State<ItemSelection> {
+  List<Map<String, dynamic>> products = [];
+  int? selected;
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.indigo,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.shopping_cart,
+              color: Colors.white,
+              size: 25,
+            ),
+            onPressed: () {
+              // do something
+            },
+          )
+        ],
+      ),
       body: Column(
         children: [
+          // Container(
+          //   height: size.height * 0.04,
+          //   decoration: BoxDecoration(
+          //     color: Colors.indigo,
+          //     borderRadius: BorderRadius.only(
+          //       // bottomLeft: Radius.circular(50),
+          //       // bottomRight: Radius.circular(50),
+          //     ),
+          //   ),
+          //   // child: Text("Count"),
+          // ),
           Container(
-            width: size.width*0.95,
+            width: size.width * 0.95,
             height: size.height * 0.1,
             child: TextField(
-                // onChanged: (value) => _runFilter(value),
-                decoration: const InputDecoration(
-                    labelText: 'Search', suffixIcon: Icon(Icons.search)),
-              ),
+              // onChanged: (value) => _runFilter(value),
+              decoration: const InputDecoration(
+                  labelText: 'Search', suffixIcon: Icon(Icons.search)),
+            ),
           ),
-          // Container(
-          //   height: size.height * 0.1,
-          //   color: Colors.yellow,
-          // ),
           Expanded(
             child: ListView.builder(
                 shrinkWrap: true,
-                itemCount: 10,
+                itemCount: 20,
                 itemBuilder: (BuildContext context, index) {
                   return Padding(
-                    padding: const EdgeInsets.only(left: 0.4,right: 0.4),
+                    padding: const EdgeInsets.only(left: 0.4, right: 0.4),
                     child: ListTile(
-                      title: Text("helo"),
+                      title: Text(
+                        "helo",
+                        style:
+                            TextStyle(color: Colors.green[800], fontSize: 18),
+                      ),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Container(
-                            width: size.width*0.09,
-                            child: TextFormField(
-                              keyboardType: TextInputType.number,
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: "qty"
-                              ),
-                            )),SizedBox(width: 10,),
+                              width: size.width * 0.09,
+                              child: TextFormField(
+                                keyboardType: TextInputType.number,
+                                decoration: InputDecoration(
+                                    border: InputBorder.none, hintText: "qty"),
+                              )),
+                          SizedBox(
+                            width: 10,
+                          ),
                           IconButton(
                             icon: Icon(Icons.add),
                             onPressed: () {},
-                            
+                            color: P_Settings.addbutonColor,
                           ),
-                          // IconButton(
-                          //   icon: Icon(Icons.delete),
-                          //   onPressed: () {},
-                          //   color: Theme.of(context).errorColor,
-                          // )
+                          IconButton(
+                            icon: Icon(Icons.delete),
+                            onPressed: () {},
+                            color: Theme.of(context).errorColor,
+                          )
                         ],
                       ),
                     ),
@@ -66,6 +96,16 @@ class _ItemSelectionState extends State<ItemSelection> {
                 }),
           ),
         ],
+      ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(left: 100, right: 150),
+        child: FloatingActionButton(
+          onPressed: () {
+            // Add your onPressed code here!
+          },
+          backgroundColor: P_Settings.addbutonColor,
+          child: Text("Count"),
+        ),
       ),
     );
   }

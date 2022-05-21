@@ -28,6 +28,7 @@ class P_Settings {
   static Color get dataTable => Color.fromARGB(255, 2, 27, 65);
   static Color get tableheadingColor => Color.fromARGB(255, 236, 243, 243);
   static Color get chooseCategory => Color.fromRGBO(230, 81, 0, 1);
+  static Color get addbutonColor => Color.fromARGB(255, 33, 136, 24);
 
   static Color get bottomColor => Colors.yellow;
 
