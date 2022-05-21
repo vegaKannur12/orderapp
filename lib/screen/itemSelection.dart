@@ -58,18 +58,21 @@ class _ItemSelectionState extends State<ItemSelection> {
                       labelText: 'Search', suffixIcon: Icon(Icons.search)),
                 ),
               ),
+            value.isLoading?
+            CircularProgressIndicator()
+            :
               Expanded(
                 child: ListView.builder(
                     shrinkWrap: true,
-                    itemCount: products.length,
+                    itemCount: value.productName.length,
                     itemBuilder: (BuildContext context, index) {
                       return Padding(
                         padding: const EdgeInsets.only(left: 0.4, right: 0.4),
                         child: ListTile(
                           title: Text(
-                            '${products[index]["code"]}' +
+                            '${value.productName[index]["code"]}' +
                                 '-' +
-                                '${products[index]["item"]}',
+                                '${value.productName[index]["item"]}',
                             style: TextStyle(
                                 color: Colors.green[800], fontSize: 18),
                           ),

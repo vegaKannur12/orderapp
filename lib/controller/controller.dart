@@ -412,6 +412,8 @@ class Controller extends ChangeNotifier {
   getProductItems(String table) async {
     productName.clear();
     try {
+      isLoading=true;
+      notifyListeners();
       prodctItems = await OrderAppDB.instance.selectCommonquery(table, '');
       print("prodctItems----${prodctItems}");
 
@@ -420,6 +422,9 @@ class Controller extends ChangeNotifier {
         // productName.add(item["code"] + '-' + item["item"]);
         // notifyListeners();
       }
+
+            isLoading=false;
+      notifyListeners();
       print("product name----${productName}");
       // print("product productRate----${productRate}");
       notifyListeners();
