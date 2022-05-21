@@ -25,7 +25,7 @@ class ItemSelection extends StatefulWidget {
 
 class _ItemSelectionState extends State<ItemSelection> {
   String rate1 = "1";
-
+  int count = 1;
   List<Map<String, dynamic>> products = [];
   int? selected;
   SearchTile search = SearchTile();
@@ -90,7 +90,8 @@ class _ItemSelectionState extends State<ItemSelection> {
                   alignment: Alignment.center,
                   height: size.height * 0.045,
                   width: size.width * 0.2,
-                  child: Text("Count"),
+                  child: Text(
+                      "${Provider.of<Controller>(context, listen: false).count}"),
                   decoration: BoxDecoration(
                     color: P_Settings.roundedButtonColor,
                     borderRadius: BorderRadius.only(
@@ -225,8 +226,16 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                         value.newList[index]
                                                                 ["code"] !=
                                                             null)
-                                                ? snackbar.showSnackbar(
-                                                    context, "Added to cart")
+                                                ? Provider.of<Controller>(
+                                                        context,
+                                                        listen: false)
+                                                    .countFromTable(
+                                                        "orderBagTable",
+                                                         widget.os,
+                                                        widget.customerId,
+                                                       )
+                                                // snackbar.showSnackbar(
+                                                //     context, "Added to cart")
                                                 : Text("No data");
                                           },
                                           color: selected == index
@@ -339,9 +348,11 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                 : Provider.of<Controller>(
                                                         context,
                                                         listen: false)
-                                                    .calculateTotal(
-                                                        value.ordernum[0]['os'],
-                                                        widget.customerId);
+                                                    .countFromTable(
+                                                        "orderBagTable",
+                                                         widget.os,
+                                                        widget.customerId,
+                                                       );
 
                                             /////////////////////////
 
@@ -353,8 +364,14 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                         products[index]
                                                                 ["code"] !=
                                                             null)
-                                                ? snackbar.showSnackbar(
-                                                    context, "Added to cart")
+                                                ? Provider.of<Controller>(
+                                                        context,
+                                                        listen: false)
+                                                    .calculateTotal(
+                                                        value.ordernum[0]['os'],
+                                                        widget.customerId)
+                                                // snackbar.showSnackbar(
+                                                //     context, "Added to cart")
                                                 : Text("No data");
                                           },
                                           color: selected == index

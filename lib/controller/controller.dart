@@ -33,7 +33,7 @@ class Controller extends ChangeNotifier {
   List<TextEditingController> controller = [];
   List<TextEditingController> qty = [];
 
-  String? count;
+  String count ="0";
   String? sof;
   List<Map<String, dynamic>> bagList = [];
   List<Map<String, dynamic>> newList = [];
