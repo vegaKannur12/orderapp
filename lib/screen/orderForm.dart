@@ -398,11 +398,12 @@ class _OrderFormState extends State<OrderForm> {
                                                   visibleValidation.value =
                                                       true;
                                                 } else {
+                                                  Provider.of<Controller>(context, listen: false).getProductItems('productDetailsTable',);
                                                   Navigator.push(
                                                       context,
                                                       MaterialPageRoute(
                                                           builder: (context) =>
-                                                              ItemSelection()));
+                                                              ItemSelection( )));
                                                 }
                                               },
                                               style: ElevatedButton.styleFrom(

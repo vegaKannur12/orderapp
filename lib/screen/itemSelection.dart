@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:orderapp/components/commoncolor.dart';
+import 'package:provider/provider.dart';
+
+import '../controller/controller.dart';
 
 class ItemSelection extends StatefulWidget {
-  // List products;
+  // List<Map<String,dynamic>>  products;
   // ItemSelection({required this.products});
   @override
   State<ItemSelection> createState() => _ItemSelectionState();
@@ -11,6 +14,14 @@ class ItemSelection extends StatefulWidget {
 class _ItemSelectionState extends State<ItemSelection> {
   List<Map<String, dynamic>> products = [];
   int? selected;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    products = Provider.of<Controller>(context, listen: false).productName;
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -45,13 +56,13 @@ class _ItemSelectionState extends State<ItemSelection> {
           Expanded(
             child: ListView.builder(
                 shrinkWrap: true,
-                itemCount: 20,
+                itemCount: products.length,
                 itemBuilder: (BuildContext context, index) {
                   return Padding(
                     padding: const EdgeInsets.only(left: 0.4, right: 0.4),
                     child: ListTile(
                       title: Text(
-                        "helo",
+                        '${products[index]["code"]}' + '-'  + '${products[index]["item"]}',
                         style:
                             TextStyle(color: Colors.green[800], fontSize: 18),
                       ),
@@ -70,8 +81,12 @@ class _ItemSelectionState extends State<ItemSelection> {
                           ),
                           IconButton(
                             icon: Icon(Icons.add),
-                            onPressed: () {},
-                            color: P_Settings.addbutonColor,
+                            onPressed: () {
+                              setState(() {
+                                selected=index;
+                              });
+                            },
+                            color: selected== index ? P_Settings.addbutonColor:Colors.black,
                           ),
                           IconButton(
                             icon: Icon(Icons.delete),

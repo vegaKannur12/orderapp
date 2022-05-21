@@ -223,7 +223,7 @@ class Controller extends ChangeNotifier {
     notifyListeners();
   }
 
-  /////////////////////////////////////////////////////////// 
+  ///////////////////////////////////////////////////////////
   setSname() async {
     final prefs = await SharedPreferences.getInstance();
     String? same = prefs.getString("st_username");
@@ -386,11 +386,33 @@ class Controller extends ChangeNotifier {
   }
 
   ///////////////////////////////////////////////////////
-  getProductItems(String product) async {
-    print("product...............${product}");
+  // getProductItems(String product) async {
+  //   print("product...............${product}");
+  //   productName.clear();
+  //   try {
+  //     prodctItems = await OrderAppDB.instance.getItems(product);
+  //     print("prodctItems----${prodctItems}");
+
+  //     for (var item in prodctItems) {
+  //       productName.add(item);
+  //       // productName.add(item["code"] + '-' + item["item"]);
+  //       // notifyListeners();
+  //     }
+  //     print("product name----${productName}");
+  //     // print("product productRate----${productRate}");
+  //     notifyListeners();
+  //   } catch (e) {
+  //     print(e);
+  //     return null;
+  //   }
+  //   notifyListeners();
+  // }
+/////////////////////////////////////////////////////////////
+  getProductItems(String table ) async {
     productName.clear();
     try {
-      prodctItems = await OrderAppDB.instance.getItems(product);
+      prodctItems =
+          await OrderAppDB.instance.selectCommonquery(table,'');
       print("prodctItems----${prodctItems}");
 
       for (var item in prodctItems) {

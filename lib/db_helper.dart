@@ -660,8 +660,21 @@ class OrderAppDB {
     await db.delete('$table');
   }
 
-//////////////////////////////
-  ////////////count from table/////////////////////////////////////////
+//////////////////////////////selectCommonQuery///////////////////
+  selectCommonquery(String table, String? condition) async {
+    List<Map<String, dynamic>> result;
+    Database db = await instance.database;
+    print("----condition---table -------${condition}----${table}");
+    if (condition == null || condition.isEmpty) {
+      result = await db.rawQuery("SELECT * FROM '$table'");
+    } else {
+      result = await db.rawQuery("SELECT * FROM '$table' WHERE $condition");
+    }
+    print("result----$result");
+    return result;
+  }
+
+//////////////count from table/////////////////////////////////////////
   countCommonQuery(String table, String os, String customerId) async {
     String count;
     Database db = await instance.database;
