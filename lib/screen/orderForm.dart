@@ -195,8 +195,11 @@ class _OrderFormState extends State<OrderForm> {
                                           vertical: 0, horizontal: 4),
                                       hintText: widget.areaname,
                                     ),
-                                    child: Autocomplete<String>(optionsBuilder:
+                                    child: Autocomplete<String>(
+                                      // displayStringForOption: (option) => widget.areaname,
+                                      optionsBuilder:
                                         (TextEditingValue value) {
+                                          
                                       if (value.text.isEmpty) {
                                         return [];
                                       } else {

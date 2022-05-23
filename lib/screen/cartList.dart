@@ -18,7 +18,6 @@ class CartList extends StatefulWidget {
     required this.custmerId,
     required this.os,
     required this.areaname,
-
   });
   @override
   State<CartList> createState() => _CartListState();
