@@ -220,7 +220,7 @@ class StaffLogin extends StatelessWidget {
                                                   context,
                                                   MaterialPageRoute(
                                                       builder: (context) =>
-                                                          DownloadedPage()),
+                                                          DownloadedPage(type: "",)),
                                                 );
                                               },
                                               color:

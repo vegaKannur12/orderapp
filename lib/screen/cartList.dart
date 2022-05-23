@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:orderapp/components/commoncolor.dart';
 import 'package:orderapp/controller/controller.dart';
 import 'package:orderapp/db_helper.dart';
+import 'package:orderapp/screen/orderForm.dart';
 import 'package:orderapp/service/tableList.dart';
 import 'package:provider/provider.dart';
 
@@ -122,7 +123,7 @@ class _CartListState extends State<CartList> {
                             ? showDialog(
                                 context: context,
                                 builder: (context) {
-                                  Future.delayed(Duration(milliseconds: 600),
+                                  Future.delayed(Duration(milliseconds: 1000),
                                       () {
                                     Navigator.of(context).pop(true);
                                   });
@@ -142,6 +143,9 @@ class _CartListState extends State<CartList> {
                                   ));
                                 })
                             : null;
+
+                        Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => OrderForm()));
                       }),
                       child: Container(
                         width: size.width * 0.5,

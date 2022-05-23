@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:orderapp/components/commoncolor.dart';
+import 'package:orderapp/screen/downloadedPage.dart';
 import 'package:orderapp/screen/mainDashboard.dart';
 import 'package:orderapp/screen/staffLoginScreen.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +20,7 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   int _selectedDrawerIndex = 0;
-  List companyAttributes = ["Dashboard","Logged in", "Collection", "Orders", "Sale"];
+  List companyAttributes = ["Dashboard","Logged in", "Collection", "Orders", "Sale","Download Page"];
   int _selectedIndex = 0;
 
   _onSelectItem(int index) {
@@ -45,6 +46,7 @@ class _DashboardState extends State<Dashboard> {
         return new MainDashboard();
       case 3:
         return new OrderForm();
+      case 5:return DownloadedPage(type: "drawer call",);
     }
   }
 
