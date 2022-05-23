@@ -91,10 +91,13 @@ class _OrderFormState extends State<OrderForm> {
 
   @override
   Widget build(BuildContext context) {
+    // final bottom = MediaQuery.of(context).viewInsets.bottom;
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
+        // reverse: true,
         child: SafeArea(
           child: Consumer<Controller>(builder: (context, values, child) {
             return Form(
@@ -199,59 +202,102 @@ class _OrderFormState extends State<OrderForm> {
                                       // hintText: "Select..",
                                     ),
                                     child: Autocomplete<String>(
-                                        // initialValue: ,
-                                        optionsBuilder:
-                                            (TextEditingValue value) {
-                                      if (value.text.isEmpty) {
-                                        return [];
-                                      } else {
-                                        print(
-                                            "TextEditingValue---${value.text}");
-                                        Provider.of<Controller>(context,
-                                                listen: false)
-                                            .getArea(value.text);
+                                      // initialValue: ,
+                                      optionsBuilder: (TextEditingValue value) {
+                                        if (value.text.isEmpty) {
+                                          return [];
+                                        } else {
+                                          print(
+                                              "TextEditingValue---${value.text}");
+                                          Provider.of<Controller>(context,
+                                                  listen: false)
+                                              .getArea(value.text);
 
-                                        return values.areDetails.where(
-                                            (suggestion) => suggestion
-                                                .toLowerCase()
-                                                .contains(
-                                                    value.text.toLowerCase()));
-                                      }
-                                    }, onSelected: (value) {
-                                      setState(() {
-                                        _selectedItemarea = value;
-                                        print(
-                                            "_selectedItem---${_selectedItemarea}");
-                                        splitted =
-                                            _selectedItemarea!.split('-');
+                                          return values.areDetails.where(
+                                              (suggestion) => suggestion
+                                                  .toLowerCase()
+                                                  .contains(value.text
+                                                      .toLowerCase()));
+                                        }
+                                      },
+                                      onSelected: (value) {
+                                        setState(() {
+                                          _selectedItemarea = value;
+                                          print(
+                                              "_selectedItem---${_selectedItemarea}");
+                                          splitted =
+                                              _selectedItemarea!.split('-');
 
-                                        Provider.of<Controller>(context,
-                                                listen: false)
-                                            .getCustomer(splitted![0]);
-                                      });
-                                    }, fieldViewBuilder: (BuildContext context,
-                                            TextEditingController
-                                                fieldTextEditingController,
-                                            FocusNode fieldFocusNode,
-                                            VoidCallback onFieldSubmitted) {
-                                      return TextField(
-                                        decoration: InputDecoration(
-                                          border: InputBorder.none,
+                                          Provider.of<Controller>(context,
+                                                  listen: false)
+                                              .getCustomer(splitted![0]);
+                                        });
+                                      },
+                                      fieldViewBuilder: (BuildContext context,
+                                          TextEditingController
+                                              fieldTextEditingController,
+                                          FocusNode fieldFocusNode,
+                                          VoidCallback onFieldSubmitted) {
+                                        return TextField(
+                                          decoration: InputDecoration(
+                                            border: InputBorder.none,
 
-                                          // hintText: 'Enter a message',
-                                          suffixIcon: IconButton(
-                                            onPressed:
-                                                fieldTextEditingController
-                                                    .clear,
-                                            icon: Icon(Icons.clear),
+                                            // hintText: 'Enter a message',
+                                            suffixIcon: IconButton(
+                                              onPressed:
+                                                  fieldTextEditingController
+                                                      .clear,
+                                              icon: Icon(Icons.clear),
+                                            ),
                                           ),
-                                        ),
-                                        controller: fieldTextEditingController,
-                                        focusNode: fieldFocusNode,
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.normal),
-                                      );
-                                    }),
+                                          controller:
+                                              fieldTextEditingController,
+                                          focusNode: fieldFocusNode,
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.normal),
+                                        );
+                                      },
+                                      // optionsMaxHeight: size.height * 0.3,
+                                      optionsViewBuilder:
+                                          (context, onSelected, options) {
+                                        return Align(
+                                          alignment: Alignment.topLeft,
+                                          child: Material(
+                                            child: Container(
+                                              height: size.height * 0.2,
+                                              width: size.width * 0.84,
+                                              // color: Colors.teal,
+                                              child: ListView.builder(
+                                                padding: EdgeInsets.all(10.0),
+                                                itemCount: options.length,
+                                                itemBuilder:
+                                                    (BuildContext context,
+                                                        int index) {
+                                                  //      print(
+                                                  // "option----${options}");
+                                                  print("index----${index}");
+                                                  final String option =
+                                                      options.elementAt(index);
+                                                  print("option----${option}");
+                                                  return ListTile(
+                                                    onTap: () {
+                                                      print(
+                                                          "optonsssssssssssss$option");
+                                                      onSelected(option);
+                                                    },
+                                                    title: Text(
+                                                        option.toString(),
+                                                        style: const TextStyle(
+                                                            color:
+                                                                Colors.black)),
+                                                  );
+                                                },
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
                                   ),
                                 ),
                               ),
@@ -291,6 +337,7 @@ class _OrderFormState extends State<OrderForm> {
                                         ),
                                         child:
                                             Autocomplete<Map<String, dynamic>>(
+                                              
                                           optionsBuilder:
                                               (TextEditingValue value) {
                                             if (value.text.isEmpty) {
@@ -305,10 +352,9 @@ class _OrderFormState extends State<OrderForm> {
                                                           .toLowerCase()
                                                           .startsWith(value.text
                                                               .toLowerCase()));
-                                                          
-                                                          
-                                                          // contains(value.text
-                                                          //     .toLowerCase()));
+
+                                              // contains(value.text
+                                              //     .toLowerCase()));
                                             }
                                           },
                                           displayStringForOption:
@@ -352,55 +398,56 @@ class _OrderFormState extends State<OrderForm> {
                                                       FontWeight.normal),
                                             );
                                           },
-                                          // optionsViewBuilder:
-                                          //     (BuildContext context,
-                                          //         AutocompleteOnSelected<
-                                          //                 Map<String, dynamic>>
-                                          //             onSelected,
-                                          //         Iterable<Map<String, dynamic>>
-                                          //             options) {
-                                          //   return Align(
-                                          //     alignment: Alignment.topLeft,
-                                          //     child: Material(
-                                          //       child: Container(
-                                          //         width: size.width * 0.7,
-                                          //         // color: Colors.teal,
-                                          //         child: ListView.builder(
-                                          //           padding:
-                                          //               EdgeInsets.all(10.0),
-                                          //           itemCount: options.length,
-                                          //           itemBuilder:
-                                          //               (BuildContext context,
-                                          //                   int index) {
-                                          //             //      print(
-                                          //             // "option----${options}");
-                                          //             print(
-                                          //                 "index----${index}");
-                                          //             final Map<String, dynamic>
-                                          //                 option = options
-                                          //                     .elementAt(index);
-                                          //             print(
-                                          //                 "option----${option}");
-                                          //             return ListTile(
-                                          //               onTap: () {
-                                          //                 print(
-                                          //                     "optonsssssssssssss$option");
-                                          //                 onSelected(option);
-                                          //               },
-                                          //               title: Text(
-                                          //                   option["hname"]
-                                          //                       .toString(),
-                                          //                   style:
-                                          //                       const TextStyle(
-                                          //                           color: Colors
-                                          //                               .black)),
-                                          //             );
-                                          //           },
-                                          //         ),
-                                          //       ),
-                                          //     ),
-                                          //   );
-                                          // },
+                                          optionsMaxHeight: size.height * 0.02,
+                                          optionsViewBuilder:
+                                              (BuildContext context,
+                                                  AutocompleteOnSelected<
+                                                          Map<String, dynamic>>
+                                                      onSelected,
+                                                  Iterable<Map<String, dynamic>>
+                                                      options) {
+                                            return Align(
+                                              alignment: Alignment.topLeft,
+                                              child: Material(
+                                                child: Container(
+                                                  width: size.width * 0.84,
+                                                  height: size.height * 0.2,
+                                                  child: ListView.builder(
+                                                    padding:
+                                                        EdgeInsets.all(10.0),
+                                                    itemCount: options.length,
+                                                    itemBuilder:
+                                                        (BuildContext context,
+                                                            int index) {
+                                                      //      print(
+                                                      // "option----${options}");
+                                                      print(
+                                                          "index----${index}");
+                                                      final Map<String, dynamic>
+                                                          option = options
+                                                              .elementAt(index);
+                                                      print(
+                                                          "option----${option}");
+                                                      return ListTile(
+                                                        onTap: () {
+                                                          print(
+                                                              "optonsssssssssssss$option");
+                                                          onSelected(option);
+                                                        },
+                                                        title: Text(
+                                                            option["hname"]
+                                                                .toString(),
+                                                            style:
+                                                                const TextStyle(
+                                                                    color: Colors
+                                                                        .black)),
+                                                      );
+                                                    },
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          },
                                         ),
                                       ),
                                     ),
