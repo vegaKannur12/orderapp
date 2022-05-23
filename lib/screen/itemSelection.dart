@@ -177,28 +177,30 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                     value.qty[index].text);
                                             print("total rate $total");
 
-                                            var res = widget.customerId ==
-                                                        null ||
-                                                    widget.customerId.isEmpty
-                                                ? null
-                                                // : await OrderAppDB.instance
-                                                //     .insertCommonQuery(
-                                                //         'orderBagTable',
-                                                //         'itemName, cartdatetime, os, customerid, cartrowno, code, qty, rate, totalamount, cstatus',
-                                                //         "'$itemName','$date!','1','$custmerId!',$max,'$productCode!',2,'$rate1','46',0");
-                                                : await OrderAppDB.instance
-                                                    .insertorderBagTable(
-                                                        value.newList[index]["item"],
-                                                        date!,
-                                                        widget.os,
-                                                        widget.customerId,
-                                                        max,
-                                                        value.newList[index]["code"],
-                                                        int.parse(value
-                                                            .qty[index].text),
-                                                        rate1,
-                                                        total.toString(),
-                                                        0);
+                                            // var res = widget.customerId ==
+                                            //             null ||
+                                            //         widget.customerId.isEmpty
+                                            //     ? null
+                                            //     // : await OrderAppDB.instance
+                                            //     //     .insertCommonQuery(
+                                            //     //         'orderBagTable',
+                                            //     //         'itemName, cartdatetime, os, customerid, cartrowno, code, qty, rate, totalamount, cstatus',
+                                            //     //         "'$itemName','$date!','1','$custmerId!',$max,'$productCode!',2,'$rate1','46',0");
+                                            var res = await OrderAppDB.instance
+                                                .insertorderBagTable(
+                                                    value.newList[index] 
+                                                        ["item"],
+                                                    date!,
+                                                    widget.os,
+                                                    widget.customerId,
+                                                    max,
+                                                    value.newList[index]
+                                                        ["code"],
+                                                    int.parse(
+                                                        value.qty[index].text),
+                                                    rate1,
+                                                    total.toString(),
+                                                    0);
                                             print("result........... $res");
                                             //  Provider.of<Controller>(context,
                                             //           listen: false).countFromTable("orderBagTable");
@@ -221,7 +223,9 @@ class _ItemSelectionState extends State<ItemSelection> {
                                             (widget.customerId.isNotEmpty ||
                                                         widget.customerId !=
                                                             null) &&
-                                                    (value.newList[index]["code"]
+                                                    (value
+                                                            .newList[index]
+                                                                ["code"]
                                                             .isNotEmpty ||
                                                         value.newList[index]
                                                                 ["code"] !=
@@ -313,29 +317,30 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                     value.qty[index].text);
                                             print("total rate $total");
 
-                                            var res = widget.customerId ==
-                                                        null ||
-                                                    widget.customerId.isEmpty
-                                                ? null
-                                                // : await OrderAppDB.instance
-                                                //     .insertCommonQuery(
-                                                //         'orderBagTable',
-                                                //         'itemName, cartdatetime, os, customerid, cartrowno, code, qty, rate, totalamount, cstatus',
-                                                //         "'$itemName','$date!','1','$custmerId!',$max,'$productCode!',2,'$rate1','46',0");
-                                                : await OrderAppDB.instance
-                                                    .insertorderBagTable(
-                                                        products[index]["item"],
-                                                        date!,
-                                                        value.ordernum[0]["os"],
-                                                        widget.customerId,
-                                                        max,
-                                                        products[index]["code"],
-                                                        int.parse(value
-                                                            .qty[index].text),
-                                                        rate1,
-                                                        total.toString(),
-                                                        0);
-                                            print("result........... $res");
+                                            // var res = widget.customerId ==
+                                            //             null ||
+                                            //         widget.customerId.isEmpty
+                                            //     ? null
+                                            //     // : await OrderAppDB.instance
+                                            //     //     .insertCommonQuery(
+                                            //     //         'orderBagTable',
+                                            //     //         'itemName, cartdatetime, os, customerid, cartrowno, code, qty, rate, totalamount, cstatus',
+                                            //     //         "'$itemName','$date!','1','$custmerId!',$max,'$productCode!',2,'$rate1','46',0");
+                                            //     :
+                                            var res = await OrderAppDB.instance
+                                                .insertorderBagTable(
+                                                    products[index]["item"],
+                                                    date!,
+                                                    value.ordernum[0]["os"],
+                                                    widget.customerId,
+                                                    max,
+                                                    products[index]["code"],
+                                                    int.parse(
+                                                        value.qty[index].text),
+                                                    rate1,
+                                                    total.toString(),
+                                                    0);
+                                            // print("result........... $res");
                                             //  Provider.of<Controller>(context,
                                             //           listen: false).countFromTable("orderBagTable");
                                             widget.customerId == null ||
