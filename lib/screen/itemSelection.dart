@@ -6,7 +6,6 @@ import 'package:orderapp/components/customSearchTile.dart';
 import 'package:orderapp/db_helper.dart';
 import 'package:orderapp/screen/cartList.dart';
 import 'package:provider/provider.dart';
-
 import '../controller/controller.dart';
 import '../components/customSnackbar.dart';
 
@@ -64,8 +63,8 @@ class _ItemSelectionState extends State<ItemSelection> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Provider.of<Controller>(context, listen: false).searchkey="";
-            Provider.of<Controller>(context, listen: false).newList=products;
+            Provider.of<Controller>(context, listen: false).searchkey = "";
+            Provider.of<Controller>(context, listen: false).newList = products;
             Navigator.of(context).pop();
           },
         ),
@@ -121,11 +120,11 @@ class _ItemSelectionState extends State<ItemSelection> {
                 height: size.height * 0.09,
                 child: TextField(
                   onChanged: (value) {
-                    Provider.of<Controller>(context, listen: false).searchkey=value;
-                     Provider.of<Controller>(context, listen: false)
-                          .searchProcess();
+                    Provider.of<Controller>(context, listen: false).searchkey =
+                        value;
+                    Provider.of<Controller>(context, listen: false)
+                        .searchProcess();
                   },
-                     
                   decoration: const InputDecoration(
                       labelText: 'Search', suffixIcon: Icon(Icons.search)),
                 ),
@@ -386,29 +385,30 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                     value.qty[index].text);
                                             print("total rate $total");
 
-                                            var res = widget.customerId ==
-                                                        null ||
-                                                    widget.customerId.isEmpty
-                                                ? null
-                                                // : await OrderAppDB.instance
-                                                //     .insertCommonQuery(
-                                                //         'orderBagTable',
-                                                //         'itemName, cartdatetime, os, customerid, cartrowno, code, qty, rate, totalamount, cstatus',
-                                                //         "'$itemName','$date!','1','$custmerId!',$max,'$productCode!',2,'$rate1','46',0");
-                                                : await OrderAppDB.instance
-                                                    .insertorderBagTable(
-                                                        products[index]["item"],
-                                                        date!,
-                                                        value.ordernum[0]["os"],
-                                                        widget.customerId,
-                                                        max,
-                                                        products[index]["code"],
-                                                        int.parse(value
-                                                            .qty[index].text),
-                                                        rate1,
-                                                        total.toString(),
-                                                        0);
-                                            print("result........... $res");
+                                            // var res = widget.customerId ==
+                                            //             null ||
+                                            //         widget.customerId.isEmpty
+                                            //     ? null
+                                            //     // : await OrderAppDB.instance
+                                            //     //     .insertCommonQuery(
+                                            //     //         'orderBagTable',
+                                            //     //         'itemName, cartdatetime, os, customerid, cartrowno, code, qty, rate, totalamount, cstatus',
+                                            //     //         "'$itemName','$date!','1','$custmerId!',$max,'$productCode!',2,'$rate1','46',0");
+                                            //     :
+                                            var res = await OrderAppDB.instance
+                                                .insertorderBagTable(
+                                                    products[index]["item"],
+                                                    date!,
+                                                    value.ordernum[0]["os"],
+                                                    widget.customerId,
+                                                    max,
+                                                    products[index]["code"],
+                                                    int.parse(
+                                                        value.qty[index].text),
+                                                    rate1,
+                                                    total.toString(),
+                                                    0);
+                                            // print("result........... $res");
                                             //  Provider.of<Controller>(context,
                                             //           listen: false).countFromTable("orderBagTable");
                                             widget.customerId == null ||

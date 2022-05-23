@@ -11,7 +11,11 @@ class CartList extends StatefulWidget {
   String custmerId;
   String os;
   String areaId;
-  CartList({required this.areaId, required this.custmerId, required this.os});
+  CartList({
+    required this.areaId,
+    required this.custmerId,
+    required this.os,
+  });
   @override
   State<CartList> createState() => _CartListState();
 }
@@ -45,7 +49,8 @@ class _CartListState extends State<CartList> {
         actions: [
           IconButton(
               onPressed: () async {
-                await OrderAppDB.instance.deleteFromTableCommonQuery("orderBagTable","");
+                await OrderAppDB.instance
+                    .deleteFromTableCommonQuery("orderBagTable", "");
               },
               icon: Icon(Icons.delete)),
           IconButton(
@@ -143,9 +148,12 @@ class _CartListState extends State<CartList> {
                                   ));
                                 })
                             : null;
-
-                        Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => OrderForm()));
+                        Provider.of<Controller>(context, listen: false).count =
+                            "0";
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => OrderForm()));
                       }),
                       child: Container(
                         width: size.width * 0.5,
@@ -191,7 +199,7 @@ class _CartListState extends State<CartList> {
     _controller.text = qty.toString();
 
     return Container(
-      height: size.height * 0.13,
+      height: size.height * 0.17,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Ink(
@@ -243,6 +251,7 @@ class _CartListState extends State<CartList> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Flexible(
+                                  flex: 5,
                                   child: Text(
                                     "${itemName} ",
                                     style: TextStyle(
@@ -252,6 +261,7 @@ class _CartListState extends State<CartList> {
                                   ),
                                 ),
                                 Flexible(
+                                  flex: 3,
                                   child: Text(
                                     " (${code})",
                                     style: TextStyle(
@@ -299,8 +309,8 @@ class _CartListState extends State<CartList> {
                                     width: size.width * 0.08,
                                     child: TextFormField(
                                       decoration: InputDecoration(
-                                          border: InputBorder.none,
-                                          ),
+                                        border: InputBorder.none,
+                                      ),
                                       onFieldSubmitted: (value) async {
                                         print("helooo");
                                         _controller.text = value;
@@ -368,8 +378,10 @@ class _CartListState extends State<CartList> {
                                           onPressed: () async {
                                             Provider.of<Controller>(context,
                                                     listen: false)
-                                                .deleteFromOrderBagTable(cartrowno,
-                                                    widget.custmerId, index);
+                                                .deleteFromOrderBagTable(
+                                                    cartrowno,
+                                                    widget.custmerId,
+                                                    index);
                                             Navigator.of(ctx).pop();
                                           },
                                           child: Text("ok"),
