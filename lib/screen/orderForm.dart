@@ -185,9 +185,7 @@ class _OrderFormState extends State<OrderForm> {
                                   height: size.height * 0.06,
                                   child: InputDecorator(
                                     decoration: InputDecoration(
-                                      
                                       border: OutlineInputBorder(
-                                        
                                         gapPadding: 1,
                                         borderRadius: BorderRadius.circular(20),
                                         borderSide: BorderSide(
@@ -197,7 +195,7 @@ class _OrderFormState extends State<OrderForm> {
                                       ),
                                       contentPadding: EdgeInsets.symmetric(
                                           vertical: 0, horizontal: 4),
-                                      
+
                                       // hintText: "Select..",
                                     ),
                                     child: Autocomplete<String>(
@@ -238,8 +236,8 @@ class _OrderFormState extends State<OrderForm> {
                                             VoidCallback onFieldSubmitted) {
                                       return TextField(
                                         decoration: InputDecoration(
-                                                  border: InputBorder.none,
-        
+                                          border: InputBorder.none,
+
                                           // hintText: 'Enter a message',
                                           suffixIcon: IconButton(
                                             onPressed:
@@ -280,14 +278,15 @@ class _OrderFormState extends State<OrderForm> {
                                         decoration: InputDecoration(
                                           contentPadding: EdgeInsets.symmetric(
                                               vertical: 0, horizontal: 4),
-                                         border: OutlineInputBorder(
-                                        gapPadding: 1,
-                                        borderRadius: BorderRadius.circular(20),
-                                        borderSide: BorderSide(
-                                          color: Colors.black,
-                                          width: 3,
-                                        ),
-                                      ),
+                                          border: OutlineInputBorder(
+                                            gapPadding: 1,
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                            borderSide: BorderSide(
+                                              color: Colors.black,
+                                              width: 3,
+                                            ),
+                                          ),
                                           // hintText: "Select..",
                                         ),
                                         child:
@@ -299,10 +298,17 @@ class _OrderFormState extends State<OrderForm> {
                                             } else {
                                               print(
                                                   "TextEditingValue---${value.text}");
-                                              // Provider.of<Controller>(context,
-                                              //         listen: false)
-                                              //     .getCustomer(value.text);
-                                              return values.custmerDetails;
+
+                                              return values.custmerDetails
+                                                  .where((suggestion) =>
+                                                      suggestion["hname"]
+                                                          .toLowerCase()
+                                                          .startsWith(value.text
+                                                              .toLowerCase()));
+                                                          
+                                                          
+                                                          // contains(value.text
+                                                          //     .toLowerCase()));
                                             }
                                           },
                                           displayStringForOption:
@@ -330,7 +336,7 @@ class _OrderFormState extends State<OrderForm> {
                                               controller:
                                                   fieldTextEditingController,
                                               decoration: InputDecoration(
-                                                  border: InputBorder.none,
+                                                border: InputBorder.none,
 
                                                 // hintText: 'Enter a message',
                                                 suffixIcon: IconButton(
@@ -346,55 +352,55 @@ class _OrderFormState extends State<OrderForm> {
                                                       FontWeight.normal),
                                             );
                                           },
-                                          optionsViewBuilder:
-                                              (BuildContext context,
-                                                  AutocompleteOnSelected<
-                                                          Map<String, dynamic>>
-                                                      onSelected,
-                                                  Iterable<Map<String, dynamic>>
-                                                      options) {
-                                            return Align(
-                                              alignment: Alignment.topLeft,
-                                              child: Material(
-                                                child: Container(
-                                                  width: size.width * 0.7,
-                                                  // color: Colors.teal,
-                                                  child: ListView.builder(
-                                                    padding:
-                                                        EdgeInsets.all(10.0),
-                                                    itemCount: options.length,
-                                                    itemBuilder:
-                                                        (BuildContext context,
-                                                            int index) {
-                                                      //      print(
-                                                      // "option----${options}");
-                                                      print(
-                                                          "index----${index}");
-                                                      final Map<String, dynamic>
-                                                          option = options
-                                                              .elementAt(index);
-                                                      print(
-                                                          "option----${option}");
-                                                      return ListTile(
-                                                        onTap: () {
-                                                          print(
-                                                              "optonsssssssssssss$option");
-                                                          onSelected(option);
-                                                        },
-                                                        title: Text(
-                                                            option["hname"]
-                                                                .toString(),
-                                                            style:
-                                                                const TextStyle(
-                                                                    color: Colors
-                                                                        .black)),
-                                                      );
-                                                    },
-                                                  ),
-                                                ),
-                                              ),
-                                            );
-                                          },
+                                          // optionsViewBuilder:
+                                          //     (BuildContext context,
+                                          //         AutocompleteOnSelected<
+                                          //                 Map<String, dynamic>>
+                                          //             onSelected,
+                                          //         Iterable<Map<String, dynamic>>
+                                          //             options) {
+                                          //   return Align(
+                                          //     alignment: Alignment.topLeft,
+                                          //     child: Material(
+                                          //       child: Container(
+                                          //         width: size.width * 0.7,
+                                          //         // color: Colors.teal,
+                                          //         child: ListView.builder(
+                                          //           padding:
+                                          //               EdgeInsets.all(10.0),
+                                          //           itemCount: options.length,
+                                          //           itemBuilder:
+                                          //               (BuildContext context,
+                                          //                   int index) {
+                                          //             //      print(
+                                          //             // "option----${options}");
+                                          //             print(
+                                          //                 "index----${index}");
+                                          //             final Map<String, dynamic>
+                                          //                 option = options
+                                          //                     .elementAt(index);
+                                          //             print(
+                                          //                 "option----${option}");
+                                          //             return ListTile(
+                                          //               onTap: () {
+                                          //                 print(
+                                          //                     "optonsssssssssssss$option");
+                                          //                 onSelected(option);
+                                          //               },
+                                          //               title: Text(
+                                          //                   option["hname"]
+                                          //                       .toString(),
+                                          //                   style:
+                                          //                       const TextStyle(
+                                          //                           color: Colors
+                                          //                               .black)),
+                                          //             );
+                                          //           },
+                                          //         ),
+                                          //       ),
+                                          //     ),
+                                          //   );
+                                          // },
                                         ),
                                       ),
                                     ),
@@ -409,11 +415,12 @@ class _OrderFormState extends State<OrderForm> {
                                           return Visibility(
                                             visible: v,
                                             child: Padding(
-                                              padding: const EdgeInsets.only(left:8.0),
+                                              padding: const EdgeInsets.only(
+                                                  left: 8.0),
                                               child: Text(
                                                 "Please choose Customer!!!",
-                                                style:
-                                                    TextStyle(color: Colors.red),
+                                                style: TextStyle(
+                                                    color: Colors.red),
                                               ),
                                             ),
                                           );
@@ -423,7 +430,7 @@ class _OrderFormState extends State<OrderForm> {
                                     ),
                                     Center(
                                       child: Container(
-                                        width: size.width*0.4,
+                                        width: size.width * 0.4,
                                         height: size.height * 0.05,
                                         child: ElevatedButton.icon(
                                           icon: Icon(
@@ -436,16 +443,14 @@ class _OrderFormState extends State<OrderForm> {
                                             FocusScopeNode currentFocus =
                                                 FocusScope.of(context);
 
-                                            if (!currentFocus
-                                                .hasPrimaryFocus) {
+                                            if (!currentFocus.hasPrimaryFocus) {
                                               currentFocus.unfocus();
                                             }
                                             if (custmerId == null ||
                                                 custmerId!.isEmpty) {
-                                              visibleValidation.value =
-                                                  true;
+                                              visibleValidation.value = true;
                                             } else {
-                                              visibleValidation.value=false;
+                                              visibleValidation.value = false;
                                               print(
                                                   "values.isLoading---${values.isLoading}");
 
@@ -458,18 +463,16 @@ class _OrderFormState extends State<OrderForm> {
                                                                 custmerId
                                                                     .toString(),
                                                             areaId:
-                                                                splitted![
-                                                                    0],
+                                                                splitted![0],
                                                             os: values
-                                                                    .ordernum[
-                                                                0]['os'],
+                                                                    .ordernum[0]
+                                                                ['os'],
                                                           )));
                                             }
                                           },
                                           style: ElevatedButton.styleFrom(
                                             primary: P_Settings.wavecolor,
-                                            shape:
-                                                new RoundedRectangleBorder(
+                                            shape: new RoundedRectangleBorder(
                                               borderRadius:
                                                   new BorderRadius.circular(
                                                       10.0),
