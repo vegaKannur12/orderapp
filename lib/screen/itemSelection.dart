@@ -14,9 +14,9 @@ class ItemSelection extends StatefulWidget {
   String customerId;
   String os;
   String areaId;
-
+  String areaName;
   ItemSelection(
-      {required this.customerId, required this.areaId, required this.os});
+      {required this.customerId, required this.areaId, required this.os, required this.areaName});
 
   @override
   State<ItemSelection> createState() => _ItemSelectionState();
@@ -32,6 +32,7 @@ class _ItemSelectionState extends State<ItemSelection> {
   CustomSnackbar snackbar = CustomSnackbar();
   String? date;
   bool loading = true;
+  bool loading1 = false;
   @override
   void initState() {
     // TODO: implement initState
@@ -92,6 +93,7 @@ class _ItemSelectionState extends State<ItemSelection> {
                             areaId: widget.areaId,
                             custmerId: widget.customerId,
                             os: widget.os,
+                            areaname: widget.areaName,
                           )),
                 );
               }

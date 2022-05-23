@@ -19,7 +19,8 @@ import '../components/customSnackbar.dart';
 // import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class OrderForm extends StatefulWidget {
-  // const OrderForm({Key? key}) : super(key: key);
+  String areaname;
+  OrderForm(this.areaname);
 
   @override
   State<OrderForm> createState() => _OrderFormState();
@@ -28,6 +29,7 @@ class OrderForm extends StatefulWidget {
 class _OrderFormState extends State<OrderForm> {
   bool isLoading = false;
   String? _selectedItemarea;
+  String? area;
   CustomPopup popup = CustomPopup();
   String? _selectedItemcus;
   String? _selectedItem;
@@ -191,13 +193,10 @@ class _OrderFormState extends State<OrderForm> {
                                       ),
                                       contentPadding: EdgeInsets.symmetric(
                                           vertical: 0, horizontal: 4),
-
-                                      // hintText: "Select..",
+                                      hintText: widget.areaname,
                                     ),
-                                    child: Autocomplete<String>(
-                                        // initialValue: ,
-                                        optionsBuilder:
-                                            (TextEditingValue value) {
+                                    child: Autocomplete<String>(optionsBuilder:
+                                        (TextEditingValue value) {
                                       if (value.text.isEmpty) {
                                         return [];
                                       } else {
@@ -216,6 +215,7 @@ class _OrderFormState extends State<OrderForm> {
                                     }, onSelected: (value) {
                                       setState(() {
                                         _selectedItemarea = value;
+                                        area = _selectedItemarea;
                                         print(
                                             "_selectedItem---${_selectedItemarea}");
                                         splitted =
@@ -226,15 +226,14 @@ class _OrderFormState extends State<OrderForm> {
                                             .getCustomer(splitted![0]);
                                       });
                                     }, fieldViewBuilder: (BuildContext context,
-                                            TextEditingController
-                                                fieldTextEditingController,
-                                            FocusNode fieldFocusNode,
-                                            VoidCallback onFieldSubmitted) {
+                                        TextEditingController
+                                            fieldTextEditingController,
+                                        FocusNode fieldFocusNode,
+                                        VoidCallback onFieldSubmitted) {
                                       return TextField(
                                         decoration: InputDecoration(
                                           border: InputBorder.none,
-
-                                          // hintText: 'Enter a message',
+                                          hintText: widget.areaname,
                                           suffixIcon: IconButton(
                                             onPressed:
                                                 fieldTextEditingController
@@ -449,24 +448,20 @@ class _OrderFormState extends State<OrderForm> {
                                               print(
                                                   "values.isLoading---${values.isLoading}");
 
-                                              await Future.delayed(
-                                                  Duration(milliseconds: 1000),
-                                                  () async {
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            ItemSelection(
-                                                              customerId:
-                                                                  custmerId
-                                                                      .toString(),
-                                                              areaId:
-                                                                  splitted![0],
-                                                              os: values
-                                                                      .ordernum[
-                                                                  0]['os'],
-                                                            )));
-                                              });
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ItemSelection(
+                                                          customerId: custmerId
+                                                              .toString(),
+                                                          areaId: splitted![0],
+                                                          os: values.ordernum[0]
+                                                              ['os'],
+                                                          areaName:
+                                                              splitted![1],
+                                                        )),
+                                              );
                                             }
                                             ;
                                           },
