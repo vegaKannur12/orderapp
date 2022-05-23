@@ -31,6 +31,7 @@ class _ItemSelectionState extends State<ItemSelection> {
   DateTime now = DateTime.now();
   CustomSnackbar snackbar = CustomSnackbar();
   String? date;
+  bool loading = true;
   @override
   void initState() {
     // TODO: implement initState

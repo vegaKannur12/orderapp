@@ -26,6 +26,7 @@ class OrderForm extends StatefulWidget {
 }
 
 class _OrderFormState extends State<OrderForm> {
+  bool isLoading = false;
   String? _selectedItemarea;
   CustomPopup popup = CustomPopup();
   String? _selectedItemcus;
@@ -76,11 +77,6 @@ class _OrderFormState extends State<OrderForm> {
       splitted = ["", ""];
     }
   }
-
-  // void onChange() {
-  //   num = num + 1;
-  //   print("Numsssssssss$num");
-  // }
 
   sharedPref() async {
     final prefs = await SharedPreferences.getInstance();
@@ -305,10 +301,9 @@ class _OrderFormState extends State<OrderForm> {
                                                           .toLowerCase()
                                                           .startsWith(value.text
                                                               .toLowerCase()));
-                                                          
-                                                          
-                                                          // contains(value.text
-                                                          //     .toLowerCase()));
+
+                                              // contains(value.text
+                                              //     .toLowerCase()));
                                             }
                                           },
                                           displayStringForOption:
@@ -454,21 +449,26 @@ class _OrderFormState extends State<OrderForm> {
                                               print(
                                                   "values.isLoading---${values.isLoading}");
 
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          ItemSelection(
-                                                            customerId:
-                                                                custmerId
-                                                                    .toString(),
-                                                            areaId:
-                                                                splitted![0],
-                                                            os: values
-                                                                    .ordernum[0]
-                                                                ['os'],
-                                                          )));
+                                              await Future.delayed(
+                                                  Duration(milliseconds: 1000),
+                                                  () async {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            ItemSelection(
+                                                              customerId:
+                                                                  custmerId
+                                                                      .toString(),
+                                                              areaId:
+                                                                  splitted![0],
+                                                              os: values
+                                                                      .ordernum[
+                                                                  0]['os'],
+                                                            )));
+                                              });
                                             }
+                                            ;
                                           },
                                           style: ElevatedButton.styleFrom(
                                             primary: P_Settings.wavecolor,
@@ -481,6 +481,45 @@ class _OrderFormState extends State<OrderForm> {
                                         ),
                                       ),
                                     ),
+                                    // ElevatedButton(
+                                    //   style: ElevatedButton.styleFrom(
+                                    //     primary: P_Settings.wavecolor,
+                                    //     shape: new RoundedRectangleBorder(
+                                    //       borderRadius:
+                                    //           new BorderRadius.circular(10.0),
+                                    //     ),
+                                    //   ),
+                                    //   onPressed: () async {
+                                    //     setState(() {
+                                    //       isLoading = true;
+                                    //       Navigator.push(
+                                    //           context,
+                                    //           MaterialPageRoute(
+                                    //               builder: (context) =>
+                                    //                   ItemSelection(
+                                    //                     customerId: custmerId
+                                    //                         .toString(),
+                                    //                     areaId: splitted![0],
+                                    //                     os: values.ordernum[0]
+                                    //                         ['os'],
+                                    //                   )));
+                                    //     });
+                                    //     await Future.delayed(
+                                    //         const Duration(seconds: 4));
+                                    //     setState(() {
+                                    //       isLoading = false;
+                                    //     });
+                                    //   },
+                                    //   child: (isLoading)
+                                    //       ? const SizedBox(
+                                    //           width: 16,
+                                    //           height: 16,
+                                    //           child: CircularProgressIndicator(
+                                    //             color: Colors.white,
+                                    //             strokeWidth: 1.5,
+                                    //           ))
+                                    //       : const Text('Submit'),
+                                    // ),
                                   ],
                                 ),
                               ),
