@@ -19,14 +19,17 @@ import '../components/customSnackbar.dart';
 // import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class OrderForm extends StatefulWidget {
-  // const OrderForm({Key? key}) : super(key: key);
+  String areaname;
+  OrderForm(this.areaname);
 
   @override
   State<OrderForm> createState() => _OrderFormState();
 }
 
 class _OrderFormState extends State<OrderForm> {
+  bool isLoading = false;
   String? _selectedItemarea;
+  String? area;
   CustomPopup popup = CustomPopup();
   String? _selectedItemcus;
   String? _selectedItem;
@@ -76,11 +79,6 @@ class _OrderFormState extends State<OrderForm> {
       splitted = ["", ""];
     }
   }
-
-  // void onChange() {
-  //   num = num + 1;
-  //   print("Numsssssssss$num");
-  // }
 
   sharedPref() async {
     final prefs = await SharedPreferences.getInstance();
@@ -198,8 +196,7 @@ class _OrderFormState extends State<OrderForm> {
                                       ),
                                       contentPadding: EdgeInsets.symmetric(
                                           vertical: 0, horizontal: 4),
-
-                                      // hintText: "Select..",
+                                      hintText: widget.areaname,
                                     ),
                                     child: Autocomplete<String>(
                                       // initialValue: ,
@@ -502,20 +499,21 @@ class _OrderFormState extends State<OrderForm> {
                                                   "values.isLoading---${values.isLoading}");
 
                                               Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          ItemSelection(
-                                                            customerId:
-                                                                custmerId
-                                                                    .toString(),
-                                                            areaId:
-                                                                splitted![0],
-                                                            os: values
-                                                                    .ordernum[0]
-                                                                ['os'],
-                                                          )));
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ItemSelection(
+                                                          customerId: custmerId
+                                                              .toString(),
+                                                          areaId: splitted![0],
+                                                          os: values.ordernum[0]
+                                                              ['os'],
+                                                          areaName:
+                                                              splitted![1],
+                                                        )),
+                                              );
                                             }
+                                            ;
                                           },
                                           style: ElevatedButton.styleFrom(
                                             primary: P_Settings.wavecolor,
@@ -528,6 +526,45 @@ class _OrderFormState extends State<OrderForm> {
                                         ),
                                       ),
                                     ),
+                                    // ElevatedButton(
+                                    //   style: ElevatedButton.styleFrom(
+                                    //     primary: P_Settings.wavecolor,
+                                    //     shape: new RoundedRectangleBorder(
+                                    //       borderRadius:
+                                    //           new BorderRadius.circular(10.0),
+                                    //     ),
+                                    //   ),
+                                    //   onPressed: () async {
+                                    //     setState(() {
+                                    //       isLoading = true;
+                                    //       Navigator.push(
+                                    //           context,
+                                    //           MaterialPageRoute(
+                                    //               builder: (context) =>
+                                    //                   ItemSelection(
+                                    //                     customerId: custmerId
+                                    //                         .toString(),
+                                    //                     areaId: splitted![0],
+                                    //                     os: values.ordernum[0]
+                                    //                         ['os'],
+                                    //                   )));
+                                    //     });
+                                    //     await Future.delayed(
+                                    //         const Duration(seconds: 4));
+                                    //     setState(() {
+                                    //       isLoading = false;
+                                    //     });
+                                    //   },
+                                    //   child: (isLoading)
+                                    //       ? const SizedBox(
+                                    //           width: 16,
+                                    //           height: 16,
+                                    //           child: CircularProgressIndicator(
+                                    //             color: Colors.white,
+                                    //             strokeWidth: 1.5,
+                                    //           ))
+                                    //       : const Text('Submit'),
+                                    // ),
                                   ],
                                 ),
                               ),

@@ -29,7 +29,6 @@ class _SplashScreenState extends State<SplashScreen>
         context,
         MaterialPageRoute(
             // builder: (context) =>RegistrationScreen()),
-
             builder: (context) => cid != null
                 ? st_uname != null && st_pwd != null
                     ? Dashboard()

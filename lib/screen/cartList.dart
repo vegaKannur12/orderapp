@@ -11,10 +11,14 @@ class CartList extends StatefulWidget {
   String custmerId;
   String os;
   String areaId;
+  String areaname;
+
   CartList({
     required this.areaId,
     required this.custmerId,
     required this.os,
+    required this.areaname,
+
   });
   @override
   State<CartList> createState() => _CartListState();
@@ -153,7 +157,8 @@ class _CartListState extends State<CartList> {
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => OrderForm()));
+                                builder: (context) =>
+                                    OrderForm(widget.areaname)));
                       }),
                       child: Container(
                         width: size.width * 0.5,
