@@ -552,6 +552,7 @@ class Controller extends ChangeNotifier {
     print("table---$table");
     count = await OrderAppDB.instance.countCommonQuery(table, os, customerId);
     notifyListeners();
+    
   }
 
   //////////////insert to order master and details///////////////////////

@@ -124,7 +124,6 @@ class _ItemSelectionState extends State<ItemSelection> {
                     Provider.of<Controller>(context, listen: false)
                         .searchProcess();
                   },
-                  
                   decoration: const InputDecoration(
                       labelText: 'Search', suffixIcon: Icon(Icons.search)),
                 ),
