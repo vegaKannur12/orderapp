@@ -35,6 +35,7 @@ class _ItemSelectionState extends State<ItemSelection> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    print("areaId---${widget.customerId}");
     products = Provider.of<Controller>(context, listen: false).productName;
     Provider.of<Controller>(context, listen: false).getOrderno();
     date = DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
