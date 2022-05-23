@@ -193,63 +193,66 @@ class _OrderFormState extends State<OrderForm> {
                                       ),
                                       contentPadding: EdgeInsets.symmetric(
                                           vertical: 0, horizontal: 4),
-                                      hintText: widget.areaname,
                                     ),
                                     child: Autocomplete<String>(
-                                      // displayStringForOption: (option) => widget.areaname,
-                                      optionsBuilder:
-                                        (TextEditingValue value) {
-                                          
-                                      if (value.text.isEmpty) {
-                                        return [];
-                                      } else {
-                                        print(
-                                            "TextEditingValue---${value.text}");
-                                        Provider.of<Controller>(context,
-                                                listen: false)
-                                            .getArea(value.text);
+                                        // displayStringForOption: (option) => widget.areaname,
+                                        initialValue: TextEditingValue(
+                                            text: widget.areaname),
+                                        optionsBuilder:
+                                            (TextEditingValue value) {
+                                          if (value.text.isEmpty) {
+                                            return [];
+                                          } else {
+                                            print(
+                                                "TextEditingValue---${value.text}");
+                                            Provider.of<Controller>(context,
+                                                    listen: false)
+                                                .getArea(value.text);
 
-                                        return values.areDetails.where(
-                                            (suggestion) => suggestion
-                                                .toLowerCase()
-                                                .contains(
-                                                    value.text.toLowerCase()));
-                                      }
-                                    }, onSelected: (value) {
-                                      setState(() {
-                                        _selectedItemarea = value;
-                                        area = _selectedItemarea;
-                                        print(
-                                            "_selectedItem---${_selectedItemarea}");
-                                        splitted =
-                                            _selectedItemarea!.split('-');
+                                            return values.areDetails.where(
+                                                (suggestion) => suggestion
+                                                    .toLowerCase()
+                                                    .contains(value.text
+                                                        .toLowerCase()));
+                                          }
+                                        },
+                                        onSelected: (value) {
+                                          setState(() {
+                                            _selectedItemarea = value;
+                                            area = _selectedItemarea;
+                                            print(
+                                                "_selectedItem---${_selectedItemarea}");
+                                            splitted =
+                                                _selectedItemarea!.split('-');
 
-                                        Provider.of<Controller>(context,
-                                                listen: false)
-                                            .getCustomer(splitted![0]);
-                                      });
-                                    }, fieldViewBuilder: (BuildContext context,
-                                        TextEditingController
-                                            fieldTextEditingController,
-                                        FocusNode fieldFocusNode,
-                                        VoidCallback onFieldSubmitted) {
-                                      return TextField(
-                                        decoration: InputDecoration(
-                                          border: InputBorder.none,
-                                          hintText: widget.areaname,
-                                          suffixIcon: IconButton(
-                                            onPressed:
-                                                fieldTextEditingController
-                                                    .clear,
-                                            icon: Icon(Icons.clear),
-                                          ),
-                                        ),
-                                        controller: fieldTextEditingController,
-                                        focusNode: fieldFocusNode,
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.normal),
-                                      );
-                                    }),
+                                            Provider.of<Controller>(context,
+                                                    listen: false)
+                                                .getCustomer(splitted![0]);
+                                          });
+                                        },
+                                        fieldViewBuilder: (BuildContext context,
+                                            TextEditingController
+                                                fieldTextEditingController,
+                                            FocusNode fieldFocusNode,
+                                            VoidCallback onFieldSubmitted) {
+                                          return TextField(
+                                            decoration: InputDecoration(
+                                              border: InputBorder.none,
+                                              hintText: widget.areaname,
+                                              suffixIcon: IconButton(
+                                                onPressed:
+                                                    fieldTextEditingController
+                                                        .clear,
+                                                icon: Icon(Icons.clear),
+                                              ),
+                                            ),
+                                            controller:
+                                                fieldTextEditingController,
+                                            focusNode: fieldFocusNode,
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.normal),
+                                          );
+                                        }),
                                   ),
                                 ),
                               ),
