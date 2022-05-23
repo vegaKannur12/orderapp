@@ -45,6 +45,7 @@ class _OrderFormState extends State<OrderForm> {
 
   final formGlobalKey = GlobalKey<FormState>();
   List? splitted;
+  TextEditingController fieldText=TextEditingController();
   List? splitted1;
   List<DataRow> dataRows = [];
   String? selected;
@@ -368,8 +369,7 @@ class _OrderFormState extends State<OrderForm> {
                                           },
                                           fieldViewBuilder: (BuildContext
                                                   context,
-                                              TextEditingController
-                                                  fieldTextEditingController,
+                                                  fieldText,
                                               FocusNode fieldFocusNode,
                                               VoidCallback onFieldSubmitted) {
                                             return TextFormField(
@@ -377,14 +377,14 @@ class _OrderFormState extends State<OrderForm> {
                                               //     ? 'Please select customer...'
                                               //     : null,
                                               controller:
-                                                  fieldTextEditingController,
+                                                  fieldText,
                                               decoration: InputDecoration(
                                                 border: InputBorder.none,
 
                                                 // hintText: 'Enter a message',
                                                 suffixIcon: IconButton(
                                                   onPressed:
-                                                      fieldTextEditingController
+                                                      fieldText
                                                           .clear,
                                                   icon: Icon(Icons.clear),
                                                 ),
