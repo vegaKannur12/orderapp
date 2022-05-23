@@ -7,8 +7,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../controller/controller.dart';
 
 class DownloadedPage extends StatefulWidget {
-  // String cid;
-  // DownloadedPage({required this.cid});
+  String? type;
+  DownloadedPage({this.type});
 
   @override
   State<DownloadedPage> createState() => _DownloadedPageState();
@@ -27,11 +27,12 @@ class _DownloadedPageState extends State<DownloadedPage> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
+      appBar:widget.type==""? AppBar(
         backgroundColor: P_Settings.wavecolor,
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(6.0),
-          child: Consumer<Controller>(
+          child:
+          Consumer<Controller>(
             builder: (context, value, child) {
               if (value.isLoading) {
                 return LinearProgressIndicator(
@@ -48,7 +49,7 @@ class _DownloadedPageState extends State<DownloadedPage> {
           ),
         ),
         // title: Text("Company Details",style: TextStyle(fontSize: 20),),
-      ),
+      ):null,
       body: Column(
         children: [
           Flexible(
@@ -117,22 +118,23 @@ class _DownloadedPageState extends State<DownloadedPage> {
                 onPressed: () {},
                 child: Text("Download all")),
           ),
-          // SizedBox(height:20),
-          // Consumer<Controller>(
-          //   builder: (context, value, child) {
-          //     if (value.isLoading) {
-          //       return LinearProgressIndicator(
-          //         backgroundColor: Colors.white,
-          //         color: P_Settings.wavecolor,
+          SizedBox(height:20),
+          widget.type==""?Container():
+          Consumer<Controller>(
+            builder: (context, value, child) {
+              if (value.isLoading) {
+                return CircularProgressIndicator(
+                  backgroundColor: Colors.white,
+                  color: P_Settings.wavecolor,
 
-          //         // valueColor: new AlwaysStoppedAnimation<Color>(Colors.red),
-          //         // value: 0.25,
-          //       );
-          //     } else {
-          //       return Container();
-          //     }
-          //   },
-          // ),
+                  // valueColor: new AlwaysStoppedAnimation<Color>(Colors.red),
+                  // value: 0.25,
+                );
+              } else {
+                return Container();
+              }
+            },
+          ),
         ],
       ),
     );
