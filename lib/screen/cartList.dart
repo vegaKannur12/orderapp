@@ -24,6 +24,7 @@ class CartList extends StatefulWidget {
 }
 
 class _CartListState extends State<CartList> {
+  
   DateTime now = DateTime.now();
   String? date;
   var sname;
@@ -153,6 +154,7 @@ class _CartListState extends State<CartList> {
                             : null;
                         Provider.of<Controller>(context, listen: false).count =
                             "0";
+                        print("area name ${widget.areaname}");
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
