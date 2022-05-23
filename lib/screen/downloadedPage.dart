@@ -70,21 +70,21 @@ class _DownloadedPageState extends State<DownloadedPage> {
                                 await SharedPreferences.getInstance();
                             String? cid = prefs.getString("cid");
                             if (downloadItems[index] == "Account Heads") {
-                               await OrderAppDB.instance.deleteTabCommonQuery("accountHeadsTable");
+                               await OrderAppDB.instance.deleteFromTableCommonQuery("accountHeadsTable","");
                               Provider.of<Controller>(context, listen: false)
                                   .getaccountHeadsDetails(cid!);
                             }
                             if (downloadItems[index] == "Product category") {
-                              await OrderAppDB.instance.deleteTabCommonQuery("productsCategory");
+                              await OrderAppDB.instance.deleteFromTableCommonQuery("productsCategory","");
                               Provider.of<Controller>(context, listen: false)
                                   .getProductCategory(cid!);
                             }
                             if (downloadItems[index] == "Company") {
-                              await OrderAppDB.instance.deleteTabCommonQuery("companyTable");
+                              await OrderAppDB.instance.deleteFromTableCommonQuery("companyTable","");
                               Provider.of<Controller>(context, listen: false)
                                   .getProductCompany(cid!);
                             } if (downloadItems[index] == "Product Details") {
-                              await OrderAppDB.instance.deleteTabCommonQuery("productDetailsTable");
+                              await OrderAppDB.instance.deleteFromTableCommonQuery("productDetailsTable","");
                               Provider.of<Controller>(context, listen: false)
                                   .getProductDetails(cid!);
                             }
