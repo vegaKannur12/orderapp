@@ -19,6 +19,7 @@ import '../model/staffdetails_model.dart';
 class Controller extends ChangeNotifier {
   bool isLoading = false;
   bool isSearch = false;
+  String? searchkey;
   String? sname;
   String? orderTotal;
   String? ordernumber;
@@ -33,7 +34,7 @@ class Controller extends ChangeNotifier {
   List<TextEditingController> controller = [];
   List<TextEditingController> qty = [];
 
-  String count ="0";
+  String count = "0";
   String? sof;
   List<Map<String, dynamic>> bagList = [];
   List<Map<String, dynamic>> newList = [];
@@ -455,10 +456,6 @@ class Controller extends ChangeNotifier {
   }
 
   /////////////////////////////////////
-  deleteListWidget(int index) {
-    listWidget.removeAt(index);
-    notifyListeners();
-  }
 
 ////////////////////////////////
   generateTextEditingController() {
@@ -597,15 +594,15 @@ class Controller extends ChangeNotifier {
         rowNum = rowNum + 1;
       }
     }
-    await OrderAppDB.instance
-        .deleteFromTableCommonQuery("orderBagTable", os, "customerId");
+    await OrderAppDB.instance.deleteFromTableCommonQuery(
+        "orderBagTable", "os='${os}' AND customerid='${customer_id}'");
     bagList.clear();
     notifyListeners();
   }
 
-  searchProcess(String searchkey) {
+  searchProcess() {
     print("searchkey----$searchkey");
-    if (searchkey.isEmpty) {
+    if (searchkey!.isEmpty) {
       newList = productName;
 
       var length = newList.length;
@@ -615,7 +612,7 @@ class Controller extends ChangeNotifier {
       isSearch = true;
       newList = productName
           .where((product) =>
-              product["item"].toLowerCase().contains(searchkey.toLowerCase()))
+              product["item"].toLowerCase().contains(searchkey!.toLowerCase()))
           .toList();
 
       var length = newList.length;
@@ -625,5 +622,8 @@ class Controller extends ChangeNotifier {
     print("nw list---$newList");
     notifyListeners();
   }
-  //////      /////////////////////////////
+  ////////////////////////////////////////
+  ///
+  
+  
 }

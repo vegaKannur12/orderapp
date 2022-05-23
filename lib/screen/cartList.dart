@@ -44,7 +44,7 @@ class _CartListState extends State<CartList> {
         actions: [
           IconButton(
               onPressed: () async {
-                await OrderAppDB.instance.deleteTabCommonQuery("orderBagTable");
+                await OrderAppDB.instance.deleteFromTableCommonQuery("orderBagTable","");
               },
               icon: Icon(Icons.delete)),
           IconButton(
@@ -187,7 +187,7 @@ class _CartListState extends State<CartList> {
     _controller.text = qty.toString();
 
     return Container(
-      height: size.height * 0.15,
+      height: size.height * 0.13,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Ink(
@@ -238,19 +238,23 @@ class _CartListState extends State<CartList> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text(
-                                  "${itemName} ",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
-                                      color: P_Settings.wavecolor),
+                                Flexible(
+                                  child: Text(
+                                    "${itemName} ",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                        color: P_Settings.wavecolor),
+                                  ),
                                 ),
-                                Text(
-                                  " (${code})",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 14,
-                                      color: Colors.grey),
+                                Flexible(
+                                  child: Text(
+                                    " (${code})",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
+                                        color: Colors.grey),
+                                  ),
                                 ),
                               ],
                             ),
@@ -291,7 +295,7 @@ class _CartListState extends State<CartList> {
                                     width: size.width * 0.08,
                                     child: TextFormField(
                                       decoration: InputDecoration(
-                                          // border: InputBorder.none,
+                                          border: InputBorder.none,
                                           ),
                                       onFieldSubmitted: (value) async {
                                         print("helooo");
@@ -327,52 +331,57 @@ class _CartListState extends State<CartList> {
                         ),
                       ),
                       SizedBox(
-                        width: size.width * 0.01,
+                        width: size.width * 0.02,
                       ),
-                      IconButton(
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (ctx) => AlertDialog(
-                              // title: Text("Alert Dialog Box"),
-                              content: Text("delete?"),
-                              actions: <Widget>[
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                          primary: P_Settings.wavecolor),
-                                      onPressed: () {
-                                        Navigator.of(ctx).pop();
-                                      },
-                                      child: Text("cancel"),
-                                    ),
-                                    SizedBox(
-                                      width: size.width * 0.01,
-                                    ),
-                                    ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                          primary: P_Settings.wavecolor),
-                                      onPressed: () async {
-                                        Provider.of<Controller>(context,
-                                                listen: false)
-                                            .deleteFromOrderBagTable(cartrowno,
-                                                widget.custmerId, index);
-                                        Navigator.of(ctx).pop();
-                                      },
-                                      child: Text("ok"),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (ctx) => AlertDialog(
+                                  // title: Text("Alert Dialog Box"),
+                                  content: Text("delete?"),
+                                  actions: <Widget>[
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                              primary: P_Settings.wavecolor),
+                                          onPressed: () {
+                                            Navigator.of(ctx).pop();
+                                          },
+                                          child: Text("cancel"),
+                                        ),
+                                        SizedBox(
+                                          width: size.width * 0.01,
+                                        ),
+                                        ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                              primary: P_Settings.wavecolor),
+                                          onPressed: () async {
+                                            Provider.of<Controller>(context,
+                                                    listen: false)
+                                                .deleteFromOrderBagTable(cartrowno,
+                                                    widget.custmerId, index);
+                                            Navigator.of(ctx).pop();
+                                          },
+                                          child: Text("ok"),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
-                              ],
+                              );
+                            },
+                            icon: Icon(
+                              Icons.delete,
+                              color: P_Settings.extracolor,
                             ),
-                          );
-                        },
-                        icon: Icon(
-                          Icons.delete,
-                          color: P_Settings.extracolor,
-                        ),
+                          ),
+                        ],
                       ),
                     ],
                   ),

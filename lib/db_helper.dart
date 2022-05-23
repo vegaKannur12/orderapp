@@ -477,12 +477,6 @@ class OrderAppDB {
     return res;
   }
 
-////////////////////////////////////////////////
-  Future deleteStaffdetails() async {
-    Database db = await instance.database;
-    await db.delete('staffDetailsTable');
-  }
-
   ////////////////////////////////////////////////////////////////////
   getListOfTables() async {
     Database db = await instance.database;
@@ -648,16 +642,15 @@ class OrderAppDB {
   }
 
   /////////////////////////////////////////////////////////////////////
-  deleteFromTableCommonQuery(String table, String os, String customerId) async {
+  deleteFromTableCommonQuery(String table, String? condition) async {
+    print("table--condition -$table---$condition");
     Database db = await instance.database;
-    await db.rawDelete(
-        'DELETE FROM $table WHERE os="$os" AND customerid="$customerId"');
-  }
 
-  /////////////////////////////////////////////////////////////////////
-  deleteTabCommonQuery(String table) async {
-    Database db = await instance.database;
-    await db.delete('$table');
+    if (condition == null || condition.isEmpty) {
+      await db.delete('$table');
+    } else {
+      await db.rawDelete('DELETE FROM "$table" WHERE $condition');
+    }
   }
 
 //////////////////////////////selectCommonQuery///////////////////

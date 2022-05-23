@@ -258,7 +258,7 @@ class StaffLogin extends StatelessWidget {
                                             MaterialButton(
                                               onPressed: () async {
                                                 await OrderAppDB.instance
-                                                    .deleteStaffdetails();
+                                                    .deleteFromTableCommonQuery("staffDetailsTable","");
                                                 SharedPreferences prefs =
                                                     await SharedPreferences
                                                         .getInstance();

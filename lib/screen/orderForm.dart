@@ -106,6 +106,7 @@ class _OrderFormState extends State<OrderForm> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
+                        height: size.height * 0.24,
                         decoration: BoxDecoration(
                           color: P_Settings.wavecolor,
                           borderRadius: BorderRadius.only(
@@ -113,22 +114,12 @@ class _OrderFormState extends State<OrderForm> {
                             bottomRight: Radius.circular(50),
                           ),
                         ),
-                      ),
-                      Container(
-                        height: size.height * 0.15,
-                        decoration: BoxDecoration(
-                          color: P_Settings.wavecolor,
-                          borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(50),
-                            bottomRight: Radius.circular(50),
-                          ),
-                        ),
-                        child: ListTile(
-                          title: Row(
+                        child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Icon(
                                 Icons.person, color: P_Settings.bottomColor,
+                                size: 30,
                                 // color: Colors.white,
                               ),
                               SizedBox(
@@ -136,13 +127,32 @@ class _OrderFormState extends State<OrderForm> {
                               ),
                               Text("CUSTOMER",
                                   style: TextStyle(
+                                      fontSize: 30,
                                       color: P_Settings.bodycolor,
                                       fontWeight: FontWeight.bold)
                                   // ),
                                   ),
-                            ],
-                          ),
-                        ),
+                            ]),
+                        // child: ListTile(
+                        //   title: Row(
+                        //     mainAxisAlignment: MainAxisAlignment.center,
+                        //     children: [
+                        //       Icon(
+                        //         Icons.person, color: P_Settings.bottomColor,
+                        //         // color: Colors.white,
+                        //       ),
+                        //       SizedBox(
+                        //         width: size.width * 0.01,
+                        //       ),
+                        //       Text("CUSTOMER",
+                        //           style: TextStyle(
+                        //               color: P_Settings.bodycolor,
+                        //               fontWeight: FontWeight.bold)
+                        //           // ),
+                        //           ),
+                        //     ],
+                        //   ),
+                        // ),
                       ),
                       SizedBox(
                         height: size.height * 0.1,
@@ -158,7 +168,7 @@ class _OrderFormState extends State<OrderForm> {
                               SizedBox(height: size.height * 0.01),
                               Flexible(
                                 child: Padding(
-                                  padding: EdgeInsets.only(left: 8.0),
+                                  padding: EdgeInsets.only(left: 15),
                                   child: Text(
                                     "Area/Route",
                                     style: TextStyle(
@@ -172,13 +182,23 @@ class _OrderFormState extends State<OrderForm> {
                                 padding: const EdgeInsets.only(
                                     left: 30.0, right: 15),
                                 child: Container(
-                                  height: size.height * 0.05,
+                                  height: size.height * 0.06,
                                   child: InputDecorator(
                                     decoration: InputDecoration(
+                                      
+                                      border: OutlineInputBorder(
+                                        
+                                        gapPadding: 1,
+                                        borderRadius: BorderRadius.circular(20),
+                                        borderSide: BorderSide(
+                                          color: Colors.black,
+                                          width: 3,
+                                        ),
+                                      ),
                                       contentPadding: EdgeInsets.symmetric(
                                           vertical: 0, horizontal: 4),
-                                      border: OutlineInputBorder(gapPadding: 1),
-                                      hintText: "Select..",
+                                      
+                                      // hintText: "Select..",
                                     ),
                                     child: Autocomplete<String>(
                                         // initialValue: ,
@@ -218,6 +238,8 @@ class _OrderFormState extends State<OrderForm> {
                                             VoidCallback onFieldSubmitted) {
                                       return TextField(
                                         decoration: InputDecoration(
+                                                  border: InputBorder.none,
+        
                                           // hintText: 'Enter a message',
                                           suffixIcon: IconButton(
                                             onPressed:
@@ -238,7 +260,7 @@ class _OrderFormState extends State<OrderForm> {
                               SizedBox(height: size.height * 0.02),
                               Flexible(
                                 child: Padding(
-                                  padding: const EdgeInsets.only(left: 8.0),
+                                  padding: const EdgeInsets.only(left: 15),
                                   child: Text("Customer",
                                       style: TextStyle(
                                         fontSize: 16,
@@ -253,14 +275,20 @@ class _OrderFormState extends State<OrderForm> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Container(
-                                      height: size.height * 0.05,
+                                      height: size.height * 0.06,
                                       child: InputDecorator(
                                         decoration: InputDecoration(
                                           contentPadding: EdgeInsets.symmetric(
                                               vertical: 0, horizontal: 4),
-                                          border:
-                                              OutlineInputBorder(gapPadding: 1),
-                                          hintText: "Select..",
+                                         border: OutlineInputBorder(
+                                        gapPadding: 1,
+                                        borderRadius: BorderRadius.circular(20),
+                                        borderSide: BorderSide(
+                                          color: Colors.black,
+                                          width: 3,
+                                        ),
+                                      ),
+                                          // hintText: "Select..",
                                         ),
                                         child:
                                             Autocomplete<Map<String, dynamic>>(
@@ -302,6 +330,8 @@ class _OrderFormState extends State<OrderForm> {
                                               controller:
                                                   fieldTextEditingController,
                                               decoration: InputDecoration(
+                                                  border: InputBorder.none,
+
                                                 // hintText: 'Enter a message',
                                                 suffixIcon: IconButton(
                                                   onPressed:
@@ -378,75 +408,74 @@ class _OrderFormState extends State<OrderForm> {
                                           // print("value===${visible.value}");
                                           return Visibility(
                                             visible: v,
-                                            child: Text(
-                                              "Please choose Customer!!!",
-                                              style:
-                                                  TextStyle(color: Colors.red),
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(left:8.0),
+                                              child: Text(
+                                                "Please choose Customer!!!",
+                                                style:
+                                                    TextStyle(color: Colors.red),
+                                              ),
                                             ),
                                           );
                                         }),
                                     SizedBox(
                                       height: size.height * 0.02,
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 100, right: 100),
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                            height: size.height * 0.045,
-                                            child: ElevatedButton.icon(
-                                              icon: Icon(
-                                                Icons.library_add_check,
-                                                color: Colors.white,
-                                                size: 30.0,
-                                              ),
-                                              label: Text("Add Items"),
-                                              onPressed: () async {
-                                                FocusScopeNode currentFocus =
-                                                    FocusScope.of(context);
+                                    Center(
+                                      child: Container(
+                                        width: size.width*0.4,
+                                        height: size.height * 0.05,
+                                        child: ElevatedButton.icon(
+                                          icon: Icon(
+                                            Icons.library_add_check,
+                                            color: Colors.white,
+                                            size: 30.0,
+                                          ),
+                                          label: Text("Add Items"),
+                                          onPressed: () async {
+                                            FocusScopeNode currentFocus =
+                                                FocusScope.of(context);
 
-                                                if (!currentFocus
-                                                    .hasPrimaryFocus) {
-                                                  currentFocus.unfocus();
-                                                }
-                                                if (custmerId == null ||
-                                                    custmerId!.isEmpty) {
-                                                  visibleValidation.value =
-                                                      true;
-                                                } else {
-                                                  print(
-                                                      "values.isLoading---${values.isLoading}");
+                                            if (!currentFocus
+                                                .hasPrimaryFocus) {
+                                              currentFocus.unfocus();
+                                            }
+                                            if (custmerId == null ||
+                                                custmerId!.isEmpty) {
+                                              visibleValidation.value =
+                                                  true;
+                                            } else {
+                                              visibleValidation.value=false;
+                                              print(
+                                                  "values.isLoading---${values.isLoading}");
 
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              ItemSelection(
-                                                                customerId:
-                                                                    custmerId
-                                                                        .toString(),
-                                                                areaId:
-                                                                    splitted![
-                                                                        0],
-                                                                os: values
-                                                                        .ordernum[
-                                                                    0]['os'],
-                                                              )));
-                                                }
-                                              },
-                                              style: ElevatedButton.styleFrom(
-                                                primary: P_Settings.wavecolor,
-                                                shape:
-                                                    new RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      new BorderRadius.circular(
-                                                          10.0),
-                                                ),
-                                              ),
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ItemSelection(
+                                                            customerId:
+                                                                custmerId
+                                                                    .toString(),
+                                                            areaId:
+                                                                splitted![
+                                                                    0],
+                                                            os: values
+                                                                    .ordernum[
+                                                                0]['os'],
+                                                          )));
+                                            }
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            primary: P_Settings.wavecolor,
+                                            shape:
+                                                new RoundedRectangleBorder(
+                                              borderRadius:
+                                                  new BorderRadius.circular(
+                                                      10.0),
                                             ),
                                           ),
-                                        ],
+                                        ),
                                       ),
                                     ),
                                   ],

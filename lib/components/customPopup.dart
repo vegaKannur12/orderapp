@@ -17,7 +17,7 @@ class CustomPopup{
           Navigator.of(context).pop();
         },
         // textColor: Theme.of(context).primaryColor,
-        child: const Text('Close'),
+        child: Text('Close'),
       ),
     ],
   );

@@ -48,11 +48,26 @@ class _ItemSelectionState extends State<ItemSelection> {
     // products = Provider.of<Controller>(context, listen: false).productName;
   }
 
+  // @override
+  // void deactivate() {
+  //   // TODO: implement deactivate
+  //   super.deactivate();
+  //   Provider.of<Controller>(context, listen: false).newList.clear();
+  // }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Provider.of<Controller>(context, listen: false).searchkey="";
+            Provider.of<Controller>(context, listen: false).newList=products;
+            Navigator.of(context).pop();
+          },
+        ),
         elevation: 0,
         backgroundColor: Colors.indigo,
         actions: <Widget>[
@@ -65,6 +80,7 @@ class _ItemSelectionState extends State<ItemSelection> {
             onPressed: () async {
               if (widget.customerId == null || widget.customerId.isEmpty) {
               } else {
+                FocusManager.instance.primaryFocus?.unfocus();
                 Provider.of<Controller>(context, listen: false)
                     .getBagDetails(widget.customerId, widget.os);
 
@@ -103,9 +119,12 @@ class _ItemSelectionState extends State<ItemSelection> {
                 width: size.width * 0.95,
                 height: size.height * 0.09,
                 child: TextField(
-                  onChanged: (value) =>
-                      Provider.of<Controller>(context, listen: false)
-                          .searchProcess(value),
+                  onChanged: (value) {
+                    Provider.of<Controller>(context, listen: false).searchkey=value;
+                     Provider.of<Controller>(context, listen: false)
+                          .searchProcess();
+                  },
+                     
                   decoration: const InputDecoration(
                       labelText: 'Search', suffixIcon: Icon(Icons.search)),
                 ),
@@ -143,15 +162,15 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                   TextInputType.number,
                                               decoration: InputDecoration(
                                                   border: InputBorder.none,
-                                                  hintText: "qty"),
+                                                  hintText: "1"),
                                             )),
                                         SizedBox(
                                           width: 10,
                                         ),
                                         IconButton(
                                           icon: Icon(Icons.add),
-                                          onPressed: () async{
-                                           setState(() {
+                                          onPressed: () async {
+                                            setState(() {
                                               selected = index;
                                               if (value.qty[index].text ==
                                                       null ||
@@ -169,9 +188,9 @@ class _ItemSelectionState extends State<ItemSelection> {
 
                                             print("max----$max");
                                             // print("value.qty[index].text---${value.qty[index].text}");
-                                           
-                                            rate1 = value.newList[index]
-                                                ["rate1"];
+
+                                            rate1 =
+                                                value.newList[index]["rate1"];
                                             var total = int.parse(rate1) *
                                                 int.parse(
                                                     value.qty[index].text);
@@ -188,12 +207,14 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                 //         "'$itemName','$date!','1','$custmerId!',$max,'$productCode!',2,'$rate1','46',0");
                                                 : await OrderAppDB.instance
                                                     .insertorderBagTable(
-                                                        value.newList[index]["item"],
+                                                        value.newList[index]
+                                                            ["item"],
                                                         date!,
                                                         widget.os,
                                                         widget.customerId,
                                                         max,
-                                                        value.newList[index]["code"],
+                                                        value.newList[index]
+                                                            ["code"],
                                                         int.parse(value
                                                             .qty[index].text),
                                                         rate1,
@@ -221,7 +242,9 @@ class _ItemSelectionState extends State<ItemSelection> {
                                             (widget.customerId.isNotEmpty ||
                                                         widget.customerId !=
                                                             null) &&
-                                                    (value.newList[index]["code"]
+                                                    (value
+                                                            .newList[index]
+                                                                ["code"]
                                                             .isNotEmpty ||
                                                         value.newList[index]
                                                                 ["code"] !=
@@ -230,10 +253,10 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                         context,
                                                         listen: false)
                                                     .countFromTable(
-                                                        "orderBagTable",
-                                                         widget.os,
-                                                        widget.customerId,
-                                                       )
+                                                    "orderBagTable",
+                                                    widget.os,
+                                                    widget.customerId,
+                                                  )
                                                 // snackbar.showSnackbar(
                                                 //     context, "Added to cart")
                                                 : Text("No data");
@@ -244,7 +267,56 @@ class _ItemSelectionState extends State<ItemSelection> {
                                         ),
                                         IconButton(
                                           icon: Icon(Icons.delete),
-                                          onPressed: () {},
+                                          onPressed: () async {
+                                            showDialog(
+                                              context: context,
+                                              builder: (ctx) => AlertDialog(
+                                                // title: Text("Alert Dialog Box"),
+                                                content: Text("delete?"),
+                                                actions: <Widget>[
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.end,
+                                                    children: [
+                                                      ElevatedButton(
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                                primary: P_Settings
+                                                                    .wavecolor),
+                                                        onPressed: () {
+                                                          Navigator.of(ctx)
+                                                              .pop();
+                                                        },
+                                                        child: Text("cancel"),
+                                                      ),
+                                                      SizedBox(
+                                                        width:
+                                                            size.width * 0.01,
+                                                      ),
+                                                      ElevatedButton(
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                                primary: P_Settings
+                                                                    .wavecolor),
+                                                        onPressed: () async {
+                                                          value.qty[index]
+                                                              .clear();
+                                                          await OrderAppDB
+                                                              .instance
+                                                              .deleteFromTableCommonQuery(
+                                                                  "orderBagTable",
+                                                                  "code='${value.newList[index]["code"]}' AND customerid='${widget.customerId}'");
+                                                          Navigator.of(ctx)
+                                                              .pop();
+                                                        },
+                                                        child: Text("ok"),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          },
                                           color: Theme.of(context).errorColor,
                                         )
                                       ],
@@ -279,7 +351,7 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                   TextInputType.number,
                                               decoration: InputDecoration(
                                                   border: InputBorder.none,
-                                                  hintText: "qty"),
+                                                  hintText: "1"),
                                             )),
                                         SizedBox(
                                           width: 10,
@@ -305,7 +377,7 @@ class _ItemSelectionState extends State<ItemSelection> {
 
                                             print("max----$max");
                                             // print("value.qty[index].text---${value.qty[index].text}");
-                                           
+
                                             rate1 = value.productName[index]
                                                 ["rate1"];
                                             var total = int.parse(rate1) *
@@ -349,10 +421,10 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                         context,
                                                         listen: false)
                                                     .countFromTable(
-                                                        "orderBagTable",
-                                                         widget.os,
-                                                        widget.customerId,
-                                                       );
+                                                    "orderBagTable",
+                                                    widget.os,
+                                                    widget.customerId,
+                                                  );
 
                                             /////////////////////////
 
@@ -380,7 +452,56 @@ class _ItemSelectionState extends State<ItemSelection> {
                                         ),
                                         IconButton(
                                           icon: Icon(Icons.delete),
-                                          onPressed: () {},
+                                          onPressed: () async {
+                                            showDialog(
+                                              context: context,
+                                              builder: (ctx) => AlertDialog(
+                                                // title: Text("Alert Dialog Box"),
+                                                content: Text("delete?"),
+                                                actions: <Widget>[
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.end,
+                                                    children: [
+                                                      ElevatedButton(
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                                primary: P_Settings
+                                                                    .wavecolor),
+                                                        onPressed: () {
+                                                          Navigator.of(ctx)
+                                                              .pop();
+                                                        },
+                                                        child: Text("cancel"),
+                                                      ),
+                                                      SizedBox(
+                                                        width:
+                                                            size.width * 0.01,
+                                                      ),
+                                                      ElevatedButton(
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                                primary: P_Settings
+                                                                    .wavecolor),
+                                                        onPressed: () async {
+                                                          value.qty[index]
+                                                              .clear();
+                                                          await OrderAppDB
+                                                              .instance
+                                                              .deleteFromTableCommonQuery(
+                                                                  "orderBagTable",
+                                                                  "code='${products[index]["code"]}' AND customerid='${widget.customerId}'");
+                                                          Navigator.of(ctx)
+                                                              .pop();
+                                                        },
+                                                        child: Text("ok"),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          },
                                           color: Theme.of(context).errorColor,
                                         )
                                       ],
