@@ -274,7 +274,7 @@ class OrderAppDB {
             $os TEXT NOT NULL,
             $customerid TEXT,
             $cartrowno INTEGER,
-            $code TEXT UNIQUE,
+            $code TEXT,
             $qty INTEGER,
             $rate TEXT,
             $totalamount TEXT,
@@ -315,9 +315,27 @@ class OrderAppDB {
     var res;
     var query3;
     var query2;
-    query2 =
-        'INSERT INTO orderBagTable (itemName, cartdatetime, os, customerid, cartrowno, code, qty, rate, totalamount, cstatus) VALUES ("${itemName}","${cartdatetime}", "${os}", "${customerid}", $cartrowno, "${code}", $qty, "${rate}", "${totalamount}", $cstatus) ON CONFLICT (code) DO UPDATE SET qty=$qty, totalamount="${totalamount}"';
-    res = await db.rawInsert(query2);
+    List<Map<String,dynamic>> res1 = await db.rawQuery(
+        'SELECT  * FROM orderBagTable WHERE customerid="${customerid}" AND os = "${os}" AND code="${code}"');
+    print("SELECT from ---$res1");
+    if (res1.length == 1) {
+      int qty1 = res1[0]["qty"];
+      int updatedQty=qty1+qty;
+      double amount=double.parse(res1[0]["totalamount"]);
+      print("res1.length----${res1.length}");
+
+      print("upadted qty-----$updatedQty");
+      double amount1=double.parse(totalamount);
+      double updatedAmount=amount+amount1;
+      var res = await db.rawUpdate(
+          'UPDATE orderBagTable SET qty=$updatedQty , totalamount="${updatedAmount}" WHERE customerid="${customerid}" AND os = "${os}" AND code="${code}"');
+      print("response-------$res");
+    } else {
+      query2 =
+          'INSERT INTO orderBagTable (itemName, cartdatetime, os, customerid, cartrowno, code, qty, rate, totalamount, cstatus) VALUES ("${itemName}","${cartdatetime}", "${os}", "${customerid}", $cartrowno, "${code}", $qty, "${rate}", "${totalamount}", $cstatus)';
+     var  res = await db.rawInsert(query2);
+    }
+
     print("insert query result $res");
     print("insert-----$query2");
     return res;
