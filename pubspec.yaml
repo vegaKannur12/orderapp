@@ -43,6 +43,7 @@ dependencies:
   syncfusion_flutter_datagrid: ^20.1.52
   flutter_typeahead: ^3.2.5
   intl: ^0.17.0
+  alphabet_list_scroll_view: ^2.0.0
 
 
 dev_dependencies:

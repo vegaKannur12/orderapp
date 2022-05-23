@@ -6,7 +6,6 @@ import 'package:orderapp/components/customSearchTile.dart';
 import 'package:orderapp/db_helper.dart';
 import 'package:orderapp/screen/cartList.dart';
 import 'package:provider/provider.dart';
-
 import '../controller/controller.dart';
 import '../components/customSnackbar.dart';
 
@@ -188,7 +187,7 @@ class _ItemSelectionState extends State<ItemSelection> {
                                             //     //         "'$itemName','$date!','1','$custmerId!',$max,'$productCode!',2,'$rate1','46',0");
                                             var res = await OrderAppDB.instance
                                                 .insertorderBagTable(
-                                                    value.newList[index] 
+                                                    value.newList[index]
                                                         ["item"],
                                                     date!,
                                                     widget.os,
