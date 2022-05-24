@@ -82,8 +82,6 @@ class _OrderFormState extends State<OrderForm> {
     date = DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
 
     sharedPref();
-
-  
   }
 
   sharedPref() async {
@@ -92,6 +90,8 @@ class _OrderFormState extends State<OrderForm> {
     print("staffname---${staffname}");
     Provider.of<Controller>(context, listen: false).getArea(staffname!);
   }
+
+  
 
   @override
   Widget build(BuildContext context) {

@@ -551,10 +551,10 @@ class Controller extends ChangeNotifier {
 
   ////////////////count from table///////
   countFromTable(String table, String os, String customerId) async {
-    print("table---$table");
-    count = await OrderAppDB.instance.countCommonQuery(table, os, customerId);
+    print("table--customerId-$table-$customerId");
+    count = await OrderAppDB.instance
+        .countCommonQuery(table, "os='${os}' AND customerid='${customerId}'");
     notifyListeners();
-    
   }
 
   //////////////insert to order master and details///////////////////////
@@ -627,6 +627,5 @@ class Controller extends ChangeNotifier {
   }
   ////////////////////////////////////////
   ///
-  
-  
+
 }

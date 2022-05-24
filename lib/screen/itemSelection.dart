@@ -27,7 +27,7 @@ class ItemSelection extends StatefulWidget {
 
 class _ItemSelectionState extends State<ItemSelection> {
   String rate1 = "1";
-  int count = 1;
+  // int count = 1;
   List<Map<String, dynamic>> products = [];
   int? selected;
   SearchTile search = SearchTile();
@@ -53,13 +53,16 @@ class _ItemSelectionState extends State<ItemSelection> {
     // products = Provider.of<Controller>(context, listen: false).productName;
   }
 
-  // @override
-  // void deactivate() {
-  //   // TODO: implement deactivate
-  //   super.deactivate();
-  //   Provider.of<Controller>(context, listen: false).newList.clear();
-  // }
-
+@override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    Provider.of<Controller>(context, listen: false).countFromTable(
+      "orderBagTable",
+      widget.os,
+      widget.customerId,
+    );
+  }
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -221,11 +224,6 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                           null ||
                                                       widget.customerId.isEmpty
                                                   ? null
-                                                  // : await OrderAppDB.instance
-                                                  //     .insertCommonQuery(
-                                                  //         'orderBagTable',
-                                                  //         'itemName, cartdatetime, os, customerid, cartrowno, code, qty, rate, totalamount, cstatus',
-                                                  //         "'$itemName','$date!','1','$custmerId!',$max,'$productCode!',2,'$rate1','46',0");
                                                   : await OrderAppDB.instance
                                                       .insertorderBagTable(
                                                           value.newList[index]
@@ -261,28 +259,13 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                           widget.customerId);
 
                                               /////////////////////////
-
-                                              (widget.customerId.isNotEmpty ||
-                                                          widget.customerId !=
-                                                              null) &&
-                                                      (value
-                                                              .newList[index]
-                                                                  ["code"]
-                                                              .isNotEmpty ||
-                                                          value.newList[index]
-                                                                  ["code"] !=
-                                                              null)
-                                                  ? Provider.of<Controller>(
-                                                          context,
-                                                          listen: false)
-                                                      .countFromTable(
-                                                      "orderBagTable",
-                                                      widget.os,
-                                                      widget.customerId,
-                                                    )
-                                                  // snackbar.showSnackbar(
-                                                  //     context, "Added to cart")
-                                                  : Text("No data");
+                                              Provider.of<Controller>(context,
+                                                      listen: false)
+                                                  .countFromTable(
+                                                "orderBagTable",
+                                                widget.os,
+                                                widget.customerId,
+                                              );
                                             },
                                             color: selected == index
                                                 ? P_Settings.addbutonColor
