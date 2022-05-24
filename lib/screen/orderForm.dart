@@ -210,7 +210,11 @@ class _OrderFormState extends State<OrderForm> {
                                           _selectedItemarea = value["aname"];
                                           _selectedAreaId = value["aid"];
                                           Provider.of<Controller>(context,
-                                                  listen: false).areaAutoComplete=[_selectedAreaId!,_selectedItemarea!,];
+                                                  listen: false)
+                                              .areaAutoComplete = [
+                                            _selectedAreaId!,
+                                            _selectedItemarea!,
+                                          ];
                                           Provider.of<Controller>(context,
                                                   listen: false)
                                               .getCustomer(_selectedAreaId!);
@@ -481,8 +485,10 @@ class _OrderFormState extends State<OrderForm> {
                                               print(
                                                   "values.isLoading---${values.isLoading}");
                                               print(
-                                                  "areaController---${Provider.of<Controller>(context,
-                                                  listen: false).areaAutoComplete}");
+                                                  "areaController---${Provider.of<Controller>(context, listen: false).areaAutoComplete}");
+                                              print(
+                                                  "_selectedItemcus---${_selectedItemcus}");
+
                                               Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
@@ -490,14 +496,18 @@ class _OrderFormState extends State<OrderForm> {
                                                         ItemSelection(
                                                           customerId: custmerId
                                                               .toString(),
-                                                          areaId:
-                                                               Provider.of<Controller>(context,
-                                                  listen: false).areaAutoComplete[0],
+                                                          areaId: Provider.of<
+                                                                      Controller>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .areaAutoComplete[0],
                                                           os: values.ordernum[0]
                                                               ['os'],
-                                                          areaName:
-                                                              Provider.of<Controller>(context,
-                                                  listen: false).areaAutoComplete[1],
+                                                          areaName: Provider.of<
+                                                                      Controller>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .areaAutoComplete[1],
                                                         )),
                                               );
                                             }
