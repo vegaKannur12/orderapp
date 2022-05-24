@@ -25,11 +25,21 @@ class _SplashScreenState extends State<SplashScreen>
       st_uname = prefs.getString("st_username");
       st_pwd = prefs.getString("st_pwd");
 
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //       // builder: (context) =>RegistrationScreen()),
+      //       builder: (context) => cid != null
+      //           ? st_uname != null && st_pwd != null
+      //               ? Dashboard()
+      //               : StaffLogin()
+      //           : RegistrationScreen()),
+      // );
       Navigator.push(
         context,
-        MaterialPageRoute(
-            // builder: (context) =>RegistrationScreen()),
-            builder: (context) => cid != null
+        PageRouteBuilder(
+            opaque: false, // set to false
+            pageBuilder: (_, __, ___) => cid != null
                 ? st_uname != null && st_pwd != null
                     ? Dashboard()
                     : StaffLogin()

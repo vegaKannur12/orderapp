@@ -28,7 +28,11 @@ class OrderForm extends StatefulWidget {
   State<OrderForm> createState() => _OrderFormState();
 }
 
-class _OrderFormState extends State<OrderForm> {
+class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
+  AnimationController? _controller;
+  Animation? _animation;
+
+  FocusNode _focusNode = FocusNode();
   TextEditingController fieldTextEditingController = TextEditingController();
   TextEditingValue textvalue = TextEditingValue();
   bool isLoading = false;
@@ -83,6 +87,20 @@ class _OrderFormState extends State<OrderForm> {
     if (splitted == null || splitted!.isEmpty) {
       splitted = ["", ""];
     }
+
+    _controller =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+    _animation = Tween(begin: 300.0, end: 50.0).animate(_controller!)
+      ..addListener(() {
+        setState(() {});
+      });
+    _focusNode.addListener(() {
+      if (_focusNode.hasFocus) {
+        _controller!.forward();
+      } else {
+        _controller!.reverse();
+      }
+    });
   }
 
   sharedPref() async {
@@ -93,7 +111,16 @@ class _OrderFormState extends State<OrderForm> {
   }
 
   @override
+  void dispose() {
+    _controller!.dispose();
+    _focusNode.dispose();
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    double topInsets = MediaQuery.of(context).viewInsets.top;
     String? _selectedItemarea;
     String? _selectedAreaId;
     print("widget.areaname---${widget.areaname}");
@@ -101,12 +128,14 @@ class _OrderFormState extends State<OrderForm> {
     Size size = MediaQuery.of(context).size;
     return WillPopScope(
       onWillPop: () => _onBackPressed(context),
-      child: Opacity(
-        opacity: 1.0,
-        child: Scaffold(
-          resizeToAvoidBottomInset: true,
-          backgroundColor: Colors.white,
-          body: SingleChildScrollView(
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        backgroundColor: Colors.white,
+        body: InkWell(
+          onTap: () {
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
+          child: SingleChildScrollView(
             // reverse: true,
             child: SafeArea(
               child: Consumer<Controller>(builder: (context, values, child) {
@@ -217,6 +246,7 @@ class _OrderFormState extends State<OrderForm> {
                                           displayStringForOption:
                                               (Map<String, dynamic> option) =>
                                                   option["aname"],
+
                                           onSelected: (value) {
                                             setState(() {
                                               _selectedItemarea =
@@ -240,6 +270,9 @@ class _OrderFormState extends State<OrderForm> {
                                               FocusNode fieldFocusNode,
                                               VoidCallback onFieldSubmitted) {
                                             return TextField(
+                                              textInputAction:
+                                                  TextInputAction.next,
+                                              autofocus: true,
                                               decoration: InputDecoration(
                                                 border: InputBorder.none,
 
@@ -251,6 +284,8 @@ class _OrderFormState extends State<OrderForm> {
                                                 ),
                                               ),
                                               controller: areaController,
+                                              // scrollPadding: EdgeInsets.only(
+                                              //     bottom: topInsets + 100.0),
                                               focusNode: fieldFocusNode,
                                               style: const TextStyle(
                                                   fontWeight:
@@ -406,6 +441,11 @@ class _OrderFormState extends State<OrderForm> {
                                                       icon: Icon(Icons.clear),
                                                     ),
                                                   ),
+                                                  // focusNode: _focusNode,
+                                                  scrollPadding:
+                                                      EdgeInsets.only(
+                                                          bottom: topInsets +
+                                                             size.height*0.27),
                                                   focusNode: fieldFocusNode,
                                                   style: const TextStyle(
                                                       fontWeight:

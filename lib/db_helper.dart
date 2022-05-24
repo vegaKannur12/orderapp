@@ -47,6 +47,7 @@ class OrderAppDB {
   static final pwd = 'pwd';
   static final ph = 'ph';
   static final area = 'area';
+  static final datetime = 'datetime';
 
   // int DB_VERSION = 2;
 
@@ -168,10 +169,17 @@ class OrderAppDB {
             $ad2 TEXT,
             $ad3 TEXT,
             $ph TEXT,
-            $area TEXT
+            $area TEXT     
           )
           ''');
-
+    await db.execute('''
+          CREATE TABLE staffLoginDetailsTable (
+            $id INTEGER PRIMARY KEY AUTOINCREMENT,
+            $sid TEXT NOT NULL,
+            $sname TEXT,
+            $datetime TEXT     
+          )
+          ''');
     await db.execute('''
           CREATE TABLE areaDetailsTable (
             $id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -315,25 +323,25 @@ class OrderAppDB {
     var res;
     var query3;
     var query2;
-    List<Map<String,dynamic>> res1 = await db.rawQuery(
+    List<Map<String, dynamic>> res1 = await db.rawQuery(
         'SELECT  * FROM orderBagTable WHERE customerid="${customerid}" AND os = "${os}" AND code="${code}"');
     print("SELECT from ---$res1");
     if (res1.length == 1) {
       int qty1 = res1[0]["qty"];
-      int updatedQty=qty1+qty;
-      double amount=double.parse(res1[0]["totalamount"]);
+      int updatedQty = qty1 + qty;
+      double amount = double.parse(res1[0]["totalamount"]);
       print("res1.length----${res1.length}");
 
       print("upadted qty-----$updatedQty");
-      double amount1=double.parse(totalamount);
-      double updatedAmount=amount+amount1;
+      double amount1 = double.parse(totalamount);
+      double updatedAmount = amount + amount1;
       var res = await db.rawUpdate(
           'UPDATE orderBagTable SET qty=$updatedQty , totalamount="${updatedAmount}" WHERE customerid="${customerid}" AND os = "${os}" AND code="${code}"');
       print("response-------$res");
     } else {
       query2 =
           'INSERT INTO orderBagTable (itemName, cartdatetime, os, customerid, cartrowno, code, qty, rate, totalamount, cstatus) VALUES ("${itemName}","${cartdatetime}", "${os}", "${customerid}", $cartrowno, "${code}", $qty, "${rate}", "${totalamount}", $cstatus)';
-     var  res = await db.rawInsert(query2);
+      var res = await db.rawInsert(query2);
     }
 
     print("insert query result $res");
@@ -406,6 +414,16 @@ class OrderAppDB {
         'INSERT INTO staffDetailsTable(sid, sname, uname, pwd, ad1, ad2, ad3, ph, area) VALUES("${sdata.sid}", "${sdata.sname}", "${sdata.unme}", "${sdata.pwd}", "${sdata.ad1}", "${sdata.ad2}", "${sdata.ad3}", "${sdata.ph}", "${sdata.area}")';
     var res = await db.rawInsert(query2);
     print(query2);
+    // print(res);
+    return res;
+  }
+////////////////////////staff login details table insert ////////////////
+   Future insertStaffLoignDetails(String sid,String sname,String datetime) async {
+    final db = await database;
+    var query2 =
+        'INSERT INTO staffLoginDetailsTable(sid, sname, datetime) VALUES("${sid}", "${sname}", "${datetime}")';
+    var res = await db.rawInsert(query2);
+    print("stafflog....$query2");
     // print(res);
     return res;
   }

@@ -554,7 +554,6 @@ class Controller extends ChangeNotifier {
     print("table---$table");
     count = await OrderAppDB.instance.countCommonQuery(table, os, customerId);
     notifyListeners();
-    
   }
 
   //////////////insert to order master and details///////////////////////
@@ -625,8 +624,10 @@ class Controller extends ChangeNotifier {
     print("nw list---$newList");
     notifyListeners();
   }
-  ////////////////////////////////////////
-  ///
-  
-  
+
+  //////////////////staff log details insertion//////////////////////
+  insertStaffLogDetails(String sid, String sname, String datetime) async{
+    var logdata = await OrderAppDB.instance.insertStaffLoignDetails(sid, sname, datetime);
+    notifyListeners();
+  }
 }
