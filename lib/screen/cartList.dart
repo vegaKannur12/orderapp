@@ -24,7 +24,6 @@ class CartList extends StatefulWidget {
 }
 
 class _CartListState extends State<CartList> {
-  
   DateTime now = DateTime.now();
   String? date;
   var sname;
@@ -47,147 +46,154 @@ class _CartListState extends State<CartList> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: P_Settings.wavecolor,
-        actions: [
-          IconButton(
+    return Opacity(
+      opacity: 1.0,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: P_Settings.wavecolor,
+          actions: [
+            IconButton(
+                onPressed: () async {
+                  await OrderAppDB.instance
+                      .deleteFromTableCommonQuery("orderBagTable", "");
+                },
+                icon: Icon(Icons.delete)),
+            IconButton(
               onPressed: () async {
-                await OrderAppDB.instance
-                    .deleteFromTableCommonQuery("orderBagTable", "");
+                List<Map<String, dynamic>> list =
+                    await OrderAppDB.instance.getListOfTables();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => TableList(list: list)),
+                );
               },
-              icon: Icon(Icons.delete)),
-          IconButton(
-            onPressed: () async {
-              List<Map<String, dynamic>> list =
-                  await OrderAppDB.instance.getListOfTables();
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => TableList(list: list)),
-              );
-            },
-            icon: Icon(Icons.table_bar),
-          ),
-        ],
-      ),
-      body: GestureDetector(onTap: (() {
-        FocusScopeNode currentFocus = FocusScope.of(context);
-        if (!currentFocus.hasPrimaryFocus) {
-          currentFocus.unfocus();
-        }
-      }), child: Consumer<Controller>(builder: (context, value, child) {
-        if (value.isLoading) {
-          return CircularProgressIndicator();
-        } else {
-          return Column(
-            children: [
-              Expanded(
-                child: ListView.builder(
-                  itemCount: value.bagList.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return listItemFunction(
-                        value.bagList[index]["cartrowno"],
-                        value.bagList[index]["itemName"],
-                        value.bagList[index]["rate"],
-                        value.bagList[index]["totalamount"],
-                        value.bagList[index]["qty"],
-                        size,
-                        value.controller[index],
-                        index,
-                        value.bagList[index]["code"]);
-                  },
+              icon: Icon(Icons.table_bar),
+            ),
+          ],
+        ),
+        body: GestureDetector(onTap: (() {
+          FocusScopeNode currentFocus = FocusScope.of(context);
+          if (!currentFocus.hasPrimaryFocus) {
+            currentFocus.unfocus();
+          }
+        }), child: Consumer<Controller>(builder: (context, value, child) {
+          if (value.isLoading) {
+            return CircularProgressIndicator();
+          } else {
+            return Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: value.bagList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return listItemFunction(
+                          value.bagList[index]["cartrowno"],
+                          value.bagList[index]["itemName"],
+                          value.bagList[index]["rate"],
+                          value.bagList[index]["totalamount"],
+                          value.bagList[index]["qty"],
+                          size,
+                          value.controller[index],
+                          index,
+                          value.bagList[index]["code"]);
+                    },
+                  ),
                 ),
-              ),
-              Container(
-                height: size.height * 0.07,
-                color: Colors.yellow,
-                child: Row(
-                  children: [
-                    Container(
-                      width: size.width * 0.5,
-                      height: size.height * 0.07,
-                      color: Colors.yellow,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(" Order Total   : ",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 18)),
-                          Text("\u{20B9}${value.orderTotal}",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 18))
-                        ],
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: (() {
-                        Provider.of<Controller>(context, listen: false)
-                            .insertToOrderbagAndMaster(widget.os, date!,
-                                widget.custmerId, sname, widget.areaId);
-
-                        Provider.of<Controller>(context, listen: false)
-                                    .bagList
-                                    .length >
-                                0
-                            ? showDialog(
-                                context: context,
-                                builder: (context) {
-                                  Future.delayed(Duration(milliseconds: 1000),
-                                      () {
-                                    Navigator.of(context).pop(true);
-                                  });
-                                  return AlertDialog(
-                                      content: Row(
-                                    children: [
-                                      Text(
-                                        'Order Placed!!!!',
-                                        style: TextStyle(
-                                            color: P_Settings.extracolor),
-                                      ),
-                                      Icon(
-                                        Icons.done,
-                                        color: Colors.green,
-                                      )
-                                    ],
-                                  ));
-                                })
-                            : null;
-                        Provider.of<Controller>(context, listen: false).count =
-                            "0";
-                        print("area name ${widget.areaname}");
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    OrderForm(widget.areaname)));
-                      }),
-                      child: Container(
+                Container(
+                  height: size.height * 0.07,
+                  color: Colors.yellow,
+                  child: Row(
+                    children: [
+                      Container(
                         width: size.width * 0.5,
                         height: size.height * 0.07,
-                        color: P_Settings.roundedButtonColor,
+                        color: Colors.yellow,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(
-                              "Place Order",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 18),
-                            ),
-                            SizedBox(
-                              width: size.width * 0.01,
-                            ),
-                            Icon(Icons.shopping_basket)
+                            Text(" Order Total   : ",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 18)),
+                            Text("\u{20B9}${value.orderTotal}",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 18))
                           ],
                         ),
                       ),
-                    )
-                  ],
-                ),
-              )
-            ],
-          );
-        }
-      })),
+                      GestureDetector(
+                        onTap: (() async {
+                          Provider.of<Controller>(context, listen: false)
+                              .insertToOrderbagAndMaster(widget.os, date!,
+                                  widget.custmerId, sname, widget.areaId);
+    
+                          Provider.of<Controller>(context, listen: false)
+                                      .bagList
+                                      .length >
+                                  0
+                              ? showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    Future.delayed(Duration(milliseconds: 500),
+                                        () {
+                                      Navigator.of(context).pop(true);
+                                    });
+                                    return AlertDialog(
+                                        content: Row(
+                                      children: [
+                                        Text(
+                                          'Order Placed!!!!',
+                                          style: TextStyle(
+                                              color: P_Settings.extracolor),
+                                        ),
+                                        Icon(
+                                          Icons.done,
+                                          color: Colors.green,
+                                        )
+                                      ],
+                                    ));
+                                  })
+                              : null;
+                          Provider.of<Controller>(context, listen: false).count =
+                              "0";
+                          print("area name ${widget.areaname}");
+                          await Future.delayed(const Duration(milliseconds: 1000),
+                              () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        OrderForm(widget.areaname)));
+    // Here you can write your code
+                          });
+                        }),
+                        child: Container(
+                          width: size.width * 0.5,
+                          height: size.height * 0.07,
+                          color: P_Settings.roundedButtonColor,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Place Order",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 18),
+                              ),
+                              SizedBox(
+                                width: size.width * 0.01,
+                              ),
+                              Icon(Icons.shopping_basket)
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            );
+          }
+        })),
+      ),
     );
   }
 
