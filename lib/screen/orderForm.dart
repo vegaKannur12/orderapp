@@ -91,8 +91,6 @@ class _OrderFormState extends State<OrderForm> {
     Provider.of<Controller>(context, listen: false).getArea(staffname!);
   }
 
-  
-
   @override
   Widget build(BuildContext context) {
     String? _selectedItemarea;
@@ -525,31 +523,16 @@ class _OrderFormState extends State<OrderForm> {
                                                       "values.isLoading---${values.isLoading}");
                                                   print(
                                                       "areaController---${Provider.of<Controller>(context, listen: false).areaAutoComplete}");
-                                                  // Navigator.push(
-                                                  //   context,
-                                                  //   MaterialPageRoute(
-                                                  //       builder: (context) =>
-                                                  //           ItemSelection(
-                                                  //             customerId:
-                                                  //                 custmerId
-                                                  //                     .toString(),
-                                                  //             areaId: Provider.of<
-                                                  //                         Controller>(
-                                                  //                     context,
-                                                  //                     listen:
-                                                  //                         false)
-                                                  //                 .areaAutoComplete[0],
-                                                  //             os: values
-                                                  //                     .ordernum[
-                                                  //                 0]['os'],
-                                                  //             areaName: Provider.of<
-                                                  //                         Controller>(
-                                                  //                     context,
-                                                  //                     listen:
-                                                  //                         false)
-                                                  //                 .areaAutoComplete[1],
-                                                  //           )),
-                                                  // );
+                                                  Provider.of<Controller>(
+                                                          context,
+                                                          listen: false)
+                                                      .countFromTable(
+                                                    "orderBagTable",
+                                                    values.ordernum[0]
+                                                            ['os'],
+                                                    custmerId
+                                                            .toString(),
+                                                  );
                                                   Navigator.of(context).push(
                                                     PageRouteBuilder(
                                                       opaque:

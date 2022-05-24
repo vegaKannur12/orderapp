@@ -50,18 +50,7 @@ class _ItemSelectionState extends State<ItemSelection> {
     var length =
         Provider.of<Controller>(context, listen: false).productName.length;
     List.generate(length, (index) => TextEditingController());
-    // products = Provider.of<Controller>(context, listen: false).productName;
-  }
-
-@override
-  void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
-    super.didChangeDependencies();
-    Provider.of<Controller>(context, listen: false).countFromTable(
-      "orderBagTable",
-      widget.os,
-      widget.customerId,
-    );
+   
   }
   @override
   Widget build(BuildContext context) {
@@ -129,8 +118,8 @@ class _ItemSelectionState extends State<ItemSelection> {
                     alignment: Alignment.center,
                     height: size.height * 0.045,
                     width: size.width * 0.2,
-                    child: Text(
-                        "${Provider.of<Controller>(context, listen: false).count}"),
+                    child:value.isLoading?Center(child: SpinKitThreeBounce(color: P_Settings.wavecolor,size: 15,)): Text(
+                        "${value.count}",style: TextStyle(fontSize: 19,fontWeight: FontWeight.bold),),
                     decoration: BoxDecoration(
                       color: P_Settings.roundedButtonColor,
                       borderRadius: BorderRadius.only(
@@ -418,25 +407,14 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                       rate1,
                                                       total.toString(),
                                                       0);
-                                              // print("result........... $res");
-                                              //  Provider.of<Controller>(context,
-                                              //           listen: false).countFromTable("orderBagTable");
-                                              widget.customerId == null ||
-                                                      widget
-                                                          .customerId.isEmpty ||
-                                                      products[index]["code"] ==
-                                                          null ||
-                                                      products[index]["code"]!
-                                                          .isEmpty
-                                                  ? Text("Select customer")
-                                                  : Provider.of<Controller>(
-                                                          context,
-                                                          listen: false)
-                                                      .countFromTable(
-                                                      "orderBagTable",
-                                                      widget.os,
-                                                      widget.customerId,
-                                                    );
+
+                                              Provider.of<Controller>(context,
+                                                      listen: false)
+                                                  .countFromTable(
+                                                "orderBagTable",
+                                                widget.os,
+                                                widget.customerId,
+                                              );
 
                                               /////////////////////////
 
@@ -455,8 +433,6 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                           value.ordernum[0]
                                                               ['os'],
                                                           widget.customerId)
-                                                  // snackbar.showSnackbar(
-                                                  //     context, "Added to cart")
                                                   : Text("No data");
                                             },
                                             color: selected == index
