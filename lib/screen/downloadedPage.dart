@@ -81,32 +81,20 @@ class _DownloadedPageState extends State<DownloadedPage> {
                         trailing: IconButton(
                           onPressed: () async {
                             if (downloadItems[index] == "Account Heads") {
-                              await OrderAppDB.instance
-                                  .deleteFromTableCommonQuery(
-                                      "accountHeadsTable", "");
                               Provider.of<Controller>(context, listen: false)
-                                  .getaccountHeadsDetails(cid!);
+                                  .getaccountHeadsDetails(cid!,"");
                             }
                             if (downloadItems[index] == "Product category") {
-                              await OrderAppDB.instance
-                                  .deleteFromTableCommonQuery(
-                                      "productsCategory", "");
                               Provider.of<Controller>(context, listen: false)
-                                  .getProductCategory(cid!);
+                                  .getProductCategory(cid!,"");
                             }
                             if (downloadItems[index] == "Company") {
-                              await OrderAppDB.instance
-                                  .deleteFromTableCommonQuery(
-                                      "companyTable", "");
                               Provider.of<Controller>(context, listen: false)
-                                  .getProductCompany(cid!);
+                                  .getProductCompany(cid!,"");
                             }
                             if (downloadItems[index] == "Product Details") {
-                              await OrderAppDB.instance
-                                  .deleteFromTableCommonQuery(
-                                      "productDetailsTable", "");
                               Provider.of<Controller>(context, listen: false)
-                                  .getProductDetails(cid!);
+                                  .getProductDetails(cid!,"");
                             }
                           },
                           icon: Icon(Icons.download),
@@ -135,26 +123,11 @@ class _DownloadedPageState extends State<DownloadedPage> {
                   primary: P_Settings.wavecolor,
                 ),
                 onPressed: () async {
-                  await OrderAppDB.instance
-                      .deleteFromTableCommonQuery("accountHeadsTable", "");
-                  await OrderAppDB.instance
-                      .deleteFromTableCommonQuery("productsCategory", "");
-                  await OrderAppDB.instance
-                      .deleteFromTableCommonQuery("companyTable", "");
-                  await OrderAppDB.instance
-                      .deleteFromTableCommonQuery("productDetailsTable", "");
-                      ///////////////////////////////////////////
-                  Provider.of<Controller>(context, listen: false)
-                      .getaccountHeadsDetails(cid!);
 
                   Provider.of<Controller>(context, listen: false)
-                      .getProductCategory(cid!);
+                      .downloadAllPages(cid!);
 
-                  Provider.of<Controller>(context, listen: false)
-                      .getProductCompany(cid!);
-
-                  Provider.of<Controller>(context, listen: false)
-                      .getProductDetails(cid!);
+                  ///////////////////////////////////////////
                 },
                 child: Text("Download all")),
           ),

@@ -187,15 +187,18 @@ class Controller extends ChangeNotifier {
   }
 
   ////////////////////////// account head ///////////////////////////////////////
-  Future<AccountHead?> getaccountHeadsDetails(String cid) async {
+  Future<AccountHead?> getaccountHeadsDetails(String cid, String? load) async {
     print("cid...............${cid}");
     try {
       Uri url = Uri.parse("http://trafiqerp.in/order/fj/get_achead.php");
       Map body = {
         'cid': cid,
       };
-      isLoading = true;
-      notifyListeners();
+      if (load != "all") {
+        isLoading = true;
+        notifyListeners();
+      }
+
       print("compny----${cid}");
       http.Response response = await http.post(
         url,
@@ -204,17 +207,18 @@ class Controller extends ChangeNotifier {
       print("body ${body}");
       List map = jsonDecode(response.body);
       print("map ${map}");
+      await OrderAppDB.instance
+          .deleteFromTableCommonQuery("accountHeadsTable", "");
       for (var ahead in map) {
         print("ahead------${ahead}");
         accountHead = AccountHead.fromJson(ahead);
         var account = await OrderAppDB.instance.insertAccoundHeads(accountHead);
-
-        // print("inserted ${account}");
       }
-      isLoading = false;
 
-      /////////////// insert into local db /////////////////////
-      notifyListeners();
+      if (load != "all") {
+        isLoading = false;
+        notifyListeners();
+      }
       // return accountHead;
     } catch (e) {
       print(e);
@@ -239,7 +243,7 @@ class Controller extends ChangeNotifier {
   }
 
   ///////////////////////////////////////////////////////////////
-  Future<ProductDetails?> getProductDetails(String cid) async {
+  Future<ProductDetails?> getProductDetails(String cid, String? load) async {
     print("cid...............${cid}");
     try {
       Uri url = Uri.parse("http://trafiqerp.in/order/fj/get_prod.php");
@@ -247,12 +251,16 @@ class Controller extends ChangeNotifier {
         'cid': cid,
       };
       print("compny----${cid}");
-      isLoading = true;
-      notifyListeners();
+      if (load != "all") {
+        isLoading = true;
+        notifyListeners();
+      }
       http.Response response = await http.post(
         url,
         body: body,
       );
+      await OrderAppDB.instance
+          .deleteFromTableCommonQuery("productDetailsTable", "");
       // print("body ${body}");
       List map = jsonDecode(response.body);
       // print("map ${map}");
@@ -260,13 +268,13 @@ class Controller extends ChangeNotifier {
         proDetails = ProductDetails.fromJson(pro);
         var product =
             await OrderAppDB.instance.insertProductDetails(proDetails);
-        // print("inserted ${account}");
       }
-      isLoading = false;
-      notifyListeners();
+      if (load != "all") {
+        isLoading = false;
+        notifyListeners();
+      }
       /////////////// insert into local db /////////////////////
-      notifyListeners();
-      return proDetails;
+
     } catch (e) {
       print(e);
       return null;
@@ -274,7 +282,8 @@ class Controller extends ChangeNotifier {
   }
 
   /////////////////////////////product category//////////////////////////////
-  Future<ProductsCategoryModel?> getProductCategory(String cid) async {
+  Future<ProductsCategoryModel?> getProductCategory(
+      String cid, String? load) async {
     print("cid...............${cid}");
     try {
       Uri url = Uri.parse("http://trafiqerp.in/order/fj/get_cat.php");
@@ -282,13 +291,17 @@ class Controller extends ChangeNotifier {
         'cid': cid,
       };
       print("compny----${cid}");
-      isLoading = true;
-      notifyListeners();
+      if (load != "all") {
+        isLoading = true;
+        notifyListeners();
+      }
       http.Response response = await http.post(
         url,
         body: body,
       );
       // print("body ${body}");
+      await OrderAppDB.instance
+          .deleteFromTableCommonQuery("productsCategory", "");
       List map = jsonDecode(response.body);
       print("map ${map}");
       ProductsCategoryModel category;
@@ -296,8 +309,14 @@ class Controller extends ChangeNotifier {
       for (var cat in map) {
         category = ProductsCategoryModel.fromJson(cat);
         var product = await OrderAppDB.instance.insertProductCategory(category);
-        isLoading = false;
-        notifyListeners();
+        if (load != "all") {
+          isLoading = false;
+          // notifyListeners();
+        } else {
+          isLoading = true;
+          break;
+          //  notifyListeners();
+        }
         // print("inserted ${account}");
       }
       /////////////// insert into local db /////////////////////
@@ -309,7 +328,8 @@ class Controller extends ChangeNotifier {
   }
 
   ////////////////////////////////get company//////////////////////////////////
-  Future<ProductCompanymodel?> getProductCompany(String cid) async {
+  Future<ProductCompanymodel?> getProductCompany(
+      String cid, String? load) async {
     print("cid...............${cid}");
     try {
       Uri url = Uri.parse("http://trafiqerp.in/order/fj/get_com.php");
@@ -317,12 +337,15 @@ class Controller extends ChangeNotifier {
         'cid': cid,
       };
       print("compny----${cid}");
+
       isLoading = true;
       notifyListeners();
+
       http.Response response = await http.post(
         url,
         body: body,
       );
+      await OrderAppDB.instance.deleteFromTableCommonQuery("companyTable", "");
       // print("body ${body}");
       List map = jsonDecode(response.body);
       print("map ${map}");
@@ -331,8 +354,15 @@ class Controller extends ChangeNotifier {
         productCompany = ProductCompanymodel.fromJson(proComp);
         var product =
             await OrderAppDB.instance.insertProductCompany(productCompany);
-        isLoading = false;
-        notifyListeners();
+        if (load != "all") {
+          isLoading = false;
+          // notifyListeners();
+        } else {
+          print("jfdjkk");
+          isLoading = true;
+
+          //  notifyListeners();
+        }
         // print("inserted ${account}");
       }
       /////////////// insert into local db /////////////////////
@@ -551,13 +581,13 @@ class Controller extends ChangeNotifier {
 
   ////////////////count from table///////
   countFromTable(String table, String os, String customerId) async {
-    isLoading=true;
+    isLoading = true;
     // notifyListeners();
     print("table--customerId-$table-$customerId");
     count = await OrderAppDB.instance
         .countCommonQuery(table, "os='${os}' AND customerid='${customerId}'");
-        isLoading=false;
-    
+    isLoading = false;
+
     notifyListeners();
   }
 
@@ -631,8 +661,24 @@ class Controller extends ChangeNotifier {
   }
 
   //////////////////staff log details insertion//////////////////////
-  insertStaffLogDetails(String sid, String sname, String datetime) async{
-    var logdata = await OrderAppDB.instance.insertStaffLoignDetails(sid, sname, datetime);
+  insertStaffLogDetails(String sid, String sname, String datetime) async {
+    var logdata =
+        await OrderAppDB.instance.insertStaffLoignDetails(sid, sname, datetime);
+    notifyListeners();
+  }
+
+  ///////////////////////////////////////////////////////////////////////
+  downloadAllPages(String cid) async {
+    isLoading = true;
+    print("isloaading---$isLoading");
+    // notifyListeners();
+    // getaccountHeadsDetails(cid, "all");
+    getProductCategory(cid, "all");
+    getProductCompany(cid, "all");
+    // getProductDetails(cid, "all");
+    isLoading = false;
+    print("isloaading---$isLoading");
+
     notifyListeners();
   }
 }
