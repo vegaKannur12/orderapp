@@ -15,6 +15,7 @@ class DownloadedPage extends StatefulWidget {
 }
 
 class _DownloadedPageState extends State<DownloadedPage> {
+  String? cid;
   List<String> downloadItems = [
     "Account Heads",
     "Product Details",
@@ -22,34 +23,46 @@ class _DownloadedPageState extends State<DownloadedPage> {
     "Company",
     "Images"
   ];
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getCid();
+  }
+
+  getCid() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    cid = prefs.getString("cid");
+  }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar:widget.type==""?  AppBar(
-        backgroundColor: P_Settings.wavecolor,
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(6.0),
-          child:
-          Consumer<Controller>(
-            builder: (context, value, child) {
-              if (value.isLoading) {
-                return LinearProgressIndicator(
-                  backgroundColor: Colors.white,
-                  color: P_Settings.wavecolor,
+      appBar: widget.type == ""
+          ? AppBar(
+              backgroundColor: P_Settings.wavecolor,
+              bottom: PreferredSize(
+                preferredSize: Size.fromHeight(6.0),
+                child: Consumer<Controller>(
+                  builder: (context, value, child) {
+                    if (value.isLoading) {
+                      return LinearProgressIndicator(
+                        backgroundColor: Colors.white,
+                        color: P_Settings.wavecolor,
 
-                  // valueColor: new AlwaysStoppedAnimation<Color>(Colors.red),
-                  // value: 0.25,
-                );
-              } else {
-                return Container();
-              }
-            },
-          ),
-        ),
-        // title: Text("Company Details",style: TextStyle(fontSize: 20),),
-      ):null,
+                        // valueColor: new AlwaysStoppedAnimation<Color>(Colors.red),
+                        // value: 0.25,
+                      );
+                    } else {
+                      return Container();
+                    }
+                  },
+                ),
+              ),
+              // title: Text("Company Details",style: TextStyle(fontSize: 20),),
+            )
+          : null,
       body: Column(
         children: [
           Flexible(
@@ -67,25 +80,31 @@ class _DownloadedPageState extends State<DownloadedPage> {
                       child: ListTile(
                         trailing: IconButton(
                           onPressed: () async {
-                            SharedPreferences prefs =
-                                await SharedPreferences.getInstance();
-                            String? cid = prefs.getString("cid");
                             if (downloadItems[index] == "Account Heads") {
-                               await OrderAppDB.instance.deleteFromTableCommonQuery("accountHeadsTable","");
+                              await OrderAppDB.instance
+                                  .deleteFromTableCommonQuery(
+                                      "accountHeadsTable", "");
                               Provider.of<Controller>(context, listen: false)
                                   .getaccountHeadsDetails(cid!);
                             }
                             if (downloadItems[index] == "Product category") {
-                              await OrderAppDB.instance.deleteFromTableCommonQuery("productsCategory","");
+                              await OrderAppDB.instance
+                                  .deleteFromTableCommonQuery(
+                                      "productsCategory", "");
                               Provider.of<Controller>(context, listen: false)
                                   .getProductCategory(cid!);
                             }
                             if (downloadItems[index] == "Company") {
-                              await OrderAppDB.instance.deleteFromTableCommonQuery("companyTable","");
+                              await OrderAppDB.instance
+                                  .deleteFromTableCommonQuery(
+                                      "companyTable", "");
                               Provider.of<Controller>(context, listen: false)
                                   .getProductCompany(cid!);
-                            } if (downloadItems[index] == "Product Details") {
-                              await OrderAppDB.instance.deleteFromTableCommonQuery("productDetailsTable","");
+                            }
+                            if (downloadItems[index] == "Product Details") {
+                              await OrderAppDB.instance
+                                  .deleteFromTableCommonQuery(
+                                      "productDetailsTable", "");
                               Provider.of<Controller>(context, listen: false)
                                   .getProductDetails(cid!);
                             }
@@ -115,26 +134,48 @@ class _DownloadedPageState extends State<DownloadedPage> {
                   ),
                   primary: P_Settings.wavecolor,
                 ),
-                onPressed: () {},
+                onPressed: () async {
+                  await OrderAppDB.instance
+                      .deleteFromTableCommonQuery("accountHeadsTable", "");
+                  await OrderAppDB.instance
+                      .deleteFromTableCommonQuery("productsCategory", "");
+                  await OrderAppDB.instance
+                      .deleteFromTableCommonQuery("companyTable", "");
+                  await OrderAppDB.instance
+                      .deleteFromTableCommonQuery("productDetailsTable", "");
+                      ///////////////////////////////////////////
+                  Provider.of<Controller>(context, listen: false)
+                      .getaccountHeadsDetails(cid!);
+
+                  Provider.of<Controller>(context, listen: false)
+                      .getProductCategory(cid!);
+
+                  Provider.of<Controller>(context, listen: false)
+                      .getProductCompany(cid!);
+
+                  Provider.of<Controller>(context, listen: false)
+                      .getProductDetails(cid!);
+                },
                 child: Text("Download all")),
           ),
-          SizedBox(height:20),
-          widget.type==""?Container():
-          Consumer<Controller>(
-            builder: (context, value, child) {
-              if (value.isLoading) {
-                return CircularProgressIndicator(
-                  backgroundColor: Colors.white,
-                  color: P_Settings.wavecolor,
+          SizedBox(height: 20),
+          widget.type == ""
+              ? Container()
+              : Consumer<Controller>(
+                  builder: (context, value, child) {
+                    if (value.isLoading) {
+                      return CircularProgressIndicator(
+                        backgroundColor: Colors.white,
+                        color: P_Settings.wavecolor,
 
-                  // valueColor: new AlwaysStoppedAnimation<Color>(Colors.red),
-                  // value: 0.25,
-                );
-              } else {
-                return Container();
-              }
-            },
-          ),
+                        // valueColor: new AlwaysStoppedAnimation<Color>(Colors.red),
+                        // value: 0.25,
+                      );
+                    } else {
+                      return Container();
+                    }
+                  },
+                ),
         ],
       ),
     );

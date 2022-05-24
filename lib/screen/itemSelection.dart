@@ -354,7 +354,7 @@ class _ItemSelectionState extends State<ItemSelection> {
                                             width: 10,
                                           ),
                                           IconButton(
-                                            icon: Icon(Icons.add),
+                                            icon: Icon(Icons.add,),
                                             onPressed: () async {
                                               setState(() {
                                                 selected = index;
