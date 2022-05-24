@@ -529,7 +529,7 @@ class OrderAppDB {
     var area = await db.rawQuery(
         'SELECT area FROM staffDetailsTable WHERE sname="${staffName}"');
     if (area[0]["area"] == "") {
-      list = await db.rawQuery('SELECT * FROM areaDetailsTable');
+      list = await db.rawQuery('SELECT aname,aid FROM areaDetailsTable');
     }
 
     print("res===${result}");

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:intl/intl.dart';
 import 'package:orderapp/components/commoncolor.dart';
 import 'package:orderapp/controller/controller.dart';
@@ -44,6 +45,11 @@ class _CartListState extends State<CartList> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Opacity(
@@ -64,7 +70,8 @@ class _CartListState extends State<CartList> {
                     await OrderAppDB.instance.getListOfTables();
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => TableList(list: list)),
+                  MaterialPageRoute(
+                      builder: (context) => TableList(list: list)),
                 );
               },
               icon: Icon(Icons.table_bar),
@@ -125,7 +132,7 @@ class _CartListState extends State<CartList> {
                           Provider.of<Controller>(context, listen: false)
                               .insertToOrderbagAndMaster(widget.os, date!,
                                   widget.custmerId, sname, widget.areaId);
-    
+
                           Provider.of<Controller>(context, listen: false)
                                       .bagList
                                       .length >
@@ -136,6 +143,13 @@ class _CartListState extends State<CartList> {
                                     Future.delayed(Duration(milliseconds: 500),
                                         () {
                                       Navigator.of(context).pop(true);
+                                      Navigator.of(context).push(
+                                        PageRouteBuilder(
+                                          opaque: false, // set to false
+                                          pageBuilder: (_, __, ___) =>
+                                              OrderForm(widget.areaname),
+                                        ),
+                                      );
                                     });
                                     return AlertDialog(
                                         content: Row(
@@ -153,18 +167,19 @@ class _CartListState extends State<CartList> {
                                     ));
                                   })
                               : null;
-                          Provider.of<Controller>(context, listen: false).count =
-                              "0";
+                          Provider.of<Controller>(context, listen: false)
+                              .count = "0";
                           print("area name ${widget.areaname}");
-                          await Future.delayed(const Duration(milliseconds: 1000),
-                              () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        OrderForm(widget.areaname)));
-    // Here you can write your code
-                          });
+                          // await Future.delayed(
+                          //     const Duration(milliseconds: 1000), () {
+                          //   // Navigator.push(
+                          //   //     context,
+                          //   //     MaterialPageRoute(
+                          //   //         builder: (context) =>
+                          //   //             OrderForm(widget.areaname)));
+
+                          //   // Here you can write your code
+                          // });
                         }),
                         child: Container(
                           width: size.width * 0.5,

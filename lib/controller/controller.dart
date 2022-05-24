@@ -30,6 +30,8 @@ class Controller extends ChangeNotifier {
   String? splittedCode;
   double amt = 0.0;
   List<CD> data = [];
+  List<String> areaAutoComplete = [];
+
   List<Map<String, dynamic>> listWidget = [];
   List<TextEditingController> controller = [];
   List<TextEditingController> qty = [];
@@ -43,7 +45,7 @@ class Controller extends ChangeNotifier {
 
   List<Map<String, dynamic>> staffList = [];
   List<Map<String, dynamic>> productName = [];
-  List<String> areDetails = [];
+  List<Map<String, dynamic>> areDetails = [];
   List<Map<String, dynamic>> custmerDetails = [];
   List<Map<String, dynamic>> areaList = [];
   List<Map<String, dynamic>> customerList = [];
@@ -348,7 +350,7 @@ class Controller extends ChangeNotifier {
       areaList = await OrderAppDB.instance.getArea(staffName);
       print("areaList----${areaList}");
       for (var item in areaList) {
-        areDetails.add(item["aid"] + '-' + item["aname"]);
+        areDetails.add(item);
       }
       print("areaList adding ----${areaList}");
       notifyListeners();

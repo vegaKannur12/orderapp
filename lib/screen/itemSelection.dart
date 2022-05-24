@@ -92,15 +92,26 @@ class _ItemSelectionState extends State<ItemSelection> {
                   Provider.of<Controller>(context, listen: false)
                       .getBagDetails(widget.customerId, widget.os);
 
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => CartList(
-                              areaId: widget.areaId,
-                              custmerId: widget.customerId,
-                              os: widget.os,
-                              areaname: widget.areaName,
-                            )),
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //       builder: (context) => CartList(
+                  //             areaId: widget.areaId,
+                  //             custmerId: widget.customerId,
+                  //             os: widget.os,
+                  //             areaname: widget.areaName,
+                  //           )),
+                  // );
+                  Navigator.of(context).push(
+                    PageRouteBuilder(
+                      opaque: false, // set to false
+                      pageBuilder: (_, __, ___) => CartList(
+                        areaId: widget.areaId,
+                        custmerId: widget.customerId,
+                        os: widget.os,
+                        areaname: widget.areaName,
+                      ),
+                    ),
                   );
                 }
               },
