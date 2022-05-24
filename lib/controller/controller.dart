@@ -551,8 +551,13 @@ class Controller extends ChangeNotifier {
 
   ////////////////count from table///////
   countFromTable(String table, String os, String customerId) async {
-    print("table---$table");
-    count = await OrderAppDB.instance.countCommonQuery(table, os, customerId);
+    isLoading=true;
+    // notifyListeners();
+    print("table--customerId-$table-$customerId");
+    count = await OrderAppDB.instance
+        .countCommonQuery(table, "os='${os}' AND customerid='${customerId}'");
+        isLoading=false;
+    
     notifyListeners();
   }
 

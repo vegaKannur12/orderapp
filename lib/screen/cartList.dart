@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:orderapp/components/commoncolor.dart';
 import 'package:orderapp/controller/controller.dart';
 import 'package:orderapp/db_helper.dart';
+import 'package:orderapp/screen/dashboard.dart';
 import 'package:orderapp/screen/orderForm.dart';
 import 'package:orderapp/service/tableList.dart';
 import 'package:provider/provider.dart';
@@ -142,12 +143,13 @@ class _CartListState extends State<CartList> {
                                   builder: (context) {
                                     Future.delayed(Duration(milliseconds: 500),
                                         () {
+                                          value.areDetails.clear();
                                       Navigator.of(context).pop(true);
                                       Navigator.of(context).push(
                                         PageRouteBuilder(
                                           opaque: false, // set to false
-                                          pageBuilder: (_, __, ___) =>
-                                              OrderForm(widget.areaname),
+                                          pageBuilder: (_, __, ___) =>Dashboard(type: "return from cartList",areaName:widget.areaname)
+                                              // OrderForm(widget.areaname,"return"),
                                         ),
                                       );
                                     });

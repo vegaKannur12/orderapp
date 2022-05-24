@@ -704,11 +704,11 @@ class OrderAppDB {
   }
 
 //////////////count from table/////////////////////////////////////////
-  countCommonQuery(String table, String os, String customerId) async {
+  countCommonQuery(String table, String? condition) async {
     String count = "0";
     Database db = await instance.database;
     final result = await db.rawQuery(
-        'SELECT COUNT(*) c FROM $table WHERE os="$os" AND customerid="$customerId"');
+        "SELECT COUNT(*) c FROM '$table' WHERE $condition");
     count = result[0]["c"].toString();
     print("result---count---$result");
     return count;

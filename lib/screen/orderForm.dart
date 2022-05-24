@@ -22,17 +22,15 @@ import '../components/customSnackbar.dart';
 
 class OrderForm extends StatefulWidget {
   String areaname;
-  OrderForm(this.areaname);
+  OrderForm(
+    this.areaname,
+  );
 
   @override
   State<OrderForm> createState() => _OrderFormState();
 }
 
 class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
-  AnimationController? _controller;
-  Animation? _animation;
-
-  FocusNode _focusNode = FocusNode();
   TextEditingController fieldTextEditingController = TextEditingController();
   TextEditingValue textvalue = TextEditingValue();
   bool isLoading = false;
@@ -84,23 +82,6 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
     date = DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
 
     sharedPref();
-    if (splitted == null || splitted!.isEmpty) {
-      splitted = ["", ""];
-    }
-
-    _controller =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
-    _animation = Tween(begin: 300.0, end: 50.0).animate(_controller!)
-      ..addListener(() {
-        setState(() {});
-      });
-    _focusNode.addListener(() {
-      if (_focusNode.hasFocus) {
-        _controller!.forward();
-      } else {
-        _controller!.reverse();
-      }
-    });
   }
 
   sharedPref() async {
@@ -110,13 +91,6 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
     Provider.of<Controller>(context, listen: false).getArea(staffname!);
   }
 
-  @override
-  void dispose() {
-    _controller!.dispose();
-    _focusNode.dispose();
-
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -231,10 +205,9 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                             } else {
                                               print(
                                                   "TextEditingValue---${value.text}");
-                                              Provider.of<Controller>(context,
-                                                      listen: false)
-                                                  .getArea(value.text);
 
+                                              print(
+                                                  "values.areDetails----${values.areDetails}");
                                               return values.areDetails.where(
                                                   (suggestion) =>
                                                       suggestion["aname"]
@@ -565,31 +538,16 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                                       "values.isLoading---${values.isLoading}");
                                                   print(
                                                       "areaController---${Provider.of<Controller>(context, listen: false).areaAutoComplete}");
-                                                  // Navigator.push(
-                                                  //   context,
-                                                  //   MaterialPageRoute(
-                                                  //       builder: (context) =>
-                                                  //           ItemSelection(
-                                                  //             customerId:
-                                                  //                 custmerId
-                                                  //                     .toString(),
-                                                  //             areaId: Provider.of<
-                                                  //                         Controller>(
-                                                  //                     context,
-                                                  //                     listen:
-                                                  //                         false)
-                                                  //                 .areaAutoComplete[0],
-                                                  //             os: values
-                                                  //                     .ordernum[
-                                                  //                 0]['os'],
-                                                  //             areaName: Provider.of<
-                                                  //                         Controller>(
-                                                  //                     context,
-                                                  //                     listen:
-                                                  //                         false)
-                                                  //                 .areaAutoComplete[1],
-                                                  //           )),
-                                                  // );
+                                                  Provider.of<Controller>(
+                                                          context,
+                                                          listen: false)
+                                                      .countFromTable(
+                                                    "orderBagTable",
+                                                    values.ordernum[0]
+                                                            ['os'],
+                                                    custmerId
+                                                            .toString(),
+                                                  );
                                                   Navigator.of(context).push(
                                                     PageRouteBuilder(
                                                       opaque:

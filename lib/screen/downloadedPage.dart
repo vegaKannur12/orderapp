@@ -27,7 +27,7 @@ class _DownloadedPageState extends State<DownloadedPage> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar:widget.type==""? AppBar(
+      appBar:widget.type==""?  AppBar(
         backgroundColor: P_Settings.wavecolor,
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(6.0),
