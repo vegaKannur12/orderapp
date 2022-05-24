@@ -12,7 +12,9 @@ import '../controller/controller.dart';
 import 'orderForm.dart';
 
 class Dashboard extends StatefulWidget {
-  const Dashboard({Key? key}) : super(key: key);
+  String? type;
+  String? areaName;
+  Dashboard({this.type, this.areaName});
 
   @override
   State<Dashboard> createState() => _DashboardState();
@@ -20,7 +22,14 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   int _selectedDrawerIndex = 0;
-  List companyAttributes = ["Dashboard","Logged in", "Collection", "Orders", "Sale","Download Page"];
+  List companyAttributes = [
+    "Dashboard",
+    "Logged in",
+    "Collection",
+    "Orders",
+    "Sale",
+    "Download Page"
+  ];
   int _selectedIndex = 0;
 
   _onSelectItem(int index) {
@@ -45,15 +54,31 @@ class _DashboardState extends State<Dashboard> {
       case 0:
         return new MainDashboard();
       case 3:
-        return new OrderForm("");
-      case 5:return DownloadedPage(type: "drawer call",);
+        if (widget.type == "return from cartList") {
+          return OrderForm(widget.areaName!);
+        }else{
+          return OrderForm("");
+        }
+      case 5:
+        return DownloadedPage(
+          type: "drawer call",
+        );
     }
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    if (widget.type == "return from cartList") {
+      _selectedIndex = 3;
+    }
+    print("_seletdde---$_selectedIndex");
   }
 
   @override
   Widget build(BuildContext context) {
     List<Widget> drawerOpts = [];
-
     print("clicked");
     // companyAttributes.clear();
     for (var i = 0; i < companyAttributes.length; i++) {
@@ -156,7 +181,6 @@ class _DashboardState extends State<Dashboard> {
           ),
         ),
         body: _getDrawerItemWidget(_selectedIndex),
-      
       ),
     );
   }

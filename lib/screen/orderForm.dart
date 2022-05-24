@@ -1,4 +1,6 @@
 import 'dart:developer';
+import 'dart:ffi';
+import 'dart:io';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
@@ -20,16 +22,19 @@ import '../components/customSnackbar.dart';
 
 class OrderForm extends StatefulWidget {
   String areaname;
-  OrderForm(this.areaname);
+  OrderForm(
+    this.areaname,
+  );
 
   @override
   State<OrderForm> createState() => _OrderFormState();
 }
 
 class _OrderFormState extends State<OrderForm> {
+  TextEditingController fieldTextEditingController = TextEditingController();
+  TextEditingValue textvalue = TextEditingValue();
   bool isLoading = false;
   String? _selectedItemarea;
-  String? _selectedAreaId;
   String? area;
   CustomPopup popup = CustomPopup();
   String? _selectedItemcus;
@@ -43,7 +48,7 @@ class _OrderFormState extends State<OrderForm> {
   TextEditingController qty = TextEditingController();
   TextEditingController eanTextCon = TextEditingController();
   final TextEditingController _typeAheadController = TextEditingController();
-  TextEditingController areaController = TextEditingController();
+
   final formGlobalKey = GlobalKey<FormState>();
   List? splitted;
   TextEditingController fieldText = TextEditingController();
@@ -77,9 +82,8 @@ class _OrderFormState extends State<OrderForm> {
     date = DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
 
     sharedPref();
-    if (splitted == null || splitted!.isEmpty) {
-      splitted = ["", ""];
-    }
+
+  
   }
 
   sharedPref() async {
@@ -91,228 +95,90 @@ class _OrderFormState extends State<OrderForm> {
 
   @override
   Widget build(BuildContext context) {
+    String? _selectedItemarea;
+    String? _selectedAreaId;
     print("widget.areaname---${widget.areaname}");
     // final bottom = MediaQuery.of(context).viewInsets.bottom;
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        // reverse: true,
-        child: SafeArea(
-          child: Consumer<Controller>(builder: (context, values, child) {
-            return Form(
-              key: formGlobalKey,
-              child: Column(
-                children: [
-                  // SizedBox(height: size.height * 0.04),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+    return WillPopScope(
+      onWillPop: () => _onBackPressed(context),
+      child: Opacity(
+        opacity: 1.0,
+        child: Scaffold(
+          resizeToAvoidBottomInset: true,
+          backgroundColor: Colors.white,
+          body: SingleChildScrollView(
+            // reverse: true,
+            child: SafeArea(
+              child: Consumer<Controller>(builder: (context, values, child) {
+                return Form(
+                  key: formGlobalKey,
+                  child: Column(
                     children: [
-                      Container(
-                        height: size.height * 0.24,
-                        decoration: BoxDecoration(
-                          color: P_Settings.wavecolor,
-                          borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(50),
-                            bottomRight: Radius.circular(50),
+                      // SizedBox(height: size.height * 0.04),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            height: size.height * 0.24,
+                            decoration: BoxDecoration(
+                              color: P_Settings.wavecolor,
+                              borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(50),
+                                bottomRight: Radius.circular(50),
+                              ),
+                            ),
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.person, color: P_Settings.bottomColor,
+                                    size: 30,
+                                    // color: Colors.white,
+                                  ),
+                                  SizedBox(
+                                    width: size.width * 0.01,
+                                  ),
+                                  Text("CUSTOMER",
+                                      style: TextStyle(
+                                          fontSize: 30,
+                                          color: P_Settings.bodycolor,
+                                          fontWeight: FontWeight.bold)
+                                      // ),
+                                      ),
+                                ]),
                           ),
-                        ),
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.person, color: P_Settings.bottomColor,
-                                size: 30,
-                                // color: Colors.white,
-                              ),
-                              SizedBox(
-                                width: size.width * 0.01,
-                              ),
-                              Text("CUSTOMER",
-                                  style: TextStyle(
-                                      fontSize: 30,
-                                      color: P_Settings.bodycolor,
-                                      fontWeight: FontWeight.bold)
-                                  // ),
-                                  ),
-                            ]),
-                      ),
-                      SizedBox(
-                        height: size.height * 0.1,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          height: size.height * 0.9,
-                          child: Column(
-                            // mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(height: size.height * 0.01),
-                              Flexible(
-                                child: Padding(
-                                  padding: EdgeInsets.only(left: 15),
-                                  child: Text(
-                                    "Area/Route",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(height: size.height * 0.01),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 30.0, right: 15),
-                                child: Container(
-                                  height: size.height * 0.06,
-                                  child: InputDecorator(
-                                    decoration: InputDecoration(
-                                      border: OutlineInputBorder(
-                                        gapPadding: 1,
-                                        borderRadius: BorderRadius.circular(20),
-                                        borderSide: BorderSide(
-                                          color: Colors.black,
-                                          width: 3,
+                          SizedBox(
+                            height: size.height * 0.1,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              height: size.height * 0.9,
+                              child: Column(
+                                // mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(height: size.height * 0.01),
+                                  Flexible(
+                                    child: Padding(
+                                      padding: EdgeInsets.only(left: 15),
+                                      child: Text(
+                                        "Area/Route",
+                                        style: TextStyle(
+                                          fontSize: 16,
                                         ),
                                       ),
-                                      contentPadding: EdgeInsets.symmetric(
-                                          vertical: 0, horizontal: 4),
-                                      hintText: widget.areaname,
-                                    ),
-                                    child: Autocomplete<Map<String, dynamic>>(
-                                      initialValue: TextEditingValue(
-                                          text: widget.areaname),
-                                      optionsBuilder: (TextEditingValue value) {
-                                        if (value.text.isEmpty) {
-                                          return [];
-                                        } else {
-                                          print(
-                                              "TextEditingValue---${value.text}");
-                                          Provider.of<Controller>(context,
-                                                  listen: false)
-                                              .getArea(value.text);
-
-                                          return values.areDetails.where(
-                                              (suggestion) =>
-                                                  suggestion["aname"]
-                                                      .toLowerCase()
-                                                      .contains(value.text
-                                                          .toLowerCase()));
-                                        }
-                                      },
-                                      displayStringForOption:
-                                          (Map<String, dynamic> option) =>
-                                              option["aname"],
-                                      onSelected: (value) {
-                                        setState(() {
-                                          _selectedItemarea = value["aname"];
-                                          _selectedAreaId = value["aid"];
-                                          Provider.of<Controller>(context,
-                                                  listen: false)
-                                              .areaAutoComplete = [
-                                            _selectedAreaId!,
-                                            _selectedItemarea!,
-                                          ];
-                                          Provider.of<Controller>(context,
-                                                  listen: false)
-                                              .getCustomer(_selectedAreaId!);
-                                        });
-                                      },
-                                      fieldViewBuilder: (BuildContext context,
-                                          areaController,
-                                          FocusNode fieldFocusNode,
-                                          VoidCallback onFieldSubmitted) {
-                                        return TextField(
-                                          decoration: InputDecoration(
-                                            border: InputBorder.none,
-
-                                            // hintText: 'Enter a message',
-                                            suffixIcon: IconButton(
-                                              onPressed: areaController.clear,
-                                              icon: Icon(Icons.clear),
-                                            ),
-                                          ),
-                                          controller: areaController,
-                                          focusNode: fieldFocusNode,
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.normal),
-                                        );
-                                      },
-                                      // optionsMaxHeight: size.height * 0.3,
-                                      optionsViewBuilder: (BuildContext context,
-                                          AutocompleteOnSelected<
-                                                  Map<String, dynamic>>
-                                              onSelected,
-                                          Iterable<Map<String, dynamic>>
-                                              options) {
-                                        return Align(
-                                          alignment: Alignment.topLeft,
-                                          child: Material(
-                                            child: Container(
-                                              height: size.height * 0.2,
-                                              width: size.width * 0.84,
-                                              // color: Colors.teal,
-                                              child: ListView.builder(
-                                                padding: EdgeInsets.all(10.0),
-                                                itemCount: options.length,
-                                                itemBuilder:
-                                                    (BuildContext context,
-                                                        int index) {
-                                                  //      print(
-                                                  // "option----${options}");
-                                                  print("index----${index}");
-                                                  final Map<String, dynamic>
-                                                      option =
-                                                      options.elementAt(index);
-                                                  print("option----${option}");
-                                                  return ListTile(
-                                                    onTap: () {
-                                                      print(
-                                                          "optonsssssssssssss$option");
-                                                      onSelected(option);
-                                                    },
-                                                    title: Text(
-                                                        option["aname"]
-                                                            .toString(),
-                                                        style: const TextStyle(
-                                                            color:
-                                                                Colors.black)),
-                                                  );
-                                                },
-                                              ),
-                                            ),
-                                          ),
-                                        );
-                                      },
                                     ),
                                   ),
-                                ),
-                              ),
-                              SizedBox(height: size.height * 0.02),
-                              Flexible(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 15),
-                                  child: Text("Customer",
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                      )),
-                                ),
-                              ),
-                              SizedBox(height: size.height * 0.01),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 30.0, right: 15),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
+                                  SizedBox(height: size.height * 0.01),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 30.0, right: 15),
+                                    child: Container(
                                       height: size.height * 0.06,
                                       child: InputDecorator(
                                         decoration: InputDecoration(
-                                          contentPadding: EdgeInsets.symmetric(
-                                              vertical: 0, horizontal: 4),
                                           border: OutlineInputBorder(
                                             gapPadding: 1,
                                             borderRadius:
@@ -322,10 +188,14 @@ class _OrderFormState extends State<OrderForm> {
                                               width: 3,
                                             ),
                                           ),
-                                          // hintText: "Select..",
+                                          contentPadding: EdgeInsets.symmetric(
+                                              vertical: 0, horizontal: 4),
+                                          hintText: widget.areaname,
                                         ),
                                         child:
                                             Autocomplete<Map<String, dynamic>>(
+                                          initialValue: TextEditingValue(
+                                              text: widget.areaname),
                                           optionsBuilder:
                                               (TextEditingValue value) {
                                             if (value.text.isEmpty) {
@@ -334,55 +204,60 @@ class _OrderFormState extends State<OrderForm> {
                                               print(
                                                   "TextEditingValue---${value.text}");
 
-                                              return values.custmerDetails
-                                                  .where((suggestion) =>
-                                                      suggestion["hname"]
+                                              print(
+                                                  "values.areDetails----${values.areDetails}");
+                                              return values.areDetails.where(
+                                                  (suggestion) =>
+                                                      suggestion["aname"]
                                                           .toLowerCase()
-                                                          .startsWith(value.text
+                                                          .contains(value.text
                                                               .toLowerCase()));
-
-                                              // contains(value.text
-                                              //     .toLowerCase()));
                                             }
                                           },
                                           displayStringForOption:
                                               (Map<String, dynamic> option) =>
-                                                  option["hname"],
+                                                  option["aname"],
                                           onSelected: (value) {
                                             setState(() {
-                                              print("value----${value}");
-                                              _selectedItemcus = value["hname"];
-                                              custmerId = value["code"];
-                                              print(
-                                                  "Code .........---${custmerId}");
+                                              _selectedItemarea =
+                                                  value["aname"];
+                                              _selectedAreaId = value["aid"];
+                                              Provider.of<Controller>(context,
+                                                      listen: false)
+                                                  .areaAutoComplete = [
+                                                _selectedAreaId!,
+                                                _selectedItemarea!,
+                                              ];
+                                              Provider.of<Controller>(context,
+                                                      listen: false)
+                                                  .getCustomer(
+                                                      _selectedAreaId!);
                                             });
                                           },
                                           fieldViewBuilder: (BuildContext
                                                   context,
-                                              fieldText,
+                                              areaController,
                                               FocusNode fieldFocusNode,
                                               VoidCallback onFieldSubmitted) {
-                                            return TextFormField(
-                                              // validator: (val) => val!.isEmpty
-                                              //     ? 'Please select customer...'
-                                              //     : null,
-                                              controller: fieldText,
+                                            return TextField(
                                               decoration: InputDecoration(
                                                 border: InputBorder.none,
 
                                                 // hintText: 'Enter a message',
                                                 suffixIcon: IconButton(
-                                                  onPressed: fieldText.clear,
+                                                  onPressed:
+                                                      areaController.clear,
                                                   icon: Icon(Icons.clear),
                                                 ),
                                               ),
+                                              controller: areaController,
                                               focusNode: fieldFocusNode,
                                               style: const TextStyle(
                                                   fontWeight:
                                                       FontWeight.normal),
                                             );
                                           },
-                                          optionsMaxHeight: size.height * 0.02,
+                                          // optionsMaxHeight: size.height * 0.3,
                                           optionsViewBuilder:
                                               (BuildContext context,
                                                   AutocompleteOnSelected<
@@ -394,8 +269,9 @@ class _OrderFormState extends State<OrderForm> {
                                               alignment: Alignment.topLeft,
                                               child: Material(
                                                 child: Container(
-                                                  width: size.width * 0.84,
                                                   height: size.height * 0.2,
+                                                  width: size.width * 0.84,
+                                                  // color: Colors.teal,
                                                   child: ListView.builder(
                                                     padding:
                                                         EdgeInsets.all(10.0),
@@ -419,7 +295,7 @@ class _OrderFormState extends State<OrderForm> {
                                                           onSelected(option);
                                                         },
                                                         title: Text(
-                                                            option["hname"]
+                                                            option["aname"]
                                                                 .toString(),
                                                             style:
                                                                 const TextStyle(
@@ -435,159 +311,350 @@ class _OrderFormState extends State<OrderForm> {
                                         ),
                                       ),
                                     ),
-                                    SizedBox(
-                                      height: size.height * 0.01,
+                                  ),
+                                  SizedBox(height: size.height * 0.02),
+                                  Flexible(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(left: 15),
+                                      child: Text("Customer",
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                          )),
                                     ),
-                                    ValueListenableBuilder(
-                                        valueListenable: visibleValidation,
-                                        builder: (BuildContext context, bool v,
-                                            Widget? child) {
-                                          // print("value===${visible.value}");
-                                          return Visibility(
-                                            visible: v,
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 8.0),
-                                              child: Text(
-                                                "Please choose Customer!!!",
-                                                style: TextStyle(
-                                                    color: Colors.red),
+                                  ),
+                                  SizedBox(height: size.height * 0.01),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 30.0, right: 15),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          height: size.height * 0.06,
+                                          child: InputDecorator(
+                                            decoration: InputDecoration(
+                                              contentPadding:
+                                                  EdgeInsets.symmetric(
+                                                      vertical: 0,
+                                                      horizontal: 4),
+                                              border: OutlineInputBorder(
+                                                gapPadding: 1,
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                                borderSide: BorderSide(
+                                                  color: Colors.black,
+                                                  width: 3,
+                                                ),
                                               ),
+                                              // hintText: "Select..",
                                             ),
-                                          );
-                                        }),
-                                    SizedBox(
-                                      height: size.height * 0.02,
-                                    ),
-                                    Center(
-                                      child: Container(
-                                        width: size.width * 0.4,
-                                        height: size.height * 0.05,
-                                        child: ElevatedButton.icon(
-                                          icon: Icon(
-                                            Icons.library_add_check,
-                                            color: Colors.white,
-                                            size: 30.0,
-                                          ),
-                                          label: Text("Add Items"),
-                                          onPressed: () async {
-                                            FocusScopeNode currentFocus =
-                                                FocusScope.of(context);
+                                            child: Autocomplete<
+                                                Map<String, dynamic>>(
+                                              optionsBuilder:
+                                                  (TextEditingValue value) {
+                                                if (value.text.isEmpty) {
+                                                  return [];
+                                                } else {
+                                                  print(
+                                                      "TextEditingValue---${value.text}");
 
-                                            if (!currentFocus.hasPrimaryFocus) {
-                                              currentFocus.unfocus();
-                                            }
-                                            if (custmerId == null ||
-                                                custmerId!.isEmpty) {
-                                              visibleValidation.value = true;
-                                            } else {
-                                              visibleValidation.value = false;
-                                              print(
-                                                  "values.isLoading---${values.isLoading}");
-                                              print(
-                                                  "areaController---${Provider.of<Controller>(context, listen: false).areaAutoComplete}");
-                                              print(
-                                                  "_selectedItemcus---${_selectedItemcus}");
+                                                  return values.custmerDetails
+                                                      .where((suggestion) =>
+                                                          suggestion["hname"]
+                                                              .toLowerCase()
+                                                              .startsWith(value
+                                                                  .text
+                                                                  .toLowerCase()));
 
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        ItemSelection(
-                                                          customerId: custmerId
-                                                              .toString(),
-                                                          areaId: Provider.of<
-                                                                      Controller>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .areaAutoComplete[0],
-                                                          os: values.ordernum[0]
-                                                              ['os'],
-                                                          areaName: Provider.of<
-                                                                      Controller>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .areaAutoComplete[1],
-                                                        )),
-                                              );
-                                            }
-                                            ;
-                                          },
-                                          style: ElevatedButton.styleFrom(
-                                            primary: P_Settings.wavecolor,
-                                            shape: new RoundedRectangleBorder(
-                                              borderRadius:
-                                                  new BorderRadius.circular(
-                                                      10.0),
+                                                  // contains(value.text
+                                                  //     .toLowerCase()));
+                                                }
+                                              },
+                                              displayStringForOption:
+                                                  (Map<String, dynamic>
+                                                          option) =>
+                                                      option["hname"],
+                                              onSelected: (value) {
+                                                setState(() {
+                                                  print("value----${value}");
+                                                  _selectedItemcus =
+                                                      value["hname"];
+                                                  custmerId = value["code"];
+                                                  print(
+                                                      "Code .........---${custmerId}");
+                                                });
+                                              },
+                                              fieldViewBuilder:
+                                                  (BuildContext context,
+                                                      fieldText,
+                                                      FocusNode fieldFocusNode,
+                                                      VoidCallback
+                                                          onFieldSubmitted) {
+                                                return TextFormField(
+                                                  // validator: (val) => val!.isEmpty
+                                                  //     ? 'Please select customer...'
+                                                  //     : null,
+                                                  controller: fieldText,
+                                                  decoration: InputDecoration(
+                                                    border: InputBorder.none,
+
+                                                    // hintText: 'Enter a message',
+                                                    suffixIcon: IconButton(
+                                                      onPressed:
+                                                          fieldText.clear,
+                                                      icon: Icon(Icons.clear),
+                                                    ),
+                                                  ),
+                                                  focusNode: fieldFocusNode,
+                                                  style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.normal),
+                                                );
+                                              },
+                                              optionsMaxHeight:
+                                                  size.height * 0.02,
+                                              optionsViewBuilder: (BuildContext
+                                                      context,
+                                                  AutocompleteOnSelected<
+                                                          Map<String, dynamic>>
+                                                      onSelected,
+                                                  Iterable<Map<String, dynamic>>
+                                                      options) {
+                                                return Align(
+                                                  alignment: Alignment.topLeft,
+                                                  child: Material(
+                                                    child: Container(
+                                                      width: size.width * 0.84,
+                                                      height: size.height * 0.2,
+                                                      child: ListView.builder(
+                                                        padding: EdgeInsets.all(
+                                                            10.0),
+                                                        itemCount:
+                                                            options.length,
+                                                        itemBuilder:
+                                                            (BuildContext
+                                                                    context,
+                                                                int index) {
+                                                          //      print(
+                                                          // "option----${options}");
+                                                          print(
+                                                              "index----${index}");
+                                                          final Map<String,
+                                                                  dynamic>
+                                                              option =
+                                                              options.elementAt(
+                                                                  index);
+                                                          print(
+                                                              "option----${option}");
+                                                          return ListTile(
+                                                            onTap: () {
+                                                              print(
+                                                                  "optonsssssssssssss$option");
+                                                              onSelected(
+                                                                  option);
+                                                            },
+                                                            title: Text(
+                                                                option["hname"]
+                                                                    .toString(),
+                                                                style: const TextStyle(
+                                                                    color: Colors
+                                                                        .black)),
+                                                          );
+                                                        },
+                                                      ),
+                                                    ),
+                                                  ),
+                                                );
+                                              },
                                             ),
                                           ),
                                         ),
-                                      ),
+                                        SizedBox(
+                                          height: size.height * 0.01,
+                                        ),
+                                        ValueListenableBuilder(
+                                            valueListenable: visibleValidation,
+                                            builder: (BuildContext context,
+                                                bool v, Widget? child) {
+                                              // print("value===${visible.value}");
+                                              return Visibility(
+                                                visible: v,
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 8.0),
+                                                  child: Text(
+                                                    "Please choose Customer!!!",
+                                                    style: TextStyle(
+                                                        color: Colors.red),
+                                                  ),
+                                                ),
+                                              );
+                                            }),
+                                        SizedBox(
+                                          height: size.height * 0.02,
+                                        ),
+                                        Center(
+                                          child: Container(
+                                            width: size.width * 0.4,
+                                            height: size.height * 0.05,
+                                            child: ElevatedButton.icon(
+                                              icon: Icon(
+                                                Icons.library_add_check,
+                                                color: Colors.white,
+                                                size: 30.0,
+                                              ),
+                                              label: Text("Add Items"),
+                                              onPressed: () async {
+                                                FocusScopeNode currentFocus =
+                                                    FocusScope.of(context);
+
+                                                if (!currentFocus
+                                                    .hasPrimaryFocus) {
+                                                  currentFocus.unfocus();
+                                                }
+                                                if (custmerId == null ||
+                                                    custmerId!.isEmpty) {
+                                                  visibleValidation.value =
+                                                      true;
+                                                } else {
+                                                  visibleValidation.value =
+                                                      false;
+                                                  print(
+                                                      "values.isLoading---${values.isLoading}");
+                                                  print(
+                                                      "areaController---${Provider.of<Controller>(context, listen: false).areaAutoComplete}");
+                                                  // Navigator.push(
+                                                  //   context,
+                                                  //   MaterialPageRoute(
+                                                  //       builder: (context) =>
+                                                  //           ItemSelection(
+                                                  //             customerId:
+                                                  //                 custmerId
+                                                  //                     .toString(),
+                                                  //             areaId: Provider.of<
+                                                  //                         Controller>(
+                                                  //                     context,
+                                                  //                     listen:
+                                                  //                         false)
+                                                  //                 .areaAutoComplete[0],
+                                                  //             os: values
+                                                  //                     .ordernum[
+                                                  //                 0]['os'],
+                                                  //             areaName: Provider.of<
+                                                  //                         Controller>(
+                                                  //                     context,
+                                                  //                     listen:
+                                                  //                         false)
+                                                  //                 .areaAutoComplete[1],
+                                                  //           )),
+                                                  // );
+                                                  Navigator.of(context).push(
+                                                    PageRouteBuilder(
+                                                      opaque:
+                                                          false, // set to false
+                                                      pageBuilder:
+                                                          (_, __, ___) =>
+                                                              ItemSelection(
+                                                        customerId: custmerId
+                                                            .toString(),
+                                                        areaId: Provider.of<
+                                                                    Controller>(
+                                                                context,
+                                                                listen: false)
+                                                            .areaAutoComplete[0],
+                                                        os: values.ordernum[0]
+                                                            ['os'],
+                                                        areaName: Provider.of<
+                                                                    Controller>(
+                                                                context,
+                                                                listen: false)
+                                                            .areaAutoComplete[1],
+                                                      ),
+                                                    ),
+                                                  );
+                                                }
+                                                ;
+                                              },
+                                              style: ElevatedButton.styleFrom(
+                                                primary: P_Settings.wavecolor,
+                                                shape:
+                                                    new RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      new BorderRadius.circular(
+                                                          10.0),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        // ElevatedButton(
+                                        //   style: ElevatedButton.styleFrom(
+                                        //     primary: P_Settings.wavecolor,
+                                        //     shape: new RoundedRectangleBorder(
+                                        //       borderRadius:
+                                        //           new BorderRadius.circular(10.0),
+                                        //     ),
+                                        //   ),
+                                        //   onPressed: () async {
+                                        //     setState(() {
+                                        //       isLoading = true;
+                                        //       Navigator.push(
+                                        //           context,
+                                        //           MaterialPageRoute(
+                                        //               builder: (context) =>
+                                        //                   ItemSelection(
+                                        //                     customerId: custmerId
+                                        //                         .toString(),
+                                        //                     areaId: splitted![0],
+                                        //                     os: values.ordernum[0]
+                                        //                         ['os'],
+                                        //                   )));
+                                        //     });
+                                        //     await Future.delayed(
+                                        //         const Duration(seconds: 4));
+                                        //     setState(() {
+                                        //       isLoading = false;
+                                        //     });
+                                        //   },
+                                        //   child: (isLoading)
+                                        //       ? const SizedBox(
+                                        //           width: 16,
+                                        //           height: 16,
+                                        //           child: CircularProgressIndicator(
+                                        //             color: Colors.white,
+                                        //             strokeWidth: 1.5,
+                                        //           ))
+                                        //       : const Text('Submit'),
+                                        // ),
+                                      ],
                                     ),
-                                    // ElevatedButton(
-                                    //   style: ElevatedButton.styleFrom(
-                                    //     primary: P_Settings.wavecolor,
-                                    //     shape: new RoundedRectangleBorder(
-                                    //       borderRadius:
-                                    //           new BorderRadius.circular(10.0),
-                                    //     ),
-                                    //   ),
-                                    //   onPressed: () async {
-                                    //     setState(() {
-                                    //       isLoading = true;
-                                    //       Navigator.push(
-                                    //           context,
-                                    //           MaterialPageRoute(
-                                    //               builder: (context) =>
-                                    //                   ItemSelection(
-                                    //                     customerId: custmerId
-                                    //                         .toString(),
-                                    //                     areaId: splitted![0],
-                                    //                     os: values.ordernum[0]
-                                    //                         ['os'],
-                                    //                   )));
-                                    //     });
-                                    //     await Future.delayed(
-                                    //         const Duration(seconds: 4));
-                                    //     setState(() {
-                                    //       isLoading = false;
-                                    //     });
-                                    //   },
-                                    //   child: (isLoading)
-                                    //       ? const SizedBox(
-                                    //           width: 16,
-                                    //           height: 16,
-                                    //           child: CircularProgressIndicator(
-                                    //             color: Colors.white,
-                                    //             strokeWidth: 1.5,
-                                    //           ))
-                                    //       : const Text('Submit'),
-                                    // ),
-                                  ],
-                                ),
+                                  ),
+                                  // Column(
+                                  //   children: [
+                                  //     Container(
+                                  //       height: size.height * 0.2,
+                                  //       alignment: Alignment.topLeft,
+                                  //       child: Padding(
+                                  //         padding: const EdgeInsets.only(left: 10),
+                                  //         child:
+                                  //       ),
+                                  //     ),
+                                  //   ],
+                                  // ),
+                                ],
                               ),
-                              // Column(
-                              //   children: [
-                              //     Container(
-                              //       height: size.height * 0.2,
-                              //       alignment: Alignment.topLeft,
-                              //       child: Padding(
-                              //         padding: const EdgeInsets.only(left: 10),
-                              //         child:
-                              //       ),
-                              //     ),
-                              //   ],
-                              // ),
-                            ],
+                            ),
                           ),
-                        ),
+                        ],
                       ),
                     ],
                   ),
-                ],
-              ),
-            );
-          }),
+                );
+              }),
+            ),
+          ),
         ),
       ),
     );
@@ -595,4 +662,38 @@ class _OrderFormState extends State<OrderForm> {
 
 ///////////////////////////////////////////////////////////////////
 
+}
+
+///////////////////////////////////
+Future<bool> _onBackPressed(BuildContext context) async {
+  return await showDialog(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        // title: const Text('AlertDialog Title'),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: const <Widget>[
+              Text('Do you want to exit from this app'),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('cancel'),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          TextButton(
+            child: const Text('Ok'),
+            onPressed: () {
+              exit(0);
+            },
+          ),
+        ],
+      );
+    },
+  );
 }
