@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:intl/intl.dart';
 import 'package:orderapp/components/commoncolor.dart';
 import 'package:orderapp/controller/controller.dart';
@@ -24,7 +25,6 @@ class CartList extends StatefulWidget {
 }
 
 class _CartListState extends State<CartList> {
-  
   DateTime now = DateTime.now();
   String? date;
   var sname;
@@ -42,6 +42,11 @@ class _CartListState extends State<CartList> {
     sname = Provider.of<Controller>(context, listen: false).sname;
     print("sname-----${sname}");
     // _controller = List.generate(length, (i) => TextEditingController());
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -120,7 +125,7 @@ class _CartListState extends State<CartList> {
                       ),
                     ),
                     GestureDetector(
-                      onTap: (() {
+                      onTap: (() async {
                         Provider.of<Controller>(context, listen: false)
                             .insertToOrderbagAndMaster(widget.os, date!,
                                 widget.custmerId, sname, widget.areaId);
@@ -134,7 +139,21 @@ class _CartListState extends State<CartList> {
                                 builder: (context) {
                                   Future.delayed(Duration(milliseconds: 1000),
                                       () {
-                                    Navigator.of(context).pop(true);
+                                    Navigator.of(context, rootNavigator: true)
+                                        .pop();
+                                    // Navigator.push(
+                                    //   context,
+                                    //   MaterialPageRoute(
+                                    //       builder: (context) =>
+                                    //           OrderForm(widget.areaname)),
+                                    // );
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            OrderForm(widget.areaname),
+                                      ),
+                                    );
                                   });
                                   return AlertDialog(
                                       content: Row(
@@ -152,14 +171,10 @@ class _CartListState extends State<CartList> {
                                   ));
                                 })
                             : null;
+
                         Provider.of<Controller>(context, listen: false).count =
                             "0";
                         print("area name ${widget.areaname}");
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    OrderForm(widget.areaname)));
                       }),
                       child: Container(
                         width: size.width * 0.5,
