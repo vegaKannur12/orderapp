@@ -417,8 +417,10 @@ class OrderAppDB {
     // print(res);
     return res;
   }
+
 ////////////////////////staff login details table insert ////////////////
-   Future insertStaffLoignDetails(String sid,String sname,String datetime) async {
+  Future insertStaffLoignDetails(
+      String sid, String sname, String datetime) async {
     final db = await database;
     var query2 =
         'INSERT INTO staffLoginDetailsTable(sid, sname, datetime) VALUES("${sid}", "${sname}", "${datetime}")';
@@ -707,8 +709,8 @@ class OrderAppDB {
   countCommonQuery(String table, String? condition) async {
     String count = "0";
     Database db = await instance.database;
-    final result = await db.rawQuery(
-        "SELECT COUNT(*) c FROM '$table' WHERE $condition");
+    final result =
+        await db.rawQuery("SELECT COUNT(*) c FROM '$table' WHERE $condition");
     count = result[0]["c"].toString();
     print("result---count---$result");
     return count;
@@ -740,7 +742,8 @@ class OrderAppDB {
     return max;
   }
 
-///////////////////////////////////////////////////////
+////////////////////////left join///////////////////////////
+
   // Future insertCommonQuery(String table, String field, String values) async {
   //   final db = await database;
   //   var query = 'INSERT INTO $table($field) VALUES($values)';

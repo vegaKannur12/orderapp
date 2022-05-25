@@ -34,7 +34,6 @@ class Controller extends ChangeNotifier {
   double? totalPrice;
   List<String> areaAutoComplete = [];
 
-
   List<Map<String, dynamic>> listWidget = [];
   List<TextEditingController> controller = [];
   List<TextEditingController> qty = [];
@@ -644,11 +643,15 @@ class Controller extends ChangeNotifier {
       isSearch = true;
       newList = productName
           .where((product) =>
-              product["item"].toLowerCase().contains(searchkey!.toLowerCase()) ||
-              
-              product["code"].toLowerCase().contains(searchkey!.toLowerCase()) ||
-              product["categoryId"].toLowerCase().contains(searchkey!.toLowerCase())
-          )
+              product["item"]
+                  .toLowerCase()
+                  .contains(searchkey!.toLowerCase()) ||
+              product["code"]
+                  .toLowerCase()
+                  .contains(searchkey!.toLowerCase()) ||
+              product["categoryId"]
+                  .toLowerCase()
+                  .contains(searchkey!.toLowerCase()))
           .toList();
 
       var length = newList.length;
@@ -702,13 +705,15 @@ class Controller extends ChangeNotifier {
   }
 
   ///////////////////////
-  ///  
-setAmt(String price,) {
-
-    totalPrice =double.parse(price) ;
+  ///
+  setAmt(
+    String price,
+  ) {
+    totalPrice = double.parse(price);
 
     // notifyListeners();
   }
+
   totalCalculation(String rate) {
     totalPrice = double.parse(rate) * qtyinc!;
     print("total pri-----$totalPrice");
