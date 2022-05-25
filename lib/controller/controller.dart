@@ -25,6 +25,7 @@ class Controller extends ChangeNotifier {
   String? ordernumber;
   String? cid;
   String? cname;
+  int? qtyinc;
   List<CD> c_d = [];
   String? area;
   String? splittedCode;
@@ -672,5 +673,22 @@ class Controller extends ChangeNotifier {
     print("isloaading---$isLoading");
 
     notifyListeners();
+  }
+  ////////////////////////////////////////////////////////////////
+  qtyIncrement(){
+    qtyinc=1+qtyinc!;
+    print("qty-----$qtyinc");
+    notifyListeners();
+  }
+  ///////////////////////////////////////////////////////////////
+   qtyDecrement(){
+    qtyinc=qtyinc!-1;
+    print("qty-----$qtyinc");
+    notifyListeners();
+  }
+////////////////////////////////////////////////////////////////
+  setQty(int qty){
+    qtyinc=qty;
+    // notifyListeners();
   }
 }
