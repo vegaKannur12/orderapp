@@ -112,25 +112,25 @@ class _DownloadedPageState extends State<DownloadedPage> {
               ),
             ),
           ),
-          Container(
-            width: size.width * 0.4,
-            height: size.height * 0.05,
-            child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20), // <-- Radius
-                  ),
-                  primary: P_Settings.wavecolor,
-                ),
-                onPressed: () async {
+          // Container(
+          //   width: size.width * 0.4,
+          //   height: size.height * 0.05,
+          //   child: ElevatedButton(
+          //       style: ElevatedButton.styleFrom(
+          //         shape: RoundedRectangleBorder(
+          //           borderRadius: BorderRadius.circular(20), // <-- Radius
+          //         ),
+          //         primary: P_Settings.wavecolor,
+          //       ),
+          //       onPressed: () async {
 
-                  Provider.of<Controller>(context, listen: false)
-                      .downloadAllPages(cid!);
+          //         Provider.of<Controller>(context, listen: false)
+          //             .downloadAllPages(cid!);
 
-                  ///////////////////////////////////////////
-                },
-                child: Text("Download all")),
-          ),
+          //         ///////////////////////////////////////////
+          //       },
+          //       child: Text("Download all")),
+          // ),
           SizedBox(height: 20),
           widget.type == ""
               ? Container()

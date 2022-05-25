@@ -311,16 +311,12 @@ class Controller extends ChangeNotifier {
         var product = await OrderAppDB.instance.insertProductCategory(category);
         if (load != "all") {
           isLoading = false;
-          // notifyListeners();
-        } else {
-          isLoading = true;
-          break;
-          //  notifyListeners();
-        }
+          notifyListeners();
+        } 
         // print("inserted ${account}");
       }
       /////////////// insert into local db /////////////////////
-      notifyListeners();
+      // notifyListeners();
     } catch (e) {
       print(e);
       return null;
@@ -356,17 +352,13 @@ class Controller extends ChangeNotifier {
             await OrderAppDB.instance.insertProductCompany(productCompany);
         if (load != "all") {
           isLoading = false;
+          notifyListeners();
           // notifyListeners();
-        } else {
-          print("jfdjkk");
-          isLoading = true;
-
-          //  notifyListeners();
         }
         // print("inserted ${account}");
       }
       /////////////// insert into local db /////////////////////
-      notifyListeners();
+      
     } catch (e) {
       print(e);
       return null;
@@ -671,7 +663,7 @@ class Controller extends ChangeNotifier {
   downloadAllPages(String cid) async {
     isLoading = true;
     print("isloaading---$isLoading");
-    // notifyListeners();
+    notifyListeners();
     // getaccountHeadsDetails(cid, "all");
     getProductCategory(cid, "all");
     getProductCompany(cid, "all");
