@@ -32,6 +32,7 @@ class Controller extends ChangeNotifier {
   double amt = 0.0;
   List<CD> data = [];
   List<String> areaAutoComplete = [];
+  double? totalPrice;
 
   List<Map<String, dynamic>> listWidget = [];
   List<TextEditingController> controller = [];
@@ -313,7 +314,7 @@ class Controller extends ChangeNotifier {
         if (load != "all") {
           isLoading = false;
           notifyListeners();
-        } 
+        }
         // print("inserted ${account}");
       }
       /////////////// insert into local db /////////////////////
@@ -359,7 +360,7 @@ class Controller extends ChangeNotifier {
         // print("inserted ${account}");
       }
       /////////////// insert into local db /////////////////////
-      
+
     } catch (e) {
       print(e);
       return null;
@@ -674,21 +675,39 @@ class Controller extends ChangeNotifier {
 
     notifyListeners();
   }
+
   ////////////////////////////////////////////////////////////////
-  qtyIncrement(){
-    qtyinc=1+qtyinc!;
+  qtyIncrement() {
+    qtyinc = 1 + qtyinc!;
     print("qty-----$qtyinc");
     notifyListeners();
   }
+
   ///////////////////////////////////////////////////////////////
-   qtyDecrement(){
-    qtyinc=qtyinc!-1;
+  qtyDecrement() {
+    qtyinc = qtyinc! - 1;
     print("qty-----$qtyinc");
     notifyListeners();
   }
+
 ////////////////////////////////////////////////////////////////
-  setQty(int qty){
-    qtyinc=qty;
+  setQty(int qty) {
+    qtyinc = qty;
     // notifyListeners();
   }
+
+  //////////////////////////////////////////////////////////////
+  setAmt(String price,) {
+
+    totalPrice =double.parse(price) ;
+
+    // notifyListeners();
+  }
+  totalCalculation(String rate) {
+    totalPrice = double.parse(rate) * qtyinc!;
+    print("total pri-----$totalPrice");
+    notifyListeners();
+  }
+
+  
 }

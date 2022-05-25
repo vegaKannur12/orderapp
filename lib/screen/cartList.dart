@@ -343,6 +343,9 @@ class _CartListState extends State<CartList> {
                                     Provider.of<Controller>(context,
                                             listen: false)
                                         .setQty(qty);
+                                    Provider.of<Controller>(context,
+                                            listen: false)
+                                        .setAmt(totalamount);
                                     showModalBottomSheet<void>(
                                       context: context,
                                       builder: (BuildContext context) {
@@ -396,6 +399,8 @@ class _CartListState extends State<CartList> {
                                                                       () {
                                                                     value
                                                                         .qtyIncrement();
+                                                                    value.totalCalculation(
+                                                                        rate);
                                                                   }),
                                                           Padding(
                                                             padding:
@@ -421,6 +426,8 @@ class _CartListState extends State<CartList> {
                                                                       () {
                                                                     value
                                                                         .qtyDecrement();
+                                                                    value.totalCalculation(
+                                                                        rate);
                                                                   }),
                                                         ],
                                                       ),
@@ -442,8 +449,12 @@ class _CartListState extends State<CartList> {
                                                               MainAxisAlignment
                                                                   .spaceBetween,
                                                           children: [
-                                                            Text("Total Price"),
-                                                            Text("14566"),
+                                                            Text("Total Price",style: TextStyle(fontSize: 17),),
+                                                            Text(
+                                                              
+                                                              "\u{20B9}${value
+                                                                .totalPrice
+                                                                .toString()}",style: TextStyle(fontSize: 17),),
                                                           ],
                                                         ),
                                                       ),
@@ -463,24 +474,29 @@ class _CartListState extends State<CartList> {
                                                           Container(
                                                             height:
                                                                 size.height *
-                                                                    0.03,
+                                                                    0.035,
+                                                                  width: size.width*0.6,
+
                                                             child:
                                                                 ElevatedButton(
                                                                     onPressed:
                                                                         () {
-                                                                      Provider.of<Controller>(context, listen: false).calculateTotal(
-                                                                          widget
-                                                                              .os,
-                                                                          widget
-                                                                              .custmerId);
+                                                                      // Provider.of<Controller>(context, listen: false).calculateTotal(
+                                                                      //     widget
+                                                                      //         .os,
+                                                                      //     widget
+                                                                      //         .custmerId);
                                                                       Provider.of<Controller>(context, listen: false).updateQty(
-                                                                          value.qtyinc.toString(),
+                                                                          value
+                                                                              .qtyinc
+                                                                              .toString(),
                                                                           cartrowno,
                                                                           widget
                                                                               .custmerId,
                                                                           rate);
 
-                                                                          Navigator.pop(context);
+                                                                      Navigator.pop(
+                                                                          context);
                                                                     },
                                                                     child: Text(
                                                                         "continue..")),
