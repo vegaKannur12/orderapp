@@ -105,6 +105,9 @@ class _MainDashboardState extends State<MainDashboard> {
                   return Padding(
                     padding: const EdgeInsets.all(15.0),
                     child: Card(
+                      // shape: RoundedRectangleBorder(
+                      //   borderRadius: BorderRadius.circular(15.0),
+                      // ),
                       elevation: 0,
                       child: Container(
                         alignment: Alignment.center,

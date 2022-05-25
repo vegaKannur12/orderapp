@@ -143,14 +143,18 @@ class _CartListState extends State<CartList> {
                                   builder: (context) {
                                     Future.delayed(Duration(milliseconds: 500),
                                         () {
-                                          value.areDetails.clear();
+                                      value.areDetails.clear();
                                       Navigator.of(context).pop(true);
                                       Navigator.of(context).push(
                                         PageRouteBuilder(
-                                          opaque: false, // set to false
-                                          pageBuilder: (_, __, ___) =>Dashboard(type: "return from cartList",areaName:widget.areaname)
-                                              // OrderForm(widget.areaname,"return"),
-                                        ),
+                                            opaque: false, // set to false
+                                            pageBuilder: (_, __, ___) =>
+                                                Dashboard(
+                                                    type:
+                                                        "return from cartList",
+                                                    areaName: widget.areaname)
+                                            // OrderForm(widget.areaname,"return"),
+                                            ),
                                       );
                                     });
                                     return AlertDialog(
@@ -335,9 +339,13 @@ class _CartListState extends State<CartList> {
                                       fontSize: 16),
                                 ),
                                 Container(
+                                    // color: Colors.yellow,
                                     width: size.width * 0.08,
                                     child: TextFormField(
+                                      // textAlign: TextAlign.center,
                                       decoration: InputDecoration(
+                                        // isCollapsed: true,
+                                        // contentPadding: EdgeInsets.zero,
                                         border: InputBorder.none,
                                       ),
                                       onFieldSubmitted: (value) async {
