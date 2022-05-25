@@ -311,11 +311,11 @@ class Controller extends ChangeNotifier {
         var product = await OrderAppDB.instance.insertProductCategory(category);
         if (load != "all") {
           isLoading = false;
-          // notifyListeners();
-        } else {
+          notifyListeners();
+        } else if(load == "all") {
           isLoading = true;
-          break;
-          //  notifyListeners();
+          notifyListeners();
+          continue;
         }
         // print("inserted ${account}");
       }
@@ -356,10 +356,11 @@ class Controller extends ChangeNotifier {
             await OrderAppDB.instance.insertProductCompany(productCompany);
         if (load != "all") {
           isLoading = false;
-          // notifyListeners();
+          notifyListeners();
         } else {
-          print("jfdjkk");
           isLoading = true;
+          notifyListeners();
+          break;
 
           //  notifyListeners();
         }

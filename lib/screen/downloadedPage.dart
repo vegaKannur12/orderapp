@@ -82,19 +82,19 @@ class _DownloadedPageState extends State<DownloadedPage> {
                           onPressed: () async {
                             if (downloadItems[index] == "Account Heads") {
                               Provider.of<Controller>(context, listen: false)
-                                  .getaccountHeadsDetails(cid!,"");
+                                  .getaccountHeadsDetails(cid!, "");
                             }
                             if (downloadItems[index] == "Product category") {
                               Provider.of<Controller>(context, listen: false)
-                                  .getProductCategory(cid!,"");
+                                  .getProductCategory(cid!, "");
                             }
                             if (downloadItems[index] == "Company") {
                               Provider.of<Controller>(context, listen: false)
-                                  .getProductCompany(cid!,"");
+                                  .getProductCompany(cid!, "");
                             }
                             if (downloadItems[index] == "Product Details") {
                               Provider.of<Controller>(context, listen: false)
-                                  .getProductDetails(cid!,"");
+                                  .getProductDetails(cid!, "");
                             }
                           },
                           icon: Icon(Icons.download),
@@ -112,25 +112,25 @@ class _DownloadedPageState extends State<DownloadedPage> {
               ),
             ),
           ),
-          Container(
-            width: size.width * 0.4,
-            height: size.height * 0.05,
-            child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20), // <-- Radius
-                  ),
-                  primary: P_Settings.wavecolor,
-                ),
-                onPressed: () async {
+          // Container(
+          //   width: size.width * 0.4,
+          //   height: size.height * 0.05,
+          //   child: ElevatedButton(
+          //       style: ElevatedButton.styleFrom(
+          //         shape: RoundedRectangleBorder(
+          //           borderRadius: BorderRadius.circular(20), // <-- Radius
+          //         ),
+          //         primary: P_Settings.wavecolor,
+          //       ),
+          //       onPressed: () async {
 
-                  Provider.of<Controller>(context, listen: false)
-                      .downloadAllPages(cid!);
+          //         Provider.of<Controller>(context, listen: false)
+          //             .downloadAllPages(cid!);
 
-                  ///////////////////////////////////////////
-                },
-                child: Text("Download all")),
-          ),
+          //         ///////////////////////////////////////////
+          //       },
+          //       child: Text("Download all")),
+          // ),
           SizedBox(height: 20),
           widget.type == ""
               ? Container()
