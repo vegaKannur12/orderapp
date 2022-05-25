@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'dart:ffi';
 import 'dart:io';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
@@ -90,7 +89,6 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
     print("staffname---${staffname}");
     Provider.of<Controller>(context, listen: false).getArea(staffname!);
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -418,7 +416,8 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                                   scrollPadding:
                                                       EdgeInsets.only(
                                                           bottom: topInsets +
-                                                             size.height*0.27),
+                                                              size.height *
+                                                                  0.27),
                                                   focusNode: fieldFocusNode,
                                                   style: const TextStyle(
                                                       fontWeight:
@@ -543,10 +542,8 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                                           listen: false)
                                                       .countFromTable(
                                                     "orderBagTable",
-                                                    values.ordernum[0]
-                                                            ['os'],
-                                                    custmerId
-                                                            .toString(),
+                                                    values.ordernum[0]['os'],
+                                                    custmerId.toString(),
                                                   );
                                                   Navigator.of(context).push(
                                                     PageRouteBuilder(

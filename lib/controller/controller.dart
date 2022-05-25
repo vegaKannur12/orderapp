@@ -312,15 +312,11 @@ class Controller extends ChangeNotifier {
         if (load != "all") {
           isLoading = false;
           notifyListeners();
-        } else if(load == "all") {
-          isLoading = true;
-          notifyListeners();
-          continue;
-        }
+        } 
         // print("inserted ${account}");
       }
       /////////////// insert into local db /////////////////////
-      notifyListeners();
+      // notifyListeners();
     } catch (e) {
       print(e);
       return null;
@@ -357,17 +353,12 @@ class Controller extends ChangeNotifier {
         if (load != "all") {
           isLoading = false;
           notifyListeners();
-        } else {
-          isLoading = true;
-          notifyListeners();
-          break;
-
-          //  notifyListeners();
+          // notifyListeners();
         }
         // print("inserted ${account}");
       }
       /////////////// insert into local db /////////////////////
-      notifyListeners();
+      
     } catch (e) {
       print(e);
       return null;
@@ -672,7 +663,7 @@ class Controller extends ChangeNotifier {
   downloadAllPages(String cid) async {
     isLoading = true;
     print("isloaading---$isLoading");
-    // notifyListeners();
+    notifyListeners();
     // getaccountHeadsDetails(cid, "all");
     getProductCategory(cid, "all");
     getProductCompany(cid, "all");

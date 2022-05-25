@@ -29,6 +29,8 @@ class _CartListState extends State<CartList> {
   DateTime now = DateTime.now();
   String? date;
   var sname;
+  int counter = 0;
+  bool isAdded = false;
   // List<TextEditingController> _controller = [];
   @override
   void initState() {
@@ -143,14 +145,18 @@ class _CartListState extends State<CartList> {
                                   builder: (context) {
                                     Future.delayed(Duration(milliseconds: 500),
                                         () {
-                                          value.areDetails.clear();
+                                      value.areDetails.clear();
                                       Navigator.of(context).pop(true);
                                       Navigator.of(context).push(
                                         PageRouteBuilder(
-                                          opaque: false, // set to false
-                                          pageBuilder: (_, __, ___) =>Dashboard(type: "return from cartList",areaName:widget.areaname)
-                                              // OrderForm(widget.areaname,"return"),
-                                        ),
+                                            opaque: false, // set to false
+                                            pageBuilder: (_, __, ___) =>
+                                                Dashboard(
+                                                    type:
+                                                        "return from cartList",
+                                                    areaName: widget.areaname)
+                                            // OrderForm(widget.areaname,"return"),
+                                            ),
                                       );
                                     });
                                     return AlertDialog(
@@ -230,7 +236,7 @@ class _CartListState extends State<CartList> {
     return Container(
       height: size.height * 0.17,
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.only(left: 2, right: 2, top: 8, bottom: 8),
         child: Ink(
           // color: Colors.grey[100],
           decoration: BoxDecoration(
@@ -325,43 +331,92 @@ class _CartListState extends State<CartList> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                // SizedBox(
-                                //   height: size.height * 0.02,
-                                // ),
                                 Text(
                                   "\u{20B9}${rate}",
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 16),
                                 ),
+                                IconButton(
+                                  icon: Icon(Icons.remove),
+                                  onPressed: () {
+                                    setState(() {
+                                      if (counter > 0) {
+                                        counter--;
+                                      }
+                                    });
+                                  },
+                                  color: Colors.green,
+                                ),
                                 Container(
-                                    width: size.width * 0.08,
-                                    child: TextFormField(
-                                      decoration: InputDecoration(
-                                        border: InputBorder.none,
-                                      ),
-                                      onFieldSubmitted: (value) async {
-                                        print("helooo");
-                                        _controller.text = value;
-                                        print("helloo-----${_controller.text}");
-                                        Provider.of<Controller>(context,
-                                                listen: false)
-                                            .calculateTotal(
-                                                widget.os, widget.custmerId);
-                                        Provider.of<Controller>(context,
-                                                listen: false)
-                                            .updateQty(value, cartrowno,
-                                                widget.custmerId, rate);
-                                      },
-                                      //  onChanged: (value){
-                                      //       print(value);
-                                      //  },
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16),
-                                      keyboardType: TextInputType.number,
-                                      controller: _controller,
-                                    )),
+                                  width: size.width * 0.08,
+                                  child: TextFormField(
+                                    // textAlign: TextAlign.center,
+                                    decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                    ),
+                                    onFieldSubmitted: (value) async {
+                                      _controller.text = value;
+                                      Provider.of<Controller>(context,
+                                              listen: false)
+                                          .calculateTotal(
+                                              widget.os, widget.custmerId);
+                                      Provider.of<Controller>(context,
+                                              listen: false)
+                                          .updateQty(value, cartrowno,
+                                              widget.custmerId, rate);
+                                    },
+                                    //  onChanged: (value){
+                                    //       print(value);
+                                    //  },
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                    keyboardType: TextInputType.number,
+                                    controller: _controller,
+                                  ),
+                                ),
+                                IconButton(
+                                  icon: Icon(Icons.add),
+                                  color: Colors.green,
+                                  onPressed: () {
+                                    setState(() {
+                                      counter++;
+                                    });
+                                  },
+                                ),
+                                Spacer(),
+
+                                // Container(
+                                //   width: size.width * 0.08,
+                                //   child: TextFormField(
+                                //     // textAlign: TextAlign.center,
+                                //     decoration: InputDecoration(
+                                //       border: InputBorder.none,
+                                //     ),
+                                //     onFieldSubmitted: (value) async {
+                                //       print("helooo");
+                                //       _controller.text = value;
+                                //       print("helloo-----${_controller.text}");
+                                //       Provider.of<Controller>(context,
+                                //               listen: false)
+                                //           .calculateTotal(
+                                //               widget.os, widget.custmerId);
+                                //       Provider.of<Controller>(context,
+                                //               listen: false)
+                                //           .updateQty(value, cartrowno,
+                                //               widget.custmerId, rate);
+                                //     },
+                                //     //  onChanged: (value){
+                                //     //       print(value);
+                                //     //  },
+                                //     style: TextStyle(
+                                //         fontWeight: FontWeight.bold,
+                                //         fontSize: 16),
+                                //     keyboardType: TextInputType.number,
+                                //     controller: _controller,
+                                //   ),
+                                // ),
                                 Text(
                                   "\u{20B9}${totalamount}",
                                   style: TextStyle(
@@ -373,59 +428,59 @@ class _CartListState extends State<CartList> {
                           ],
                         ),
                       ),
-                      SizedBox(
-                        width: size.width * 0.02,
-                      ),
+                      // SizedBox(
+                      //   width: size.width * 0.02,
+                      // ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          IconButton(
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (ctx) => AlertDialog(
-                                  // title: Text("Alert Dialog Box"),
-                                  content: Text("delete?"),
-                                  actions: <Widget>[
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                              primary: P_Settings.wavecolor),
-                                          onPressed: () {
-                                            Navigator.of(ctx).pop();
-                                          },
-                                          child: Text("cancel"),
-                                        ),
-                                        SizedBox(
-                                          width: size.width * 0.01,
-                                        ),
-                                        ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                              primary: P_Settings.wavecolor),
-                                          onPressed: () async {
-                                            Provider.of<Controller>(context,
-                                                    listen: false)
-                                                .deleteFromOrderBagTable(
-                                                    cartrowno,
-                                                    widget.custmerId,
-                                                    index);
-                                            Navigator.of(ctx).pop();
-                                          },
-                                          child: Text("ok"),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                            icon: Icon(
-                              Icons.delete,
-                              color: P_Settings.extracolor,
-                            ),
-                          ),
+                          // IconButton(
+                          //   onPressed: () {
+                          //     showDialog(
+                          //       context: context,
+                          //       builder: (ctx) => AlertDialog(
+                          //         // title: Text("Alert Dialog Box"),
+                          //         content: Text("delete?"),
+                          //         actions: <Widget>[
+                          //           Row(
+                          //             mainAxisAlignment: MainAxisAlignment.end,
+                          //             children: [
+                          //               ElevatedButton(
+                          //                 style: ElevatedButton.styleFrom(
+                          //                     primary: P_Settings.wavecolor),
+                          //                 onPressed: () {
+                          //                   Navigator.of(ctx).pop();
+                          //                 },
+                          //                 child: Text("cancel"),
+                          //               ),
+                          //               SizedBox(
+                          //                 width: size.width * 0.01,
+                          //               ),
+                          //               ElevatedButton(
+                          //                 style: ElevatedButton.styleFrom(
+                          //                     primary: P_Settings.wavecolor),
+                          //                 onPressed: () async {
+                          //                   Provider.of<Controller>(context,
+                          //                           listen: false)
+                          //                       .deleteFromOrderBagTable(
+                          //                           cartrowno,
+                          //                           widget.custmerId,
+                          //                           index);
+                          //                   Navigator.of(ctx).pop();
+                          //                 },
+                          //                 child: Text("ok"),
+                          //               ),
+                          //             ],
+                          //           ),
+                          //         ],
+                          //       ),
+                          //     );
+                          //   },
+                          //   icon: Icon(
+                          //     Icons.delete,
+                          //     color: P_Settings.extracolor,
+                          //   ),
+                          // ),
                         ],
                       ),
                     ],

@@ -32,10 +32,11 @@ class _ItemSelectionState extends State<ItemSelection> {
   int? selected;
   SearchTile search = SearchTile();
   DateTime now = DateTime.now();
-  CustomSnackbar snackbar = CustomSnackbar();
+  // CustomSnackbar snackbar = CustomSnackbar();
   String? date;
   bool loading = true;
   bool loading1 = false;
+  CustomSnackbar snackbar=CustomSnackbar();
   @override
   void initState() {
     // TODO: implement initState
@@ -50,8 +51,8 @@ class _ItemSelectionState extends State<ItemSelection> {
     var length =
         Provider.of<Controller>(context, listen: false).productName.length;
     List.generate(length, (index) => TextEditingController());
-   
   }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -118,8 +119,17 @@ class _ItemSelectionState extends State<ItemSelection> {
                     alignment: Alignment.center,
                     height: size.height * 0.045,
                     width: size.width * 0.2,
-                    child:value.isLoading?Center(child: SpinKitThreeBounce(color: P_Settings.wavecolor,size: 15,)): Text(
-                        "${value.count}",style: TextStyle(fontSize: 19,fontWeight: FontWeight.bold),),
+                    child: value.isLoading
+                        ? Center(
+                            child: SpinKitThreeBounce(
+                            color: P_Settings.wavecolor,
+                            size: 15,
+                          ))
+                        : Text(
+                            "${value.count}",
+                            style: TextStyle(
+                                fontSize: 19, fontWeight: FontWeight.bold),
+                          ),
                     decoration: BoxDecoration(
                       color: P_Settings.roundedButtonColor,
                       borderRadius: BorderRadius.only(
@@ -208,7 +218,7 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                   int.parse(
                                                       value.qty[index].text);
                                               print("total rate $total");
-
+                                              snackbar.showSnackbar(context, "Added to cart");
                                               var res = widget.customerId ==
                                                           null ||
                                                       widget.customerId.isEmpty
@@ -261,7 +271,9 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                 : Colors.black,
                                           ),
                                           IconButton(
-                                            icon: Icon(Icons.delete,),
+                                            icon: Icon(
+                                              Icons.delete,
+                                            ),
                                             onPressed: () async {
                                               showDialog(
                                                 context: context,
@@ -354,7 +366,9 @@ class _ItemSelectionState extends State<ItemSelection> {
                                             width: 10,
                                           ),
                                           IconButton(
-                                            icon: Icon(Icons.add,),
+                                            icon: Icon(
+                                              Icons.add,
+                                            ),
                                             onPressed: () async {
                                               setState(() {
                                                 selected = index;
@@ -383,16 +397,6 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                       value.qty[index].text);
                                               print("total rate $total");
 
-                                              // var res = widget.customerId ==
-                                              //             null ||
-                                              //         widget.customerId.isEmpty
-                                              //     ? null
-                                              //     // : await OrderAppDB.instance
-                                              //     //     .insertCommonQuery(
-                                              //     //         'orderBagTable',
-                                              //     //         'itemName, cartdatetime, os, customerid, cartrowno, code, qty, rate, totalamount, cstatus',
-                                              //     //         "'$itemName','$date!','1','$custmerId!',$max,'$productCode!',2,'$rate1','46',0");
-                                              //     :
                                               var res = await OrderAppDB
                                                   .instance
                                                   .insertorderBagTable(
@@ -407,7 +411,7 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                       rate1,
                                                       total.toString(),
                                                       0);
-
+                                              snackbar.showSnackbar(context, "Added to cart");
                                               Provider.of<Controller>(context,
                                                       listen: false)
                                                   .countFromTable(
@@ -440,7 +444,10 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                 : Colors.black,
                                           ),
                                           IconButton(
-                                            icon: Icon(Icons.delete,size: 18,),
+                                            icon: Icon(
+                                              Icons.delete,
+                                              size: 18,
+                                            ),
                                             onPressed: () async {
                                               showDialog(
                                                 context: context,
