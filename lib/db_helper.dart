@@ -690,17 +690,26 @@ class OrderAppDB {
   }
 
 //////////////////////////////selectCommonQuery///////////////////
-  selectCommonquery(String table, String? condition) async {
-    List<Map<String, dynamic>> result;
+  // selectCommonquery(String table, String? condition) async {
+  //   List<Map<String, dynamic>> result;
+  //   Database db = await instance.database;
+  //   print("----condition---table -------${condition}----${table}");
+  //   if (condition == null || condition.isEmpty) {
+  //     result = await db.rawQuery("SELECT * FROM '$table'");
+  //   } else {
+  //     result = await db.rawQuery("SELECT * FROM '$table' WHERE $condition");
+  //   }
+  //   print("result----$result");
+  //   return result;
+  // }
+//////////////////////////////select left join/////////////////////
+  selectfromOrderbagTable(String customerId)async{
+     List<Map<String, dynamic>> result;
     Database db = await instance.database;
-    print("----condition---table -------${condition}----${table}");
-    if (condition == null || condition.isEmpty) {
-      result = await db.rawQuery("SELECT * FROM '$table'");
-    } else {
-      result = await db.rawQuery("SELECT * FROM '$table' WHERE $condition");
-    }
-    print("result----$result");
-    return result;
+     result = await db.rawQuery("SELECT productDetailsTable.* , orderBagTable.cartrowno FROM 'productDetailsTable' LEFT JOIN 'orderBagTable' ON productDetailsTable.code = orderBagTable.code AND orderBagTable.customerid='$customerId' ORDER BY cartrowno DESC");
+     print("leftjoin result----$result");
+     print("length---${result.length}");
+   return result;
   }
 
 //////////////count from table/////////////////////////////////////////

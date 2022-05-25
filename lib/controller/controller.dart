@@ -34,7 +34,6 @@ class Controller extends ChangeNotifier {
   double? totalPrice;
   List<String> areaAutoComplete = [];
 
-
   List<Map<String, dynamic>> listWidget = [];
   List<TextEditingController> controller = [];
   List<TextEditingController> qty = [];
@@ -418,11 +417,41 @@ class Controller extends ChangeNotifier {
   }
 
   ///////////////////////////////////////////////////////
-  // getProductItems(String product) async {
-  //   print("product...............${product}");
+  getProductList(String customerId) async {
+    int flag=0;
+    productName.clear();
+    try {
+      isLoading = true;
+      // notifyListeners();
+      prodctItems =
+          await OrderAppDB.instance.selectfromOrderbagTable(customerId);
+      print("prodctItems----${prodctItems.length}");
+
+      for (var item in prodctItems) { 
+        productName.add(item);
+      }
+      var length = productName.length;
+      print("text length----$length");
+      qty = List.generate(length, (index) => TextEditingController());
+      isLoading = false;
+      notifyListeners();
+      print("product name----${productName}");
+
+      notifyListeners();
+    } catch (e) {
+      print(e);
+      return null;
+    }
+    notifyListeners();
+  }
+
+/////////////////////////////////////////////////////////////
+  // getProductItems(String table) async {
   //   productName.clear();
   //   try {
-  //     prodctItems = await OrderAppDB.instance.getItems(product);
+  //     isLoading = true;
+  //     // notifyListeners();
+  //     prodctItems = await OrderAppDB.instance.selectCommonquery(table, '');
   //     print("prodctItems----${prodctItems}");
 
   //     for (var item in prodctItems) {
@@ -430,6 +459,11 @@ class Controller extends ChangeNotifier {
   //       // productName.add(item["code"] + '-' + item["item"]);
   //       // notifyListeners();
   //     }
+  //     var length = productName.length;
+  //     print("text length----$length");
+  //     qty = List.generate(length, (index) => TextEditingController());
+  //     isLoading = false;
+  //     notifyListeners();
   //     print("product name----${productName}");
   //     // print("product productRate----${productRate}");
   //     notifyListeners();
@@ -439,34 +473,6 @@ class Controller extends ChangeNotifier {
   //   }
   //   notifyListeners();
   // }
-/////////////////////////////////////////////////////////////
-  getProductItems(String table) async {
-    productName.clear();
-    try {
-      isLoading = true;
-      // notifyListeners();
-      prodctItems = await OrderAppDB.instance.selectCommonquery(table, '');
-      print("prodctItems----${prodctItems}");
-
-      for (var item in prodctItems) {
-        productName.add(item);
-        // productName.add(item["code"] + '-' + item["item"]);
-        // notifyListeners();
-      }
-      var length = productName.length;
-      print("text length----$length");
-      qty = List.generate(length, (index) => TextEditingController());
-      isLoading = false;
-      notifyListeners();
-      print("product name----${productName}");
-      // print("product productRate----${productRate}");
-      notifyListeners();
-    } catch (e) {
-      print(e);
-      return null;
-    }
-    notifyListeners();
-  }
 
 ////////////////////////////////////////////////////////////
   getOrderno() async {
@@ -644,11 +650,15 @@ class Controller extends ChangeNotifier {
       isSearch = true;
       newList = productName
           .where((product) =>
-              product["item"].toLowerCase().contains(searchkey!.toLowerCase()) ||
-              
-              product["code"].toLowerCase().contains(searchkey!.toLowerCase()) ||
-              product["categoryId"].toLowerCase().contains(searchkey!.toLowerCase())
-          )
+              product["item"]
+                  .toLowerCase()
+                  .contains(searchkey!.toLowerCase()) ||
+              product["code"]
+                  .toLowerCase()
+                  .contains(searchkey!.toLowerCase()) ||
+              product["categoryId"]
+                  .toLowerCase()
+                  .contains(searchkey!.toLowerCase()))
           .toList();
 
       var length = newList.length;
@@ -702,13 +712,15 @@ class Controller extends ChangeNotifier {
   }
 
   ///////////////////////
-  ///  
-setAmt(String price,) {
-
-    totalPrice =double.parse(price) ;
+  ///
+  setAmt(
+    String price,
+  ) {
+    totalPrice = double.parse(price);
 
     // notifyListeners();
   }
+
   totalCalculation(String rate) {
     totalPrice = double.parse(rate) * qtyinc!;
     print("total pri-----$totalPrice");

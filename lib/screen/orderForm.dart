@@ -533,10 +533,7 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                                 } else {
                                                   visibleValidation.value =
                                                       false;
-                                                  print(
-                                                      "values.isLoading---${values.isLoading}");
-                                                  print(
-                                                      "areaController---${Provider.of<Controller>(context, listen: false).areaAutoComplete}");
+
                                                   Provider.of<Controller>(
                                                           context,
                                                           listen: false)
