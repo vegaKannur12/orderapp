@@ -37,7 +37,7 @@ class _ItemSelectionState extends State<ItemSelection> {
   String? date;
   bool loading = true;
   bool loading1 = false;
-  CustomSnackbar snackbar=CustomSnackbar();
+  CustomSnackbar snackbar = CustomSnackbar();
   @override
   void initState() {
     // TODO: implement initState
@@ -219,7 +219,8 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                   int.parse(
                                                       value.qty[index].text);
                                               print("total rate $total");
-                                              snackbar.showSnackbar(context, "Added to cart");
+                                              snackbar.showSnackbar(
+                                                  context, "Added to cart");
                                               var res = widget.customerId ==
                                                           null ||
                                                       widget.customerId.isEmpty
@@ -412,7 +413,8 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                       rate1,
                                                       total.toString(),
                                                       0);
-                                              snackbar.showSnackbar(context, "Added to cart");
+                                              snackbar.showSnackbar(
+                                                  context, "Added to cart");
                                               Provider.of<Controller>(context,
                                                       listen: false)
                                                   .countFromTable(
