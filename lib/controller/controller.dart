@@ -31,6 +31,7 @@ class Controller extends ChangeNotifier {
   String? splittedCode;
   double amt = 0.0;
   List<CD> data = [];
+  double? totalPrice;
   List<String> areaAutoComplete = [];
 
   List<Map<String, dynamic>> listWidget = [];
@@ -690,5 +691,19 @@ class Controller extends ChangeNotifier {
   setQty(int qty){
     qtyinc=qty;
     // notifyListeners();
+  }
+
+  ///////////////////////
+  ///  
+setAmt(String price,) {
+
+    totalPrice =double.parse(price) ;
+
+    // notifyListeners();
+  }
+  totalCalculation(String rate) {
+    totalPrice = double.parse(rate) * qtyinc!;
+    print("total pri-----$totalPrice");
+    notifyListeners();
   }
 }

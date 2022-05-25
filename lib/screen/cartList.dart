@@ -325,8 +325,66 @@ class _CartListState extends State<CartList> {
                                           fontWeight: FontWeight.bold,
                                           fontSize: 15),
                                     ),
-
-                                    // Spacer(),
+                                    SizedBox(
+                                      width: size.width * 0.3,
+                                    ),
+                                    Flexible(
+                                      child: IconButton(
+                                        onPressed: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (ctx) => AlertDialog(
+                                              // title: Text("Alert Dialog Box"),
+                                              content: Text("delete?"),
+                                              actions: <Widget>[
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  children: [
+                                                    ElevatedButton(
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                              primary: P_Settings
+                                                                  .wavecolor),
+                                                      onPressed: () {
+                                                        Navigator.of(ctx).pop();
+                                                      },
+                                                      child: Text("cancel"),
+                                                    ),
+                                                    SizedBox(
+                                                      width: size.width * 0.01,
+                                                    ),
+                                                    ElevatedButton(
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                              primary: P_Settings
+                                                                  .wavecolor),
+                                                      onPressed: () async {
+                                                        Provider.of<Controller>(
+                                                                context,
+                                                                listen: false)
+                                                            .deleteFromOrderBagTable(
+                                                                cartrowno,
+                                                                widget
+                                                                    .custmerId,
+                                                                index);
+                                                        Navigator.of(ctx).pop();
+                                                      },
+                                                      child: Text("ok"),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        },
+                                        icon: Icon(
+                                          Icons.delete,
+                                          size: 17,
+                                        ),
+                                        color: P_Settings.extracolor,
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -334,261 +392,205 @@ class _CartListState extends State<CartList> {
                             Flexible(
                               child: Padding(
                                 padding: const EdgeInsets.only(left: 5, top: 3),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "Qty :",
-                                      style: TextStyle(fontSize: 13),
-                                    ),
-                                    SizedBox(
-                                      width: size.width * 0.02,
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        Provider.of<Controller>(context,
-                                                listen: false)
-                                            .setQty(qty);
-                                        showModalBottomSheet<void>(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return Consumer<Controller>(
-                                              builder: (context, value, child) {
-                                                return Container(
-                                                  height: size.height * 0.3,
-                                                  color: Colors.white,
-                                                  child: Center(
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8.0),
-                                                      child: Column(
-                                                        // mainAxisAlignment:
-                                                        //     MainAxisAlignment.center,
-                                                        // mainAxisSize: MainAxisSize.min,
-                                                        children: <Widget>[
-                                                          SizedBox(
-                                                            height:
-                                                                size.height *
-                                                                    0.01,
-                                                          ),
-                                                          Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .end,
-                                                            children: [
-                                                              IconButton(
-                                                                icon: Icon(Icons
-                                                                    .close),
-                                                                onPressed: () {
-                                                                  Navigator.pop(
-                                                                      context);
-                                                                },
-                                                              )
-                                                            ],
-                                                          ),
-                                                          Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .center,
-                                                            children: [
-                                                              FloatingActionButton
-                                                                  .small(
-                                                                      backgroundColor:
-                                                                          Colors
-                                                                              .grey,
-                                                                      child: Icon(
-                                                                          Icons
-                                                                              .add),
-                                                                      onPressed:
-                                                                          () {
-                                                                        value
-                                                                            .qtyIncrement();
-                                                                      }),
-                                                              Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                            .only(
-                                                                        left:
-                                                                            15.0,
-                                                                        right:
-                                                                            15),
-                                                                child: Text(
-                                                                  value.qtyinc
-                                                                      .toString(),
-                                                                  style: TextStyle(
-                                                                      fontSize:
-                                                                          20),
-                                                                ),
-                                                              ),
-                                                              FloatingActionButton
-                                                                  .small(
-                                                                      backgroundColor:
-                                                                          Colors
-                                                                              .grey,
-                                                                      child: Icon(
-                                                                          Icons
-                                                                              .remove),
-                                                                      onPressed:
-                                                                          () {
-                                                                        value
-                                                                            .qtyDecrement();
-                                                                      }),
-                                                            ],
-                                                          ),
-                                                          SizedBox(
-                                                            height:
-                                                                size.height *
-                                                                    0.02,
-                                                          ),
-                                                          Divider(
-                                                            thickness: 1,
-                                                          ),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Provider.of<Controller>(context,
+                                            listen: false)
+                                        .setQty(qty);
+                                    Provider.of<Controller>(context,
+                                            listen: false)
+                                        .setAmt(totalamount);
+                                    showModalBottomSheet<void>(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return Consumer<Controller>(
+                                          builder: (context, value, child) {
+                                            return Container(
+                                              height: size.height * 0.3,
+                                              color: Colors.white,
+                                              child: Center(
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Column(
+                                                    // mainAxisAlignment:
+                                                    //     MainAxisAlignment.center,
+                                                    // mainAxisSize: MainAxisSize.min,
+                                                    children: <Widget>[
+                                                      SizedBox(
+                                                        height:
+                                                            size.height * 0.01,
+                                                      ),
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .end,
+                                                        children: [
+                                                          IconButton(
+                                                            icon: Icon(
+                                                                Icons.close),
+                                                            onPressed: () {
+                                                              Navigator.pop(
+                                                                  context);
+                                                            },
+                                                          )
+                                                        ],
+                                                      ),
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          FloatingActionButton
+                                                              .small(
+                                                                  backgroundColor:
+                                                                      Colors
+                                                                          .grey,
+                                                                  child: Icon(
+                                                                      Icons
+                                                                          .add),
+                                                                  onPressed:
+                                                                      () {
+                                                                    value
+                                                                        .qtyIncrement();
+                                                                    value.totalCalculation(
+                                                                        rate);
+                                                                  }),
                                                           Padding(
                                                             padding:
                                                                 const EdgeInsets
                                                                         .only(
-                                                                    bottom: 5),
-                                                            child: Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceBetween,
-                                                              children: [
-                                                                Text(
-                                                                    "Total Price"),
-                                                                Text("14566"),
-                                                              ],
+                                                                    left: 15.0,
+                                                                    right: 15),
+                                                            child: Text(
+                                                              value.qtyinc
+                                                                  .toString(),
+                                                              style: TextStyle(
+                                                                  fontSize: 20),
                                                             ),
                                                           ),
-                                                          Divider(
-                                                            thickness: 1,
-                                                          ),
-
-                                                          SizedBox(
-                                                            height:
-                                                                size.height *
-                                                                    0.02,
-                                                          ),
-                                                          Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .center,
-                                                            children: [
-                                                              Container(
-                                                                height:
-                                                                    size.height *
-                                                                        0.03,
-                                                                child:
-                                                                    ElevatedButton(
-                                                                        onPressed:
-                                                                            () {
-                                                                          Provider.of<Controller>(context, listen: false).calculateTotal(
-                                                                              widget.os,
-                                                                              widget.custmerId);
-                                                                          Provider.of<Controller>(context, listen: false).updateQty(
-                                                                              value.qtyinc.toString(),
-                                                                              cartrowno,
-                                                                              widget.custmerId,
-                                                                              rate);
-
-                                                                          Navigator.pop(
-                                                                              context);
-                                                                        },
-                                                                        child: Text(
-                                                                            "continue..")),
-                                                              )
-                                                            ],
-                                                          )
-                                                          // ElevatedButton(
-                                                          //   child: const Text(
-                                                          //       'Close BottomSheet'),
-                                                          //   onPressed: () =>
-                                                          //       Navigator.pop(context),
-                                                          // )
+                                                          FloatingActionButton
+                                                              .small(
+                                                                  backgroundColor:
+                                                                      Colors
+                                                                          .grey,
+                                                                  child: Icon(Icons
+                                                                      .remove),
+                                                                  onPressed:
+                                                                      () {
+                                                                    value
+                                                                        .qtyDecrement();
+                                                                    value.totalCalculation(
+                                                                        rate);
+                                                                  }),
                                                         ],
                                                       ),
-                                                    ),
+                                                      SizedBox(
+                                                        height:
+                                                            size.height * 0.02,
+                                                      ),
+                                                      Divider(
+                                                        thickness: 1,
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                top: 8.0,
+                                                                bottom: 8),
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Text(
+                                                              "Total Price",
+                                                              style: TextStyle(
+                                                                  fontSize: 17),
+                                                            ),
+                                                            Text(
+                                                              "\u{20B9}${value.totalPrice.toString()}",
+                                                              style: TextStyle(
+                                                                  fontSize: 17),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      Divider(
+                                                        thickness: 1,
+                                                      ),
+
+                                                      SizedBox(
+                                                        height:
+                                                            size.height * 0.02,
+                                                      ),
+                                                      Flexible(
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Container(
+                                                              height:
+                                                                  size.height *
+                                                                      0.035,
+                                                              width:
+                                                                  size.width *
+                                                                      0.6,
+                                                              child:
+                                                                  ElevatedButton(
+                                                                      onPressed:
+                                                                          () {
+                                                                        // Provider.of<Controller>(context, listen: false).calculateTotal(
+                                                                        //     widget
+                                                                        //         .os,
+                                                                        //     widget
+                                                                        //         .custmerId);
+                                                                        Provider.of<Controller>(context, listen: false).updateQty(
+                                                                            value.qtyinc.toString(),
+                                                                            cartrowno,
+                                                                            widget.custmerId,
+                                                                            rate);
+
+                                                                        Navigator.pop(
+                                                                            context);
+                                                                      },
+                                                                      child: Text(
+                                                                          "continue..")),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      )
+                                                      // ElevatedButton(
+                                                      //   child: const Text(
+                                                      //       'Close BottomSheet'),
+                                                      //   onPressed: () =>
+                                                      //       Navigator.pop(context),
+                                                      // )
+                                                    ],
                                                   ),
-                                                );
-                                              },
+                                                ),
+                                              ),
                                             );
                                           },
                                         );
                                       },
-                                      child: Container(
-                                          child: Text(qty.toString())),
-                                    ),
-                                    Flexible(
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          IconButton(
-                                            onPressed: () {
-                                              showDialog(
-                                                context: context,
-                                                builder: (ctx) => AlertDialog(
-                                                  // title: Text("Alert Dialog Box"),
-                                                  content: Text("delete?"),
-                                                  actions: <Widget>[
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment.end,
-                                                      children: [
-                                                        ElevatedButton(
-                                                          style: ElevatedButton
-                                                              .styleFrom(
-                                                                  primary:
-                                                                      P_Settings
-                                                                          .wavecolor),
-                                                          onPressed: () {
-                                                            Navigator.of(ctx)
-                                                                .pop();
-                                                          },
-                                                          child: Text("cancel"),
-                                                        ),
-                                                        SizedBox(
-                                                          width:
-                                                              size.width * 0.01,
-                                                        ),
-                                                        ElevatedButton(
-                                                          style: ElevatedButton
-                                                              .styleFrom(
-                                                                  primary:
-                                                                      P_Settings
-                                                                          .wavecolor),
-                                                          onPressed: () async {
-                                                            Provider.of<Controller>(
-                                                                    context,
-                                                                    listen:
-                                                                        false)
-                                                                .deleteFromOrderBagTable(
-                                                                    cartrowno,
-                                                                    widget
-                                                                        .custmerId,
-                                                                    index);
-                                                            Navigator.of(ctx)
-                                                                .pop();
-                                                          },
-                                                          child: Text("ok"),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                              );
-                                            },
-                                            icon: Icon(
-                                              Icons.delete,
-                                              size: 17,
-                                            ),
-                                            color: P_Settings.extracolor,
-                                          ),
-                                        ],
+                                    );
+                                  },
+                                  child: Row(
+                                    // mainAxisAlignment:
+                                    //     MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        "Qty :",
+                                        style: TextStyle(fontSize: 13),
                                       ),
-                                    ),
-                                  ],
+                                      SizedBox(
+                                        width: size.width * 0.02,
+                                      ),
+                                      Container(child: Text(qty.toString())),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
