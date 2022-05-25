@@ -31,8 +31,9 @@ class Controller extends ChangeNotifier {
   String? splittedCode;
   double amt = 0.0;
   List<CD> data = [];
-  List<String> areaAutoComplete = [];
   double? totalPrice;
+  List<String> areaAutoComplete = [];
+
 
   List<Map<String, dynamic>> listWidget = [];
   List<TextEditingController> controller = [];
@@ -643,7 +644,11 @@ class Controller extends ChangeNotifier {
       isSearch = true;
       newList = productName
           .where((product) =>
-              product["item"].toLowerCase().contains(searchkey!.toLowerCase()))
+              product["item"].toLowerCase().contains(searchkey!.toLowerCase()) ||
+              
+              product["code"].toLowerCase().contains(searchkey!.toLowerCase()) ||
+              product["categoryId"].toLowerCase().contains(searchkey!.toLowerCase())
+          )
           .toList();
 
       var length = newList.length;
@@ -696,8 +701,9 @@ class Controller extends ChangeNotifier {
     // notifyListeners();
   }
 
-  //////////////////////////////////////////////////////////////
-  setAmt(String price,) {
+  ///////////////////////
+  ///  
+setAmt(String price,) {
 
     totalPrice =double.parse(price) ;
 
@@ -708,6 +714,4 @@ class Controller extends ChangeNotifier {
     print("total pri-----$totalPrice");
     notifyListeners();
   }
-
-  
 }

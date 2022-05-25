@@ -137,6 +137,7 @@ class _ItemSelectionState extends State<ItemSelection> {
                         bottomRight: Radius.circular(50),
                       ),
                     )),
+                    SizedBox(height: size.height * 0.01,),
                 Container(
                   width: size.width * 0.95,
                   height: size.height * 0.09,
@@ -148,7 +149,10 @@ class _ItemSelectionState extends State<ItemSelection> {
                           .searchProcess();
                     },
                     decoration: const InputDecoration(
-                        labelText: 'Search', suffixIcon: Icon(Icons.search)),
+                      hintText: "Search with  Product code/Name/category",
+                      hintStyle: TextStyle(fontSize: 14.0, color: Colors.grey),
+                       suffixIcon: Icon(Icons.search)
+                    ),
                   ),
                 ),
                 value.isLoading
@@ -170,7 +174,7 @@ class _ItemSelectionState extends State<ItemSelection> {
                                             '-' +
                                             '${value.newList[index]["item"]}',
                                         style: TextStyle(
-                                            color: Colors.green[800],
+                                            color: Colors.grey[700],
                                             fontSize: 18),
                                       ),
                                       trailing: Row(
@@ -346,7 +350,7 @@ class _ItemSelectionState extends State<ItemSelection> {
                                             '-' +
                                             '${value.productName[index]["item"]}',
                                         style: TextStyle(
-                                            color: Colors.green[800],
+                                            color: Colors.grey[700],
                                             fontSize: 16),
                                       ),
                                       trailing: Row(

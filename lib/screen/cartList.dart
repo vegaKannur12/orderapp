@@ -307,38 +307,92 @@ class _CartListState extends State<CartList> {
                                 ),
                               ],
                             ),
-                            SizedBox(
-                              height: size.height * 0.006,
+                            Flexible(
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 5, top: 3),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      "Rate :",
+                                      style: TextStyle(fontSize: 13),
+                                    ),
+                                    SizedBox(
+                                      width: size.width * 0.02,
+                                    ),
+                                    Text(
+                                      "\u{20B9}${rate}",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15),
+                                    ),
+                                    SizedBox(
+                                      width: size.width * 0.3,
+                                    ),
+                                    Flexible(
+                                      child: IconButton(
+                                        onPressed: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (ctx) => AlertDialog(
+                                              // title: Text("Alert Dialog Box"),
+                                              content: Text("delete?"),
+                                              actions: <Widget>[
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  children: [
+                                                    ElevatedButton(
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                              primary: P_Settings
+                                                                  .wavecolor),
+                                                      onPressed: () {
+                                                        Navigator.of(ctx).pop();
+                                                      },
+                                                      child: Text("cancel"),
+                                                    ),
+                                                    SizedBox(
+                                                      width: size.width * 0.01,
+                                                    ),
+                                                    ElevatedButton(
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                              primary: P_Settings
+                                                                  .wavecolor),
+                                                      onPressed: () async {
+                                                        Provider.of<Controller>(
+                                                                context,
+                                                                listen: false)
+                                                            .deleteFromOrderBagTable(
+                                                                cartrowno,
+                                                                widget
+                                                                    .custmerId,
+                                                                index);
+                                                        Navigator.of(ctx).pop();
+                                                      },
+                                                      child: Text("ok"),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        },
+                                        icon: Icon(
+                                          Icons.delete,
+                                          size: 17,
+                                        ),
+                                        color: P_Settings.extracolor,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Rate",
-                                  style: TextStyle(fontSize: 13),
-                                ),
-                                Text(
-                                  "Qty",
-                                  style: TextStyle(fontSize: 13),
-                                ),
-                                // Spacer(),
-                                Text(
-                                  "Amt",
-                                  style: TextStyle(fontSize: 13),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "\u{20B9}${rate}",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16),
-                                ),
-                                Spacer(),
-                                GestureDetector(
+                            Flexible(
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 5, top: 3),
+                                child: GestureDetector(
                                   onTap: () {
                                     Provider.of<Controller>(context,
                                             listen: false)
@@ -449,12 +503,16 @@ class _CartListState extends State<CartList> {
                                                               MainAxisAlignment
                                                                   .spaceBetween,
                                                           children: [
-                                                            Text("Total Price",style: TextStyle(fontSize: 17),),
                                                             Text(
-                                                              
-                                                              "\u{20B9}${value
-                                                                .totalPrice
-                                                                .toString()}",style: TextStyle(fontSize: 17),),
+                                                              "Total Price",
+                                                              style: TextStyle(
+                                                                  fontSize: 17),
+                                                            ),
+                                                            Text(
+                                                              "\u{20B9}${value.totalPrice.toString()}",
+                                                              style: TextStyle(
+                                                                  fontSize: 17),
+                                                            ),
                                                           ],
                                                         ),
                                                       ),
@@ -466,42 +524,42 @@ class _CartListState extends State<CartList> {
                                                         height:
                                                             size.height * 0.02,
                                                       ),
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          Container(
-                                                            height:
-                                                                size.height *
-                                                                    0.035,
-                                                                  width: size.width*0.6,
+                                                      Flexible(
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Container(
+                                                              height:
+                                                                  size.height *
+                                                                      0.035,
+                                                              width:
+                                                                  size.width *
+                                                                      0.6,
+                                                              child:
+                                                                  ElevatedButton(
+                                                                      onPressed:
+                                                                          () {
+                                                                        // Provider.of<Controller>(context, listen: false).calculateTotal(
+                                                                        //     widget
+                                                                        //         .os,
+                                                                        //     widget
+                                                                        //         .custmerId);
+                                                                        Provider.of<Controller>(context, listen: false).updateQty(
+                                                                            value.qtyinc.toString(),
+                                                                            cartrowno,
+                                                                            widget.custmerId,
+                                                                            rate);
 
-                                                            child:
-                                                                ElevatedButton(
-                                                                    onPressed:
-                                                                        () {
-                                                                      // Provider.of<Controller>(context, listen: false).calculateTotal(
-                                                                      //     widget
-                                                                      //         .os,
-                                                                      //     widget
-                                                                      //         .custmerId);
-                                                                      Provider.of<Controller>(context, listen: false).updateQty(
-                                                                          value
-                                                                              .qtyinc
-                                                                              .toString(),
-                                                                          cartrowno,
-                                                                          widget
-                                                                              .custmerId,
-                                                                          rate);
-
-                                                                      Navigator.pop(
-                                                                          context);
-                                                                    },
-                                                                    child: Text(
-                                                                        "continue..")),
-                                                          )
-                                                        ],
+                                                                        Navigator.pop(
+                                                                            context);
+                                                                      },
+                                                                      child: Text(
+                                                                          "continue..")),
+                                                            )
+                                                          ],
+                                                        ),
                                                       )
                                                       // ElevatedButton(
                                                       //   child: const Text(
@@ -519,74 +577,51 @@ class _CartListState extends State<CartList> {
                                       },
                                     );
                                   },
-                                  child: Container(child: Text(qty.toString())),
+                                  child: Row(
+                                    // mainAxisAlignment:
+                                    //     MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        "Qty :",
+                                        style: TextStyle(fontSize: 13),
+                                      ),
+                                      SizedBox(
+                                        width: size.width * 0.02,
+                                      ),
+                                      Container(child: Text(qty.toString())),
+                                    ],
+                                  ),
                                 ),
-                                Spacer(),
-                                Text(
-                                  "\u{20B9}${totalamount}",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16),
-                                ),
-                              ],
-                            )
+                              ),
+                            ),
                           ],
                         ),
                       ),
-                      // SizedBox(
-                      //   width: size.width * 0.02,
-                      // ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          // IconButton(
-                          //   onPressed: () {
-                          //     showDialog(
-                          //       context: context,
-                          //       builder: (ctx) => AlertDialog(
-                          //         // title: Text("Alert Dialog Box"),
-                          //         content: Text("delete?"),
-                          //         actions: <Widget>[
-                          //           Row(
-                          //             mainAxisAlignment: MainAxisAlignment.end,
-                          //             children: [
-                          //               ElevatedButton(
-                          //                 style: ElevatedButton.styleFrom(
-                          //                     primary: P_Settings.wavecolor),
-                          //                 onPressed: () {
-                          //                   Navigator.of(ctx).pop();
-                          //                 },
-                          //                 child: Text("cancel"),
-                          //               ),
-                          //               SizedBox(
-                          //                 width: size.width * 0.01,
-                          //               ),
-                          //               ElevatedButton(
-                          //                 style: ElevatedButton.styleFrom(
-                          //                     primary: P_Settings.wavecolor),
-                          //                 onPressed: () async {
-                          //                   Provider.of<Controller>(context,
-                          //                           listen: false)
-                          //                       .deleteFromOrderBagTable(
-                          //                           cartrowno,
-                          //                           widget.custmerId,
-                          //                           index);
-                          //                   Navigator.of(ctx).pop();
-                          //                 },
-                          //                 child: Text("ok"),
-                          //               ),
-                          //             ],
-                          //           ),
-                          //         ],
-                          //       ),
-                          //     );
-                          //   },
-                          //   icon: Icon(
-                          //     Icons.delete,
-                          //     color: P_Settings.extracolor,
-                          //   ),
-                          // ),
-                        ],
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 2),
+                  child: Divider(
+                    thickness: 1,
+                    color: Color.fromARGB(255, 182, 179, 179),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 2),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        "Total price : ",
+                        style: TextStyle(fontSize: 13),
+                      ),
+                      Text(
+                        "\u{20B9}${totalamount}",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                            color: P_Settings.extracolor),
                       ),
                     ],
                   ),
