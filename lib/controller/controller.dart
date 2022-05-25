@@ -417,11 +417,41 @@ class Controller extends ChangeNotifier {
   }
 
   ///////////////////////////////////////////////////////
-  // getProductItems(String product) async {
-  //   print("product...............${product}");
+  getProductList(String customerId) async {
+    int flag=0;
+    productName.clear();
+    try {
+      isLoading = true;
+      // notifyListeners();
+      prodctItems =
+          await OrderAppDB.instance.selectfromOrderbagTable(customerId);
+      print("prodctItems----${prodctItems.length}");
+
+      for (var item in prodctItems) { 
+        productName.add(item);
+      }
+      var length = productName.length;
+      print("text length----$length");
+      qty = List.generate(length, (index) => TextEditingController());
+      isLoading = false;
+      notifyListeners();
+      print("product name----${productName}");
+
+      notifyListeners();
+    } catch (e) {
+      print(e);
+      return null;
+    }
+    notifyListeners();
+  }
+
+/////////////////////////////////////////////////////////////
+  // getProductItems(String table) async {
   //   productName.clear();
   //   try {
-  //     prodctItems = await OrderAppDB.instance.getItems(product);
+  //     isLoading = true;
+  //     // notifyListeners();
+  //     prodctItems = await OrderAppDB.instance.selectCommonquery(table, '');
   //     print("prodctItems----${prodctItems}");
 
   //     for (var item in prodctItems) {
@@ -429,6 +459,11 @@ class Controller extends ChangeNotifier {
   //       // productName.add(item["code"] + '-' + item["item"]);
   //       // notifyListeners();
   //     }
+  //     var length = productName.length;
+  //     print("text length----$length");
+  //     qty = List.generate(length, (index) => TextEditingController());
+  //     isLoading = false;
+  //     notifyListeners();
   //     print("product name----${productName}");
   //     // print("product productRate----${productRate}");
   //     notifyListeners();
@@ -438,34 +473,6 @@ class Controller extends ChangeNotifier {
   //   }
   //   notifyListeners();
   // }
-/////////////////////////////////////////////////////////////
-  getProductItems(String table) async {
-    productName.clear();
-    try {
-      isLoading = true;
-      // notifyListeners();
-      prodctItems = await OrderAppDB.instance.selectCommonquery(table, '');
-      print("prodctItems----${prodctItems}");
-
-      for (var item in prodctItems) {
-        productName.add(item);
-        // productName.add(item["code"] + '-' + item["item"]);
-        // notifyListeners();
-      }
-      var length = productName.length;
-      print("text length----$length");
-      qty = List.generate(length, (index) => TextEditingController());
-      isLoading = false;
-      notifyListeners();
-      print("product name----${productName}");
-      // print("product productRate----${productRate}");
-      notifyListeners();
-    } catch (e) {
-      print(e);
-      return null;
-    }
-    notifyListeners();
-  }
 
 ////////////////////////////////////////////////////////////
   getOrderno() async {

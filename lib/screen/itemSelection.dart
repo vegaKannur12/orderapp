@@ -45,9 +45,10 @@ class _ItemSelectionState extends State<ItemSelection> {
     products = Provider.of<Controller>(context, listen: false).productName;
     Provider.of<Controller>(context, listen: false).getOrderno();
     date = DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
-    Provider.of<Controller>(context, listen: false).getProductItems(
-      'productDetailsTable',
-    );
+    Provider.of<Controller>(context, listen: false).getProductList(widget.customerId);
+    // Provider.of<Controller>(context, listen: false).getProductItems(
+    //   'productDetailsTable',
+    // );
     var length =
         Provider.of<Controller>(context, listen: false).productName.length;
     List.generate(length, (index) => TextEditingController());
@@ -345,12 +346,12 @@ class _ItemSelectionState extends State<ItemSelection> {
                                     padding: const EdgeInsets.only(
                                         left: 0.4, right: 0.4),
                                     child: ListTile(
-                                      title: Text(
+                                      title: Text( 
                                         '${value.productName[index]["code"]}' +
                                             '-' +
                                             '${value.productName[index]["item"]}',
                                         style: TextStyle(
-                                            color: Colors.grey[700],
+                                            color: value.productName[index]["cartrowno"]==null? Colors.grey[700]:Colors.green,
                                             fontSize: 16),
                                       ),
                                       trailing: Row(
@@ -449,10 +450,12 @@ class _ItemSelectionState extends State<ItemSelection> {
                                           ),
                                           IconButton(
                                             icon: Icon(
+                                              
                                               Icons.delete,
                                               size: 18,
+                                             color: Colors.redAccent,
                                             ),
-                                            onPressed: () async {
+                                            onPressed:value.productName[index]["cartrowno"]==null?null:() async {
                                               showDialog(
                                                 context: context,
                                                 builder: (ctx) => AlertDialog(
@@ -504,7 +507,7 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                 ),
                                               );
                                             },
-                                            color: Theme.of(context).errorColor,
+                                            // color: Theme.of(context).errorColor,
                                           )
                                         ],
                                       ),
