@@ -56,7 +56,7 @@ class _DashboardState extends State<Dashboard> {
       case 3:
         if (widget.type == "return from cartList") {
           return OrderForm(widget.areaName!);
-        }else{
+        } else {
           return OrderForm("");
         }
       case 5:
@@ -125,9 +125,32 @@ class _DashboardState extends State<Dashboard> {
       onWillPop: () => _onBackPressed(context),
       child: Scaffold(
         backgroundColor: P_Settings.wavecolor,
-        appBar: AppBar(
-          backgroundColor: P_Settings.wavecolor,
+        appBar:
+        _selectedIndex==5?AppBar(
           elevation: 0,
+          backgroundColor: P_Settings.wavecolor,
+          bottom: PreferredSize(
+            preferredSize: Size.fromHeight(6.0),
+            child: Consumer<Controller>(
+              builder: (context, value, child) {
+                if (value.isLoading) {
+                  return LinearProgressIndicator(
+                    backgroundColor: Colors.white,
+                    color: P_Settings.wavecolor,
+
+                    // valueColor: new AlwaysStoppedAnimation<Color>(Colors.red),
+                    // value: 0.25,
+                  );
+                } else {
+                  return Container();
+                }
+              },
+            ),
+          ),
+          // title: Text("Company Details",style: TextStyle(fontSize: 20),),
+        ):AppBar(
+          elevation: 0,
+          backgroundColor: P_Settings.wavecolor,
         ),
         drawer: Drawer(
           child: Column(

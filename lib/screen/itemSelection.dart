@@ -70,7 +70,7 @@ class _ItemSelectionState extends State<ItemSelection> {
             },
           ),
           elevation: 0,
-          backgroundColor: Colors.indigo,
+          backgroundColor: P_Settings.wavecolor,
           actions: <Widget>[
             IconButton(
               icon: Icon(
