@@ -502,22 +502,22 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                 }
                                               });
 
-                                              int max = await OrderAppDB
-                                                  .instance
-                                                  .getMaxCommonQuery(
-                                                      'orderBagTable',
-                                                      'cartrowno',
-                                                      "os='${value.ordernum[0]["os"]}' AND customerid='${widget.customerId}'");
+                                                int max = await OrderAppDB
+                                                    .instance
+                                                    .getMaxCommonQuery(
+                                                        'orderBagTable',
+                                                        'cartrowno',
+                                                        "os='${value.ordernum[0]["os"]}' AND customerid='${widget.customerId}'");
 
-                                              print("max----$max");
-                                              // print("value.qty[index].text---${value.qty[index].text}");
+                                                print("max----$max");
+                                                // print("value.qty[index].text---${value.qty[index].text}");
 
-                                              rate1 = value.productName[index]
-                                                  ["rate1"];
-                                              var total = int.parse(rate1) *
-                                                  int.parse(
-                                                      value.qty[index].text);
-                                              print("total rate $total");
+                                                rate1 = value.productName[index]
+                                                    ["rate1"];
+                                                var total = int.parse(rate1) *
+                                                    int.parse(
+                                                        value.qty[index].text);
+                                                print("total rate $total");
 
                                               var res = await OrderAppDB
                                                   .instance
@@ -543,7 +543,7 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                 widget.customerId,
                                               );
 
-                                              /////////////////////////
+                                                /////////////////////////
 
                                               (widget.customerId.isNotEmpty ||
                                                           widget.customerId !=
