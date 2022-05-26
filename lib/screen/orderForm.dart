@@ -1,20 +1,11 @@
-import 'dart:developer';
 import 'dart:io';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:orderapp/components/commoncolor.dart';
-import 'package:orderapp/components/listItem.dart';
 import 'package:orderapp/controller/controller.dart';
-import 'package:orderapp/db_helper.dart';
-import 'package:orderapp/model/productdetails_model.dart';
-import 'package:orderapp/screen/cartList.dart';
-import 'package:orderapp/screen/historypage.dart';
 import 'package:orderapp/screen/itemSelection.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
-
 import '../components/customPopup.dart';
 import '../components/customSnackbar.dart';
 // import 'package:syncfusion_flutter_datagrid/datagrid.dart';
@@ -581,45 +572,6 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                             ),
                                           ),
                                         ),
-                                        // ElevatedButton(
-                                        //   style: ElevatedButton.styleFrom(
-                                        //     primary: P_Settings.wavecolor,
-                                        //     shape: new RoundedRectangleBorder(
-                                        //       borderRadius:
-                                        //           new BorderRadius.circular(10.0),
-                                        //     ),
-                                        //   ),
-                                        //   onPressed: () async {
-                                        //     setState(() {
-                                        //       isLoading = true;
-                                        //       Navigator.push(
-                                        //           context,
-                                        //           MaterialPageRoute(
-                                        //               builder: (context) =>
-                                        //                   ItemSelection(
-                                        //                     customerId: custmerId
-                                        //                         .toString(),
-                                        //                     areaId: splitted![0],
-                                        //                     os: values.ordernum[0]
-                                        //                         ['os'],
-                                        //                   )));
-                                        //     });
-                                        //     await Future.delayed(
-                                        //         const Duration(seconds: 4));
-                                        //     setState(() {
-                                        //       isLoading = false;
-                                        //     });
-                                        //   },
-                                        //   child: (isLoading)
-                                        //       ? const SizedBox(
-                                        //           width: 16,
-                                        //           height: 16,
-                                        //           child: CircularProgressIndicator(
-                                        //             color: Colors.white,
-                                        //             strokeWidth: 1.5,
-                                        //           ))
-                                        //       : const Text('Submit'),
-                                        // ),
                                       ],
                                     ),
                                   ),
@@ -629,9 +581,23 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                   //       height: size.height * 0.2,
                                   //       alignment: Alignment.topLeft,
                                   //       child: Padding(
-                                  //         padding: const EdgeInsets.only(left: 10),
-                                  //         child:
-                                  //       ),
+                                  //           padding:
+                                  //               const EdgeInsets.only(left: 10),
+                                  //           child: ElevatedButton(
+                                  //             child: Text("Brosher"),
+                                  //             onPressed: () {
+                                  //               var platform;
+
+                                  //               AndroidIntent intent = AndroidIntent(
+                                  //                   action:
+                                  //                       'android.intent.action.MAIN',
+                                  //                   data: Uri.encodeFull(
+                                  //                       'http://schemas.android.com/apk/res/android'),
+                                  //                   package: 'com.example.g7');
+
+                                  //               intent.launch();
+                                  //             },
+                                  //           )),
                                   //     ),
                                   //   ],
                                   // ),

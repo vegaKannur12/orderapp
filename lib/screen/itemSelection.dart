@@ -510,7 +510,7 @@ class _ItemSelectionState extends State<ItemSelection> {
                                               icon: Icon(
                                                 Icons.delete,
                                                 size: 18,
-                                                color: Colors.redAccent,
+                                                // color: Colors.redAccent,
                                               ),
                                               onPressed:
                                                   value.productName[index]
