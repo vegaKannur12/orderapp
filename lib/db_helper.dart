@@ -343,7 +343,7 @@ class OrderAppDB {
           'INSERT INTO orderBagTable (itemName, cartdatetime, os, customerid, cartrowno, code, qty, rate, totalamount, cstatus) VALUES ("${itemName}","${cartdatetime}", "${os}", "${customerid}", $cartrowno, "${code}", $qty, "${rate}", "${totalamount}", $cstatus)';
       var res = await db.rawInsert(query2);
     }
-
+    
     print("insert query result $res");
     print("insert-----$query2");
     return res;

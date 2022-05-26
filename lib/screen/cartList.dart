@@ -31,7 +31,7 @@ class _CartListState extends State<CartList> {
   var sname;
   int counter = 0;
   bool isAdded = false;
-  // List<TextEditingController> _controller = [];
+
   @override
   void initState() {
     date = DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
@@ -152,6 +152,7 @@ class _CartListState extends State<CartList> {
                                             opaque: false, // set to false
                                             pageBuilder: (_, __, ___) =>
                                                 Dashboard(
+                                                  isPlaced:"yes",
                                                     type:
                                                         "return from cartList",
                                                     areaName: widget.areaname)

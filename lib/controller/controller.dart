@@ -19,6 +19,8 @@ import '../model/staffdetails_model.dart';
 class Controller extends ChangeNotifier {
   bool isLoading = false;
   bool isSearch = false;
+
+  List<bool> selected = [];
   String? searchkey;
   String? sname;
   String? orderTotal;
@@ -418,7 +420,7 @@ class Controller extends ChangeNotifier {
 
   ///////////////////////////////////////////////////////
   getProductList(String customerId) async {
-    int flag=0;
+    int flag = 0;
     productName.clear();
     try {
       isLoading = true;
@@ -427,12 +429,13 @@ class Controller extends ChangeNotifier {
           await OrderAppDB.instance.selectfromOrderbagTable(customerId);
       print("prodctItems----${prodctItems.length}");
 
-      for (var item in prodctItems) { 
+      for (var item in prodctItems) {
         productName.add(item);
       }
       var length = productName.length;
       print("text length----$length");
       qty = List.generate(length, (index) => TextEditingController());
+      selected = List.generate(length, (index) => false);
       isLoading = false;
       notifyListeners();
       print("product name----${productName}");
