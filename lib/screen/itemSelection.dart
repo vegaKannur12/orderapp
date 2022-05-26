@@ -160,8 +160,14 @@ class _ItemSelectionState extends State<ItemSelection> {
                         child: CircularProgressIndicator(
                             color: P_Settings.wavecolor))
                     : Expanded(
-                        child: value.isSearch
-                            ? ListView.builder(
+                        child: value.isSearch 
+                            ? value.newList.length==0
+                            ?
+                            Container(
+                              child: Text("No Product Found!!!!"),
+                            )
+                            :
+                            ListView.builder(
                                 shrinkWrap: true,
                                 itemCount: value.newList.length,
                                 itemBuilder: (BuildContext context, index) {
@@ -371,9 +377,7 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                                               widget.os,
                                                                               widget.customerId,
                                                                             );
-                                                                            Provider.of<Controller>(context,
-                                                                                listen: false)
-                                                                            .getProductList(widget.customerId);
+                                                                          
                                                                             Navigator.of(ctx).pop();
                                                                           },
                                                                           child:
@@ -445,6 +449,9 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                                           widget
                                                                               .customerId,
                                                                         );
+                                                                          // Provider.of<Controller>(context,
+                                                                          //       listen: false)
+                                                                          //   .searchProcess();
                                                                         Navigator.of(ctx)
                                                                             .pop();
                                                                       },

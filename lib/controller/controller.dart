@@ -420,6 +420,8 @@ class Controller extends ChangeNotifier {
 
   ///////////////////////////////////////////////////////
   getProductList(String customerId) async {
+
+    print("haii---");
     int flag = 0;
     productName.clear();
     try {
@@ -641,7 +643,8 @@ class Controller extends ChangeNotifier {
     notifyListeners();
   }
 
-  searchProcess() {
+  searchProcess() async {
+    newList.clear();
     print("searchkey----$searchkey");
     if (searchkey!.isEmpty) {
       newList = productName;
@@ -650,26 +653,35 @@ class Controller extends ChangeNotifier {
       print("text length----$length");
       qty = List.generate(length, (index) => TextEditingController());
       selected = List.generate(length, (index) => false);
-
+      notifyListeners();
     } else {
+      // newList.clear();
+
       isSearch = true;
-      newList = productName
-          .where((product) =>
-              product["item"]
-                  .toLowerCase()
-                  .contains(searchkey!.toLowerCase()) ||
-              product["code"]
-                  .toLowerCase()
-                  .contains(searchkey!.toLowerCase()) ||
-              product["categoryId"]
-                  .toLowerCase()
-                  .contains(searchkey!.toLowerCase()))
-          .toList();
+      List<Map<String, dynamic>> result = await OrderAppDB.instance
+          .searchItem('productDetailsTable', searchkey!, 'item','code','categoryId');
+      for (var item in result) {
+        newList.add(item);
+      }
+      
+      // newList = productName
+      //     .where((product) =>
+      //         product["item"]
+      //             .toLowerCase()
+      //             .contains(searchkey!.toLowerCase()) ||
+      //         product["code"]
+      //             .toLowerCase()
+      //             .contains(searchkey!.toLowerCase()) ||
+      //         product["categoryId"]
+      //             .toLowerCase()
+      //             .contains(searchkey!.toLowerCase()))
+      //     .toList();
 
       var length = newList.length;
       print("text length----$length");
       qty = List.generate(length, (index) => TextEditingController());
       selected = List.generate(length, (index) => false);
+      notifyListeners();
     }
     print("nw list---$newList");
     notifyListeners();
