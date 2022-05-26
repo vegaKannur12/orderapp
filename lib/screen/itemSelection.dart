@@ -176,7 +176,6 @@ class _ItemSelectionState extends State<ItemSelection> {
                                             DismissDirection.endToStart) {
                                           print("Delete");
 
-                                         
                                           OrderAppDB.instance
                                               .deleteFromTableCommonQuery(
                                                   "orderBagTable",
@@ -465,7 +464,6 @@ class _ItemSelectionState extends State<ItemSelection> {
                                         if (direction ==
                                             DismissDirection.endToStart) {
                                           print("Delete");
-
 
                                           OrderAppDB.instance
                                               .deleteFromTableCommonQuery(
