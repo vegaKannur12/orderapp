@@ -41,7 +41,7 @@ class _SplashScreenState extends State<SplashScreen>
             opaque: false, // set to false
             pageBuilder: (_, __, ___) => cid != null
                 ? st_uname != null && st_pwd != null
-                    ? Dashboard()
+                    ? Dashboard(isPlaced: "",)
                     : StaffLogin()
                 : RegistrationScreen()),
       );

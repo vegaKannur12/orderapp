@@ -12,8 +12,11 @@ import '../components/customSnackbar.dart';
 
 class OrderForm extends StatefulWidget {
   String areaname;
+  String isPlaced;
+
   OrderForm(
     this.areaname,
+    this.isPlaced
   );
 
   @override
@@ -540,6 +543,7 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                                       pageBuilder:
                                                           (_, __, ___) =>
                                                               ItemSelection(
+                                                                isPlaced: widget.isPlaced,
                                                         customerId: custmerId
                                                             .toString(),
                                                         areaId: Provider.of<

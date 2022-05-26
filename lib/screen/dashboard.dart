@@ -13,8 +13,10 @@ import 'orderForm.dart';
 
 class Dashboard extends StatefulWidget {
   String? type;
+  String isPlaced;
+
   String? areaName;
-  Dashboard({this.type, this.areaName});
+  Dashboard({this.type, this.areaName, required this.isPlaced});
 
   @override
   State<Dashboard> createState() => _DashboardState();
@@ -55,9 +57,9 @@ class _DashboardState extends State<Dashboard> {
         return new MainDashboard();
       case 3:
         if (widget.type == "return from cartList") {
-          return OrderForm(widget.areaName!);
+          return OrderForm(widget.areaName!, widget.isPlaced);
         } else {
-          return OrderForm("");
+          return OrderForm("", widget.isPlaced);
         }
       case 5:
         return DownloadedPage(
@@ -125,33 +127,34 @@ class _DashboardState extends State<Dashboard> {
       onWillPop: () => _onBackPressed(context),
       child: Scaffold(
         backgroundColor: P_Settings.wavecolor,
-        appBar:
-        _selectedIndex==5?AppBar(
-          elevation: 0,
-          backgroundColor: P_Settings.wavecolor,
-          bottom: PreferredSize(
-            preferredSize: Size.fromHeight(6.0),
-            child: Consumer<Controller>(
-              builder: (context, value, child) {
-                if (value.isLoading) {
-                  return LinearProgressIndicator(
-                    backgroundColor: Colors.white,
-                    color: P_Settings.wavecolor,
+        appBar: _selectedIndex == 5
+            ? AppBar(
+                elevation: 0,
+                backgroundColor: P_Settings.wavecolor,
+                bottom: PreferredSize(
+                  preferredSize: Size.fromHeight(6.0),
+                  child: Consumer<Controller>(
+                    builder: (context, value, child) {
+                      if (value.isLoading) {
+                        return LinearProgressIndicator(
+                          backgroundColor: Colors.white,
+                          color: P_Settings.wavecolor,
 
-                    // valueColor: new AlwaysStoppedAnimation<Color>(Colors.red),
-                    // value: 0.25,
-                  );
-                } else {
-                  return Container();
-                }
-              },
-            ),
-          ),
-          // title: Text("Company Details",style: TextStyle(fontSize: 20),),
-        ):AppBar(
-          elevation: 0,
-          backgroundColor: P_Settings.wavecolor,
-        ),
+                          // valueColor: new AlwaysStoppedAnimation<Color>(Colors.red),
+                          // value: 0.25,
+                        );
+                      } else {
+                        return Container();
+                      }
+                    },
+                  ),
+                ),
+                // title: Text("Company Details",style: TextStyle(fontSize: 20),),
+              )
+            : AppBar(
+                elevation: 0,
+                backgroundColor: P_Settings.wavecolor,
+              ),
         drawer: Drawer(
           child: Column(
             children: [
