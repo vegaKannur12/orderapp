@@ -322,6 +322,8 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                           null
                                                       ? value.selected[index]
                                                           ? () async {
+                                                              print(
+                                                                  "fjzkjfkdjf");
                                                               showDialog(
                                                                 context:
                                                                     context,
@@ -369,6 +371,9 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                                               widget.os,
                                                                               widget.customerId,
                                                                             );
+                                                                            Provider.of<Controller>(context,
+                                                                                listen: false)
+                                                                            .getProductList(widget.customerId);
                                                                             Navigator.of(ctx).pop();
                                                                           },
                                                                           child:
@@ -486,6 +491,11 @@ class _ItemSelectionState extends State<ItemSelection> {
                                             widget.os,
                                             widget.customerId,
                                           );
+
+                                          if (value.selected[index]) {
+                                            value.selected[index] =
+                                                !value.selected[index];
+                                          }
                                         }
                                       },
                                       child: ListTile(
@@ -716,13 +726,14 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                                               P_Settings.wavecolor),
                                                                       onPressed:
                                                                           () async {
-                                                                        print(
-                                                                            "selected index----${value.selected[index]}");
                                                                         if (value.selected[index] ==
                                                                             false) {
                                                                           value.selected[index] =
                                                                               true;
                                                                         }
+
+                                                                        print(
+                                                                            "selected index----${value.selected[index]}");
 
                                                                         value
                                                                             .qty[index]
@@ -740,6 +751,10 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                                           widget
                                                                               .customerId,
                                                                         );
+                                                                        Provider.of<Controller>(context,
+                                                                                listen: false)
+                                                                            .getProductList(widget.customerId);
+
                                                                         Navigator.of(ctx)
                                                                             .pop();
                                                                       },
