@@ -133,9 +133,9 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                   SizedBox(
                                     width: size.width * 0.01,
                                   ),
-                                  Text("CUSTOMER",
+                                  Text("SALES ORDER",
                                       style: TextStyle(
-                                          fontSize: 30,
+                                          fontSize: 24,
                                           color: P_Settings.bodycolor,
                                           fontWeight: FontWeight.bold)
                                       // ),
@@ -143,7 +143,7 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                 ]),
                           ),
                           SizedBox(
-                            height: size.height * 0.1,
+                            height: size.height * 0.05,
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -411,7 +411,7 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                                       EdgeInsets.only(
                                                           bottom: topInsets +
                                                               size.height *
-                                                                  0.27),
+                                                                  0.3),
                                                   focusNode: fieldFocusNode,
                                                   style: const TextStyle(
                                                       fontWeight:
