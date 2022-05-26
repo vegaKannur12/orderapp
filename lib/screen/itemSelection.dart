@@ -29,6 +29,7 @@ class ItemSelection extends StatefulWidget {
 
 class _ItemSelectionState extends State<ItemSelection> {
   String rate1 = "1";
+  TextEditingController searchcontroll = TextEditingController();
 
   List<Map<String, dynamic>> products = [];
   int? selected;
@@ -142,18 +143,20 @@ class _ItemSelectionState extends State<ItemSelection> {
                   width: size.width * 0.95,
                   height: size.height * 0.09,
                   child: TextField(
-                    onChanged: (value) {
-                      Provider.of<Controller>(context, listen: false)
-                          .searchkey = value;
-                      Provider.of<Controller>(context, listen: false)
-                          .searchProcess();
-                    },
-                    decoration: const InputDecoration(
+                      controller: searchcontroll,
+                      onChanged: (value) {
+                        Provider.of<Controller>(context, listen: false)
+                            .searchkey = value;
+                        Provider.of<Controller>(context, listen: false)
+                            .searchProcess();
+                        searchcontroll.text = value;
+                      },
+                      decoration: const InputDecoration(
                         hintText: "Search with  Product code/Name/category",
                         hintStyle:
                             TextStyle(fontSize: 14.0, color: Colors.grey),
-                        suffixIcon: Icon(Icons.search)),
-                  ),
+                        suffixIcon: InkWell(child: Icon(Icons.clear,size: 18,),onTap: () =>searchcontroll.clear(),),
+                      )),
                 ),
                 value.isLoading
                     ? Container(
