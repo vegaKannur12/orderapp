@@ -667,6 +667,7 @@ class Controller extends ChangeNotifier {
       var length = newList.length;
       print("text length----$length");
       qty = List.generate(length, (index) => TextEditingController());
+      selected = List.generate(length, (index) => false);
     }
     print("nw list---$newList");
     notifyListeners();
