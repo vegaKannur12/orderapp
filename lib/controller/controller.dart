@@ -641,8 +641,9 @@ class Controller extends ChangeNotifier {
     notifyListeners();
   }
 
-  searchProcess() {
+  searchProcess() async {
     print("searchkey----$searchkey");
+    newList.clear();
     if (searchkey!.isEmpty) {
       newList = productName;
 
@@ -652,18 +653,24 @@ class Controller extends ChangeNotifier {
       selected = List.generate(length, (index) => false);
     } else {
       isSearch = true;
-      newList = productName
-          .where((product) =>
-              product["item"]
-                  .toLowerCase()
-                  .contains(searchkey!.toLowerCase()) ||
-              product["code"]
-                  .toLowerCase()
-                  .contains(searchkey!.toLowerCase()) ||
-              product["categoryId"]
-                  .toLowerCase()
-                  .contains(searchkey!.toLowerCase()))
-          .toList();
+
+      List<Map<String, dynamic>> result = await OrderAppDB.instance.searchItem(
+          'productDetailsTable', searchkey!, 'item', 'code', 'categoryId');
+      for (var item in result) {
+        newList.add(item);
+      }
+      // newList = productName
+      //     .where((product) =>
+      //         product["item"]
+      //             .toLowerCase()
+      //             .contains(searchkey!.toLowerCase()) ||
+      //         product["code"]
+      //             .toLowerCase()
+      //             .contains(searchkey!.toLowerCase()) ||
+      //         product["categoryId"]
+      //             .toLowerCase()
+      //             .contains(searchkey!.toLowerCase()))
+      //     .toList();
 
       var length = newList.length;
       print("text length----$length");
