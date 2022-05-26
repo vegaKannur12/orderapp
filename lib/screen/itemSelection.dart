@@ -40,6 +40,13 @@ class _ItemSelectionState extends State<ItemSelection> {
   bool loading = true;
   bool loading1 = false;
   CustomSnackbar snackbar = CustomSnackbar();
+
+  @override
+  void dispose() {
+    super.dispose();
+    searchcontroll.dispose();
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -143,20 +150,35 @@ class _ItemSelectionState extends State<ItemSelection> {
                   width: size.width * 0.95,
                   height: size.height * 0.09,
                   child: TextField(
-                      controller: searchcontroll,
-                      onChanged: (value) {
-                        Provider.of<Controller>(context, listen: false)
-                            .searchkey = value;
-                        Provider.of<Controller>(context, listen: false)
-                            .searchProcess();
-                        searchcontroll.text = value;
-                      },
-                      decoration: const InputDecoration(
-                        hintText: "Search with  Product code/Name/category",
-                        hintStyle:
-                            TextStyle(fontSize: 14.0, color: Colors.grey),
-                        suffixIcon: InkWell(child: Icon(Icons.clear,size: 18,),onTap: () =>searchcontroll.clear(),),
-                      )),
+                    controller: searchcontroll,
+                    onChanged: (value) {
+                      Provider.of<Controller>(context, listen: false)
+                          .searchkey = value;
+                      Provider.of<Controller>(context, listen: false)
+                          .searchProcess();
+                      value = searchcontroll.text;
+                    },
+                    decoration: InputDecoration(
+                      hintText: "Search with  Product code/Name/category",
+                      hintStyle: TextStyle(fontSize: 14.0, color: Colors.grey),
+                      suffixIcon: value.isSearch
+                          ? IconButton(
+                              icon: Icon(
+                                Icons.close,
+                                size: 20,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  value.isSearch = false;
+                                });
+                                searchcontroll.clear();
+                              })
+                          : Icon(
+                              Icons.search,
+                              size: 20,
+                            ),
+                    ),
+                  ),
                 ),
                 value.isLoading
                     ? Container(
@@ -178,7 +200,10 @@ class _ItemSelectionState extends State<ItemSelection> {
                                         if (direction ==
                                             DismissDirection.endToStart) {
                                           print("Delete");
-
+                                          setState(() {
+                                            value.selected[index] =
+                                                !value.selected[index];
+                                          });
                                           OrderAppDB.instance
                                               .deleteFromTableCommonQuery(
                                                   "orderBagTable",
@@ -325,8 +350,6 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                           null
                                                       ? value.selected[index]
                                                           ? () async {
-                                                              print(
-                                                                  "fjzkjfkdjf");
                                                               showDialog(
                                                                 context:
                                                                     context,
@@ -374,9 +397,6 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                                               widget.os,
                                                                               widget.customerId,
                                                                             );
-                                                                            Provider.of<Controller>(context,
-                                                                                listen: false)
-                                                                            .getProductList(widget.customerId);
                                                                             Navigator.of(ctx).pop();
                                                                           },
                                                                           child:
@@ -476,13 +496,16 @@ class _ItemSelectionState extends State<ItemSelection> {
                                     padding: const EdgeInsets.only(
                                         left: 0.4, right: 0.4),
                                     child: Dismissible(
-                                      key: ObjectKey([index]),
+                                      key: ObjectKey(index),
                                       onDismissed:
                                           (DismissDirection direction) async {
                                         if (direction ==
                                             DismissDirection.endToStart) {
                                           print("Delete");
-
+                                          setState(() {
+                                            value.selected[index] =
+                                                !value.selected[index];
+                                          });
                                           OrderAppDB.instance
                                               .deleteFromTableCommonQuery(
                                                   "orderBagTable",
@@ -494,11 +517,6 @@ class _ItemSelectionState extends State<ItemSelection> {
                                             widget.os,
                                             widget.customerId,
                                           );
-
-                                          if (value.selected[index]) {
-                                            value.selected[index] =
-                                                !value.selected[index];
-                                          }
                                         }
                                       },
                                       child: ListTile(
@@ -729,14 +747,13 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                                               P_Settings.wavecolor),
                                                                       onPressed:
                                                                           () async {
+                                                                        print(
+                                                                            "selected index----${value.selected[index]}");
                                                                         if (value.selected[index] ==
                                                                             false) {
                                                                           value.selected[index] =
                                                                               true;
                                                                         }
-
-                                                                        print(
-                                                                            "selected index----${value.selected[index]}");
 
                                                                         value
                                                                             .qty[index]
@@ -754,10 +771,6 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                                           widget
                                                                               .customerId,
                                                                         );
-                                                                        Provider.of<Controller>(context,
-                                                                                listen: false)
-                                                                            .getProductList(widget.customerId);
-
                                                                         Navigator.of(ctx)
                                                                             .pop();
                                                                       },
