@@ -171,7 +171,11 @@ class _ItemSelectionState extends State<ItemSelection> {
                                 setState(() {
                                   value.isSearch = false;
                                 });
-                                searchcontroll.clear();
+
+                                searchcontroll.text == null ||
+                                        searchcontroll.text.isEmpty
+                                    ? value.isSearch
+                                    : searchcontroll.clear();
                               })
                           : Icon(
                               Icons.search,

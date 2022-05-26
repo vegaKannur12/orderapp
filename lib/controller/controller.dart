@@ -650,7 +650,6 @@ class Controller extends ChangeNotifier {
       print("text length----$length");
       qty = List.generate(length, (index) => TextEditingController());
       selected = List.generate(length, (index) => false);
-
     } else {
       isSearch = true;
       newList = productName
