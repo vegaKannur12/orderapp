@@ -230,8 +230,8 @@ class _ItemSelectionState extends State<ItemSelection> {
                                               print("max----$max");
                                               // print("value.qty[index].text---${value.qty[index].text}");
 
-                                              rate1 = value.newList[index]
-                                                  ["rate1"];
+                                              rate1 =
+                                                  value.newList[index]["rate1"];
                                               var total = int.parse(rate1) *
                                                   int.parse(
                                                       value.qty[index].text);
@@ -240,12 +240,14 @@ class _ItemSelectionState extends State<ItemSelection> {
                                               var res = await OrderAppDB
                                                   .instance
                                                   .insertorderBagTable(
-                                                      value.newList[index]["item"],
+                                                      value.newList[index]
+                                                          ["item"],
                                                       date!,
                                                       value.ordernum[0]["os"],
                                                       widget.customerId,
                                                       max,
-                                                      value.newList[index]["code"],
+                                                      value.newList[index]
+                                                          ["code"],
                                                       int.parse(value
                                                           .qty[index].text),
                                                       rate1,
@@ -285,8 +287,7 @@ class _ItemSelectionState extends State<ItemSelection> {
                                               //     .getProductList(
                                               //         widget.customerId);
                                             },
-                                            color: 
-                                                Colors.black,
+                                            color: Colors.black,
                                           ),
                                           IconButton(
                                             icon: Icon(
@@ -592,7 +593,7 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                         null
                                                     ? value.selected[index]
                                                         ? () async {
-                                                          print("andnmNM");
+                                                            print("andnmNM");
                                                             showDialog(
                                                               context: context,
                                                               builder: (ctx) =>
@@ -699,13 +700,14 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                                             P_Settings.wavecolor),
                                                                     onPressed:
                                                                         () async {
-
-                                                                    
+                                                                      print(
+                                                                          "selected index----${value.selected[index]}");
+                                                                      if (value.selected[
+                                                                              index] ==
+                                                                          false) {
                                                                         value.selected[
-                                                                            index] = !value
-                                                                                .selected[
-                                                                            index];
-                                                                      
+                                                                            index] = true;
+                                                                      }
 
                                                                       value.qty[
                                                                               index]
