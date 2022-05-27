@@ -35,6 +35,7 @@ class MyApp extends StatelessWidget {
       
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        
         visualDensity: VisualDensity.adaptivePlatformDensity,
         fontFamily: 'Raleway',
         primaryColor: P_Settings.bodycolor,
