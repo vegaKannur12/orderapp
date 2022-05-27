@@ -18,8 +18,10 @@ import '../model/staffdetails_model.dart';
 
 class Controller extends ChangeNotifier {
   bool isLoading = false;
-  bool isSearch = false;
+  bool isListLoading = false;
 
+  bool isSearch = false;
+  bool isVisible = false;
   List<bool> selected = [];
   String? searchkey;
   String? sname;
@@ -519,7 +521,7 @@ class Controller extends ChangeNotifier {
     for (var item in res) {
       bagList.add(item);
     }
-    // generateTextEditingController();
+    generateTextEditingController();
     print("bagList vxdvxd----$bagList");
 
     isLoading = false;
@@ -640,19 +642,23 @@ class Controller extends ChangeNotifier {
   }
 
 ///////////////////////////////////////////////////////////////////////////////
-  searchProcess(String customerId,String os ) async {
+  searchProcess(String customerId, String os) async {
     print("searchkey----$searchkey");
-  
+
     newList.clear();
+
     if (searchkey!.isEmpty) {
       newList = productName;
       var length = newList.length;
       print("text length----$length");
       qty = List.generate(length, (index) => TextEditingController());
       selected = List.generate(length, (index) => false);
-    } else {
+    } else 
+    {
       // newList.clear();
-
+      isListLoading = true;
+      notifyListeners();
+      print("else is search");
       isSearch = true;
 
       // newList = productName
@@ -668,19 +674,23 @@ class Controller extends ChangeNotifier {
       //             .contains(searchkey!.toLowerCase()))
       //     .toList();
 
-        List<Map<String, dynamic>> res =
-        await OrderAppDB.instance.getOrderBagTable(customerId, os);
-    for (var item in res) {
-      bagList.add(item);
-    }
-
+      // List<Map<String, dynamic>> res =
+      //     await OrderAppDB.instance.getOrderBagTable(customerId, os);
+      // for (var item in res) {
+      //   bagList.add(item);
+      // }
+print("jhfdjkhfjd----$bagList");
       List<Map<String, dynamic>> result = await OrderAppDB.instance.searchItem(
           'productDetailsTable', searchkey!, 'item', 'code', 'categoryId');
       for (var item in result) {
         newList.add(item);
       }
+        isListLoading=false;
+    notifyListeners();
       var length = newList.length;
       selected = List.generate(length, (index) => false);
+      qty = List.generate(length, (index) => TextEditingController());
+
       if (newList.length > 0) {
         print("enterde");
         for (var item = 0; item < newList.length; item++) {
@@ -702,9 +712,9 @@ class Controller extends ChangeNotifier {
       }
 
       print("text length----$length");
-      qty = List.generate(length, (index) => TextEditingController());
 
       print("selected[item]-----${selected}");
+
       // notifyListeners();
     }
 
@@ -747,9 +757,10 @@ class Controller extends ChangeNotifier {
     print("qty-----$qtyinc");
     notifyListeners();
   }
+
   /////////////////////////////////////////////////
-  setIssearch(bool issearch){
-    isSearch=issearch;
+  setIssearch(bool issearch) {
+    isSearch = issearch;
     notifyListeners();
   }
 
@@ -772,6 +783,11 @@ class Controller extends ChangeNotifier {
   totalCalculation(String rate) {
     totalPrice = double.parse(rate) * qtyinc!;
     print("total pri-----$totalPrice");
+    notifyListeners();
+  }
+
+  setisVisible(bool isvis) {
+    isVisible = isvis;
     notifyListeners();
   }
 }
