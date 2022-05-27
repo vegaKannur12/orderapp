@@ -154,10 +154,14 @@ class _ItemSelectionState extends State<ItemSelection> {
                     child: TextField(
                       controller: searchcontroll,
                       onChanged: (value) {
+                        // Provider.of<Controller>(context, listen: false).isSearch=true;
+                      
                         Provider.of<Controller>(context, listen: false)
                             .searchkey = value;
                         Provider.of<Controller>(context, listen: false)
-                            .searchProcess();
+                            .setIssearch(true);
+                        // Provider.of<Controller>(context, listen: false)
+                        //     .searchProcess(widget.customerId, widget.os);
                         value = searchcontroll.text;
                       },
                       decoration: InputDecoration(
@@ -165,20 +169,38 @@ class _ItemSelectionState extends State<ItemSelection> {
                         hintStyle:
                             TextStyle(fontSize: 14.0, color: Colors.grey),
                         suffixIcon: value.isSearch
-                            ? IconButton(
-                                icon: Icon(
-                                  Icons.close,
-                                  size: 20,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    value.isSearch = false;
-                                  });
-                                  Provider.of<Controller>(context,
-                                          listen: false)
-                                      .getProductList(widget.customerId);
-                                  searchcontroll.clear();
-                                })
+                            ? Wrap(
+                                children: [
+                                  IconButton(
+                                      icon: Icon(
+                                        Icons.done,
+                                        size: 20,
+                                      ),
+                                      onPressed: () {
+                                        Provider.of<Controller>(context,
+                                                listen: false)
+                                            .searchProcess(
+                                                widget.customerId, widget.os);
+                                      }),
+                                  IconButton(
+                                      icon: Icon(
+                                        Icons.close,
+                                        size: 20,
+                                      ),
+                                      onPressed: () {
+                                        setState(() {
+                                          value.isSearch = false;
+                                        });
+                                          Provider.of<Controller>(context, listen: false)
+                            .newList
+                            .clear();
+                                        Provider.of<Controller>(context,
+                                                listen: false)
+                                            .getProductList(widget.customerId);
+                                        searchcontroll.clear();
+                                      }),
+                                ],
+                              )
                             : Icon(
                                 Icons.search,
                                 size: 20,
@@ -193,14 +215,7 @@ class _ItemSelectionState extends State<ItemSelection> {
                             color: P_Settings.wavecolor))
                     : Expanded(
                         child: value.isSearch
-                            ? value.newList.length == 0
-                                ? Padding(
-                                    padding: const EdgeInsets.only(left: 10),
-                                    child: Container(
-                                      child: Text("No Product Found!!!!"),
-                                    ),
-                                  )
-                                : ListView.builder(
+                            ?  ListView.builder(
                                     shrinkWrap: true,
                                     itemCount: value.newList.length,
                                     itemBuilder: (BuildContext context, index) {
@@ -237,13 +252,16 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                   '-' +
                                                   '${value.newList[index]["item"]}',
                                               style: TextStyle(
-                                                  color: value.newList[index]
-                                                              ["cartrowno"] ==
-                                                          null
-                                                      ? value.selected[index]
-                                                          ? Colors.green
-                                                          : Colors.grey[700]
-                                                      : Colors.green,
+                                                  color: value.selected[index]
+                                                      ? Colors.green
+                                                      : Colors.grey[700],
+                                                  // value.newList[index]
+                                                  //             ["cartrowno"] ==
+                                                  //         null
+                                                  //     ? value.selected[index]
+                                                  //         ? Colors.green
+                                                  //         : Colors.grey[700]
+                                                  //     : Colors.green,
                                                   fontSize: 16),
                                             ),
                                             trailing: Row(
