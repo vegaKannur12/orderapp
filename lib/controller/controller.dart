@@ -420,7 +420,6 @@ class Controller extends ChangeNotifier {
 
   ///////////////////////////////////////////////////////
   getProductList(String customerId) async {
-
     print("haii---");
     int flag = 0;
     productName.clear();
@@ -520,13 +519,10 @@ class Controller extends ChangeNotifier {
     for (var item in res) {
       bagList.add(item);
     }
-    generateTextEditingController();
+    // generateTextEditingController();
+    print("bagList vxdvxd----$bagList");
 
     isLoading = false;
-    notifyListeners();
-
-    print("bagList----$bagList");
-
     notifyListeners();
   }
 
@@ -643,12 +639,13 @@ class Controller extends ChangeNotifier {
     notifyListeners();
   }
 
-  searchProcess() async {
+///////////////////////////////////////////////////////////////////////////////
+  searchProcess(String customerId,String os ) async {
     print("searchkey----$searchkey");
+  
     newList.clear();
     if (searchkey!.isEmpty) {
       newList = productName;
-
       var length = newList.length;
       print("text length----$length");
       qty = List.generate(length, (index) => TextEditingController());
@@ -658,11 +655,6 @@ class Controller extends ChangeNotifier {
 
       isSearch = true;
 
-      List<Map<String, dynamic>> result = await OrderAppDB.instance.searchItem(
-          'productDetailsTable', searchkey!, 'item', 'code', 'categoryId');
-      for (var item in result) {
-        newList.add(item);
-      }
       // newList = productName
       //     .where((product) =>
       //         product["item"]
@@ -676,12 +668,46 @@ class Controller extends ChangeNotifier {
       //             .contains(searchkey!.toLowerCase()))
       //     .toList();
 
+        List<Map<String, dynamic>> res =
+        await OrderAppDB.instance.getOrderBagTable(customerId, os);
+    for (var item in res) {
+      bagList.add(item);
+    }
+
+      List<Map<String, dynamic>> result = await OrderAppDB.instance.searchItem(
+          'productDetailsTable', searchkey!, 'item', 'code', 'categoryId');
+      for (var item in result) {
+        newList.add(item);
+      }
       var length = newList.length;
+      selected = List.generate(length, (index) => false);
+      if (newList.length > 0) {
+        print("enterde");
+        for (var item = 0; item < newList.length; item++) {
+          print("newList[item]----${newList[item]}");
+
+          for (var i = 0; i < bagList.length; i++) {
+            print("bagList[item]----${bagList[i]}");
+
+            if (bagList[i]["code"] == newList[item]["code"]) {
+              print("ifff");
+              selected[item] = true;
+              break;
+            } else {
+              print("else----");
+              selected[item] = false;
+            }
+          }
+        }
+      }
+
       print("text length----$length");
       qty = List.generate(length, (index) => TextEditingController());
-      selected = List.generate(length, (index) => false);
-      notifyListeners();
+
+      print("selected[item]-----${selected}");
+      // notifyListeners();
     }
+
     print("nw list---$newList");
     notifyListeners();
   }
@@ -719,6 +745,11 @@ class Controller extends ChangeNotifier {
   qtyDecrement() {
     qtyinc = qtyinc! - 1;
     print("qty-----$qtyinc");
+    notifyListeners();
+  }
+  /////////////////////////////////////////////////
+  setIssearch(bool issearch){
+    isSearch=issearch;
     notifyListeners();
   }
 
