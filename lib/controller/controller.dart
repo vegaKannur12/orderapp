@@ -642,7 +642,7 @@ class Controller extends ChangeNotifier {
 ///////////////////////////////////////////////////////////////////////////////
   searchProcess(String customerId,String os ) async {
     print("searchkey----$searchkey");
-  
+    
     newList.clear();
     if (searchkey!.isEmpty) {
       newList = productName;

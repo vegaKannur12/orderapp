@@ -103,7 +103,7 @@ class _CartListState extends State<CartList> {
                           value.bagList[index]["totalamount"],
                           value.bagList[index]["qty"],
                           size,
-                          value.controller[index],
+                          value.controller [index],
                           index,
                           value.bagList[index]["code"]);
                     },
@@ -147,12 +147,13 @@ class _CartListState extends State<CartList> {
                                         () {
                                       value.areDetails.clear();
                                       Navigator.of(context).pop(true);
+
                                       Navigator.of(context).push(
                                         PageRouteBuilder(
                                             opaque: false, // set to false
                                             pageBuilder: (_, __, ___) =>
                                                 Dashboard(
-                                                  isPlaced:"yes",
+                                                    isPlaced: "yes",
                                                     type:
                                                         "return from cartList",
                                                     areaName: widget.areaname)
@@ -232,7 +233,7 @@ class _CartListState extends State<CartList> {
       int index,
       String code) {
     // print("qty-------$qty");
-    _controller.text = qty.toString();
+     _controller.text = qty.toString();
 
     return Container(
       height: size.height * 0.17,

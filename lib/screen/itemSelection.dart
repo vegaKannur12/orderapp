@@ -215,7 +215,7 @@ class _ItemSelectionState extends State<ItemSelection> {
                         child: CircularProgressIndicator(
                             color: P_Settings.wavecolor))
                     : Expanded(
-                        child: value.isSearch && value.newList.length>0
+                        child: value.isSearch && value.newList.length > 0
                             ? ListView.builder(
                                 shrinkWrap: true,
                                 itemCount: value.newList.length,
@@ -546,6 +546,10 @@ class _ItemSelectionState extends State<ItemSelection> {
                                               .deleteFromTableCommonQuery(
                                                   "orderBagTable",
                                                   "code='${value.productName[index]["code"]}' AND customerid='${widget.customerId}'");
+                                          Provider.of<Controller>(context,
+                                                  listen: false)
+                                              .getProductList(
+                                                  widget.customerId);
                                           Provider.of<Controller>(context,
                                                   listen: false)
                                               .countFromTable(
