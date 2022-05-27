@@ -343,7 +343,7 @@ class OrderAppDB {
           'INSERT INTO orderBagTable (itemName, cartdatetime, os, customerid, cartrowno, code, qty, rate, totalamount, cstatus) VALUES ("${itemName}","${cartdatetime}", "${os}", "${customerid}", $cartrowno, "${code}", $qty, "${rate}", "${totalamount}", $cstatus)';
       var res = await db.rawInsert(query2);
     }
-    
+
     print("insert query result $res");
     print("insert-----$query2");
     return res;
@@ -705,13 +705,14 @@ class OrderAppDB {
   //   return result;
   // }
 //////////////////////////////select left join/////////////////////
-  selectfromOrderbagTable(String customerId)async{
-     List<Map<String, dynamic>> result;
+  selectfromOrderbagTable(String customerId) async {
+    List<Map<String, dynamic>> result;
     Database db = await instance.database;
-     result = await db.rawQuery("SELECT productDetailsTable.* , orderBagTable.cartrowno FROM 'productDetailsTable' LEFT JOIN 'orderBagTable' ON productDetailsTable.code = orderBagTable.code AND orderBagTable.customerid='$customerId' ORDER BY cartrowno DESC");
-     print("leftjoin result----$result");
-     print("length---${result.length}");
-   return result;
+    result = await db.rawQuery(
+        "SELECT productDetailsTable.* , orderBagTable.cartrowno FROM 'productDetailsTable' LEFT JOIN 'orderBagTable' ON productDetailsTable.code = orderBagTable.code AND orderBagTable.customerid='$customerId' ORDER BY cartrowno DESC");
+    print("leftjoin result----$result");
+    print("length---${result.length}");
+    return result;
   }
 
 //////////////count from table/////////////////////////////////////////
@@ -769,6 +770,17 @@ class OrderAppDB {
   //   print("query.........$query");
   //   // print(res);
   //   return res;
+  // }
+
+  // searchItem(String table, String key, String field1, String field2,
+  //     String field3) async {
+  //   Database db = await instance.database;
+  //   print("table key field---${table},${key},${field1}");
+  //   List<Map<String, dynamic>> result = await db.query('$table',
+  //       where: '$field1 LIKE ? OR $field2 LIKE ? OR $field3 LIKE ?',
+  //       whereArgs: ['$key%', '$key%', '$key%']);
+  //   print("search result----$result");
+  //   return result;
   // }
 }
 

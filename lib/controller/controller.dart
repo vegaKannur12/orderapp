@@ -644,8 +644,8 @@ class Controller extends ChangeNotifier {
   }
 
   searchProcess() async {
-    newList.clear();
     print("searchkey----$searchkey");
+    newList.clear();
     if (searchkey!.isEmpty) {
       newList = productName;
 
@@ -653,17 +653,16 @@ class Controller extends ChangeNotifier {
       print("text length----$length");
       qty = List.generate(length, (index) => TextEditingController());
       selected = List.generate(length, (index) => false);
-      notifyListeners();
     } else {
       // newList.clear();
 
       isSearch = true;
-      List<Map<String, dynamic>> result = await OrderAppDB.instance
-          .searchItem('productDetailsTable', searchkey!, 'item','code','categoryId');
+
+      List<Map<String, dynamic>> result = await OrderAppDB.instance.searchItem(
+          'productDetailsTable', searchkey!, 'item', 'code', 'categoryId');
       for (var item in result) {
         newList.add(item);
       }
-      
       // newList = productName
       //     .where((product) =>
       //         product["item"]
