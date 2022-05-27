@@ -146,39 +146,44 @@ class _ItemSelectionState extends State<ItemSelection> {
                 SizedBox(
                   height: size.height * 0.01,
                 ),
-                Container(
-                  width: size.width * 0.95,
-                  height: size.height * 0.09,
-                  child: TextField(
-                    controller: searchcontroll,
-                    onChanged: (value) {
-                      Provider.of<Controller>(context, listen: false)
-                          .searchkey = value;
-                      Provider.of<Controller>(context, listen: false)
-                          .searchProcess();
-                      value = searchcontroll.text;
-                    },
-                    decoration: InputDecoration(
-                      hintText: "Search with  Product code/Name/category",
-                      hintStyle: TextStyle(fontSize: 14.0, color: Colors.grey),
-                      suffixIcon: value.isSearch
-                          ? IconButton(
-                              icon: Icon(
-                                Icons.close,
+                Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Container(
+                    width: size.width * 0.95,
+                    height: size.height * 0.09,
+                    child: TextField(
+                      controller: searchcontroll,
+                      onChanged: (value) {
+                        Provider.of<Controller>(context, listen: false)
+                            .searchkey = value;
+                        Provider.of<Controller>(context, listen: false)
+                            .searchProcess();
+                        value = searchcontroll.text;
+                      },
+                      decoration: InputDecoration(
+                        hintText: "Search with  Product code/Name/category",
+                        hintStyle:
+                            TextStyle(fontSize: 14.0, color: Colors.grey),
+                        suffixIcon: value.isSearch
+                            ? IconButton(
+                                icon: Icon(
+                                  Icons.close,
+                                  size: 20,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    value.isSearch = false;
+                                  });
+                                  Provider.of<Controller>(context,
+                                          listen: false)
+                                      .getProductList(widget.customerId);
+                                  searchcontroll.clear();
+                                })
+                            : Icon(
+                                Icons.search,
                                 size: 20,
                               ),
-                              onPressed: () {
-                                setState(() {
-                                  value.isSearch = false;
-                                });
-                                Provider.of<Controller>(context, listen: false)
-                                    .getProductList(widget.customerId);
-                                searchcontroll.clear();
-                              })
-                          : Icon(
-                              Icons.search,
-                              size: 20,
-                            ),
+                      ),
                     ),
                   ),
                 ),
@@ -189,8 +194,11 @@ class _ItemSelectionState extends State<ItemSelection> {
                     : Expanded(
                         child: value.isSearch
                             ? value.newList.length == 0
-                                ? Container(
-                                    child: Text("No Product Found!!!!"),
+                                ? Padding(
+                                    padding: const EdgeInsets.only(left: 10),
+                                    child: Container(
+                                      child: Text("No Product Found!!!!"),
+                                    ),
                                   )
                                 : ListView.builder(
                                     shrinkWrap: true,
