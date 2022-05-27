@@ -420,6 +420,8 @@ class Controller extends ChangeNotifier {
 
   ///////////////////////////////////////////////////////
   getProductList(String customerId) async {
+
+    print("haii---");
     int flag = 0;
     productName.clear();
     try {
@@ -652,6 +654,8 @@ class Controller extends ChangeNotifier {
       qty = List.generate(length, (index) => TextEditingController());
       selected = List.generate(length, (index) => false);
     } else {
+      // newList.clear();
+
       isSearch = true;
 
       List<Map<String, dynamic>> result = await OrderAppDB.instance.searchItem(
@@ -676,6 +680,7 @@ class Controller extends ChangeNotifier {
       print("text length----$length");
       qty = List.generate(length, (index) => TextEditingController());
       selected = List.generate(length, (index) => false);
+      notifyListeners();
     }
     print("nw list---$newList");
     notifyListeners();

@@ -499,6 +499,9 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                                           widget
                                                                               .customerId,
                                                                         );
+                                                                        // Provider.of<Controller>(context,
+                                                                        //       listen: false)
+                                                                        //   .searchProcess();
                                                                         Navigator.of(ctx)
                                                                             .pop();
                                                                       },
@@ -802,6 +805,9 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                                           widget
                                                                               .customerId,
                                                                         );
+                                                                        Provider.of<Controller>(context,
+                                                                                listen: false)
+                                                                            .getProductList(widget.customerId);
                                                                         Navigator.of(ctx)
                                                                             .pop();
                                                                       },

@@ -752,6 +752,15 @@ class OrderAppDB {
     return max;
   }
 
+ /////////////////////search////////////////////////////////
+ searchItem(String table,String key,String field1,String field2,String field3)async{
+    Database db = await instance.database;
+     print("table key field---${table},${key},${field1}");
+     List<Map<String, dynamic>> result=await db.query('$table' , where: '$field1 LIKE ? OR $field2 LIKE ? OR $field3 LIKE ?', whereArgs: ['$key%','$key%','$key%']);
+     print("search result----$result");
+     return result;
+ }
+
 ////////////////////////left join///////////////////////////
 
   // Future insertCommonQuery(String table, String field, String values) async {
@@ -763,16 +772,16 @@ class OrderAppDB {
   //   return res;
   // }
 
-  searchItem(String table, String key, String field1, String field2,
-      String field3) async {
-    Database db = await instance.database;
-    print("table key field---${table},${key},${field1}");
-    List<Map<String, dynamic>> result = await db.query('$table',
-        where: '$field1 LIKE ? OR $field2 LIKE ? OR $field3 LIKE ?',
-        whereArgs: ['$key%', '$key%', '$key%']);
-    print("search result----$result");
-    return result;
-  }
+  // searchItem(String table, String key, String field1, String field2,
+  //     String field3) async {
+  //   Database db = await instance.database;
+  //   print("table key field---${table},${key},${field1}");
+  //   List<Map<String, dynamic>> result = await db.query('$table',
+  //       where: '$field1 LIKE ? OR $field2 LIKE ? OR $field3 LIKE ?',
+  //       whereArgs: ['$key%', '$key%', '$key%']);
+  //   print("search result----$result");
+  //   return result;
+  // }
 }
 
 //////////////////////////////////////////////////////////////
