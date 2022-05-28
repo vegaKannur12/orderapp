@@ -27,7 +27,17 @@ class ShowModal {
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      Text("Do you want to delete ${item} from cart ?"),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("Do you want to delete ",style: TextStyle(fontSize: 15)),
+                          Text("${item}",style: TextStyle(color: Colors.red,fontSize: 15),),
+                          Text(" from cart ?",style: TextStyle(fontSize: 15))
+                        ],
+                      ),
+                      SizedBox(
+                        height: size.height*0.01,
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
