@@ -7,6 +7,7 @@ import 'package:orderapp/screen/dashboard.dart';
 import 'package:orderapp/screen/downloadedPage.dart';
 import 'package:orderapp/screen/itemSelection.dart';
 import 'package:orderapp/screen/orderForm.dart';
+import 'package:orderapp/screen/paymentgate.dart';
 import 'package:orderapp/screen/splashScreen.dart';
 import 'package:orderapp/screen/staffLoginScreen.dart';
 import 'package:provider/provider.dart';
