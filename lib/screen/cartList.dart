@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:intl/intl.dart';
 import 'package:orderapp/components/commoncolor.dart';
 import 'package:orderapp/controller/controller.dart';
 import 'package:orderapp/db_helper.dart';
 import 'package:orderapp/screen/dashboard.dart';
-import 'package:orderapp/screen/orderForm.dart';
 import 'package:orderapp/service/tableList.dart';
 import 'package:provider/provider.dart';
 
@@ -36,7 +34,6 @@ class _CartListState extends State<CartList> {
   void initState() {
     date = DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
     Provider.of<Controller>(context, listen: false).getOrderno();
-    // TODO: implement initState
     super.initState();
     Provider.of<Controller>(context, listen: false)
         .generateTextEditingController();
@@ -44,7 +41,6 @@ class _CartListState extends State<CartList> {
         .calculateTotal(widget.os, widget.custmerId);
     sname = Provider.of<Controller>(context, listen: false).sname;
     print("sname-----${sname}");
-    // _controller = List.generate(length, (i) => TextEditingController());
   }
 
   @override
@@ -103,7 +99,7 @@ class _CartListState extends State<CartList> {
                           value.bagList[index]["totalamount"],
                           value.bagList[index]["qty"],
                           size,
-                          value.controller [index],
+                          value.controller[index],
                           index,
                           value.bagList[index]["code"]);
                     },
@@ -180,16 +176,6 @@ class _CartListState extends State<CartList> {
                           Provider.of<Controller>(context, listen: false)
                               .count = "0";
                           print("area name ${widget.areaname}");
-                          // await Future.delayed(
-                          //     const Duration(milliseconds: 1000), () {
-                          //   // Navigator.push(
-                          //   //     context,
-                          //   //     MaterialPageRoute(
-                          //   //         builder: (context) =>
-                          //   //             OrderForm(widget.areaname)));
-
-                          //   // Here you can write your code
-                          // });
                         }),
                         child: Container(
                           width: size.width * 0.5,
@@ -233,7 +219,7 @@ class _CartListState extends State<CartList> {
       int index,
       String code) {
     // print("qty-------$qty");
-     _controller.text = qty.toString();
+    _controller.text = qty.toString();
 
     return Container(
       height: size.height * 0.17,
@@ -268,14 +254,6 @@ class _CartListState extends State<CartList> {
                           color: Colors.grey,
                         ),
                       ),
-                      // Text("${id}"),
-                      // SizedBox(
-                      //   width: size.width * 0.02,
-                      // ),
-                      // CircleAvatar(
-                      //   backgroundColor: Colors.green,
-                      //   radius: 40,
-                      // ),
                       SizedBox(
                         width: size.width * 0.05,
                         height: size.height * 0.001,
@@ -336,7 +314,6 @@ class _CartListState extends State<CartList> {
                                           showDialog(
                                             context: context,
                                             builder: (ctx) => AlertDialog(
-                                              // title: Text("Alert Dialog Box"),
                                               content: Text("delete?"),
                                               actions: <Widget>[
                                                 Row(
@@ -415,9 +392,6 @@ class _CartListState extends State<CartList> {
                                                   padding:
                                                       const EdgeInsets.all(8.0),
                                                   child: Column(
-                                                    // mainAxisAlignment:
-                                                    //     MainAxisAlignment.center,
-                                                    // mainAxisSize: MainAxisSize.min,
                                                     children: <Widget>[
                                                       SizedBox(
                                                         height:
@@ -521,7 +495,6 @@ class _CartListState extends State<CartList> {
                                                       Divider(
                                                         thickness: 1,
                                                       ),
-
                                                       SizedBox(
                                                         height:
                                                             size.height * 0.02,
@@ -543,11 +516,6 @@ class _CartListState extends State<CartList> {
                                                                   ElevatedButton(
                                                                       onPressed:
                                                                           () {
-                                                                        // Provider.of<Controller>(context, listen: false).calculateTotal(
-                                                                        //     widget
-                                                                        //         .os,
-                                                                        //     widget
-                                                                        //         .custmerId);
                                                                         Provider.of<Controller>(context, listen: false).updateQty(
                                                                             value.qtyinc.toString(),
                                                                             cartrowno,
@@ -563,12 +531,6 @@ class _CartListState extends State<CartList> {
                                                           ],
                                                         ),
                                                       )
-                                                      // ElevatedButton(
-                                                      //   child: const Text(
-                                                      //       'Close BottomSheet'),
-                                                      //   onPressed: () =>
-                                                      //       Navigator.pop(context),
-                                                      // )
                                                     ],
                                                   ),
                                                 ),
@@ -580,8 +542,6 @@ class _CartListState extends State<CartList> {
                                     );
                                   },
                                   child: Row(
-                                    // mainAxisAlignment:
-                                    //     MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
                                         "Qty :",

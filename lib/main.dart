@@ -1,18 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:orderapp/components/autocomplete.dart';
 import 'package:orderapp/controller/controller.dart';
-import 'package:orderapp/screen/companyRegistrationScreen.dart';
-import 'package:orderapp/screen/dashboard.dart';
-import 'package:orderapp/screen/downloadedPage.dart';
-import 'package:orderapp/screen/itemSelection.dart';
-import 'package:orderapp/screen/orderForm.dart';
-import 'package:orderapp/screen/paymentgate.dart';
+import 'package:orderapp/screen/historypage.dart';
 import 'package:orderapp/screen/splashScreen.dart';
-import 'package:orderapp/screen/staffLoginScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'components/commoncolor.dart';
+import 'package:ota_update/ota_update.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,7 +15,7 @@ Future<void> main() async {
     DeviceOrientation.portraitDown,
   ]);
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  String? cid=prefs.getString("company_id");
+  String? cid = prefs.getString("company_id");
   runApp(MultiProvider(
     providers: [ChangeNotifierProvider(create: (_) => Controller())],
     child: MyApp(),
@@ -29,13 +23,13 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
+ late OtaEvent currentEvent;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        
         visualDensity: VisualDensity.adaptivePlatformDensity,
         fontFamily: 'Raleway',
         primaryColor: P_Settings.bodycolor,
@@ -56,5 +50,29 @@ class MyApp extends StatelessWidget {
       home: SplashScreen(),
       // home: MyWaveClipper(),
     );
+  }
+
+  ////////////////////////////////
+  Future<void> tryOtaUpdate() async {
+    try {
+      //LINK CONTAINS APK OF FLUTTER HELLO WORLD FROM FLUTTER SDK EXAMPLES
+      OtaUpdate()
+          .execute(
+        'https://internal1.4q.sk/flutter_hello_world.apk',
+        destinationFilename: 'flutter_hello_world.apk',
+        //FOR NOW ANDROID ONLY - ABILITY TO VALIDATE CHECKSUM OF FILE:
+        sha256checksum:
+            'd6da28451a1e15cf7a75f2c3f151befad3b80ad0bb232ab15c20897e54f21478',
+      )
+          .listen(
+        (OtaEvent event) {
+          currentEvent = event;
+          // setState(() => currentEvent = event
+        },
+      );
+      // ignore: avoid_catches_without_on_clauses
+    } catch (e) {
+      print('Failed to make OTA update. Details: $e');
+    }
   }
 }
