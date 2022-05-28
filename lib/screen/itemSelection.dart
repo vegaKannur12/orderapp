@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:orderapp/components/commoncolor.dart';
 import 'package:orderapp/components/customSearchTile.dart';
+import 'package:orderapp/components/showMoadal.dart';
 import 'package:orderapp/db_helper.dart';
 import 'package:orderapp/screen/cartList.dart';
 import 'package:provider/provider.dart';
@@ -30,7 +32,7 @@ class ItemSelection extends StatefulWidget {
 class _ItemSelectionState extends State<ItemSelection> {
   String rate1 = "1";
   TextEditingController searchcontroll = TextEditingController();
-
+  ShowModal showModal = ShowModal();
   List<Map<String, dynamic>> products = [];
   int? selected;
   SearchTile search = SearchTile();
@@ -201,6 +203,9 @@ class _ItemSelectionState extends State<ItemSelection> {
                                       onPressed: () {
                                         Provider.of<Controller>(context,
                                                 listen: false)
+                                            .getProductList(widget.customerId);
+                                        Provider.of<Controller>(context,
+                                                listen: false)
                                             .setIssearch(false);
 
                                         value.setisVisible(false);
@@ -208,9 +213,7 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                 listen: false)
                                             .newList
                                             .clear();
-                                        Provider.of<Controller>(context,
-                                                listen: false)
-                                            .getProductList(widget.customerId);
+
                                         searchcontroll.clear();
                                       }),
                                 ],
@@ -386,7 +389,7 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                                 0);
                                                         snackbar.showSnackbar(
                                                             context,
-                                                            "Added to cart");
+                                                            "${value.newList[index]["code"] + value.newList[index]['item']} - Added to cart");
                                                         Provider.of<Controller>(
                                                                 context,
                                                                 listen: false)
@@ -438,118 +441,55 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                           ? value.selected[
                                                                   index]
                                                               ? () async {
-                                                                  showDialog(
-                                                                    context:
-                                                                        context,
-                                                                    builder:
-                                                                        (ctx) =>
-                                                                            AlertDialog(
-                                                                      // title: Text("Alert Dialog Box"),
-                                                                      content: Text(
-                                                                          "delete?"),
-                                                                      actions: <
-                                                                          Widget>[
-                                                                        Row(
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment.end,
-                                                                          children: [
-                                                                            ElevatedButton(
-                                                                              style: ElevatedButton.styleFrom(primary: P_Settings.wavecolor),
-                                                                              onPressed: () {
-                                                                                Navigator.of(ctx).pop();
-                                                                              },
-                                                                              child: Text("cancel"),
-                                                                            ),
-                                                                            SizedBox(
-                                                                              width: size.width * 0.01,
-                                                                            ),
-                                                                            ElevatedButton(
-                                                                              style: ElevatedButton.styleFrom(primary: P_Settings.wavecolor),
-                                                                              onPressed: () async {
-                                                                                if (value.selected[index]) {
-                                                                                  value.selected[index] = !value.selected[index];
-                                                                                }
+                                                                  String item = value
+                                                                              .newList[index]
+                                                                          [
+                                                                          "code"] +
+                                                                      value.newList[
+                                                                              index]
+                                                                          [
+                                                                          "item"];
 
-                                                                                value.qty[index].clear();
-                                                                                await OrderAppDB.instance.deleteFromTableCommonQuery("orderBagTable", "code='${value.newList[index]["code"]}' AND customerid='${widget.customerId}'");
-
-                                                                                Provider.of<Controller>(context, listen: false).countFromTable(
-                                                                                  "orderBagTable",
-                                                                                  widget.os,
-                                                                                  widget.customerId,
-                                                                                );
-                                                                                Navigator.of(ctx).pop();
-                                                                              },
-                                                                              child: Text("ok"),
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                  );
+                                                                  showModal.showMoadlBottomsheet(
+                                                                      widget.os,
+                                                                      widget
+                                                                          .customerId,
+                                                                      item,
+                                                                      size,
+                                                                      context,
+                                                                      "newlist just added",
+                                                                      value.newList[
+                                                                              index]
+                                                                          [
+                                                                          "code"],
+                                                                      index,
+                                                                      value.qty[
+                                                                          index]);
                                                                 }
                                                               : null
                                                           : () async {
-                                                              showDialog(
-                                                                context:
-                                                                    context,
-                                                                builder: (ctx) =>
-                                                                    AlertDialog(
-                                                                  // title: Text("Alert Dialog Box"),
-                                                                  content: Text(
-                                                                      "delete?"),
-                                                                  actions: <
-                                                                      Widget>[
-                                                                    Row(
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .end,
-                                                                      children: [
-                                                                        ElevatedButton(
-                                                                          style:
-                                                                              ElevatedButton.styleFrom(primary: P_Settings.wavecolor),
-                                                                          onPressed:
-                                                                              () {
-                                                                            Navigator.of(ctx).pop();
-                                                                          },
-                                                                          child:
-                                                                              Text("cancel"),
-                                                                        ),
-                                                                        SizedBox(
-                                                                          width:
-                                                                              size.width * 0.01,
-                                                                        ),
-                                                                        ElevatedButton(
-                                                                          style:
-                                                                              ElevatedButton.styleFrom(primary: P_Settings.wavecolor),
-                                                                          onPressed:
-                                                                              () async {
-                                                                            if (value.selected[index]) {
-                                                                              value.selected[index] = !value.selected[index];
-                                                                            }
+                                                              String item = value
+                                                                              .newList[
+                                                                          index]
+                                                                      ["code"] +
+                                                                  value.newList[
+                                                                          index]
+                                                                      ["item"];
 
-                                                                            value.qty[index].clear();
-                                                                            await OrderAppDB.instance.deleteFromTableCommonQuery("orderBagTable",
-                                                                                "code='${value.newList[index]["code"]}' AND customerid='${widget.customerId}'");
-
-                                                                            Provider.of<Controller>(context, listen: false).countFromTable(
-                                                                              "orderBagTable",
-                                                                              widget.os,
-                                                                              widget.customerId,
-                                                                            );
-                                                                            // Provider.of<Controller>(context,
-                                                                            //       listen: false)
-                                                                            //   .searchProcess();
-                                                                            Navigator.of(ctx).pop();
-                                                                          },
-                                                                          child:
-                                                                              Text("ok"),
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              );
+                                                              showModal.showMoadlBottomsheet(
+                                                                  widget.os,
+                                                                  widget
+                                                                      .customerId,
+                                                                  item,
+                                                                  size,
+                                                                  context,
+                                                                  "newlist already in cart",
+                                                                  value.newList[
+                                                                          index]
+                                                                      ["code"],
+                                                                  index,
+                                                                  value.qty[
+                                                                      index]);
                                                             },
                                                       // color: Theme.of(context).errorColor,
                                                     )
@@ -559,335 +499,218 @@ class _ItemSelectionState extends State<ItemSelection> {
                                             ),
                                           );
                                         })
-                            : value.newList.length == 0
-                                ? ListView.builder(
-                                    shrinkWrap: true,
-                                    itemCount: value.productName.length,
-                                    itemBuilder: (BuildContext context, index) {
-                                      return Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 0.4, right: 0.4),
-                                        child: Dismissible(
-                                          key: ObjectKey(index),
-                                          onDismissed: (DismissDirection
-                                              direction) async {
-                                            if (direction ==
-                                                DismissDirection.endToStart) {
-                                              print("Delete");
-                                              setState(() {
-                                                value.selected[index] =
-                                                    !value.selected[index];
-                                              });
-                                              OrderAppDB.instance
-                                                  .deleteFromTableCommonQuery(
-                                                      "orderBagTable",
-                                                      "code='${value.productName[index]["code"]}' AND customerid='${widget.customerId}'");
-                                              Provider.of<Controller>(context,
-                                                      listen: false)
-                                                  .countFromTable(
-                                                "orderBagTable",
-                                                widget.os,
-                                                widget.customerId,
-                                              );
-                                            }
-                                          },
-                                          child: ListTile(
-                                            title: Text(
-                                              '${value.productName[index]["code"]}' +
-                                                  '-' +
-                                                  '${value.productName[index]["item"]}',
-                                              style: TextStyle(
-                                                  color: value.productName[
-                                                                  index]
-                                                              ["cartrowno"] ==
-                                                          null
-                                                      ? value.selected[index]
-                                                          ? Colors.green
-                                                          : Colors.grey[700]
-                                                      : Colors.green,
-                                                  fontSize: 16),
+                            : ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: value.productName.length,
+                                itemBuilder: (BuildContext context, index) {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 0.4, right: 0.4),
+                                    child: Dismissible(
+                                      key: ObjectKey(index),
+                                      onDismissed:
+                                          (DismissDirection direction) async {
+                                        if (direction ==
+                                            DismissDirection.endToStart) {
+                                          print("Delete");
+                                          setState(() {
+                                            value.selected[index] =
+                                                !value.selected[index];
+                                          });
+                                          OrderAppDB.instance
+                                              .deleteFromTableCommonQuery(
+                                                  "orderBagTable",
+                                                  "code='${value.productName[index]["code"]}' AND customerid='${widget.customerId}'");
+                                          Provider.of<Controller>(context,
+                                                  listen: false)
+                                              .countFromTable(
+                                            "orderBagTable",
+                                            widget.os,
+                                            widget.customerId,
+                                          );
+                                        }
+                                      },
+                                      child: ListTile(
+                                        title: Text(
+                                          '${value.productName[index]["code"]}' +
+                                              '-' +
+                                              '${value.productName[index]["item"]}',
+                                          style: TextStyle(
+                                              color: value.productName[index]
+                                                          ["cartrowno"] ==
+                                                      null
+                                                  ? value.selected[index]
+                                                      ? Colors.green
+                                                      : Colors.grey[700]
+                                                  : Colors.green,
+                                              fontSize: 16),
+                                        ),
+                                        trailing: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Container(
+                                                width: size.width * 0.06,
+                                                child: TextFormField(
+                                                  controller: value.qty[index],
+                                                  keyboardType:
+                                                      TextInputType.number,
+                                                  decoration: InputDecoration(
+                                                      border: InputBorder.none,
+                                                      hintText: "1"),
+                                                )),
+                                            SizedBox(
+                                              width: 10,
                                             ),
-                                            trailing: Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                Container(
-                                                    width: size.width * 0.06,
-                                                    child: TextFormField(
-                                                      controller:
-                                                          value.qty[index],
-                                                      keyboardType:
-                                                          TextInputType.number,
-                                                      decoration:
-                                                          InputDecoration(
-                                                              border:
-                                                                  InputBorder
-                                                                      .none,
-                                                              hintText: "1"),
-                                                    )),
-                                                SizedBox(
-                                                  width: 10,
-                                                ),
-                                                IconButton(
-                                                  icon: Icon(
-                                                    Icons.add,
-                                                  ),
-                                                  onPressed: () async {
-                                                    setState(() {
-                                                      if (value.selected[
-                                                              index] ==
-                                                          false) {
-                                                        value.selected[index] =
-                                                            !value.selected[
-                                                                index];
-                                                        selected = index;
-                                                      }
+                                            IconButton(
+                                              icon: Icon(
+                                                Icons.add,
+                                              ),
+                                              onPressed: () async {
+                                                setState(() {
+                                                  if (value.selected[index] ==
+                                                      false) {
+                                                    value.selected[index] =
+                                                        !value.selected[index];
+                                                    selected = index;
+                                                  }
 
-                                                      if (value.qty[index]
-                                                                  .text ==
-                                                              null ||
-                                                          value.qty[index].text
-                                                              .isEmpty) {
-                                                        value.qty[index].text =
-                                                            "1";
-                                                      }
-                                                    });
+                                                  if (value.qty[index].text ==
+                                                          null ||
+                                                      value.qty[index].text
+                                                          .isEmpty) {
+                                                    value.qty[index].text = "1";
+                                                  }
+                                                });
 
-                                                    int max = await OrderAppDB
-                                                        .instance
-                                                        .getMaxCommonQuery(
-                                                            'orderBagTable',
-                                                            'cartrowno',
-                                                            "os='${value.ordernum[0]["os"]}' AND customerid='${widget.customerId}'");
+                                                int max = await OrderAppDB
+                                                    .instance
+                                                    .getMaxCommonQuery(
+                                                        'orderBagTable',
+                                                        'cartrowno',
+                                                        "os='${value.ordernum[0]["os"]}' AND customerid='${widget.customerId}'");
 
-                                                    print("max----$max");
-                                                    // print("value.qty[index].text---${value.qty[index].text}");
+                                                print("max----$max");
+                                                // print("value.qty[index].text---${value.qty[index].text}");
 
-                                                    rate1 =
-                                                        value.productName[index]
-                                                            ["rate1"];
-                                                    var total =
-                                                        int.parse(rate1) *
-                                                            int.parse(value
-                                                                .qty[index]
-                                                                .text);
-                                                    print("total rate $total");
+                                                rate1 = value.productName[index]
+                                                    ["rate1"];
+                                                var total = int.parse(rate1) *
+                                                    int.parse(
+                                                        value.qty[index].text);
+                                                print("total rate $total");
 
-                                                    var res = await OrderAppDB
-                                                        .instance
-                                                        .insertorderBagTable(
+                                                var res = await OrderAppDB
+                                                    .instance
+                                                    .insertorderBagTable(
+                                                        products[index]["item"],
+                                                        date!,
+                                                        value.ordernum[0]["os"],
+                                                        widget.customerId,
+                                                        max,
+                                                        products[index]["code"],
+                                                        int.parse(value
+                                                            .qty[index].text),
+                                                        rate1,
+                                                        total.toString(),
+                                                        0);
+
+                                                snackbar.showSnackbar(context,
+                                                    "${products[index]["code"] + products[index]['item']} - Added to cart");
+                                                Provider.of<Controller>(context,
+                                                        listen: false)
+                                                    .countFromTable(
+                                                  "orderBagTable",
+                                                  widget.os,
+                                                  widget.customerId,
+                                                );
+
+                                                /////////////////////////
+
+                                                (widget.customerId.isNotEmpty ||
+                                                            widget.customerId !=
+                                                                null) &&
+                                                        (products[index]["code"]
+                                                                .isNotEmpty ||
                                                             products[index]
-                                                                ["item"],
-                                                            date!,
-                                                            value.ordernum[0]
-                                                                ["os"],
-                                                            widget.customerId,
-                                                            max,
-                                                            products[index]
-                                                                ["code"],
-                                                            int.parse(value
-                                                                .qty[index]
-                                                                .text),
-                                                            rate1,
-                                                            total.toString(),
-                                                            0);
-                                                    snackbar.showSnackbar(
-                                                        context,
-                                                        "Added to cart");
-                                                    Provider.of<Controller>(
+                                                                    ["code"] !=
+                                                                null)
+                                                    ? Provider.of<Controller>(
                                                             context,
                                                             listen: false)
-                                                        .countFromTable(
-                                                      "orderBagTable",
-                                                      widget.os,
-                                                      widget.customerId,
-                                                    );
+                                                        .calculateTotal(
+                                                            value.ordernum[0]
+                                                                ['os'],
+                                                            widget.customerId)
+                                                    : Text("No data");
 
-                                                    /////////////////////////
-
-                                                    (widget.customerId
-                                                                    .isNotEmpty ||
-                                                                widget.customerId !=
-                                                                    null) &&
-                                                            (products[index]
-                                                                        ["code"]
-                                                                    .isNotEmpty ||
-                                                                products[index][
-                                                                        "code"] !=
-                                                                    null)
-                                                        ? Provider.of<Controller>(
-                                                                context,
-                                                                listen: false)
-                                                            .calculateTotal(
-                                                                value.ordernum[0]
-                                                                    ['os'],
-                                                                widget
-                                                                    .customerId)
-                                                        : Text("No data");
-
-                                                    // Provider.of<Controller>(context,
-                                                    //         listen: false)
-                                                    //     .getProductList(
-                                                    //         widget.customerId);
-                                                  },
-                                                  color: Colors.black,
-                                                ),
-                                                IconButton(
-                                                  icon: Icon(
-                                                    Icons.delete,
-                                                    size: 18,
-                                                    // color: Colors.redAccent,
-                                                  ),
-                                                  onPressed: value.productName[
-                                                                  index]
-                                                              ["cartrowno"] ==
-                                                          null
-                                                      ? value.selected[index]
-                                                          ? () async {
-                                                              print("andnmNM");
-                                                              showDialog(
-                                                                context:
-                                                                    context,
-                                                                builder: (ctx) =>
-                                                                    AlertDialog(
-                                                                  // title: Text("Alert Dialog Box"),
-                                                                  content: Text(
-                                                                      "delete?"),
-                                                                  actions: <
-                                                                      Widget>[
-                                                                    Row(
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .end,
-                                                                      children: [
-                                                                        ElevatedButton(
-                                                                          style:
-                                                                              ElevatedButton.styleFrom(primary: P_Settings.wavecolor),
-                                                                          onPressed:
-                                                                              () {
-                                                                            Navigator.of(ctx).pop();
-                                                                          },
-                                                                          child:
-                                                                              Text("cancel"),
-                                                                        ),
-                                                                        SizedBox(
-                                                                          width:
-                                                                              size.width * 0.01,
-                                                                        ),
-                                                                        ElevatedButton(
-                                                                          style:
-                                                                              ElevatedButton.styleFrom(primary: P_Settings.wavecolor),
-                                                                          onPressed:
-                                                                              () async {
-                                                                            if (value.selected[index]) {
-                                                                              value.selected[index] = !value.selected[index];
-                                                                            }
-
-                                                                            value.qty[index].clear();
-                                                                            await OrderAppDB.instance.deleteFromTableCommonQuery("orderBagTable",
-                                                                                "code='${products[index]["code"]}' AND customerid='${widget.customerId}'");
-
-                                                                            Provider.of<Controller>(context, listen: false).countFromTable(
-                                                                              "orderBagTable",
-                                                                              widget.os,
-                                                                              widget.customerId,
-                                                                            );
-                                                                            Navigator.of(ctx).pop();
-                                                                          },
-                                                                          child:
-                                                                              Text("ok"),
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              );
-                                                            }
-                                                          : null
-                                                      : () async {
-                                                          showDialog(
-                                                            context: context,
-                                                            builder: (ctx) =>
-                                                                AlertDialog(
-                                                              // title: Text("Alert Dialog Box"),
-                                                              content: Text(
-                                                                  "delete?"),
-                                                              actions: <Widget>[
-                                                                Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .end,
-                                                                  children: [
-                                                                    ElevatedButton(
-                                                                      style: ElevatedButton.styleFrom(
-                                                                          primary:
-                                                                              P_Settings.wavecolor),
-                                                                      onPressed:
-                                                                          () {
-                                                                        Navigator.of(ctx)
-                                                                            .pop();
-                                                                      },
-                                                                      child: Text(
-                                                                          "cancel"),
-                                                                    ),
-                                                                    SizedBox(
-                                                                      width: size
-                                                                              .width *
-                                                                          0.01,
-                                                                    ),
-                                                                    ElevatedButton(
-                                                                      style: ElevatedButton.styleFrom(
-                                                                          primary:
-                                                                              P_Settings.wavecolor),
-                                                                      onPressed:
-                                                                          () async {
-                                                                        print(
-                                                                            "selected index----${value.selected[index]}");
-                                                                        if (value.selected[index] ==
-                                                                            false) {
-                                                                          value.selected[index] =
-                                                                              true;
-                                                                        }
-
-                                                                        value
-                                                                            .qty[index]
-                                                                            .clear();
-                                                                        await OrderAppDB.instance.deleteFromTableCommonQuery(
-                                                                            "orderBagTable",
-                                                                            "code='${products[index]["code"]}' AND customerid='${widget.customerId}'");
-
-                                                                        Provider.of<Controller>(context,
-                                                                                listen: false)
-                                                                            .countFromTable(
-                                                                          "orderBagTable",
-                                                                          widget
-                                                                              .os,
-                                                                          widget
-                                                                              .customerId,
-                                                                        );
-                                                                        Provider.of<Controller>(context,
-                                                                                listen: false)
-                                                                            .getProductList(widget.customerId);
-                                                                        Navigator.of(ctx)
-                                                                            .pop();
-                                                                      },
-                                                                      child: Text(
-                                                                          "ok"),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          );
-                                                        },
-                                                  // color: Theme.of(context).errorColor,
-                                                )
-                                              ],
+                                                // Provider.of<Controller>(context,
+                                                //         listen: false)
+                                                //     .getProductList(
+                                                //         widget.customerId);
+                                              },
+                                              color: Colors.black,
                                             ),
-                                          ),
+                                            IconButton(
+                                              icon: Icon(
+                                                Icons.delete,
+                                                size: 18,
+                                                // color: Colors.redAccent,
+                                              ),
+                                              onPressed: value.productName[
+                                                          index]["cartrowno"] ==
+                                                      null
+                                                  ? value.selected[index]
+                                                      ? () async {
+                                                          String item =
+                                                              products[index]
+                                                                      ["code"] +
+                                                                  products[
+                                                                          index]
+                                                                      ["item"];
+                                                          showModal
+                                                              .showMoadlBottomsheet(
+                                                                  widget.os,
+                                                                  widget
+                                                                      .customerId,
+                                                                  item,
+                                                                  size,
+                                                                  context,
+                                                                  "just added",
+                                                                  products[
+                                                                          index]
+                                                                      ["code"],
+                                                                  index,
+                                                                  value.qty[
+                                                                      index]);
+                                                        }
+                                                      : null
+                                                  : () async {
+                                                      String item =
+                                                          products[index]
+                                                                  ["code"] +
+                                                              products[index]
+                                                                  ["item"];
+                                                      showModal
+                                                          .showMoadlBottomsheet(
+                                                              widget.os,
+                                                              widget.customerId,
+                                                              item,
+                                                              size,
+                                                              context,
+                                                              "already in cart",
+                                                              products[index]
+                                                                  ["code"],
+                                                              index,
+                                                              value.qty[index]);
+                                                    },
+                                              // color: Theme.of(context).errorColor,
+                                            )
+                                          ],
                                         ),
-                                      );
-                                    })
-                                : Container()),
+                                      ),
+                                    ),
+                                  );
+                                })),
               ],
             );
           },
@@ -895,4 +718,7 @@ class _ItemSelectionState extends State<ItemSelection> {
       ),
     );
   }
+
+  //////////////////////////////////////////////////////////////////////////////////
+
 }

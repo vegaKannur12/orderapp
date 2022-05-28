@@ -14,10 +14,7 @@ class OrderForm extends StatefulWidget {
   String areaname;
   String isPlaced;
 
-  OrderForm(
-    this.areaname,
-    this.isPlaced
-  );
+  OrderForm(this.areaname, this.isPlaced);
 
   @override
   State<OrderForm> createState() => _OrderFormState();
@@ -26,8 +23,10 @@ class OrderForm extends StatefulWidget {
 class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
   TextEditingController fieldTextEditingController = TextEditingController();
   TextEditingValue textvalue = TextEditingValue();
+  bool customerFlag = true;
   bool isLoading = false;
   String? _selectedItemarea;
+  bool customerValidation=false;
   String? area;
   CustomPopup popup = CustomPopup();
   String? _selectedItemcus;
@@ -195,8 +194,8 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                             if (value.text.isEmpty) {
                                               return [];
                                             } else {
-                                              print(
-                                                  "TextEditingValue---${value.text}");
+                                              // print(
+                                              //     "TextEditingValue---${value.text}");
 
                                               print(
                                                   "values.areDetails----${values.areDetails}");
@@ -354,8 +353,16 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                               optionsBuilder:
                                                   (TextEditingValue value) {
                                                 if (value.text.isEmpty) {
+
+                                                   customerValidation=true;
+                                                  visibleValidation.value =
+                                                      true;
+
                                                   return [];
                                                 } else {
+                                                   visibleValidation.value =
+                                                      false;
+                                                      customerValidation=false;
                                                   print(
                                                       "TextEditingValue---${value.text}");
 
@@ -513,6 +520,8 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                               ),
                                               label: Text("Add Items"),
                                               onPressed: () async {
+                                                print(
+                                                    "fieldText----${fieldText.text}");
                                                 FocusScopeNode currentFocus =
                                                     FocusScope.of(context);
 
@@ -520,8 +529,10 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                                     .hasPrimaryFocus) {
                                                   currentFocus.unfocus();
                                                 }
-                                                if (custmerId == null ||
-                                                    custmerId!.isEmpty) {
+
+
+                                                print("customerValidation----$customerValidation");
+                                                if (customerValidation) {
                                                   visibleValidation.value =
                                                       true;
                                                 } else {
@@ -543,7 +554,8 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                                       pageBuilder:
                                                           (_, __, ___) =>
                                                               ItemSelection(
-                                                                isPlaced: widget.isPlaced,
+                                                        isPlaced:
+                                                            widget.isPlaced,
                                                         customerId: custmerId
                                                             .toString(),
                                                         areaId: Provider.of<
