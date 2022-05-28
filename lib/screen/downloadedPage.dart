@@ -112,43 +112,6 @@ class _DownloadedPageState extends State<DownloadedPage> {
               ),
             ),
           ),
-          // Container(
-          //   width: size.width * 0.4,
-          //   height: size.height * 0.05,
-          //   child: ElevatedButton(
-          //       style: ElevatedButton.styleFrom(
-          //         shape: RoundedRectangleBorder(
-          //           borderRadius: BorderRadius.circular(20), // <-- Radius
-          //         ),
-          //         primary: P_Settings.wavecolor,
-          //       ),
-          //       onPressed: () async {
-
-          //         Provider.of<Controller>(context, listen: false)
-          //             .downloadAllPages(cid!);
-
-          //         ///////////////////////////////////////////
-          //       },
-          //       child: Text("Download all")),
-          // ),
-          // SizedBox(height: 20),
-          // widget.type == ""
-          //     ? Container()
-          //     : Consumer<Controller>(
-          //         builder: (context, value, child) {
-          //           if (value.isLoading) {
-          //             return CircularProgressIndicator(
-          //               backgroundColor: Colors.white,
-          //               color: P_Settings.wavecolor,
-
-          //               // valueColor: new AlwaysStoppedAnimation<Color>(Colors.red),
-          //               // value: 0.25,
-          //             );
-          //           } else {
-          //             return Container();
-          //           }
-          //         },
-          //       ),
         ],
       ),
     );
