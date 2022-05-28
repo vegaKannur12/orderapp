@@ -130,7 +130,7 @@ class _CartListState extends State<CartList> {
                         onTap: (() async {
                           Provider.of<Controller>(context, listen: false)
                               .insertToOrderbagAndMaster(widget.os, date!,
-                                  widget.custmerId, sname, widget.areaId);
+                                  widget.custmerId, sname, widget.areaId,value.orderTotal!);
 
                           Provider.of<Controller>(context, listen: false)
                                       .bagList
@@ -149,7 +149,7 @@ class _CartListState extends State<CartList> {
                                             opaque: false, // set to false
                                             pageBuilder: (_, __, ___) =>
                                                 Dashboard(
-                                                    isPlaced: "yes",
+                                                    
                                                     type:
                                                         "return from cartList",
                                                     areaName: widget.areaname)

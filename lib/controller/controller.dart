@@ -23,6 +23,8 @@ class Controller extends ChangeNotifier {
   bool isSearch = false;
   bool isVisible = false;
   List<bool> selected = [];
+  List<String> tableColumn = [];
+
   String? searchkey;
   String? sname;
   String? orderTotal;
@@ -31,6 +33,7 @@ class Controller extends ChangeNotifier {
   String? cname;
   int? qtyinc;
   List<CD> c_d = [];
+  List<Map<String, dynamic>> historyList = [];
   String? area;
   String? splittedCode;
   double amt = 0.0;
@@ -451,12 +454,11 @@ class Controller extends ChangeNotifier {
     notifyListeners();
   }
 
-  selectedSet(){
+  selectedSet() {
     var length = productName.length;
-      qty = List.generate(length, (index) => TextEditingController());
+    qty = List.generate(length, (index) => TextEditingController());
 
-      selected = List.generate(length, (index) => false);
-
+    selected = List.generate(length, (index) => false);
   }
 
 /////////////////////////////////////////////////////////////
@@ -606,7 +608,7 @@ class Controller extends ChangeNotifier {
   //////////////insert to order master and details///////////////////////
 
   insertToOrderbagAndMaster(String os, String date, String customer_id,
-      String user_id, String aid) async {
+      String user_id, String aid,String total_price) async {
     int order_id = await OrderAppDB.instance
         .getMaxCommonQuery('orderDetailTable', 'order_id', "os='${os}'");
     int rowNum = 1;
@@ -623,7 +625,7 @@ class Controller extends ChangeNotifier {
           aid,
           1,
           rowNum,
-          "orderMasterTable");
+          "orderMasterTable",total_price);
 
       for (var item in bagList) {
         print("orderid---$order_id");
@@ -639,7 +641,7 @@ class Controller extends ChangeNotifier {
             aid,
             1,
             rowNum,
-            "orderDetailTable");
+            "orderDetailTable",total_price);
         rowNum = rowNum + 1;
       }
     }
@@ -660,8 +662,7 @@ class Controller extends ChangeNotifier {
       print("text length----$length");
       qty = List.generate(length, (index) => TextEditingController());
       selected = List.generate(length, (index) => false);
-    } else 
-    {
+    } else {
       // newList.clear();
       isListLoading = true;
       notifyListeners();
@@ -692,8 +693,8 @@ class Controller extends ChangeNotifier {
       for (var item in result) {
         newList.add(item);
       }
-        isListLoading=false;
-    notifyListeners();
+      isListLoading = false;
+      notifyListeners();
       var length = newList.length;
       selected = List.generate(length, (index) => false);
       qty = List.generate(length, (index) => TextEditingController());
@@ -795,6 +796,26 @@ class Controller extends ChangeNotifier {
 
   setisVisible(bool isvis) {
     isVisible = isvis;
+    notifyListeners();
+  }
+
+  //////getHistory/////////////////////////////
+  getHistory() async {
+   isLoading=true;
+    print("haiiii");
+    List<Map<String, dynamic>> result = await OrderAppDB.instance.getHistory();
+    for (var item in result) {
+      historyList.add(item);
+    } 
+    print("history list----$historyList");
+    var list = historyList[0].keys.toList();
+    print("**list----$list");
+    for (var item in list) {
+      print(item);
+      tableColumn.add(item);
+    }
+   isLoading=false;notifyListeners();
+
     notifyListeners();
   }
 }

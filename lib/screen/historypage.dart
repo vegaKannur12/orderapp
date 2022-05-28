@@ -1,88 +1,111 @@
-import 'package:flutter/material.dart';
-import 'package:orderapp/components/commoncolor.dart';
+///////////////////////////////////////////
+import 'dart:convert';
 
-class HistoryPage extends StatefulWidget {
+import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:orderapp/components/commoncolor.dart';
+import '../controller/controller.dart';
+import 'package:provider/provider.dart';
+
+class History extends StatefulWidget {
+  const History({Key? key}) : super(key: key);
 
   @override
-  _HistoryPageState createState() => _HistoryPageState();
+  State<History> createState() => _HistoryState();
 }
 
-class _HistoryPageState extends State<HistoryPage> {
-  List<String> tablecolumn = [
-    "Or.No",
-    "Date",
-    "Customer Id",
-    "No.items",
-    "Total"
-  ];
-  Map<String, dynamic> total = {};
+class _HistoryState extends State<History> {
   List<Map<String, dynamic>> newJson = [];
   final rows = <DataRow>[];
   String? behv;
+  bool isSelected = false;
 
   List<String>? colName;
-  List<String> tableColumn = [];
+
   List<String> behvr = [];
   Map<String, dynamic> mainHeader = {};
   int col = 0;
+
+//////////////////////////////////////////////////////////////////////////////
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    // var list = history[0].values.toList();
+    // list.removeAt(0);
+    // for (var item in list) {
+    //   tableColumn.add(item);
+    // }
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    Provider.of<Controller>(context, listen: false).getHistory();
+  }
 
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
-    if (col <= 5) {
-      width / col;
-    }
+    // if (col <= 5) {
+    //   width / col;
+    // }
     return Scaffold(
-      appBar: AppBar(
-          // title: Text("History"),
-          ),
-      body: SingleChildScrollView(
-        // width: double.infinity,
-        scrollDirection: Axis.horizontal,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              Text(
-                "Order History",
-                style: TextStyle(color: P_Settings.extracolor, fontSize: 17),
-              ),
-              SizedBox(
-                height: height * 0.02,
-              ),
-              DataTable(
-                dividerThickness: 2,
-                horizontalMargin: 0,
-                headingRowHeight: 30,
-                dataRowHeight: 35,
-                // dataRowColor:
-                //     MaterialStateColor.resolveWith((states) => Colors.yellow),
-                columnSpacing: 0,
-                border: TableBorder.all(
-                    width: 1, color: Color.fromARGB(255, 212, 209, 209)),
-                columns: getColumns(tablecolumn),
-                rows: getRowss(newJson),
-              ),
-            ],
+      // appBar: AppBar(title: Text("Dynamic datatable")),
+      body: InteractiveViewer(
+        minScale: .4,
+        maxScale: 5,
+        child: SingleChildScrollView(
+          // width: double.infinity,
+          scrollDirection: Axis.horizontal,
+          child: Consumer<Controller>(
+            builder: (context, value, child) {
+              if (value.isLoading) {
+                return Center(
+                  child: SpinKitCircle(
+                    color: P_Settings.wavecolor,
+                  ),
+                );
+              } else {
+                return DataTable(
+                  horizontalMargin: 0,
+                  headingRowHeight: 30,
+                  dataRowHeight: 35,
+                  // dataRowColor:
+                  //     MaterialStateColor.resolveWith((states) => Colors.yellow),
+                  columnSpacing: 0,
+                  showCheckboxColumn: false,
+
+                  border: TableBorder.all(width: 1, color: Colors.black),
+                  columns: getColumns(value.tableColumn),
+                  rows: getRowss(value.historyList),
+                );
+              }
+            },
           ),
         ),
       ),
     );
   }
 
-  /////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
   List<DataColumn> getColumns(List<String> columns) {
     // print("columns---${columns}");
     String behv;
     String colsName;
     return columns.map((String column) {
+      // double strwidth = double.parse(behv[3]);
+      // strwidth = strwidth * 10; //
       return DataColumn(
         label: Container(
-          width: 76,
+          width: 100,
           child: Text(
             column,
-            style: TextStyle(fontSize: 13),
+            style: TextStyle(fontSize: 12),
+            textAlign: TextAlign.center,
             // textAlign: behv[1] == "L" ? TextAlign.left : TextAlign.right,
           ),
           // ),
@@ -91,19 +114,26 @@ class _HistoryPageState extends State<HistoryPage> {
     }).toList();
   }
 
-  ///////////////////////////////////
+  ////////////////////////////////////////////
   List<DataRow> getRowss(List<Map<String, dynamic>> rows) {
     List<String> newBehavr = [];
     // print("rows---$rows");
-    return newJson.map((row) {
-      return DataRow(
+    return rows.map((row) {
+      return DataRow.byIndex(
+        selected: isSelected,
+        onSelectChanged: (value) {
+          setState(() {
+            isSelected = value!;
+          });
+         
+        },
         // color: MaterialStateProperty.all(Colors.green),
         cells: getCelle(row),
       );
     }).toList();
   }
+/////////////////////////////////////////////
 
-  ////////////////////////////////////
   List<DataCell> getCelle(Map<String, dynamic> data) {
     print("data--$data");
     //  double  sum=0;
@@ -111,31 +141,28 @@ class _HistoryPageState extends State<HistoryPage> {
     mainHeader.remove('rank');
     // print("main header---$mainHeader");
 
-    data.forEach(
-      (key, value) {
-        mainHeader.forEach(
-          (k, val) {
-            datacell.add(
-              DataCell(
-                Container(
-                  //  width:100,
-                  // width: mainHeader[k][3] == "1" ? 70 : 30,
-                  // alignment: mainHeader[k][1] == "L"
-                  //     ? Alignment.centerLeft
-                  //     : Alignment.centerRight,
-                  child: Text(
-                    value.toString(),
-                  ),
-                ),
+    data.forEach((key, value) {
+      datacell.add(
+        DataCell(
+          Container(
+            //  width:100,
+            // width: mainHeader[k][3] == "1" ? 70 : 30,
+            alignment: Alignment.center,
+            //     ? Alignment.centerLeft
+            //     : Alignment.centerRight,
+            child: Text(
+              value.toString(),
+              // textAlign:
+              //     mainHeader[k][1] == "L" ? TextAlign.left : TextAlign.right,
+              style: TextStyle(
+                fontSize: 10,
               ),
-            );
+            ),
+          ),
+        ),
+      );
+    });
 
-            // print("val${val}");
-          },
-        );
-        // print("value---$value");
-      },
-    );
     // print(datacell.length);
     return datacell;
   }

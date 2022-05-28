@@ -107,6 +107,8 @@ class OrderAppDB {
   static final userid = 'userid';
   static final areaid = 'areaid';
   static final status = 'status';
+  static final total_price = 'total_price';
+
 /////////////////// cart table/////////////
   static final cartdatetime = 'cartdatetime';
   static final cartrowno = 'cartrowno';
@@ -257,8 +259,8 @@ class OrderAppDB {
             $customerid TEXT,
             $userid TEXT,
             $areaid TEXT,
-            $status INTEGER
-
+            $status INTEGER,
+            $total_price TEXT
           )
           ''');
 
@@ -316,7 +318,9 @@ class OrderAppDB {
       int qty,
       String rate,
       String totalamount,
-      int cstatus) async {
+      int cstatus,
+      
+      ) async {
     print("qty--$qty");
     print("code...........$code");
     final db = await database;
@@ -362,7 +366,8 @@ class OrderAppDB {
       String areaid,
       int status,
       int rowNum,
-      String table) async {
+      String table,
+      String total_price) async {
     final db = await database;
     var res2;
     var res3;
@@ -374,7 +379,7 @@ class OrderAppDB {
       res2 = await db.rawInsert(query2);
     } else if (table == "orderMasterTable") {
       var query3 =
-          'INSERT INTO orderMasterTable(order_id, orderdatetime, os, customerid, userid, areaid, status) VALUES("${order_id}", "${orderdate}", "${os}", "${customerid}", "${userid}", "${areaid}", ${status})';
+          'INSERT INTO orderMasterTable(order_id, orderdatetime, os, customerid, userid, areaid, status, total_price) VALUES("${order_id}", "${orderdate}", "${os}", "${customerid}", "${userid}", "${areaid}", ${status},"${total_price}")';
       res2 = await db.rawInsert(query3);
       print(query3);
     }
@@ -752,27 +757,33 @@ class OrderAppDB {
     return max;
   }
 
- /////////////////////search////////////////////////////////
- searchItem(String table,String key,String field1,String? field2,String? field3)async{
+  /////////////////////search////////////////////////////////
+  searchItem(String table, String key, String field1, String? field2,
+      String? field3) async {
     Database db = await instance.database;
-     print("table key field---${table},${key},${field1}");
-     List<Map<String, dynamic>> result=await db.query('$table' , where: '$field1 LIKE ? OR $field2 LIKE ? OR $field3 LIKE ?', whereArgs: ['$key%','$key%','$key%']);
-     print("search result----$result");
-     return result;
- }
+    print("table key field---${table},${key},${field1}");
+    List<Map<String, dynamic>> result = await db.query('$table',
+        where: '$field1 LIKE ? OR $field2 LIKE ? OR $field3 LIKE ?',
+        whereArgs: ['$key%', '$key%', '$key%']);
+    print("search result----$result");
+    return result;
+  }
 
 ////////////////////////left join///////////////////////////
 
-  // Future insertCommonQuery(String table, String field, String values) async {
-  //   final db = await database;
-  //   var query = 'INSERT INTO $table($field) VALUES($values)';
-  //   var res = await db.rawInsert(query);
-  //   print("query.........$query");
-  //   // print(res);
-  //   return res;
-  // }
+  getHistory() async {
+    List<Map<String, dynamic>> result;
+    Database db = await instance.database;
 
-  
+    result = await db.rawQuery(
+        'select orderMasterTable.os || " " || orderMasterTable.order_id as Order_Num,orderMasterTable.customerid Cus_id,orderMasterTable.orderdatetime Date, count(orderDetailTable.row_num) count, orderMasterTable.total_price  from orderMasterTable inner join orderDetailTable on orderMasterTable.order_id=orderDetailTable.order_id group by orderMasterTable.order_id');
+    if (result.length > 0) {
+      print("result------$result");
+      return result;
+    } else {
+      return null;
+    }
+  }
 }
 
 //////////////////////////////////////////////////////////////
