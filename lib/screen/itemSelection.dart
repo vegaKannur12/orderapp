@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:orderapp/components/commoncolor.dart';
 import 'package:orderapp/components/customSearchTile.dart';
+import 'package:orderapp/components/showMoadal.dart';
 import 'package:orderapp/db_helper.dart';
 import 'package:orderapp/screen/cartList.dart';
 import 'package:provider/provider.dart';
@@ -15,13 +17,13 @@ class ItemSelection extends StatefulWidget {
   String os;
   String areaId;
   String areaName;
-  String isPlaced;
+  
   ItemSelection(
       {required this.customerId,
       required this.areaId,
       required this.os,
       required this.areaName,
-      required this.isPlaced});
+});
 
   @override
   State<ItemSelection> createState() => _ItemSelectionState();
@@ -30,7 +32,7 @@ class ItemSelection extends StatefulWidget {
 class _ItemSelectionState extends State<ItemSelection> {
   String rate1 = "1";
   TextEditingController searchcontroll = TextEditingController();
-
+  ShowModal showModal = ShowModal();
   List<Map<String, dynamic>> products = [];
   int? selected;
   SearchTile search = SearchTile();
@@ -57,6 +59,16 @@ class _ItemSelectionState extends State<ItemSelection> {
     date = DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
     Provider.of<Controller>(context, listen: false)
         .getProductList(widget.customerId);
+    // Provider.of<Controller>(context, listen: false).getProductItems(
+    //   'productDetailsTable',
+    // );
+    // var length =
+    //     Provider.of<Controller>(context, listen: false).productName.length;
+    // List.generate(length, (index) => TextEditingController());
+    // List<bool> _selected = List.generate(length, (index) => false);
+    // print("_selected.length-----${_selected.length}");
+
+    // print("Product.length-----${length}");
   }
 
   @override
@@ -146,7 +158,13 @@ class _ItemSelectionState extends State<ItemSelection> {
                       onChanged: (value) {
                         Provider.of<Controller>(context, listen: false)
                             .setisVisible(true);
+                        // Provider.of<Controller>(context, listen: false).isSearch=true;
 
+                        // Provider.of<Controller>(context, listen: false)
+                        //     .searchkey = value;
+
+                        // Provider.of<Controller>(context, listen: false)
+                        //     .searchProcess(widget.customerId, widget.os);
                         value = searchcontroll.text;
                       },
                       decoration: InputDecoration(
@@ -185,6 +203,9 @@ class _ItemSelectionState extends State<ItemSelection> {
                                       onPressed: () {
                                         Provider.of<Controller>(context,
                                                 listen: false)
+                                            .getProductList(widget.customerId);
+                                        Provider.of<Controller>(context,
+                                                listen: false)
                                             .setIssearch(false);
 
                                         value.setisVisible(false);
@@ -192,9 +213,7 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                 listen: false)
                                             .newList
                                             .clear();
-                                        Provider.of<Controller>(context,
-                                                listen: false)
-                                            .getProductList(widget.customerId);
+
                                         searchcontroll.clear();
                                       }),
                                 ],
@@ -370,7 +389,7 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                                 0);
                                                         snackbar.showSnackbar(
                                                             context,
-                                                            "Added to cart");
+                                                            "${value.newList[index]["code"] + value.newList[index]['item']} - Added to cart");
                                                         Provider.of<Controller>(
                                                                 context,
                                                                 listen: false)
@@ -380,7 +399,7 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                           widget.customerId,
                                                         );
 
-                                                        ///////////////////////////////////
+                                                        /////////////////////////
 
                                                         (widget.customerId.isNotEmpty ||
                                                                     widget.customerId !=
@@ -409,74 +428,77 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                       },
                                                       color: Colors.black,
                                                     ),
-                                                    //////////////////////////////////////
                                                     IconButton(
-                                                        onPressed: () {
-                                                          showModalBottomSheet<
-                                                              void>(
-                                                            context: context,
-                                                            builder:
-                                                                (BuildContext
-                                                                    context) {
-                                                              return Container(
-                                                                height: 200,
-                                                                color: Colors
-                                                                    .white,
-                                                                child: Center(
-                                                                  child: Column(
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .center,
-                                                                    mainAxisSize:
-                                                                        MainAxisSize
-                                                                            .min,
-                                                                    children: <
-                                                                        Widget>[
-                                                                      ElevatedButton(
-                                                                          child: const Text(
-                                                                              'Remove'),
-                                                                          onPressed:
-                                                                              () async {
-                                                                            if (value.selected[index]) {
-                                                                              value.selected[index] = !value.selected[index];
-                                                                            }
+                                                      icon: Icon(
+                                                        Icons.delete,
+                                                        size: 18,
+                                                        // color: Colors.redAccent,
+                                                      ),
+                                                      onPressed: value.newList[
+                                                                      index][
+                                                                  "cartrowno"] ==
+                                                              null
+                                                          ? value.selected[
+                                                                  index]
+                                                              ? () async {
+                                                                  String item = value
+                                                                              .newList[index]
+                                                                          [
+                                                                          "code"] +
+                                                                      value.newList[
+                                                                              index]
+                                                                          [
+                                                                          "item"];
 
-                                                                            value.qty[index].clear();
-                                                                            await OrderAppDB.instance.deleteFromTableCommonQuery("orderBagTable",
-                                                                                "code='${products[index]["code"]}' AND customerid='${widget.customerId}'");
-                                                                            Provider.of<Controller>(context, listen: false).getProductList(widget.customerId);
-                                                                            Provider.of<Controller>(context, listen: false).countFromTable(
-                                                                              "orderBagTable",
-                                                                              widget.os,
-                                                                              widget.customerId,
-                                                                            );
-                                                                            Navigator.pop(context);
-                                                                          }),
-                                                                      // ElevatedButton(
-                                                                      //     onPressed:
-                                                                      //         () {
-                                                                      //       Navigator.of(
-                                                                      //               context)
-                                                                      //           .pop();
-                                                                      //     },
-                                                                      //     child: Text(
-                                                                      //         "Done")),
-                                                                    ],
-                                                                  ),
-                                                                ),
-                                                              );
+                                                                  showModal.showMoadlBottomsheet(
+                                                                      widget.os,
+                                                                      widget
+                                                                          .customerId,
+                                                                      item,
+                                                                      size,
+                                                                      context,
+                                                                      "newlist just added",
+                                                                      value.newList[
+                                                                              index]
+                                                                          [
+                                                                          "code"],
+                                                                      index,
+                                                                      value.qty[
+                                                                          index]);
+                                                                }
+                                                              : null
+                                                          : () async {
+                                                              String item = value
+                                                                              .newList[
+                                                                          index]
+                                                                      ["code"] +
+                                                                  value.newList[
+                                                                          index]
+                                                                      ["item"];
+
+                                                              showModal.showMoadlBottomsheet(
+                                                                  widget.os,
+                                                                  widget
+                                                                      .customerId,
+                                                                  item,
+                                                                  size,
+                                                                  context,
+                                                                  "newlist already in cart",
+                                                                  value.newList[
+                                                                          index]
+                                                                      ["code"],
+                                                                  index,
+                                                                  value.qty[
+                                                                      index]);
                                                             },
-                                                          );
-                                                        },
-                                                        icon:
-                                                            Icon(Icons.delete)),
+                                                      // color: Theme.of(context).errorColor,
+                                                    )
                                                   ],
                                                 ),
                                               ),
                                             ),
                                           );
                                         })
-                            /////////////////////////////////////////////////////////////////////////
                             : ListView.builder(
                                 shrinkWrap: true,
                                 itemCount: value.productName.length,
@@ -499,10 +521,6 @@ class _ItemSelectionState extends State<ItemSelection> {
                                               .deleteFromTableCommonQuery(
                                                   "orderBagTable",
                                                   "code='${value.productName[index]["code"]}' AND customerid='${widget.customerId}'");
-                                          Provider.of<Controller>(context,
-                                                  listen: false)
-                                              .getProductList(
-                                                  widget.customerId);
                                           Provider.of<Controller>(context,
                                                   listen: false)
                                               .countFromTable(
@@ -595,8 +613,9 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                         rate1,
                                                         total.toString(),
                                                         0);
-                                                snackbar.showSnackbar(
-                                                    context, "Added to cart");
+
+                                                snackbar.showSnackbar(context,
+                                                    "${products[index]["code"] + products[index]['item']} - Added to cart");
                                                 Provider.of<Controller>(context,
                                                         listen: false)
                                                     .countFromTable(
@@ -605,7 +624,7 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                   widget.customerId,
                                                 );
 
-                                                /////////////////////////////////////////////
+                                                /////////////////////////
 
                                                 (widget.customerId.isNotEmpty ||
                                                             widget.customerId !=
@@ -632,20 +651,60 @@ class _ItemSelectionState extends State<ItemSelection> {
                                               color: Colors.black,
                                             ),
                                             IconButton(
-                                                onPressed: () {
-                                                  String item = products[index]
-                                                          ["code"] +
-                                                      products[index]["item"];
-                                                  showMoadlBottomsheet(
-                                                      item,
-                                                      size,
-                                                      context,
-                                                      "already in cart",
-                                                      products[index]["code"],
-                                                      value.selected[index],
-                                                      value.qty[index]);
-                                                },
-                                                icon: Icon(Icons.delete)),
+                                              icon: Icon(
+                                                Icons.delete,
+                                                size: 18,
+                                                // color: Colors.redAccent,
+                                              ),
+                                              onPressed: value.productName[
+                                                          index]["cartrowno"] ==
+                                                      null
+                                                  ? value.selected[index]
+                                                      ? () async {
+                                                          String item =
+                                                              products[index]
+                                                                      ["code"] +
+                                                                  products[
+                                                                          index]
+                                                                      ["item"];
+                                                          showModal
+                                                              .showMoadlBottomsheet(
+                                                                  widget.os,
+                                                                  widget
+                                                                      .customerId,
+                                                                  item,
+                                                                  size,
+                                                                  context,
+                                                                  "just added",
+                                                                  products[
+                                                                          index]
+                                                                      ["code"],
+                                                                  index,
+                                                                  value.qty[
+                                                                      index]);
+                                                        }
+                                                      : null
+                                                  : () async {
+                                                      String item =
+                                                          products[index]
+                                                                  ["code"] +
+                                                              products[index]
+                                                                  ["item"];
+                                                      showModal
+                                                          .showMoadlBottomsheet(
+                                                              widget.os,
+                                                              widget.customerId,
+                                                              item,
+                                                              size,
+                                                              context,
+                                                              "already in cart",
+                                                              products[index]
+                                                                  ["code"],
+                                                              index,
+                                                              value.qty[index]);
+                                                    },
+                                              // color: Theme.of(context).errorColor,
+                                            )
                                           ],
                                         ),
                                       ),
@@ -660,67 +719,5 @@ class _ItemSelectionState extends State<ItemSelection> {
     );
   }
 
-  ////////////////Bottom sheet for delete ///////////////////////////////////
-  showMoadlBottomsheet(
-      String item,
-      Size size,
-      BuildContext context,
-      String type,
-      String code,
-      bool selected_index,
-      TextEditingController qty_index) {
-    return showModalBottomSheet(
-        context: context,
-        builder: (BuildContext context) {
-          return Container(
-            height: size.width * 0.3,
-            // color: Colors.amber,
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Text("Do you want to delete ${item} from cart ?"),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ElevatedButton(
-                          child: const Text('delete'),
-                          onPressed: () async {
-                            if (type == "already in cart") {
-                              if (selected_index == false) {
-                                selected_index = true;
-                              }
-
-                              qty_index.clear();
-                              await OrderAppDB.instance.deleteFromTableCommonQuery(
-                                  "orderBagTable",
-                                  "code='${code}' AND customerid='${widget.customerId}'");
-                              Provider.of<Controller>(context, listen: false)
-                                  .getProductList(widget.customerId);
-                              Provider.of<Controller>(context, listen: false)
-                                  .countFromTable(
-                                "orderBagTable",
-                                widget.os,
-                                widget.customerId,
-                              );
-
-                              Navigator.of(context).pop();
-                            }
-                          }),
-                      SizedBox(
-                        width: size.width * 0.01,
-                      ),
-                      ElevatedButton(
-                        child: const Text('cancel'),
-                        onPressed: () => Navigator.pop(context),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-          );
-        });
-  }
+  //////////////////////////////////////////////////////////////////////////////////
 }

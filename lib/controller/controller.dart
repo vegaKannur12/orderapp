@@ -451,6 +451,14 @@ class Controller extends ChangeNotifier {
     notifyListeners();
   }
 
+  selectedSet(){
+    var length = productName.length;
+      qty = List.generate(length, (index) => TextEditingController());
+
+      selected = List.generate(length, (index) => false);
+
+  }
+
 /////////////////////////////////////////////////////////////
   // getProductItems(String table) async {
   //   productName.clear();
@@ -678,7 +686,7 @@ class Controller extends ChangeNotifier {
       // for (var item in res) {
       //   bagList.add(item);
       // }
-print("jhfdjkhfjd----$bagList");
+// print("jhfdjkhfjd----$bagList");
       List<Map<String, dynamic>> result = await OrderAppDB.instance.searchItem(
           'productDetailsTable', searchkey!, 'item', 'code', 'categoryId');
       for (var item in result) {
