@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:orderapp/components/commoncolor.dart';
+import 'package:orderapp/db_helper.dart';
 import 'package:orderapp/screen/downloadedPage.dart';
+import 'package:orderapp/screen/historypage.dart';
 import 'package:orderapp/screen/mainDashboard.dart';
 import 'package:orderapp/screen/staffLoginScreen.dart';
 import 'package:provider/provider.dart';
@@ -13,10 +15,10 @@ import 'orderForm.dart';
 
 class Dashboard extends StatefulWidget {
   String? type;
-  String isPlaced;
+
 
   String? areaName;
-  Dashboard({this.type, this.areaName, required this.isPlaced});
+  Dashboard({this.type, this.areaName});
 
   @override
   State<Dashboard> createState() => _DashboardState();
@@ -30,7 +32,7 @@ class _DashboardState extends State<Dashboard> {
     "Collection",
     "Orders",
     "Sale",
-    "Download Page"
+    "Download Page","history"
   ];
   int _selectedIndex = 0;
 
@@ -57,14 +59,16 @@ class _DashboardState extends State<Dashboard> {
         return new MainDashboard();
       case 3:
         if (widget.type == "return from cartList") {
-          return OrderForm(widget.areaName!, widget.isPlaced);
+          return OrderForm(widget.areaName!);
         } else {
-          return OrderForm("", widget.isPlaced);
+          return OrderForm("", );
         }
       case 5:
         return DownloadedPage(
           type: "drawer call",
         );
+
+      case 6:return History();
     }
   }
 

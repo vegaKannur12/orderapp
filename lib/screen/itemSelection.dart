@@ -17,13 +17,13 @@ class ItemSelection extends StatefulWidget {
   String os;
   String areaId;
   String areaName;
-  String isPlaced;
+  
   ItemSelection(
       {required this.customerId,
       required this.areaId,
       required this.os,
       required this.areaName,
-      required this.isPlaced});
+});
 
   @override
   State<ItemSelection> createState() => _ItemSelectionState();

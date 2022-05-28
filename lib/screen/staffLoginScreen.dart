@@ -190,7 +190,7 @@ class StaffLogin extends StatelessWidget {
                                                   context,
                                                   MaterialPageRoute(
                                                       builder: (context) =>
-                                                          Dashboard(isPlaced: "",)),
+                                                          Dashboard()),
                                                 );
                                               } else {
                                                 visible.value = true;
