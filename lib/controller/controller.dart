@@ -24,7 +24,8 @@ class Controller extends ChangeNotifier {
   bool isVisible = false;
   List<bool> selected = [];
   List<String> tableColumn = [];
-
+  List<String> tableHistorydataColumn = [];
+  String? order_id;
   String? searchkey;
   String? sname;
   String? orderTotal;
@@ -34,6 +35,7 @@ class Controller extends ChangeNotifier {
   int? qtyinc;
   List<CD> c_d = [];
   List<Map<String, dynamic>> historyList = [];
+  List<Map<String, dynamic>> historydataList = [];
   String? area;
   String? splittedCode;
   double amt = 0.0;
@@ -608,7 +610,7 @@ class Controller extends ChangeNotifier {
   //////////////insert to order master and details///////////////////////
 
   insertToOrderbagAndMaster(String os, String date, String customer_id,
-      String user_id, String aid,String total_price) async {
+      String user_id, String aid, String total_price) async {
     int order_id = await OrderAppDB.instance
         .getMaxCommonQuery('orderDetailTable', 'order_id', "os='${os}'");
     int rowNum = 1;
@@ -625,7 +627,8 @@ class Controller extends ChangeNotifier {
           aid,
           1,
           rowNum,
-          "orderMasterTable",total_price);
+          "orderMasterTable",
+          total_price);
 
       for (var item in bagList) {
         print("orderid---$order_id");
@@ -641,7 +644,8 @@ class Controller extends ChangeNotifier {
             aid,
             1,
             rowNum,
-            "orderDetailTable",total_price);
+            "orderDetailTable",
+            total_price);
         rowNum = rowNum + 1;
       }
     }
@@ -801,12 +805,14 @@ class Controller extends ChangeNotifier {
 
   //////getHistory/////////////////////////////
   getHistory() async {
-   isLoading=true;
+    isLoading = true;
     print("haiiii");
     List<Map<String, dynamic>> result = await OrderAppDB.instance.getHistory();
+    String element0;
+
     for (var item in result) {
       historyList.add(item);
-    } 
+    }
     print("history list----$historyList");
     var list = historyList[0].keys.toList();
     print("**list----$list");
@@ -814,7 +820,32 @@ class Controller extends ChangeNotifier {
       print(item);
       tableColumn.add(item);
     }
-   isLoading=false;notifyListeners();
+    isLoading = false;
+    notifyListeners();
+
+    notifyListeners();
+  }
+
+  /////////////////////////////////////////////
+  getHistoryData(String table, String? condition) async {
+    isLoading = true;
+    print("haiiii");
+
+    List<Map<String, dynamic>> result =
+        await OrderAppDB.instance.selectCommonQuery(table, condition);
+
+    for (var item in result) {
+      historydataList.add(item);
+    }
+    print("historydataList----$historydataList");
+    var list = historydataList[0].keys.toList();
+    print("**list----$list");
+    for (var item in list) {
+      print(item);
+      tableHistorydataColumn.add(item);
+    }
+    isLoading = false;
+    notifyListeners();
 
     notifyListeners();
   }
