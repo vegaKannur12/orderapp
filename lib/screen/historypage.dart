@@ -22,18 +22,27 @@ class _HistoryState extends State<History> {
   bool isSelected = false;
 
   List<String>? colName;
-
+  List<Map<String, dynamic>> products = [];
   List<String> behvr = [];
   Map<String, dynamic> mainHeader = {};
   int col = 0;
 
 //////////////////////////////////////////////////////////////////////////////
+  onSelectedRow(bool selected, Map<String, dynamic> history) async {
+    setState(() {
+      if (selected) {
+        // print("history----$history");
+      }
+    });
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
-    // var list = history[0].values.toList();
+    products = Provider.of<Controller>(context, listen: false).productName;
+    // Provider.of<Controller>(context, listen: false)
+    //     .getProductList(widget.customerId);
     // list.removeAt(0);
     // for (var item in list) {
     //   tableColumn.add(item);
@@ -120,12 +129,51 @@ class _HistoryState extends State<History> {
     List<String> newBehavr = [];
     // print("rows---$rows");
     return rows.map((row) {
-      return DataRow.byIndex(
+      return DataRow(
         selected: isSelected,
         onSelectChanged: (value) {
-          setState(() {
-            isSelected = value!;
-          });
+          showModalBottomSheet<void>(
+            context: context,
+            builder: (BuildContext context) {
+              Size size = MediaQuery.of(context).size;
+              return Consumer<Controller>(builder: (context, value, child) {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SingleChildScrollView(
+                    child: Container(
+                      height: 500,
+                      // color: P_Settings.wavecolor,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text("All Data"),
+                          SizedBox(height: size.height * 0.02),
+                          ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: value.historyList.length,
+                              itemBuilder: (BuildContext context, index) {
+                                return Padding(
+                                  padding: EdgeInsets.only(left: 8),
+                                  child: ListTile(
+                                    trailing: Text(
+                                        "${value.historyList[index]["Date"]}"),
+                                    leading: Text(
+                                        "${value.historyList[index]["Order_Num"]}"),
+                                    title: Text(
+                                        "${value.historyList[index]["Date"]}"),
+                                    onTap: () {},
+                                  ),
+                                );
+                              })
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              });
+            },
+          );
+          onSelectedRow(value!, row);
         },
         // color: MaterialStateProperty.all(Colors.green),
         cells: getCelle(row),
