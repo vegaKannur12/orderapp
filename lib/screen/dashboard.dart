@@ -68,7 +68,7 @@ class _DashboardState extends State<Dashboard> {
           type: "drawer call",
         );
 
-      case 6:return History();
+      case 6:return History(page: "History Page",);
     }
   }
 

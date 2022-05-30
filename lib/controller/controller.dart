@@ -22,6 +22,7 @@ class Controller extends ChangeNotifier {
 
   bool isSearch = false;
   bool isVisible = false;
+  List<bool> rowselected = [];
   List<bool> selected = [];
   List<String> tableColumn = [];
   List<String> tableHistorydataColumn = [];
@@ -808,16 +809,24 @@ class Controller extends ChangeNotifier {
     isLoading = true;
     print("haiiii");
     List<Map<String, dynamic>> result = await OrderAppDB.instance.getHistory();
-    String element0;
 
-    for (var item in result) {
-      historyList.add(item);
+    print("aftr cut----$result");
+    
+    for (Map<String, dynamic> item in result) {
+      // print(item);
+      // element0=item.keys.elementAt(0);
+      // print(element0);
+      item.removeWhere((key, value) => false);
+      // historyList.add(item);
     }
+
+    // historyList.forEach((item) => item..remove("order_id"));
+    
     print("history list----$historyList");
     var list = historyList[0].keys.toList();
     print("**list----$list");
     for (var item in list) {
-      print(item);
+      // print(item);
       tableColumn.add(item);
     }
     isLoading = false;
@@ -830,7 +839,8 @@ class Controller extends ChangeNotifier {
   getHistoryData(String table, String? condition) async {
     isLoading = true;
     print("haiiii");
-
+    historydataList.clear();
+    tableHistorydataColumn.clear();
     List<Map<String, dynamic>> result =
         await OrderAppDB.instance.selectCommonQuery(table, condition);
 

@@ -4,28 +4,57 @@ import 'package:provider/provider.dart';
 
 class HistoryPopup {
   Future buildPopupDialog(
-    BuildContext context,
-  ) {
+      BuildContext context, Size size, String orderNum, String cusId) {
     return showDialog(
         context: context,
-        barrierDismissible: false,
+        barrierDismissible: true,
         builder: (BuildContext context) {
           return new AlertDialog(
             content: Consumer<Controller>(builder: (context, value, child) {
               if (value.isLoading) {
                 return CircularProgressIndicator();
               } else {
-                return DataTable(
-                  horizontalMargin: 0,
-                  headingRowHeight: 30,
-                  dataRowHeight: 35,
-                  //     MaterialStateColor.resolveWith((states) => Colors.yellow),
-                  columnSpacing: 0,
-                  showCheckboxColumn: false,
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left:8.0,right: 11),
+                      child: Container(
+                        height: size.height * 0.04,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Ord.No : ${orderNum}",
+                              style: TextStyle(color: Colors.grey[600],fontSize: 13),
+                            ),
+                            // Text(
+                            //   cusId,
+                            //   style: TextStyle(color: Colors.grey[500]),
+                            // )
+                          ],
+                        ),
+                      ),
+                    ),
+                    SingleChildScrollView(
+                      child: Container(
+                        // height: size.height*0.2,
+                        child: DataTable(
+                          horizontalMargin: 0,
+                          headingRowHeight: 30,
+                          dataRowHeight: 35,
+                          //     MaterialStateColor.resolveWith((states) => Colors.yellow),
+                          columnSpacing: 0,
+                          showCheckboxColumn: false,
 
-                  border: TableBorder.all(width: 1, color: Colors.black),
-                  columns: getColumns(value.tableHistorydataColumn),
-                  rows: getRowss(value.historydataList),
+                          border:
+                              TableBorder.all(width: 1, color: Colors.grey),
+                          columns: getColumns(value.tableHistorydataColumn),
+                          rows: getRowss(value.historydataList),
+                        ),
+                      ),
+                    ),
+                  ],
                 );
               }
             }),
@@ -47,7 +76,7 @@ class HistoryPopup {
       // strwidth = strwidth * 10; //
       return DataColumn(
         label: Container(
-          width: 100,
+          width: 70,
           child: Text(
             column,
             style: TextStyle(fontSize: 12),
@@ -84,7 +113,7 @@ class HistoryPopup {
       datacell.add(
         DataCell(
           Container(
-            //  width:100,
+             width:70,
             // width: mainHeader[k][3] == "1" ? 70 : 30,
             alignment: Alignment.center,
             //     ? Alignment.centerLeft

@@ -10,19 +10,19 @@ import '../controller/controller.dart';
 import 'package:provider/provider.dart';
 
 class History extends StatefulWidget {
-  const History({Key? key}) : super(key: key);
-
+  String? page;
+  History({this.page});
   @override
   State<History> createState() => _HistoryState();
 }
 
 class _HistoryState extends State<History> {
-  HistoryPopup popup=HistoryPopup();
+  HistoryPopup popup = HistoryPopup();
   List<Map<String, dynamic>> newJson = [];
   final rows = <DataRow>[];
   String? behv;
   bool isSelected = false;
-
+  Size? size;
   List<String>? colName;
   List<Map<String, dynamic>> products = [];
   List<String> behvr = [];
@@ -32,9 +32,11 @@ class _HistoryState extends State<History> {
 //////////////////////////////////////////////////////////////////////////////
   onSelectedRow(bool selected, Map<String, dynamic> history) async {
     if (selected) {
+      // isSelected=true;
       print("history----$history");
-       Provider.of<Controller>(context, listen: false).getHistoryData('orderDetailTable', "order_id='${history["order_id"]}'");
-       popup.buildPopupDialog(context);
+      Provider.of<Controller>(context, listen: false).getHistoryData(
+          'orderDetailTable', "order_id='${history["order_id"]}'");
+      popup.buildPopupDialog(context, size!,history["Order_Num"],history["Cus_id"]);
     }
   }
 
@@ -60,6 +62,7 @@ class _HistoryState extends State<History> {
 
   @override
   Widget build(BuildContext context) {
+    size = MediaQuery.of(context).size;
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
     // if (col <= 5) {
@@ -70,36 +73,50 @@ class _HistoryState extends State<History> {
       body: InteractiveViewer(
         minScale: .4,
         maxScale: 5,
-        child: SingleChildScrollView(
-          // width: double.infinity,
-          scrollDirection: Axis.horizontal,
-          child: Consumer<Controller>(
-            builder: (context, value, child) {
-              if (value.isLoading) {
-                return Container(
-                  alignment: Alignment.center,
-                  height: height * 0.9,
-                  child: SpinKitCircle(
-                    color: P_Settings.wavecolor,
+        child: Consumer<Controller>(
+          builder: (context, value, child) {
+            if (value.isLoading) {
+              return Container(
+                alignment: Alignment.center,
+                height: height * 0.9,
+                child: SpinKitCircle(
+                  color: P_Settings.wavecolor,
+                ),
+              );
+            } else {
+              return Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      height: height * 0.03,
+                      child: Text(
+                        widget.page!,
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                    ),
                   ),
-                );
-              } else {
-                return DataTable(
-                  horizontalMargin: 0,
-                  headingRowHeight: 30,
-                  dataRowHeight: 35,
-                  // dataRowColor:
-                  //     MaterialStateColor.resolveWith((states) => Colors.yellow),
-                  columnSpacing: 0,
-                  showCheckboxColumn: false,
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: DataTable(
+                      horizontalMargin: 0,
+                      headingRowHeight: 30,
+                      dataRowHeight: 35,
+                      // dataRowColor:
+                      //     MaterialStateColor.resolveWith((states) => Colors.yellow),
+                      columnSpacing: 0,
+                      showCheckboxColumn: false,
 
-                  border: TableBorder.all(width: 1, color: Colors.black),
-                  columns: getColumns(value.tableColumn),
-                  rows: getRowss(value.historyList),
-                );
-              }
-            },
-          ),
+                      border: TableBorder.all(width: 1, color: Colors.black),
+                      columns: getColumns(value.tableColumn),
+                      rows: getRowss(value.historyList),
+                    ),
+                  ),
+                ],
+              );
+            }
+          },
         ),
       ),
     );
@@ -133,7 +150,9 @@ class _HistoryState extends State<History> {
     List<String> newBehavr = [];
     // print("rows---$rows");
     return rows.map((row) {
+      
       return DataRow(
+        // index: ,
         selected: isSelected,
         onSelectChanged: (value) {
           onSelectedRow(value!, row);
@@ -156,7 +175,7 @@ class _HistoryState extends State<History> {
       datacell.add(
         DataCell(
           Container(
-            //  width:100,
+             width:100,
             // width: mainHeader[k][3] == "1" ? 70 : 30,
             alignment: Alignment.center,
             //     ? Alignment.centerLeft
