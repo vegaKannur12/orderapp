@@ -132,47 +132,6 @@ class _HistoryState extends State<History> {
       return DataRow(
         selected: isSelected,
         onSelectChanged: (value) {
-          showModalBottomSheet<void>(
-            context: context,
-            builder: (BuildContext context) {
-              Size size = MediaQuery.of(context).size;
-              return Consumer<Controller>(builder: (context, value, child) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: SingleChildScrollView(
-                    child: Container(
-                      height: 500,
-                      // color: P_Settings.wavecolor,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text("All Data"),
-                          SizedBox(height: size.height * 0.02),
-                          ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: value.historyList.length,
-                              itemBuilder: (BuildContext context, index) {
-                                return Padding(
-                                  padding: EdgeInsets.only(left: 8),
-                                  child: ListTile(
-                                    trailing: Text(
-                                        "${value.historyList[index]["Date"]}"),
-                                    leading: Text(
-                                        "${value.historyList[index]["Order_Num"]}"),
-                                    title: Text(
-                                        "${value.historyList[index]["Date"]}"),
-                                    onTap: () {},
-                                  ),
-                                );
-                              })
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              });
-            },
-          );
           onSelectedRow(value!, row);
         },
         // color: MaterialStateProperty.all(Colors.green),

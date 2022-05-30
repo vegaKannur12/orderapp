@@ -662,7 +662,7 @@ class OrderAppDB {
 
   /////////////////////////update qty///////////////////////////////////
   updateQtyOrderBagTable(
-      String qty, int cartrowno, String customerId, String rate) async {
+    String qty, int cartrowno, String customerId, String rate) async {
     Database db = await instance.database;
     var res1;
     double rate1 = double.parse(rate);
