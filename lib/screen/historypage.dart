@@ -27,6 +27,13 @@ class _HistoryState extends State<History> {
   int col = 0;
 
 //////////////////////////////////////////////////////////////////////////////
+  onSelectedRow(bool selected, Map<String, dynamic> history) async {
+    setState(() {
+      if (selected) {
+        print("history----$history");
+      } 
+    });
+  }
   @override
   void initState() {
     // TODO: implement initState
@@ -119,12 +126,10 @@ class _HistoryState extends State<History> {
     List<String> newBehavr = [];
     // print("rows---$rows");
     return rows.map((row) {
-      return DataRow.byIndex(
+      return DataRow(
         selected: isSelected,
-        onSelectChanged: (value) {
-          setState(() {
-            isSelected = value!;
-          });
+        onSelectChanged: ( value) {
+          onSelectedRow(value!, row);
          
         },
         // color: MaterialStateProperty.all(Colors.green),
