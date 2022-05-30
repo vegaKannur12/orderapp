@@ -152,8 +152,7 @@ class _HistoryState extends State<History> {
     return rows.map((row) {
       
       return DataRow(
-        // index: ,
-        selected: isSelected,
+      //  selected:rows.contains(row),
         onSelectChanged: (value) {
           onSelectedRow(value!, row);
         },

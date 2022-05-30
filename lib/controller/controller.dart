@@ -627,6 +627,7 @@ class Controller extends ChangeNotifier {
           user_id,
           aid,
           1,
+          "",
           rowNum,
           "orderMasterTable",
           total_price);
@@ -643,7 +644,7 @@ class Controller extends ChangeNotifier {
             customer_id,
             user_id,
             aid,
-            1,
+            1,"",
             rowNum,
             "orderDetailTable",
             total_price);
@@ -813,14 +814,12 @@ class Controller extends ChangeNotifier {
     print("aftr cut----$result");
     
     for (Map<String, dynamic> item in result) {
-      // print(item);
-      // element0=item.keys.elementAt(0);
-      // print(element0);
-      item.removeWhere((key, value) => false);
-      // historyList.add(item);
+      
+ 
+      historyList.add(item);
     }
 
-    // historyList.forEach((item) => item..remove("order_id"));
+    
     
     print("history list----$historyList");
     var list = historyList[0].keys.toList();

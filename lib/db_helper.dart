@@ -272,6 +272,7 @@ class OrderAppDB {
             $row_num INTEGER,
             $code TEXT,
             $qty INTEGER,
+            $unit TEXT,
             $rate TEXT,
             $status INTEGER
           )
@@ -364,6 +365,7 @@ class OrderAppDB {
       String userid,
       String areaid,
       int status,
+      String unit,
       int rowNum,
       String table,
       String total_price) async {
@@ -373,7 +375,7 @@ class OrderAppDB {
 
     if (table == "orderDetailTable") {
       var query2 =
-          'INSERT INTO orderDetailTable(order_id, row_num,os,code, qty, rate, status) VALUES(${order_id},${rowNum},"${os}","${code}", ${qty}, "${rate}", ${status})';
+          'INSERT INTO orderDetailTable(order_id, row_num,os,code, qty, rate, unit, status) VALUES(${order_id},${rowNum},"${os}","${code}", ${qty}, "${rate}", "${unit}", ${status})';
       print(query2);
       res2 = await db.rawInsert(query2);
     } else if (table == "orderMasterTable") {
