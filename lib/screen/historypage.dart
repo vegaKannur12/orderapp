@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:orderapp/components/commoncolor.dart';
+import 'package:orderapp/components/showMoadal.dart';
 import '../controller/controller.dart';
 import 'package:provider/provider.dart';
 
@@ -125,7 +126,6 @@ class _HistoryState extends State<History> {
           setState(() {
             isSelected = value!;
           });
-         
         },
         // color: MaterialStateProperty.all(Colors.green),
         cells: getCelle(row),
