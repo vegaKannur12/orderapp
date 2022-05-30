@@ -661,7 +661,7 @@ class OrderAppDB {
 
   /////////////////////////update qty///////////////////////////////////
   updateQtyOrderBagTable(
-    String qty, int cartrowno, String customerId, String rate) async {
+      String qty, int cartrowno, String customerId, String rate) async {
     Database db = await instance.database;
     var res1;
     double rate1 = double.parse(rate);
@@ -790,13 +790,16 @@ class OrderAppDB {
     Database db = await instance.database;
     if (condition == null) {
       result = await db.rawQuery("SELECT * FROM '$table'");
-    }else{
-      result = await db.rawQuery("SELECT code,qty,rate FROM '$table' WHERE $condition");
+    } else {
+      result = await db
+          .rawQuery("SELECT code,qty,rate FROM '$table' WHERE $condition");
     }
 
     print("naaknsdJK-----$result");
     return result;
   }
+
+
 }  
 
 //////////////////////////////////////////////////////////////

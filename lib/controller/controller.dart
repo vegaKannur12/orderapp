@@ -237,6 +237,34 @@ class Controller extends ChangeNotifier {
     }
   }
 
+  ////////////////////Place order data send//////////////////
+  Future<RegistrationData?> saveOrderDetails(
+      String cid, BuildContext context) async {
+    try {
+      Uri url = Uri.parse("http://trafiqerp.in/order/fj/order_save.php");
+      Map body = {
+        'cid': cid,
+        'om': order_id,
+      };
+      print("compny----${cid}");
+      isLoading = true;
+      notifyListeners();
+      http.Response response = await http.post(
+        url,
+        body: body,
+      );
+
+      print("body ${body}");
+      var map = jsonDecode(response.body);
+      print("map ${map}");
+
+      notifyListeners();
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
   ///////////////////////////////////////////////////////////
   setCname() async {
     final prefs = await SharedPreferences.getInstance();
@@ -378,6 +406,7 @@ class Controller extends ChangeNotifier {
 
   //////////////////////////////////////////////////////
   getArea(String staffName) async {
+    String areaName;
     print("staff...............${staffName}");
     try {
       areaList = await OrderAppDB.instance.getArea(staffName);
@@ -386,6 +415,7 @@ class Controller extends ChangeNotifier {
         areDetails.add(item);
       }
       print("areaList adding ----${areaList}");
+
       notifyListeners();
     } catch (e) {
       print(e);
@@ -849,4 +879,5 @@ class Controller extends ChangeNotifier {
 
     notifyListeners();
   }
+  //////////////////order save and send/////////////////////////
 }

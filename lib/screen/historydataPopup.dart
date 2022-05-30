@@ -8,7 +8,7 @@ class HistoryPopup {
   ) {
     return showDialog(
         context: context,
-        barrierDismissible: false,
+        barrierDismissible: true,
         builder: (BuildContext context) {
           return new AlertDialog(
             content: Consumer<Controller>(builder: (context, value, child) {
@@ -29,6 +29,7 @@ class HistoryPopup {
                 );
               }
             }),
+
             // actions: [
             //   ElevatedButton(onPressed: (){
             //     Navigator.pop(context);

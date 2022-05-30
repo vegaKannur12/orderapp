@@ -17,7 +17,7 @@ class History extends StatefulWidget {
 }
 
 class _HistoryState extends State<History> {
-  HistoryPopup popup=HistoryPopup();
+  HistoryPopup popup = HistoryPopup();
   List<Map<String, dynamic>> newJson = [];
   final rows = <DataRow>[];
   String? behv;
@@ -33,8 +33,9 @@ class _HistoryState extends State<History> {
   onSelectedRow(bool selected, Map<String, dynamic> history) async {
     if (selected) {
       print("history----$history");
-       Provider.of<Controller>(context, listen: false).getHistoryData('orderDetailTable', "order_id='${history["order_id"]}'");
-       popup.buildPopupDialog(context);
+      Provider.of<Controller>(context, listen: false).getHistoryData(
+          'orderDetailTable', "order_id='${history["order_id"]}'");
+      popup.buildPopupDialog(context);
     }
   }
 
@@ -137,6 +138,7 @@ class _HistoryState extends State<History> {
         selected: isSelected,
         onSelectChanged: (value) {
           onSelectedRow(value!, row);
+          print("hello");
         },
         // color: MaterialStateProperty.all(Colors.green),
         cells: getCelle(row),

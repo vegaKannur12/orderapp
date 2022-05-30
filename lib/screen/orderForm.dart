@@ -13,8 +13,9 @@ import '../components/customSnackbar.dart';
 class OrderForm extends StatefulWidget {
   String areaname;
 
-
-  OrderForm(this.areaname, );
+  OrderForm(
+    this.areaname,
+  );
 
   @override
   State<OrderForm> createState() => _OrderFormState();
@@ -25,8 +26,10 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
   TextEditingValue textvalue = TextEditingValue();
   bool customerFlag = true;
   bool isLoading = false;
+  String? areaName;
+  String? customerName;
   String? _selectedItemarea;
-  bool customerValidation=false;
+  bool customerValidation = false;
   String? area;
   CustomPopup popup = CustomPopup();
   String? _selectedItemcus;
@@ -52,6 +55,7 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
   String? common;
   String? custmerId;
   String? staffname;
+  bool areavisible = false;
   bool visible = false;
   String itemName = '';
   String rate1 = "1";
@@ -72,6 +76,7 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
     super.initState();
     Provider.of<Controller>(context, listen: false).getOrderno();
     date = DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
+    Provider.of<Controller>(context, listen: false).getArea;
 
     sharedPref();
   }
@@ -210,11 +215,12 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                           displayStringForOption:
                                               (Map<String, dynamic> option) =>
                                                   option["aname"],
-
                                           onSelected: (value) {
                                             setState(() {
                                               _selectedItemarea =
                                                   value["aname"];
+                                              areaName = value["aname"];
+                                              print("areaName...$areaName");
                                               _selectedAreaId = value["aid"];
                                               Provider.of<Controller>(context,
                                                       listen: false)
@@ -239,8 +245,6 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                               autofocus: true,
                                               decoration: InputDecoration(
                                                 border: InputBorder.none,
-
-                                                // hintText: 'Enter a message',
                                                 suffixIcon: IconButton(
                                                   onPressed:
                                                       areaController.clear,
@@ -248,15 +252,12 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                                 ),
                                               ),
                                               controller: areaController,
-                                              // scrollPadding: EdgeInsets.only(
-                                              //     bottom: topInsets + 100.0),
                                               focusNode: fieldFocusNode,
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                   fontWeight:
                                                       FontWeight.normal),
                                             );
                                           },
-                                          // optionsMaxHeight: size.height * 0.3,
                                           optionsViewBuilder:
                                               (BuildContext context,
                                                   AutocompleteOnSelected<
@@ -270,7 +271,6 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                                 child: Container(
                                                   height: size.height * 0.2,
                                                   width: size.width * 0.84,
-                                                  // color: Colors.teal,
                                                   child: ListView.builder(
                                                     padding:
                                                         EdgeInsets.all(10.0),
@@ -278,10 +278,6 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                                     itemBuilder:
                                                         (BuildContext context,
                                                             int index) {
-                                                      //      print(
-                                                      // "option----${options}");
-                                                      print(
-                                                          "index----${index}");
                                                       final Map<String, dynamic>
                                                           option = options
                                                               .elementAt(index);
@@ -289,8 +285,6 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                                           "option----${option}");
                                                       return ListTile(
                                                         onTap: () {
-                                                          print(
-                                                              "optonsssssssssssss$option");
                                                           onSelected(option);
                                                         },
                                                         title: Text(
@@ -353,16 +347,15 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                               optionsBuilder:
                                                   (TextEditingValue value) {
                                                 if (value.text.isEmpty) {
-
-                                                   customerValidation=true;
+                                                  customerValidation = true;
                                                   visibleValidation.value =
                                                       true;
 
                                                   return [];
                                                 } else {
-                                                   visibleValidation.value =
+                                                  visibleValidation.value =
                                                       false;
-                                                      customerValidation=false;
+                                                  customerValidation = false;
                                                   print(
                                                       "TextEditingValue---${value.text}");
 
@@ -387,6 +380,7 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                                   print("value----${value}");
                                                   _selectedItemcus =
                                                       value["hname"];
+                                                  customerName = value["hname"];
                                                   custmerId = value["code"];
                                                   print(
                                                       "Code .........---${custmerId}");
@@ -530,8 +524,6 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                                   currentFocus.unfocus();
                                                 }
 
-
-                                                print("customerValidation----$customerValidation");
                                                 if (customerValidation) {
                                                   visibleValidation.value =
                                                       true;
@@ -547,6 +539,9 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                                     values.ordernum[0]['os'],
                                                     custmerId.toString(),
                                                   );
+
+                                                  print(
+                                                      "area name....${Provider.of<Controller>(context, listen: false).areaAutoComplete[1]}");
                                                   Navigator.of(context).push(
                                                     PageRouteBuilder(
                                                       opaque:
@@ -554,8 +549,6 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                                       pageBuilder:
                                                           (_, __, ___) =>
                                                               ItemSelection(
-                                                       
-                                                           
                                                         customerId: custmerId
                                                             .toString(),
                                                         areaId: Provider.of<
