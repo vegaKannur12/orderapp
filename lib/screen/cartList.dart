@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:orderapp/components/commoncolor.dart';
 import 'package:orderapp/controller/controller.dart';
 import 'package:orderapp/db_helper.dart';
-import 'package:orderapp/screen/dashboard.dart';
+import 'package:orderapp/screen/5_dashboard.dart';
 import 'package:orderapp/service/tableList.dart';
 import 'package:provider/provider.dart';
 
@@ -131,7 +131,7 @@ class _CartListState extends State<CartList> {
                           Provider.of<Controller>(context, listen: false)
                               .insertToOrderbagAndMaster(widget.os, date!,
                                   widget.custmerId, sname, widget.areaId,value.orderTotal!);
-
+                          
                           Provider.of<Controller>(context, listen: false)
                                       .bagList
                                       .length >
@@ -146,6 +146,7 @@ class _CartListState extends State<CartList> {
 
                                       Navigator.of(context).push(
                                         PageRouteBuilder(
+                                          
                                             opaque: false, // set to false
                                             pageBuilder: (_, __, ___) =>
                                                 Dashboard(
@@ -176,7 +177,9 @@ class _CartListState extends State<CartList> {
                           Provider.of<Controller>(context, listen: false)
                               .count = "0";
                           print("area name ${widget.areaname}");
+                          // Provider.of<Controller>(context,listen: false).saveOrderDetails(id, value.cid!, series, orderid,  widget.custmerId, orderdate, staffid, widget.areaId, pcode, qty, rate, context)
                         }),
+
                         child: Container(
                           width: size.width * 0.5,
                           height: size.height * 0.07,

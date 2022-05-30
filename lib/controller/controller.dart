@@ -8,7 +8,7 @@ import 'package:orderapp/model/accounthead_model.dart';
 import 'package:orderapp/model/productCompany_model.dart';
 import 'package:orderapp/model/productsCategory_model.dart';
 import 'package:orderapp/model/registration_model.dart';
-import 'package:orderapp/screen/companyDetailsscreen.dart';
+import 'package:orderapp/screen/2_companyDetailsscreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../components/network_connectivity.dart';
@@ -656,6 +656,7 @@ class Controller extends ChangeNotifier {
           user_id,
           aid,
           1,
+          "",
           rowNum,
           "orderMasterTable",
           total_price);
@@ -673,6 +674,7 @@ class Controller extends ChangeNotifier {
             user_id,
             aid,
             1,
+            "",
             rowNum,
             "orderDetailTable",
             total_price);

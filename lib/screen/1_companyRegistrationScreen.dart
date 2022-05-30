@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 
 import '../components/commoncolor.dart';
 import '../components/waveclipper.dart';
-import 'companyDetailsscreen.dart';
+import '2_companyDetailsscreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -19,6 +19,7 @@ class RegistrationScreen extends StatefulWidget {
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
   final _formKey = GlobalKey<FormState>();
+  FocusNode? fieldFocusNode;
   TextEditingController codeController = TextEditingController();
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -32,6 +33,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double topInsets = MediaQuery.of(context).viewInsets.top;
     Size size = MediaQuery.of(context).size;
     return WillPopScope(
       onWillPop: () => _onBackPressed(context),
@@ -71,7 +73,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       ),
                     ),
                     SizedBox(
-                      height: size.height * 0.15,
+                      height: size.height * 0.13,
                     ),
                     Padding(
                       padding: const EdgeInsets.all(20.0),
@@ -89,6 +91,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
                           return null;
                         },
+                        scrollPadding: EdgeInsets.only(
+                            bottom: topInsets + size.height * 0.3),
+                        focusNode: fieldFocusNode,
                       ),
                     ),
                     SizedBox(

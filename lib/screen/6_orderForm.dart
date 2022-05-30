@@ -408,11 +408,11 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                                     ),
                                                   ),
                                                   // focusNode: _focusNode,
-                                                  scrollPadding:
-                                                      EdgeInsets.only(
-                                                          bottom: topInsets +
-                                                              size.height *
-                                                                  0.3),
+                                                  // scrollPadding:
+                                                  //     EdgeInsets.only(
+                                                  //         bottom: topInsets +
+                                                  //             size.height *
+                                                  //                 0.3),
                                                   focusNode: fieldFocusNode,
                                                   style: const TextStyle(
                                                       fontWeight:

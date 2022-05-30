@@ -3,15 +3,15 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:orderapp/components/commoncolor.dart';
 import 'package:orderapp/db_helper.dart';
-import 'package:orderapp/screen/downloadedPage.dart';
-import 'package:orderapp/screen/historypage.dart';
+import 'package:orderapp/screen/6_downloadedPage.dart';
+import 'package:orderapp/screen/6_historypage.dart';
 import 'package:orderapp/screen/mainDashboard.dart';
-import 'package:orderapp/screen/staffLoginScreen.dart';
+import 'package:orderapp/screen/3_staffLoginScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../controller/controller.dart';
-import 'orderForm.dart';
+import '6_orderForm.dart';
 
 class Dashboard extends StatefulWidget {
   String? type;
@@ -68,7 +68,7 @@ class _DashboardState extends State<Dashboard> {
           type: "drawer call",
         );
 
-      case 6:return History();
+      case 6:return History(page: "History Page",);
     }
   }
 

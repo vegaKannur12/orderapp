@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:orderapp/components/commoncolor.dart';
 import 'package:orderapp/controller/controller.dart';
-import 'package:orderapp/screen/companyRegistrationScreen.dart';
-import 'package:orderapp/screen/dashboard.dart';
-import 'package:orderapp/screen/staffLoginScreen.dart';
+import 'package:orderapp/screen/1_companyRegistrationScreen.dart';
+import 'package:orderapp/screen/5_dashboard.dart';
+import 'package:orderapp/screen/3_staffLoginScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

@@ -3,7 +3,7 @@ import 'package:orderapp/components/commoncolor.dart';
 import 'package:orderapp/components/customAppbar.dart';
 import 'package:orderapp/components/customSnackbar.dart';
 import 'package:orderapp/controller/controller.dart';
-import 'package:orderapp/screen/staffLoginScreen.dart';
+import 'package:orderapp/screen/3_staffLoginScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
