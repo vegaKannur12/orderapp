@@ -309,18 +309,17 @@ class OrderAppDB {
 
   //////////////////////////////////////////////
   Future insertorderBagTable(
-      String itemName,
-      String cartdatetime,
-      String os,
-      String customerid,
-      int cartrowno,
-      String code,
-      int qty,
-      String rate,
-      String totalamount,
-      int cstatus,
-      
-      ) async {
+    String itemName,
+    String cartdatetime,
+    String os,
+    String customerid,
+    int cartrowno,
+    String code,
+    int qty,
+    String rate,
+    String totalamount,
+    int cstatus,
+  ) async {
     print("qty--$qty");
     print("code...........$code");
     final db = await database;
@@ -776,7 +775,7 @@ class OrderAppDB {
     Database db = await instance.database;
 
     result = await db.rawQuery(
-        'select orderMasterTable.os || " " || orderMasterTable.order_id as Order_Num,orderMasterTable.customerid Cus_id,orderMasterTable.orderdatetime Date, count(orderDetailTable.row_num) count, orderMasterTable.total_price  from orderMasterTable inner join orderDetailTable on orderMasterTable.order_id=orderDetailTable.order_id group by orderMasterTable.order_id');
+        'select orderMasterTable.order_id, orderMasterTable.os || " " || orderMasterTable.order_id as Order_Num,orderMasterTable.customerid Cus_id,orderMasterTable.orderdatetime Date, count(orderDetailTable.row_num) count, orderMasterTable.total_price  from orderMasterTable inner join orderDetailTable on orderMasterTable.order_id=orderDetailTable.order_id group by orderMasterTable.order_id');
     if (result.length > 0) {
       print("result------$result");
       return result;
@@ -784,6 +783,20 @@ class OrderAppDB {
       return null;
     }
   }
-}
+
+/////////////////////////get historydetails//////////////////
+  selectCommonQuery(String table, String? condition) async {
+    List<Map<String, dynamic>> result;
+    Database db = await instance.database;
+    if (condition == null) {
+      result = await db.rawQuery("SELECT * FROM '$table'");
+    }else{
+      result = await db.rawQuery("SELECT code,qty,rate FROM '$table' WHERE $condition");
+    }
+
+    print("naaknsdJK-----$result");
+    return result;
+  }
+}  
 
 //////////////////////////////////////////////////////////////

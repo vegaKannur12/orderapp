@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:orderapp/components/commoncolor.dart';
+import 'package:orderapp/db_helper.dart';
+import 'package:orderapp/screen/historydataPopup.dart';
 import '../controller/controller.dart';
 import 'package:provider/provider.dart';
 
@@ -15,6 +17,7 @@ class History extends StatefulWidget {
 }
 
 class _HistoryState extends State<History> {
+  HistoryPopup popup=HistoryPopup();
   List<Map<String, dynamic>> newJson = [];
   final rows = <DataRow>[];
   String? behv;
@@ -28,12 +31,13 @@ class _HistoryState extends State<History> {
 
 //////////////////////////////////////////////////////////////////////////////
   onSelectedRow(bool selected, Map<String, dynamic> history) async {
-    setState(() {
-      if (selected) {
-        print("history----$history");
-      } 
-    });
+    if (selected) {
+      print("history----$history");
+       Provider.of<Controller>(context, listen: false).getHistoryData('orderDetailTable', "order_id='${history["order_id"]}'");
+       popup.buildPopupDialog(context);
+    }
   }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -71,7 +75,9 @@ class _HistoryState extends State<History> {
           child: Consumer<Controller>(
             builder: (context, value, child) {
               if (value.isLoading) {
-                return Center(
+                return Container(
+                  alignment: Alignment.center,
+                  height: height * 0.9,
                   child: SpinKitCircle(
                     color: P_Settings.wavecolor,
                   ),
@@ -128,9 +134,8 @@ class _HistoryState extends State<History> {
     return rows.map((row) {
       return DataRow(
         selected: isSelected,
-        onSelectChanged: ( value) {
+        onSelectChanged: (value) {
           onSelectedRow(value!, row);
-         
         },
         // color: MaterialStateProperty.all(Colors.green),
         cells: getCelle(row),
@@ -140,7 +145,7 @@ class _HistoryState extends State<History> {
 /////////////////////////////////////////////
 
   List<DataCell> getCelle(Map<String, dynamic> data) {
-    print("data--$data");
+    // print("data--$data");
     //  double  sum=0;
     List<DataCell> datacell = [];
     mainHeader.remove('rank');
