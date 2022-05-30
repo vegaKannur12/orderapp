@@ -21,7 +21,7 @@ showModalBottomSheet<void>(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment.end,
                                                       children: [
-                                                        IconButton(
+                                                          IconButton(
                                                           icon: Icon(Icons.close),
                                                           onPressed: () {
                                                             Navigator.pop(context);

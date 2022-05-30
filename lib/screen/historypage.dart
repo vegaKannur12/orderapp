@@ -24,7 +24,7 @@ class _HistoryState extends State<History> {
   bool isSelected = false;
 
   List<String>? colName;
-
+  List<Map<String, dynamic>> products = [];
   List<String> behvr = [];
   Map<String, dynamic> mainHeader = {};
   int col = 0;
@@ -42,8 +42,9 @@ class _HistoryState extends State<History> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
-    // var list = history[0].values.toList();
+    products = Provider.of<Controller>(context, listen: false).productName;
+    // Provider.of<Controller>(context, listen: false)
+    //     .getProductList(widget.customerId);
     // list.removeAt(0);
     // for (var item in list) {
     //   tableColumn.add(item);

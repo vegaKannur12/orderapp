@@ -17,13 +17,13 @@ class ItemSelection extends StatefulWidget {
   String os;
   String areaId;
   String areaName;
-  
-  ItemSelection(
-      {required this.customerId,
-      required this.areaId,
-      required this.os,
-      required this.areaName,
-});
+
+  ItemSelection({
+    required this.customerId,
+    required this.areaId,
+    required this.os,
+    required this.areaName,
+  });
 
   @override
   State<ItemSelection> createState() => _ItemSelectionState();
@@ -267,6 +267,11 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                       .deleteFromTableCommonQuery(
                                                           "orderBagTable",
                                                           "code='${value.newList[index]["code"]}' AND customerid='${widget.customerId}'");
+                                                  Provider.of<Controller>(
+                                                          context,
+                                                          listen: false)
+                                                      .getProductList(
+                                                          widget.customerId);
                                                   Provider.of<Controller>(
                                                           context,
                                                           listen: false)
@@ -521,6 +526,10 @@ class _ItemSelectionState extends State<ItemSelection> {
                                               .deleteFromTableCommonQuery(
                                                   "orderBagTable",
                                                   "code='${value.productName[index]["code"]}' AND customerid='${widget.customerId}'");
+                                          Provider.of<Controller>(context,
+                                                  listen: false)
+                                              .getProductList(
+                                                  widget.customerId);
                                           Provider.of<Controller>(context,
                                                   listen: false)
                                               .countFromTable(
