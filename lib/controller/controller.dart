@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -239,12 +240,41 @@ class Controller extends ChangeNotifier {
 
   ////////////////////Place order data send//////////////////
   Future<RegistrationData?> saveOrderDetails(
-      String cid, BuildContext context) async {
+      String id,
+      String cid,
+      String series,
+      String orderid,
+      String customerid,
+      String orderdate,
+      String staffid,
+      String areaid,
+      String pcode,
+      int quantity,
+      double rate,
+      BuildContext context) async {
     try {
       Uri url = Uri.parse("http://trafiqerp.in/order/fj/order_save.php");
+      List<Map<String, dynamic>> om = [
+        {
+          "id": id,
+          "ser": series,
+          "oid": orderid,
+          "cuid": customerid,
+          "odate": orderdate,
+          "sid": staffid,
+          "aid": areaid,
+          "od": [
+            {
+              "code": pcode,
+              "qty": quantity,
+              "rate": rate,
+            }
+          ]
+        }
+      ];
       Map body = {
         'cid': cid,
-        'om': order_id,
+        'om': om,
       };
       print("compny----${cid}");
       isLoading = true;
