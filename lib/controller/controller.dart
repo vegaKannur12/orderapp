@@ -644,7 +644,8 @@ class Controller extends ChangeNotifier {
             customer_id,
             user_id,
             aid,
-            1,"",
+            1,
+            "",
             rowNum,
             "orderDetailTable",
             total_price);
@@ -810,17 +811,22 @@ class Controller extends ChangeNotifier {
     isLoading = true;
     print("haiiii");
     List<Map<String, dynamic>> result = await OrderAppDB.instance.getHistory();
-
+    List<Map<String, dynamic>> copy = [];
     print("aftr cut----$result");
-    
+    copy = result;
+    // copy = [{"id":"1","nam":"hjdks"},{"id":"2","nam":"dfd"}];
+    copy.forEach((element) {
+      print("element--$element");
+      element.remove("id");
+    });
+
+    print("copy----$copy");
+
+    // copy[0].remove("order_id");
     for (Map<String, dynamic> item in result) {
-      
- 
       historyList.add(item);
     }
 
-    
-    
     print("history list----$historyList");
     var list = historyList[0].keys.toList();
     print("**list----$list");

@@ -777,7 +777,7 @@ class OrderAppDB {
     Database db = await instance.database;
 
     result = await db.rawQuery(
-        'select orderMasterTable.order_id, orderMasterTable.os || " " || orderMasterTable.order_id as Order_Num,orderMasterTable.customerid Cus_id,orderMasterTable.orderdatetime Date, count(orderDetailTable.row_num) count, orderMasterTable.total_price  from orderMasterTable inner join orderDetailTable on orderMasterTable.order_id=orderDetailTable.order_id group by orderMasterTable.order_id');
+        'select orderMasterTable.order_id, orderMasterTable.os  || orderMasterTable.order_id as Order_Num,orderMasterTable.customerid Cus_id,orderMasterTable.orderdatetime Date, count(orderDetailTable.row_num) count, orderMasterTable.total_price  from orderMasterTable inner join orderDetailTable on orderMasterTable.order_id=orderDetailTable.order_id group by orderMasterTable.order_id');
     if (result.length > 0) {
       print("result------$result");
       return result;
