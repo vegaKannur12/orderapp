@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:orderapp/controller/controller.dart';
-import 'package:orderapp/screen/historypage.dart';
-import 'package:orderapp/screen/splashScreen.dart';
+import 'package:orderapp/screen/6_historypage.dart';
+import 'package:orderapp/screen/0_splashScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'components/commoncolor.dart';

@@ -155,6 +155,7 @@ class _HistoryState extends State<History> {
       //  selected:rows.contains(row),
         onSelectChanged: (value) {
           onSelectedRow(value!, row);
+          print("hello");
         },
         // color: MaterialStateProperty.all(Colors.green),
         cells: getCelle(row),

@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
@@ -7,13 +6,13 @@ import 'package:orderapp/components/commoncolor.dart';
 import 'package:orderapp/components/customPopup.dart';
 import 'package:orderapp/controller/controller.dart';
 import 'package:orderapp/db_helper.dart';
-import 'package:orderapp/screen/dashboard.dart';
+import 'package:orderapp/screen/5_dashboard.dart';
 import 'package:orderapp/service/tableList.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../components/waveclipper.dart';
-import 'downloadedPage.dart';
+import '6_downloadedPage.dart';
 
 class StaffLogin extends StatelessWidget {
   DateTime now = DateTime.now();
@@ -97,8 +96,7 @@ class StaffLogin extends StatelessWidget {
                                 ),
                               ),
                               width: MediaQuery.of(context).size.width,
-                              height:
-                                  MediaQuery.of(context).size.height * 0.30,
+                              height: MediaQuery.of(context).size.height * 0.30,
                               child: Center(
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -157,13 +155,11 @@ class StaffLogin extends StatelessWidget {
                                                 .validate()) {
                                               String result = await OrderAppDB
                                                   .instance
-                                                  .selectStaff(
-                                                      controller1.text,
+                                                  .selectStaff(controller1.text,
                                                       controller2.text);
                                               if (result == "success") {
                                                 visible.value = false;
-                                                Provider.of<Controller>(
-                                                        context,
+                                                Provider.of<Controller>(context,
                                                         listen: false)
                                                     .sname = controller1.text;
 
@@ -174,12 +170,10 @@ class StaffLogin extends StatelessWidget {
                                                     'st_username',
                                                     controller1.text);
                                                 await prefs.setString(
-                                                    'st_pwd',
-                                                    controller2.text);
+                                                    'st_pwd', controller2.text);
                                                 print(
                                                     "visible===${visible.value}");
-                                                Provider.of<Controller>(
-                                                        context,
+                                                Provider.of<Controller>(context,
                                                         listen: false)
                                                     .insertStaffLogDetails(
                                                         controller1.text,
@@ -201,8 +195,7 @@ class StaffLogin extends StatelessWidget {
                                           },
                                           child: Row(
                                             mainAxisAlignment:
-                                                MainAxisAlignment
-                                                    .spaceBetween,
+                                                MainAxisAlignment.spaceBetween,
                                             children: <Widget>[
                                               Text(
                                                 'LOGIN',
@@ -243,8 +236,8 @@ class StaffLogin extends StatelessWidget {
                                                           )),
                                                 );
                                               },
-                                              color: P_Settings
-                                                  .roundedButtonColor,
+                                              color:
+                                                  P_Settings.roundedButtonColor,
                                               textColor: Colors.white,
                                               child: Icon(
                                                 Icons.download,
@@ -263,8 +256,8 @@ class StaffLogin extends StatelessWidget {
                                                     context, "Exit ap?");
                                                 exit(0);
                                               },
-                                              color: P_Settings
-                                                  .roundedButtonColor,
+                                              color:
+                                                  P_Settings.roundedButtonColor,
                                               textColor: Colors.white,
                                               child: Icon(
                                                 Icons.close,
@@ -287,8 +280,7 @@ class StaffLogin extends StatelessWidget {
                                                 String? cid =
                                                     prefs.getString("cid");
                                                 print("staff cid----${cid}");
-                                                Provider.of<Controller>(
-                                                        context,
+                                                Provider.of<Controller>(context,
                                                         listen: false)
                                                     .getStaffDetails(cid!);
                                                 showDialog(
@@ -300,8 +292,8 @@ class StaffLogin extends StatelessWidget {
                                                           "Details Saved"),
                                                 );
                                               },
-                                              color: P_Settings
-                                                  .roundedButtonColor,
+                                              color:
+                                                  P_Settings.roundedButtonColor,
                                               textColor: Colors.white,
                                               child: Icon(
                                                 Icons.refresh,
@@ -320,15 +312,15 @@ class StaffLogin extends StatelessWidget {
                                     ),
                                     ValueListenableBuilder(
                                         valueListenable: visible,
-                                        builder: (BuildContext context,
-                                            bool v, Widget? child) {
+                                        builder: (BuildContext context, bool v,
+                                            Widget? child) {
                                           print("value===${visible.value}");
                                           return Visibility(
                                             visible: v,
                                             child: Text(
                                               "Incorrect Username or Password!!!",
-                                              style: TextStyle(
-                                                  color: Colors.red),
+                                              style:
+                                                  TextStyle(color: Colors.red),
                                             ),
                                           );
                                         })
