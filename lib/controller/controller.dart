@@ -1,6 +1,5 @@
 import 'dart:convert';
-import 'dart:ffi';
-
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:orderapp/components/customSnackbar.dart';
@@ -20,7 +19,7 @@ import '../model/staffdetails_model.dart';
 class Controller extends ChangeNotifier {
   bool isLoading = false;
   bool isListLoading = false;
-
+  CustomSnackbar snackbar = CustomSnackbar();
   bool isSearch = false;
   bool isVisible = false;
   List<bool> selected = [];
@@ -201,17 +200,18 @@ class Controller extends ChangeNotifier {
   }
 
   ////////////////////////// account head ///////////////////////////////////////
-  Future<AccountHead?> getaccountHeadsDetails(String cid, String? load) async {
+  Future<AccountHead?> getaccountHeadsDetails(
+    String cid,
+  ) async {
     print("cid...............${cid}");
     try {
       Uri url = Uri.parse("http://trafiqerp.in/order/fj/get_achead.php");
       Map body = {
         'cid': cid,
       };
-      if (load != "all") {
-        isLoading = true;
-        notifyListeners();
-      }
+
+      isLoading = true;
+      notifyListeners();
 
       print("compny----${cid}");
       http.Response response = await http.post(
@@ -229,10 +229,9 @@ class Controller extends ChangeNotifier {
         var account = await OrderAppDB.instance.insertAccoundHeads(accountHead);
       }
 
-      if (load != "all") {
-        isLoading = false;
-        notifyListeners();
-      }
+      isLoading = false;
+      notifyListeners();
+
       // return accountHead;
     } catch (e) {
       print(e);
@@ -258,7 +257,9 @@ class Controller extends ChangeNotifier {
   }
 
   ///////////////////////////////////////////////////////////////
-  Future<ProductDetails?> getProductDetails(String cid, String? load) async {
+  Future<ProductDetails?> getProductDetails(
+    String cid,
+  ) async {
     print("cid...............${cid}");
     try {
       Uri url = Uri.parse("http://trafiqerp.in/order/fj/get_prod.php");
@@ -266,10 +267,10 @@ class Controller extends ChangeNotifier {
         'cid': cid,
       };
       print("compny----${cid}");
-      if (load != "all") {
-        isLoading = true;
-        notifyListeners();
-      }
+
+      isLoading = true;
+      notifyListeners();
+
       http.Response response = await http.post(
         url,
         body: body,
@@ -284,10 +285,9 @@ class Controller extends ChangeNotifier {
         var product =
             await OrderAppDB.instance.insertProductDetails(proDetails);
       }
-      if (load != "all") {
-        isLoading = false;
-        notifyListeners();
-      }
+
+      isLoading = false;
+      notifyListeners();
       /////////////// insert into local db /////////////////////
 
     } catch (e) {
@@ -298,7 +298,8 @@ class Controller extends ChangeNotifier {
 
   /////////////////////////////product category//////////////////////////////
   Future<ProductsCategoryModel?> getProductCategory(
-      String cid, String? load) async {
+    String cid,
+  ) async {
     print("cid...............${cid}");
     try {
       Uri url = Uri.parse("http://trafiqerp.in/order/fj/get_cat.php");
@@ -306,10 +307,10 @@ class Controller extends ChangeNotifier {
         'cid': cid,
       };
       print("compny----${cid}");
-      if (load != "all") {
-        isLoading = true;
-        notifyListeners();
-      }
+
+      isLoading = true;
+      notifyListeners();
+
       http.Response response = await http.post(
         url,
         body: body,
@@ -324,10 +325,10 @@ class Controller extends ChangeNotifier {
       for (var cat in map) {
         category = ProductsCategoryModel.fromJson(cat);
         var product = await OrderAppDB.instance.insertProductCategory(category);
-        if (load != "all") {
-          isLoading = false;
-          notifyListeners();
-        }
+
+        isLoading = false;
+        notifyListeners();
+
         // print("inserted ${account}");
       }
       /////////////// insert into local db /////////////////////
@@ -340,7 +341,8 @@ class Controller extends ChangeNotifier {
 
   ////////////////////////////////get company//////////////////////////////////
   Future<ProductCompanymodel?> getProductCompany(
-      String cid, String? load) async {
+    String cid,
+  ) async {
     print("cid...............${cid}");
     try {
       Uri url = Uri.parse("http://trafiqerp.in/order/fj/get_com.php");
@@ -365,11 +367,11 @@ class Controller extends ChangeNotifier {
         productCompany = ProductCompanymodel.fromJson(proComp);
         var product =
             await OrderAppDB.instance.insertProductCompany(productCompany);
-        if (load != "all") {
-          isLoading = false;
-          notifyListeners();
-          // notifyListeners();
-        }
+
+        isLoading = false;
+        notifyListeners();
+        // notifyListeners();
+
         // print("inserted ${account}");
       }
       /////////////// insert into local db /////////////////////
@@ -652,7 +654,7 @@ class Controller extends ChangeNotifier {
       await OrderAppDB.instance.insertorderMasterandDetailsTable(
           order_id,
           0,
-          " ",
+          0.0,
           " ",
           date,
           os,
@@ -667,10 +669,11 @@ class Controller extends ChangeNotifier {
 
       for (var item in bagList) {
         print("orderid---$order_id");
+        double rate = double.parse(item["rate"]);
         await OrderAppDB.instance.insertorderMasterandDetailsTable(
             order_id,
             item["qty"],
-            item["rate"],
+            rate,
             item["code"],
             date,
             os,
@@ -789,19 +792,19 @@ class Controller extends ChangeNotifier {
 /////////////////////////////////////////////////////////////////////////////////////
 
   ///////////////////////////////////////////////////////////////////////
-  downloadAllPages(String cid) async {
-    isLoading = true;
-    print("isloaading---$isLoading");
-    notifyListeners();
-    // getaccountHeadsDetails(cid, "all");
-    getProductCategory(cid, "all");
-    getProductCompany(cid, "all");
-    // getProductDetails(cid, "all");
-    isLoading = false;
-    print("isloaading---$isLoading");
+  // downloadAllPages(String cid) async {
+  //   isLoading = true;
+  //   print("isloaading---$isLoading");
+  //   notifyListeners();
+  //   // getaccountHeadsDetails(cid, "all");
+  //   getProductCategory(cid, "all");
+  //   getProductCompany(cid, "all");
+  //   // getProductDetails(cid, "all");
+  //   isLoading = false;
+  //   print("isloaading---$isLoading");
 
-    notifyListeners();
-  }
+  //   notifyListeners();
+  // }
 
   ////////////////////////////////////////////////////////////////
   qtyIncrement() {
@@ -910,82 +913,62 @@ class Controller extends ChangeNotifier {
 
   //////////////////order save and send/////////////////////////
   saveOrderDetails(
-      String id,
-      String cid,
-      String series,
-      String orderid,
-      String customerid,
-      String orderdate,
-      String staffid,
-      String areaid,
-      String pcode,
-      int quantity,
-      double rate,
-      BuildContext context) async {
+      String cid, List<Map<String, dynamic>> om, BuildContext context) async {
     try {
+      print("haiii");
       Uri url = Uri.parse("http://trafiqerp.in/order/fj/order_save.php");
-      List<Map<String, dynamic>> om = [
-        {
-          "id": id,
-          "ser": series,
-          "oid": orderid,
-          "cuid": customerid,
-          "odate": orderdate,
-          "sid": staffid,
-          "aid": areaid,
-          "od": [
-            {
-              "code": pcode,
-              "qty": quantity,
-              "rate": rate,
-            }
-          ]
-        }
-      ];
-      Map body = {
-        'cid': cid,
-        'om': om,
-      };
-      print("compny----${cid}");
       isLoading = true;
       notifyListeners();
+      // print("body--${body}");
+      var mapBody = jsonEncode(om);
+      print("mapBody--${mapBody}");
+
+      var jsonD = jsonDecode(mapBody);
+
       http.Response response = await http.post(
         url,
-        body: body,
+        body: {'cid': cid, 'om': mapBody},
       );
 
-      print("body ${body}");
-      var map = jsonDecode(response.body);
-      print("map ${map}");
+      print("after");
 
+      var map = jsonDecode(response.body);
+      print("response----${map}");
+
+      for (var item in map) {
+        if (item["order_id"] != null) {
+          await OrderAppDB.instance.upadteCommonQuery("orderMasterTable",
+              "status='${item["order_id"]}'", "id='${item["id"]}'");
+        }
+      }
+      isLoading = false;
       notifyListeners();
     } catch (e) {
       print(e);
       return null;
     }
   }
-
-//////////////////////////////////////////////
-  uploadData() async {
+///////////////////////////upload order data//////////////////////////////////////////
+  uploadOrdersData(String cid, BuildContext context) async {
     List<Map<String, dynamic>> resultQuery = [];
     List<Map<String, dynamic>> om = [];
-
     var result = await OrderAppDB.instance.selectMasterTable();
-    // var joinResult = await OrderAppDB.instance.getDataFromMasterAndDetail(33);
     print("output------$result");
-
     String jsonE = jsonEncode(result);
     var jsonDe = jsonDecode(jsonE);
     print("jsonDe--${jsonDe}");
-
     for (var item in jsonDe) {
-      resultQuery =
-          await OrderAppDB.instance.selectDetailTable(item["order_id"]);
+      resultQuery = await OrderAppDB.instance.selectDetailTable(item["oid"]);
       item["od"] = resultQuery;
-
       om.add(item);
     }
-
+    if (om.length > 0) {
+      print("entede");
+      saveOrderDetails(cid, om, context);
+    } else {
+      snackbar.showSnackbar(context, "Nothing to upload");
+    }
     print("om----$om");
+    notifyListeners();
   }
 }

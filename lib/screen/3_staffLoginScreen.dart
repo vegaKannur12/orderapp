@@ -153,11 +153,11 @@ class StaffLogin extends StatelessWidget {
                                             // toggle();
                                             if (_formKey.currentState!
                                                 .validate()) {
-                                              String result = await OrderAppDB
+                                             List result = await OrderAppDB
                                                   .instance
                                                   .selectStaff(controller1.text,
                                                       controller2.text);
-                                              if (result == "success") {
+                                              if (result[0] == "success" && result[1] != null ) {
                                                 visible.value = false;
                                                 Provider.of<Controller>(context,
                                                         listen: false)
@@ -166,6 +166,9 @@ class StaffLogin extends StatelessWidget {
                                                 final prefs =
                                                     await SharedPreferences
                                                         .getInstance();
+                                                await prefs.setString(
+                                                    'sid',
+                                                    result[1]);
                                                 await prefs.setString(
                                                     'st_username',
                                                     controller1.text);
@@ -176,7 +179,7 @@ class StaffLogin extends StatelessWidget {
                                                 Provider.of<Controller>(context,
                                                         listen: false)
                                                     .insertStaffLogDetails(
-                                                        controller1.text,
+                                                        result[1],
                                                         controller1.text,
                                                         date!);
                                                 //  await OrderAppDB.instance.getArea(controller1.text);

@@ -273,8 +273,7 @@ class OrderAppDB {
             $code TEXT,
             $qty INTEGER,
             $unit TEXT,
-            $rate TEXT,
-            $status INTEGER
+            $rate REAL  
           )
           ''');
     await db.execute(''' 
@@ -357,7 +356,7 @@ class OrderAppDB {
   Future insertorderMasterandDetailsTable(
       int order_id,
       int? qty,
-      String? rate,
+      double rate,
       String? code,
       String orderdate,
       String os,
@@ -375,7 +374,7 @@ class OrderAppDB {
 
     if (table == "orderDetailTable") {
       var query2 =
-          'INSERT INTO orderDetailTable(order_id, row_num,os,code, qty, rate, unit, status) VALUES(${order_id},${rowNum},"${os}","${code}", ${qty}, "${rate}", "${unit}", ${status})';
+          'INSERT INTO orderDetailTable(order_id, row_num,os,code, qty, rate, unit) VALUES(${order_id},${rowNum},"${os}","${code}", ${qty}, $rate, "${unit}")';
       print(query2);
       res2 = await db.rawInsert(query2);
     } else if (table == "orderMasterTable") {
@@ -464,10 +463,12 @@ class OrderAppDB {
   }
 
   /////////////////////////ustaff login authentication////////////
-  Future<String> selectStaff(String uname, String pwd) async {
+  selectStaff(String uname, String pwd) async {
     String result = "";
-    String sid;
+    List<String> resultList = [];
+    String? sid;
     print("uname---Password----${uname}--${pwd}");
+    resultList.clear();
     Database db = await instance.database;
     List<Map<String, dynamic>> list =
         await db.rawQuery('SELECT * FROM staffDetailsTable');
@@ -480,15 +481,24 @@ class OrderAppDB {
 
         print("ok");
         result = "success";
+        sid = staff["sid"];
+        resultList.add(result);
+        resultList.add(sid!);
+        // resultList[0] = result;
+        // resultList[1] = sid!;
         break;
       } else {
         result = "failed";
+        sid = "";
+        resultList.add(result);
+        resultList.add(sid);
       }
     }
     print("res===${result}");
 
     print("all data ${list}");
-    return result;
+
+    return resultList;
   }
 
   /////////////////////////account heads insertion///////////////////////////////
@@ -852,7 +862,7 @@ class OrderAppDB {
     Database db = await instance.database;
 
     var result = await db.rawQuery(
-        "SELECT orderMasterTable.id as id, orderMasterTable.os  || orderMasterTable.order_id as ser,orderMasterTable.order_id ,orderMasterTable.customerid Cus_id, orderMasterTable.orderdatetime Date, orderMasterTable.userid as staff_id,orderMasterTable.areaid as area_id  FROM orderMasterTable");
+        "SELECT orderMasterTable.id as id, orderMasterTable.os  || orderMasterTable.order_id as ser,orderMasterTable.order_id as oid,orderMasterTable.customerid cuid, orderMasterTable.orderdatetime odate, orderMasterTable.userid as sid,orderMasterTable.areaid as aid  FROM orderMasterTable");
     return result;
   }
 
@@ -862,8 +872,15 @@ class OrderAppDB {
     Database db = await instance.database;
 
     var result = await db.rawQuery(
-        "SELECT orderDetailTable.code, orderDetailTable.qty, orderDetailTable.rate from orderDetailTable  where  orderDetailTable.order_id=${order_id}");
+        "SELECT orderDetailTable.code as code, orderDetailTable.qty as qty, orderDetailTable.rate as rate from orderDetailTable  where  orderDetailTable.order_id=${order_id}");
     return result;
+  }
+
+  ///////////////////////////////////////////////////////
+  upadteCommonQuery(String table, String fields, String condition) async {
+    Database db = await instance.database;
+    var res = await db.rawUpdate('UPDATE $table SET $fields WHERE $condition ');
+    print("response-------$res");
   }
 
 ////////////////////////////////////////////////////

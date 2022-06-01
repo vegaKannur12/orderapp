@@ -82,19 +82,19 @@ class _DownloadedPageState extends State<DownloadedPage> {
                           onPressed: () async {
                             if (downloadItems[index] == "Account Heads") {
                               Provider.of<Controller>(context, listen: false)
-                                  .getaccountHeadsDetails(cid!, "");
+                                  .getaccountHeadsDetails(cid!);
                             }
                             if (downloadItems[index] == "Product category") {
                               Provider.of<Controller>(context, listen: false)
-                                  .getProductCategory(cid!, "");
+                                  .getProductCategory(cid!);
                             }
                             if (downloadItems[index] == "Company") {
                               Provider.of<Controller>(context, listen: false)
-                                  .getProductCompany(cid!, "");
+                                  .getProductCompany(cid!);
                             }
                             if (downloadItems[index] == "Product Details") {
                               Provider.of<Controller>(context, listen: false)
-                                  .getProductDetails(cid!, "");
+                                  .getProductDetails(cid!);
                             }
                           },
                           icon: Icon(Icons.download),

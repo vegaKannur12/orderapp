@@ -44,6 +44,7 @@ dependencies:
   flutter_typeahead: ^3.2.5
   intl: ^0.17.0
   ota_update: ^4.0.1
+  dio: ^4.0.6
   # bluetooth_print: ^3.0.1
 dev_dependencies:
   flutter_test:

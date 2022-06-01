@@ -26,6 +26,7 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   int _selectedDrawerIndex = 0;
+  String? cid;
   List companyAttributes = [
     "Dashboard",
     "Logged in",
@@ -52,9 +53,13 @@ class _DashboardState extends State<Dashboard> {
     super.initState();
     Provider.of<Controller>(context, listen: false).setCname();
     Provider.of<Controller>(context, listen: false).setSname();
-    Provider.of<Controller>(context, listen: false).getStaffid();
+    getCompaniId() ;
   }
-
+  getCompaniId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    cid=prefs.getString("cid");
+    print("cid----$cid");
+  }
   _getDrawerItemWidget(int pos) {
     print("pos---${pos}");
     switch (pos) {
@@ -73,7 +78,8 @@ class _DashboardState extends State<Dashboard> {
           type: "drawer call",
         );
       case 6:
-        return Uploaddata();
+        return Uploaddata(cid:cid!,
+        type: "drawer call",);
       case 7:
         return History(
           page: "History Page",
@@ -140,7 +146,7 @@ class _DashboardState extends State<Dashboard> {
       onWillPop: () => _onBackPressed(context),
       child: Scaffold(
         backgroundColor: P_Settings.wavecolor,
-        appBar: _selectedIndex == 5
+        appBar: _selectedIndex == 5 || _selectedIndex==6
             ? AppBar(
                 elevation: 0,
                 backgroundColor: P_Settings.wavecolor,
