@@ -910,7 +910,6 @@ class Controller extends ChangeNotifier {
               "status='${item["order_id"]}'", "id='${item["id"]}'");
         }
       }
-      // print("map ${map}");
       isLoading = false;
       notifyListeners();
     } catch (e) {
@@ -918,23 +917,18 @@ class Controller extends ChangeNotifier {
       return null;
     }
   }
-
+///////////////////////////upload order data//////////////////////////////////////////
   uploadOrdersData(String cid, BuildContext context) async {
     List<Map<String, dynamic>> resultQuery = [];
     List<Map<String, dynamic>> om = [];
-    // isLoading = true;
-    // notifyListeners();
     var result = await OrderAppDB.instance.selectMasterTable();
-    // var joinResult = await OrderAppDB.instance.getDataFromMasterAndDetail(33);
     print("output------$result");
-
     String jsonE = jsonEncode(result);
     var jsonDe = jsonDecode(jsonE);
     print("jsonDe--${jsonDe}");
     for (var item in jsonDe) {
       resultQuery = await OrderAppDB.instance.selectDetailTable(item["oid"]);
       item["od"] = resultQuery;
-
       om.add(item);
     }
     if (om.length > 0) {

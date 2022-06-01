@@ -6,6 +6,7 @@ import 'package:orderapp/db_helper.dart';
 import 'package:orderapp/screen/5_dashboard.dart';
 import 'package:orderapp/service/tableList.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CartList extends StatefulWidget {
   String custmerId;
@@ -132,16 +133,18 @@ class _CartListState extends State<CartList> {
                                   .bagList
                                   .length >
                               0) {
+                            final prefs = await SharedPreferences.getInstance();
+                            String? sid=await prefs.getString('sid');
                             Provider.of<Controller>(context, listen: false)
                                 .insertToOrderbagAndMaster(
                                     widget.os,
                                     date!,
                                     widget.custmerId,
-                                    sname,
+                                    sid!,
                                     widget.areaId,
                                     value.orderTotal!);
                             // var result = await OrderAppDB.instance.getDataFromMasterAndDetail("os='${widget.os}' AND customerid='${widget.custmerId}'");
-                           
+
                             return showDialog(
                                 context: context,
                                 builder: (context) {

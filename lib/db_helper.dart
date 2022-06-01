@@ -367,8 +367,7 @@ class OrderAppDB {
       String unit,
       int rowNum,
       String table,
-      String total_price
-    ) async {
+      String total_price) async {
     final db = await database;
     var res2;
     var res3;
@@ -464,9 +463,12 @@ class OrderAppDB {
   }
 
   /////////////////////////ustaff login authentication////////////
-  Future<String> selectStaff(String uname, String pwd) async {
+  selectStaff(String uname, String pwd) async {
     String result = "";
+    List<String> resultList = [];
+    String? sid;
     print("uname---Password----${uname}--${pwd}");
+    resultList.clear();
     Database db = await instance.database;
     List<Map<String, dynamic>> list =
         await db.rawQuery('SELECT * FROM staffDetailsTable');
@@ -476,15 +478,24 @@ class OrderAppDB {
       if (uname == staff["uname"] && pwd == staff["pwd"]) {
         print("ok");
         result = "success";
+        sid = staff["sid"];
+        resultList.add(result);
+        resultList.add(sid!);
+        // resultList[0] = result;
+        // resultList[1] = sid!;
         break;
       } else {
         result = "failed";
+        sid = "";
+        resultList.add(result);
+        resultList.add(sid);
       }
     }
     print("res===${result}");
 
     print("all data ${list}");
-    return result;
+
+    return resultList;
   }
 
   /////////////////////////account heads insertion///////////////////////////////
@@ -820,26 +831,26 @@ class OrderAppDB {
   selectMasterTable() async {
     Database db = await instance.database;
 
-    var result = await db.rawQuery("SELECT orderMasterTable.id as id, orderMasterTable.os  || orderMasterTable.order_id as ser,orderMasterTable.order_id as oid,orderMasterTable.customerid cuid, orderMasterTable.orderdatetime odate, orderMasterTable.userid as sid,orderMasterTable.areaid as aid  FROM orderMasterTable");
+    var result = await db.rawQuery(
+        "SELECT orderMasterTable.id as id, orderMasterTable.os  || orderMasterTable.order_id as ser,orderMasterTable.order_id as oid,orderMasterTable.customerid cuid, orderMasterTable.orderdatetime odate, orderMasterTable.userid as sid,orderMasterTable.areaid as aid  FROM orderMasterTable");
     return result;
   }
 
   //////////////////////////////////////////////////////////
-  
-selectDetailTable(int order_id) async {
+
+  selectDetailTable(int order_id) async {
     Database db = await instance.database;
 
-    var result = await db.rawQuery("SELECT orderDetailTable.code as code, orderDetailTable.qty as qty, orderDetailTable.rate as rate from orderDetailTable  where  orderDetailTable.order_id=${order_id}");
+    var result = await db.rawQuery(
+        "SELECT orderDetailTable.code as code, orderDetailTable.qty as qty, orderDetailTable.rate as rate from orderDetailTable  where  orderDetailTable.order_id=${order_id}");
     return result;
   }
 
-
   ///////////////////////////////////////////////////////
-  upadteCommonQuery(String table,String fields,String condition)async{
+  upadteCommonQuery(String table, String fields, String condition) async {
     Database db = await instance.database;
-    var res = await db.rawUpdate(
-          'UPDATE $table SET $fields WHERE $condition ');
-      print("response-------$res");
+    var res = await db.rawUpdate('UPDATE $table SET $fields WHERE $condition ');
+    print("response-------$res");
   }
 
 ////////////////////////////////////////////////////
