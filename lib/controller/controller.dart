@@ -934,69 +934,25 @@ class Controller extends ChangeNotifier {
   }
 
   uploadData() async {
-    List ordid = [];
-    Map<String, dynamic> map = {};
-    List<Map<String, dynamic>> od = [];
-    Map<String, dynamic> odmap = {};
+    List<Map<String, dynamic>> resultQuery = [];
     List<Map<String, dynamic>> om = [];
-    var result = await OrderAppDB.instance.selectOrderIdFromMasterTable();
-    var joinResult = await OrderAppDB.instance.getDataFromMasterAndDetail(6);
-    String json = jsonEncode(joinResult);
-    var decod = jsonDecode(json);
 
-    // for (int i = 0; i < 7; i++) {
-    //   om.add(decod[0][i]);
-    // }
-    int i = 0;
-    var length = decod.length;
-    decod[0].forEach((key, value) {
-      if (i < 7) {
-        map[key] = value;
-        // om.add();
-      }
-      i++;
-    });
-    print("map ---${map}");
-    om.add(map);
-    odmap.clear();
-    int j=0;
-    od.clear();
-    decod.forEach((element) {
-      if (j < 3) {
-      element.forEach((key, value) {
-        
-          if (key == "code" || key == "qty" || key == "rate") {
-            odmap[key] = value;
-            print("odmap-----$odmap");
-            od.add(odmap);
-          }
-        
-      });}
-      j++;
-    });
-    print("od--$od");
+    var result = await OrderAppDB.instance.selectMasterTable();
+    // var joinResult = await OrderAppDB.instance.getDataFromMasterAndDetail(33);
+    print("output------$result");
 
-    // for (var item in result) {
-    //   var joinResult= await OrderAppDB.instance.getDataFromMasterAndDetail(item["order_id"]);
+    String jsonE = jsonEncode(result);
+    var jsonDe = jsonDecode(jsonE);
+    print("jsonDe--${jsonDe}");
 
-    // }
+    for (var item in jsonDe) {
+      resultQuery =
+          await OrderAppDB.instance.selectDetailTable(item["order_id"]);
+      item["od"] = resultQuery;
+      
+      om.add(item);
+    }
 
-    // var joinResult= await OrderAppDB.instance.getDataFromMasterAndDetail();
-    String json1 = jsonEncode(ordid);
-    // print("orderId----${json1}");
-    // print("type--${result.runtimeType}");
-
-    // String json = jsonEncode(result);
-    // var decod = jsonDecode(json);
-    // print("encoded ----$json");
-    // print("decod ----$decod");
-    // print("decodtype--${decod.runtimeType}");
-
-    // decod.forEach((element) {
-    //   element.forEach((key, value) {
-    //     // print(key);
-    //     if (key == "area_id") {}
-    //   });
-    // });
+    print("om----$om");
   }
 }
