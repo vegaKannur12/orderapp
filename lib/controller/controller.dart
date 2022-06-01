@@ -29,6 +29,7 @@ class Controller extends ChangeNotifier {
   String? order_id;
   String? searchkey;
   String? sname;
+  String? sid;
   String? orderTotal;
   String? ordernumber;
   String? cid;
@@ -56,6 +57,7 @@ class Controller extends ChangeNotifier {
   List<Map<String, dynamic>> orderdetailsList = [];
 
   List<Map<String, dynamic>> staffList = [];
+  List<Map<String, dynamic>> staffId = [];
   List<Map<String, dynamic>> productName = [];
   List<Map<String, dynamic>> areDetails = [];
   List<Map<String, dynamic>> custmerDetails = [];
@@ -250,6 +252,7 @@ class Controller extends ChangeNotifier {
   setSname() async {
     final prefs = await SharedPreferences.getInstance();
     String? same = prefs.getString("st_username");
+
     sname = same;
     notifyListeners();
   }
@@ -417,6 +420,20 @@ class Controller extends ChangeNotifier {
     notifyListeners();
   }
 
+///////////////////////////////////
+  getStaffid() async {
+    String? staffName;
+    final prefs = await SharedPreferences.getInstance();
+    staffName = prefs.getString("st_username");
+    String sId = staffName!;
+    // print("sid......$sid");
+    print("Sname..........$sId");
+    // try {
+    //   String result =
+    //       await OrderAppDB.instance.selectStaff(staffName!, password);
+    notifyListeners();
+  }
+
   /////////////////////////////////////////////////////
   customerListClear() {
     customerList.clear();
@@ -510,6 +527,19 @@ class Controller extends ChangeNotifier {
   }
 
   /////////////////////////////////////
+  Future<dynamic> setStaffid(String sname) async {
+    print("Sname.............$sname");
+    try {
+      ordernum = await OrderAppDB.instance.setStaffid(sname);
+      print("ordernum----${ordernum}");
+
+      notifyListeners();
+    } catch (e) {
+      print(e);
+      return null;
+    }
+    notifyListeners();
+  }
 
 ////////////////////////////////
   generateTextEditingController() {
@@ -756,6 +786,7 @@ class Controller extends ChangeNotifier {
         await OrderAppDB.instance.insertStaffLoignDetails(sid, sname, datetime);
     notifyListeners();
   }
+/////////////////////////////////////////////////////////////////////////////////////
 
   ///////////////////////////////////////////////////////////////////////
   downloadAllPages(String cid) async {
@@ -936,69 +967,25 @@ class Controller extends ChangeNotifier {
 
 //////////////////////////////////////////////
   uploadData() async {
-    List ordid = [];
-    Map<String, dynamic> map = {};
-    List<Map<String, dynamic>> od = [];
-    Map<String, dynamic> odmap = {};
+    List<Map<String, dynamic>> resultQuery = [];
     List<Map<String, dynamic>> om = [];
-    var result = await OrderAppDB.instance.selectOrderIdFromMasterTable();
-    var joinResult = await OrderAppDB.instance.getDataFromMasterAndDetail(1);
-    String json = jsonEncode(joinResult);
-    var decod = jsonDecode(json);
 
-    // for (int i = 0; i < 7; i++) {
-    //   om.add(decod[0][i]);
-    // }
-    int i = 0;
-    // var length = decod.length;
-    decod[0].forEach((key, value) {
-      if (i < decod.length) {
-        map[key] = value;
-        // om.add();
-      }
-      i++;
-    });
-    print("map ---${map}");
-    om.add(map);
-    odmap.clear();
-    int j = 0;
-    od.clear();
-    decod.forEach((element) {
-      if (j < decod.length) {
-        element.forEach((key, value) {
-          if (key == "code" || key == "qty" || key == "rate") {
-            odmap[key] = value;
-            print("odmap-----$odmap");
-            od.add(odmap);
-          }
-        });
-      }
-      j++;
-    });
-    print("od--$od");
+    var result = await OrderAppDB.instance.selectMasterTable();
+    // var joinResult = await OrderAppDB.instance.getDataFromMasterAndDetail(33);
+    print("output------$result");
 
-    // for (var item in result) {
-    //   var joinResult= await OrderAppDB.instance.getDataFromMasterAndDetail(item["order_id"]);
+    String jsonE = jsonEncode(result);
+    var jsonDe = jsonDecode(jsonE);
+    print("jsonDe--${jsonDe}");
 
-    // }
+    for (var item in jsonDe) {
+      resultQuery =
+          await OrderAppDB.instance.selectDetailTable(item["order_id"]);
+      item["od"] = resultQuery;
 
-    // var joinResult= await OrderAppDB.instance.getDataFromMasterAndDetail();
+      om.add(item);
+    }
 
-    String json2 = jsonEncode(json);
-    // print("orderId----${json1}");
-    // print("type--${result.runtimeType}");
-
-    // String json = jsonEncode(result);
-    // var decod = jsonDecode(json);
-    // print("encoded ----$json");
-    // print("decod ----$decod");
-    // print("decodtype--${decod.runtimeType}");
-
-    // decod.forEach((element) {
-    //   element.forEach((key, value) {
-    //     // print(key);
-    //     if (key == "area_id") {}
-    //   });
-    // });
+    print("om----$om");
   }
 }

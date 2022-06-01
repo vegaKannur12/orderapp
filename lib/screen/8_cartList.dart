@@ -26,10 +26,10 @@ class CartList extends StatefulWidget {
 class _CartListState extends State<CartList> {
   DateTime now = DateTime.now();
   String? date;
-  var sname;
+  String? sid;
   int counter = 0;
   bool isAdded = false;
-
+  String? sname;
   @override
   void initState() {
     date = DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
@@ -39,8 +39,7 @@ class _CartListState extends State<CartList> {
         .generateTextEditingController();
     Provider.of<Controller>(context, listen: false)
         .calculateTotal(widget.os, widget.custmerId);
-    sname = Provider.of<Controller>(context, listen: false).sname;
-    print("sname-----${sname}");
+    Provider.of<Controller>(context, listen: false).setSname();
   }
 
   @override
@@ -128,6 +127,10 @@ class _CartListState extends State<CartList> {
                       ),
                       GestureDetector(
                         onTap: (() async {
+                          sid = await Provider.of<Controller>(context,
+                                  listen: false)
+                              .setStaffid(value.sname!);
+                          print("Sid........${value.sname}$sid");
                           if (Provider.of<Controller>(context, listen: false)
                                   .bagList
                                   .length >
@@ -137,11 +140,11 @@ class _CartListState extends State<CartList> {
                                     widget.os,
                                     date!,
                                     widget.custmerId,
-                                    sname,
+                                    sid!,
                                     widget.areaId,
                                     value.orderTotal!);
                             // var result = await OrderAppDB.instance.getDataFromMasterAndDetail("os='${widget.os}' AND customerid='${widget.custmerId}'");
-                           
+
                             return showDialog(
                                 context: context,
                                 builder: (context) {

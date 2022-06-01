@@ -466,6 +466,7 @@ class OrderAppDB {
   /////////////////////////ustaff login authentication////////////
   Future<String> selectStaff(String uname, String pwd) async {
     String result = "";
+    String sid;
     print("uname---Password----${uname}--${pwd}");
     Database db = await instance.database;
     List<Map<String, dynamic>> list =
@@ -474,6 +475,9 @@ class OrderAppDB {
       print(
           "staff['uname'] & staff['pwd']------------------${staff['uname']}--${staff['pwd']}");
       if (uname == staff["uname"] && pwd == staff["pwd"]) {
+        sid = staff['sid'];
+        print("staffid..$sid");
+
         print("ok");
         result = "success";
         break;
@@ -598,6 +602,15 @@ class OrderAppDB {
     return res;
   }
 
+///////////////////////////////////////
+  setStaffid(String sname) async {
+    print("Sname.......$sname");
+    Database db = await instance.database;
+    var res = await db
+        .rawQuery("SELECT sid FROM staffDetailsTable WHERE sname = '$sname'");
+    print("sid result......$res");
+    return res;
+  }
   /////////////////////////max of from table//////////////////////
   // getMaxOfFieldValue(String os, String customerId) async {
   //   var res;
@@ -806,14 +819,15 @@ class OrderAppDB {
     List<Map<String, dynamic>> result;
     List<Map<String, dynamic>> result2;
     Database db = await instance.database;
-    result = await db.rawQuery('select id,order_id,orderdatetime,customerid,userid,areaid from orderMasterTable');
+    result = await db.rawQuery(
+        'select id,order_id,orderdatetime,customerid,userid,areaid from orderMasterTable');
     result2 = await db.rawQuery('select * from orderDetailTable');
 
     // result = await db.rawQuery(
     //     'select orderMasterTable.id as id, orderMasterTable.os  || orderMasterTable.order_id as ser,orderMasterTable.order_id ,orderMasterTable.customerid Cus_id, orderMasterTable.orderdatetime Date, orderMasterTable.userid as staff_id,orderMasterTable.areaid as area_id, orderDetailTable.code, orderDetailTable.qty, orderDetailTable.rate from orderMasterTable inner join  orderDetailTable on orderMasterTable.order_id = orderDetailTable.order_id  where  orderMasterTable.order_id =${order_id} order by  orderMasterTable.order_id,orderDetailTable.row_num ');
     if (result.length > 0) {
       print("inner join result------$result");
-      return {result,result2};
+      return {result, result2};
     } else {
       return null;
     }
@@ -826,7 +840,7 @@ class OrderAppDB {
 
     result = await db.rawQuery('select * from orderMasterTable');
     if (result.length > 0) {
-      print("inner join result------$result");
+      // print("inner join result------$result");
       return result;
     } else {
       return null;
@@ -834,10 +848,21 @@ class OrderAppDB {
   }
 
 ///////////////////////////////////////////////////////////
-  selectOrderIdFromMasterTable() async {
+  selectMasterTable() async {
     Database db = await instance.database;
 
-    var result = await db.rawQuery("SELECT order_id FROM orderMasterTable");
+    var result = await db.rawQuery(
+        "SELECT orderMasterTable.id as id, orderMasterTable.os  || orderMasterTable.order_id as ser,orderMasterTable.order_id ,orderMasterTable.customerid Cus_id, orderMasterTable.orderdatetime Date, orderMasterTable.userid as staff_id,orderMasterTable.areaid as area_id  FROM orderMasterTable");
+    return result;
+  }
+
+  //////////////////////////////////////////////////////////
+
+  selectDetailTable(int order_id) async {
+    Database db = await instance.database;
+
+    var result = await db.rawQuery(
+        "SELECT orderDetailTable.code, orderDetailTable.qty, orderDetailTable.rate from orderDetailTable  where  orderDetailTable.order_id=${order_id}");
     return result;
   }
 

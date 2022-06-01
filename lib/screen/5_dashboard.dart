@@ -5,9 +5,9 @@ import 'package:orderapp/components/commoncolor.dart';
 import 'package:orderapp/db_helper.dart';
 import 'package:orderapp/screen/6_downloadedPage.dart';
 import 'package:orderapp/screen/6_historypage.dart';
-import 'package:orderapp/screen/mainDashboard.dart';
+import 'package:orderapp/screen/5_mainDashboard.dart';
 import 'package:orderapp/screen/3_staffLoginScreen.dart';
-import 'package:orderapp/screen/uploaddata.dart';
+import 'package:orderapp/screen/6_uploaddata.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -52,6 +52,7 @@ class _DashboardState extends State<Dashboard> {
     super.initState();
     Provider.of<Controller>(context, listen: false).setCname();
     Provider.of<Controller>(context, listen: false).setSname();
+    Provider.of<Controller>(context, listen: false).getStaffid();
   }
 
   _getDrawerItemWidget(int pos) {
