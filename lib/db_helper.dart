@@ -273,8 +273,7 @@ class OrderAppDB {
             $code TEXT,
             $qty INTEGER,
             $unit TEXT,
-            $rate TEXT,
-            $status INTEGER
+            $rate REAL  
           )
           ''');
     await db.execute(''' 
@@ -357,7 +356,7 @@ class OrderAppDB {
   Future insertorderMasterandDetailsTable(
       int order_id,
       int? qty,
-      String? rate,
+      double rate,
       String? code,
       String orderdate,
       String os,
@@ -368,14 +367,15 @@ class OrderAppDB {
       String unit,
       int rowNum,
       String table,
-      String total_price) async {
+      String total_price
+    ) async {
     final db = await database;
     var res2;
     var res3;
 
     if (table == "orderDetailTable") {
       var query2 =
-          'INSERT INTO orderDetailTable(order_id, row_num,os,code, qty, rate, unit, status) VALUES(${order_id},${rowNum},"${os}","${code}", ${qty}, "${rate}", "${unit}", ${status})';
+          'INSERT INTO orderDetailTable(order_id, row_num,os,code, qty, rate, unit) VALUES(${order_id},${rowNum},"${os}","${code}", ${qty}, $rate, "${unit}")';
       print(query2);
       res2 = await db.rawInsert(query2);
     } else if (table == "orderMasterTable") {
@@ -820,7 +820,7 @@ class OrderAppDB {
   selectMasterTable() async {
     Database db = await instance.database;
 
-    var result = await db.rawQuery("SELECT orderMasterTable.id as id, orderMasterTable.os  || orderMasterTable.order_id as ser,orderMasterTable.order_id ,orderMasterTable.customerid Cus_id, orderMasterTable.orderdatetime Date, orderMasterTable.userid as staff_id,orderMasterTable.areaid as area_id  FROM orderMasterTable");
+    var result = await db.rawQuery("SELECT orderMasterTable.id as id, orderMasterTable.os  || orderMasterTable.order_id as ser,orderMasterTable.order_id as oid,orderMasterTable.customerid cuid, orderMasterTable.orderdatetime odate, orderMasterTable.userid as sid,orderMasterTable.areaid as aid  FROM orderMasterTable");
     return result;
   }
 
@@ -829,8 +829,17 @@ class OrderAppDB {
 selectDetailTable(int order_id) async {
     Database db = await instance.database;
 
-    var result = await db.rawQuery("SELECT orderDetailTable.code, orderDetailTable.qty, orderDetailTable.rate from orderDetailTable  where  orderDetailTable.order_id=${order_id}");
+    var result = await db.rawQuery("SELECT orderDetailTable.code as code, orderDetailTable.qty as qty, orderDetailTable.rate as rate from orderDetailTable  where  orderDetailTable.order_id=${order_id}");
     return result;
+  }
+
+
+  ///////////////////////////////////////////////////////
+  upadteCommonQuery(String table,String fields,String condition)async{
+    Database db = await instance.database;
+    var res = await db.rawUpdate(
+          'UPDATE $table SET $fields WHERE $condition ');
+      print("response-------$res");
   }
 
 ////////////////////////////////////////////////////
