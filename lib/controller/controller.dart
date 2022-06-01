@@ -238,63 +238,6 @@ class Controller extends ChangeNotifier {
     }
   }
 
-  ////////////////////Place order data send//////////////////
-  Future<RegistrationData?> saveOrderDetails(
-      String id,
-      String cid,
-      String series,
-      String orderid,
-      String customerid,
-      String orderdate,
-      String staffid,
-      String areaid,
-      String pcode,
-      int quantity,
-      double rate,
-      BuildContext context) async {
-    try {
-      Uri url = Uri.parse("http://trafiqerp.in/order/fj/order_save.php");
-      List<Map<String, dynamic>> om = [
-        {
-          "id": id,
-          "ser": series,
-          "oid": orderid,
-          "cuid": customerid,
-          "odate": orderdate,
-          "sid": staffid,
-          "aid": areaid,
-          "od": [
-            {
-              "code": pcode,
-              "qty": quantity,
-              "rate": rate,
-            }
-          ]
-        }
-      ];
-      Map body = {
-        'cid': cid,
-        'om': om,
-      };
-      print("compny----${cid}");
-      isLoading = true;
-      notifyListeners();
-      http.Response response = await http.post(
-        url,
-        body: body,
-      );
-
-      print("body ${body}");
-      var map = jsonDecode(response.body);
-      print("map ${map}");
-
-      notifyListeners();
-    } catch (e) {
-      print(e);
-      return null;
-    }
-  }
-
   ///////////////////////////////////////////////////////////
   setCname() async {
     final prefs = await SharedPreferences.getInstance();
@@ -671,6 +614,7 @@ class Controller extends ChangeNotifier {
 
   insertToOrderbagAndMaster(String os, String date, String customer_id,
       String user_id, String aid, String total_price) async {
+    List<Map<String, dynamic>> om = [];
     int order_id = await OrderAppDB.instance
         .getMaxCommonQuery('orderDetailTable', 'order_id', "os='${os}'");
     int rowNum = 1;
@@ -714,6 +658,16 @@ class Controller extends ChangeNotifier {
     await OrderAppDB.instance.deleteFromTableCommonQuery(
         "orderBagTable", "os='${os}' AND customerid='${customer_id}'");
     bagList.clear();
+
+    // om = await OrderAppDB.instance.selectFrommasterQuery('orderMasterTable',
+    //     "os='${os}' AND customerid='${customer_id}' AND order_id=${order_id} ");
+
+    // print("cartlist select ---$om");
+
+    //  List<Map<String, dynamic>> od = await OrderAppDB.instance
+    //     .selectCommonQuery("orderDetailTable", "order_id='${om[0]["oid"]}'");
+    // print("result from detailtable----$od");
+    // om.add(od);
     notifyListeners();
   }
 
@@ -870,11 +824,22 @@ class Controller extends ChangeNotifier {
     isLoading = true;
     print("haiiii");
     List<Map<String, dynamic>> result = await OrderAppDB.instance.getHistory();
-    String element0;
+    List<Map<String, dynamic>> copy = [];
+    print("aftr cut----$result");
+    // copy = result;
+    // // copy = [{"id":"1","nam":"hjdks"},{"id":"2","nam":"dfd"}];
+    // copy.forEach((element) {
+    //   print("element--$element");
+    //   element.remove("id");
+    // });
 
-    for (var item in result) {
+    print("copy----$copy");
+
+    // copy[0].remove("order_id");
+    for (Map<String, dynamic> item in result) {
       historyList.add(item);
     }
+
     print("history list----$historyList");
     var list = historyList[0].keys.toList();
     print("**list----$list");
@@ -911,5 +876,129 @@ class Controller extends ChangeNotifier {
 
     notifyListeners();
   }
+
   //////////////////order save and send/////////////////////////
+  saveOrderDetails(
+      String id,
+      String cid,
+      String series,
+      String orderid,
+      String customerid,
+      String orderdate,
+      String staffid,
+      String areaid,
+      String pcode,
+      int quantity,
+      double rate,
+      BuildContext context) async {
+    try {
+      Uri url = Uri.parse("http://trafiqerp.in/order/fj/order_save.php");
+      List<Map<String, dynamic>> om = [
+        {
+          "id": id,
+          "ser": series,
+          "oid": orderid,
+          "cuid": customerid,
+          "odate": orderdate,
+          "sid": staffid,
+          "aid": areaid,
+          "od": [
+            {
+              "code": pcode,
+              "qty": quantity,
+              "rate": rate,
+            }
+          ]
+        }
+      ];
+      Map body = {
+        'cid': cid,
+        'om': om,
+      };
+      print("compny----${cid}");
+      isLoading = true;
+      notifyListeners();
+      http.Response response = await http.post(
+        url,
+        body: body,
+      );
+
+      print("body ${body}");
+      var map = jsonDecode(response.body);
+      print("map ${map}");
+
+      notifyListeners();
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+//////////////////////////////////////////////
+  uploadData() async {
+    List ordid = [];
+    Map<String, dynamic> map = {};
+    List<Map<String, dynamic>> od = [];
+    Map<String, dynamic> odmap = {};
+    List<Map<String, dynamic>> om = [];
+    var result = await OrderAppDB.instance.selectOrderIdFromMasterTable();
+    var joinResult = await OrderAppDB.instance.getDataFromMasterAndDetail(1);
+    String json = jsonEncode(joinResult);
+    var decod = jsonDecode(json);
+
+    // for (int i = 0; i < 7; i++) {
+    //   om.add(decod[0][i]);
+    // }
+    int i = 0;
+    // var length = decod.length;
+    decod[0].forEach((key, value) {
+      if (i < decod.length) {
+        map[key] = value;
+        // om.add();
+      }
+      i++;
+    });
+    print("map ---${map}");
+    om.add(map);
+    odmap.clear();
+    int j = 0;
+    od.clear();
+    decod.forEach((element) {
+      if (j < decod.length) {
+        element.forEach((key, value) {
+          if (key == "code" || key == "qty" || key == "rate") {
+            odmap[key] = value;
+            print("odmap-----$odmap");
+            od.add(odmap);
+          }
+        });
+      }
+      j++;
+    });
+    print("od--$od");
+
+    // for (var item in result) {
+    //   var joinResult= await OrderAppDB.instance.getDataFromMasterAndDetail(item["order_id"]);
+
+    // }
+
+    // var joinResult= await OrderAppDB.instance.getDataFromMasterAndDetail();
+
+    String json2 = jsonEncode(json);
+    // print("orderId----${json1}");
+    // print("type--${result.runtimeType}");
+
+    // String json = jsonEncode(result);
+    // var decod = jsonDecode(json);
+    // print("encoded ----$json");
+    // print("decod ----$decod");
+    // print("decodtype--${decod.runtimeType}");
+
+    // decod.forEach((element) {
+    //   element.forEach((key, value) {
+    //     // print(key);
+    //     if (key == "area_id") {}
+    //   });
+    // });
+  }
 }

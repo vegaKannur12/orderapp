@@ -7,6 +7,7 @@ import 'package:orderapp/screen/6_downloadedPage.dart';
 import 'package:orderapp/screen/6_historypage.dart';
 import 'package:orderapp/screen/mainDashboard.dart';
 import 'package:orderapp/screen/3_staffLoginScreen.dart';
+import 'package:orderapp/screen/uploaddata.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -15,7 +16,6 @@ import '6_orderForm.dart';
 
 class Dashboard extends StatefulWidget {
   String? type;
-
 
   String? areaName;
   Dashboard({this.type, this.areaName});
@@ -32,7 +32,9 @@ class _DashboardState extends State<Dashboard> {
     "Collection",
     "Orders",
     "Sale",
-    "Download Page","history"
+    "Download Page",
+    "Upload data",
+    "history"
   ];
   int _selectedIndex = 0;
 
@@ -61,14 +63,20 @@ class _DashboardState extends State<Dashboard> {
         if (widget.type == "return from cartList") {
           return OrderForm(widget.areaName!);
         } else {
-          return OrderForm("", );
+          return OrderForm(
+            "",
+          );
         }
       case 5:
         return DownloadedPage(
           type: "drawer call",
         );
-
-      case 6:return History(page: "History Page",);
+      case 6:
+        return Uploaddata();
+      case 7:
+        return History(
+          page: "History Page",
+        );
     }
   }
 

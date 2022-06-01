@@ -128,58 +128,61 @@ class _CartListState extends State<CartList> {
                       ),
                       GestureDetector(
                         onTap: (() async {
-                          Provider.of<Controller>(context, listen: false)
-                              .insertToOrderbagAndMaster(widget.os, date!,
-                                  widget.custmerId, sname, widget.areaId,value.orderTotal!);
-                          
-                          Provider.of<Controller>(context, listen: false)
-                                      .bagList
-                                      .length >
-                                  0
-                              ? showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    Future.delayed(Duration(milliseconds: 500),
-                                        () {
-                                      value.areDetails.clear();
-                                      Navigator.of(context).pop(true);
+                          if (Provider.of<Controller>(context, listen: false)
+                                  .bagList
+                                  .length >
+                              0) {
+                            Provider.of<Controller>(context, listen: false)
+                                .insertToOrderbagAndMaster(
+                                    widget.os,
+                                    date!,
+                                    widget.custmerId,
+                                    sname,
+                                    widget.areaId,
+                                    value.orderTotal!);
+                            // var result = await OrderAppDB.instance.getDataFromMasterAndDetail("os='${widget.os}' AND customerid='${widget.custmerId}'");
+                           
+                            return showDialog(
+                                context: context,
+                                builder: (context) {
+                                  Future.delayed(Duration(milliseconds: 500),
+                                      () {
+                                    value.areDetails.clear();
+                                    Navigator.of(context).pop(true);
 
-                                      Navigator.of(context).push(
-                                        PageRouteBuilder(
-                                          
-                                            opaque: false, // set to false
-                                            pageBuilder: (_, __, ___) =>
-                                                Dashboard(
-                                                    
-                                                    type:
-                                                        "return from cartList",
-                                                    areaName: widget.areaname)
-                                            // OrderForm(widget.areaname,"return"),
-                                            ),
-                                      );
-                                    });
-                                    return AlertDialog(
-                                        content: Row(
-                                      children: [
-                                        Text(
-                                          'Order Placed!!!!',
-                                          style: TextStyle(
-                                              color: P_Settings.extracolor),
-                                        ),
-                                        Icon(
-                                          Icons.done,
-                                          color: Colors.green,
-                                        )
-                                      ],
-                                    ));
-                                  })
-                              : null;
+                                    Navigator.of(context).push(
+                                      PageRouteBuilder(
+                                          opaque: false, // set to false
+                                          pageBuilder: (_, __, ___) =>
+                                              Dashboard(
+                                                  type: "return from cartList",
+                                                  areaName: widget.areaname)
+                                          // OrderForm(widget.areaname,"return"),
+                                          ),
+                                    );
+                                  });
+                                  return AlertDialog(
+                                      content: Row(
+                                    children: [
+                                      Text(
+                                        'Order Placed!!!!',
+                                        style: TextStyle(
+                                            color: P_Settings.extracolor),
+                                      ),
+                                      Icon(
+                                        Icons.done,
+                                        color: Colors.green,
+                                      )
+                                    ],
+                                  ));
+                                });
+                          }
+
                           Provider.of<Controller>(context, listen: false)
                               .count = "0";
                           print("area name ${widget.areaname}");
                           // Provider.of<Controller>(context,listen: false).saveOrderDetails(id, value.cid!, series, orderid,  widget.custmerId, orderdate, staffid, widget.areaId, pcode, qty, rate, context)
                         }),
-
                         child: Container(
                           width: size.width * 0.5,
                           height: size.height * 0.07,
@@ -292,7 +295,7 @@ class _CartListState extends State<CartList> {
                             ),
                             Flexible(
                               child: Padding(
-                                padding: const EdgeInsets.only(left: 5, top: 3),
+                                padding: const EdgeInsets.only(left: 5, top: 0),
                                 child: Row(
                                   children: [
                                     Text(
@@ -373,7 +376,7 @@ class _CartListState extends State<CartList> {
                             ),
                             Flexible(
                               child: Padding(
-                                padding: const EdgeInsets.only(left: 5, top: 3),
+                                padding: const EdgeInsets.only(left: 5, top: 0),
                                 child: GestureDetector(
                                   onTap: () {
                                     Provider.of<Controller>(context,
@@ -565,15 +568,12 @@ class _CartListState extends State<CartList> {
                     ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 2),
-                  child: Divider(
-                    thickness: 1,
-                    color: Color.fromARGB(255, 182, 179, 179),
-                  ),
+                Divider(
+                  thickness: 1,
+                  color: Color.fromARGB(255, 182, 179, 179),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 2),
+                  padding: const EdgeInsets.only(bottom: 5),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
