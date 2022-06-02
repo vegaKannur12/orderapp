@@ -57,6 +57,8 @@ class _HistoryState extends State<History> {
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
+    products = Provider.of<Controller>(context, listen: false).productName;
+
     Provider.of<Controller>(context, listen: false).getHistory();
   }
 

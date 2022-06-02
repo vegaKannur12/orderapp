@@ -90,11 +90,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             labelText: 'Company Key',
                           ),
                           validator: (text) {
+
                             if (text == null || text.isEmpty) {
                               return 'Please Enter Company Key';
                             }
-
                             return null;
+                            
                           },
                           // scrollPadding: EdgeInsets.only(
                           //     top:100),
