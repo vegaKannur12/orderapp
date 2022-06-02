@@ -540,25 +540,28 @@ class _ItemSelectionState extends State<ItemSelection> {
                                         }
                                       },
                                       child: ListTile(
-                                        title: Text(
-                                          '${value.productName[index]["code"]}' +
-                                              '-' +
-                                              '${value.productName[index]["item"]}',
-                                          style: TextStyle(
-                                              color: value.productName[index]
-                                                          ["cartrowno"] ==
-                                                      null
-                                                  ? value.selected[index]
-                                                      ? Colors.green
-                                                      : Colors.grey[700]
-                                                  : Colors.green,
-                                              fontSize: 16),
+                                        title: Expanded(
+                                          child: Text(
+                                            '${value.productName[index]["code"]}' +
+                                                '-' +
+                                                '${value.productName[index]["item"]}',
+                                            style: TextStyle(
+                                                color: value.productName[index]
+                                                            ["cartrowno"] ==
+                                                        null
+                                                    ? value.selected[index]
+                                                        ? Colors.green
+                                                        : Colors.grey[700]
+                                                    : Colors.green,
+                                                fontSize: 16),
+                                          ),
                                         ),
                                         trailing: Row(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
-                                            Container(
-                                                width: size.width * 0.06,
+                                            SizedBox(
+                                                // width: size.width * 0.06,
+                                                 width: size.width*0.08,
                                                 child: TextFormField(
                                                   controller: value.qty[index],
                                                   keyboardType:

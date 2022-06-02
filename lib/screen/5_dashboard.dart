@@ -8,6 +8,7 @@ import 'package:orderapp/screen/6_historypage.dart';
 import 'package:orderapp/screen/5_mainDashboard.dart';
 import 'package:orderapp/screen/3_staffLoginScreen.dart';
 import 'package:orderapp/screen/6_uploaddata.dart';
+import 'package:orderapp/service/tableList.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -173,6 +174,20 @@ class _DashboardState extends State<Dashboard> {
             : AppBar(
                 elevation: 0,
                 backgroundColor: P_Settings.wavecolor,
+                actions: [
+                  IconButton(
+              onPressed: () async {
+                List<Map<String, dynamic>> list =
+                    await OrderAppDB.instance.getListOfTables();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => TableList(list: list)),
+                );
+              },
+              icon: Icon(Icons.table_bar),
+            ),
+                ],
               ),
         drawer: Drawer(
           child: Column(

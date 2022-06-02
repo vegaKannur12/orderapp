@@ -109,6 +109,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         width: size.width * 0.3,
                         child: ElevatedButton(
                             onPressed: () async {
+                              FocusScope.of(context).requestFocus(FocusNode());
                               if (_formKey.currentState!.validate()) {
                                 Provider.of<Controller>(context, listen: false)
                                     .postRegistration(
