@@ -43,6 +43,7 @@ class Controller extends ChangeNotifier {
   double amt = 0.0;
   List<CD> data = [];
   double? totalPrice;
+  String? totrate;
   List<String> areaAutoComplete = [];
 
   List<Map<String, dynamic>> listWidget = [];
@@ -432,7 +433,7 @@ class Controller extends ChangeNotifier {
       customerList = await OrderAppDB.instance.getCustomer(aid);
       print("customerList----${customerList}");
       for (var item in customerList) {
-        cmpDetails.add(item);
+        custmerDetails.add(item);
       }
       print("custmerDetails adding $cmpDetails");
       notifyListeners();
@@ -838,7 +839,12 @@ class Controller extends ChangeNotifier {
     qtyinc = qty;
     // notifyListeners();
   }
-
+/////////////////////
+ setPrice(String rate){
+    totrate = rate;
+    print("rate.$rate");
+    notifyListeners();
+  }
   ///////////////////////
   ///
   setAmt(

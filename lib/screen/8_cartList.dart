@@ -308,6 +308,9 @@ class _CartListState extends State<CartList> {
                                 padding: const EdgeInsets.only(left: 5, top: 0),
                                 child: GestureDetector(
                                   onTap: () {
+                                    Provider.of<Controller>(context,
+                                            listen: false)
+                                        .setPrice(rate);
                                     showModalBottomSheet<void>(
                                       context: context,
                                       builder: (BuildContext context) {
@@ -354,7 +357,8 @@ class _CartListState extends State<CartList> {
                                                                     right: 15),
                                                             child: Text(
                                                               // "\u{20B9}${value.totalPrice.toString()}",
-                                                              value.totalPrice.toString(),
+                                                              value.totalPrice
+                                                                  .toString(),
 
                                                               style: TextStyle(
                                                                   fontSize: 20),

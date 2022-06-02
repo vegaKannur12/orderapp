@@ -125,25 +125,24 @@ class _ItemSelectionState extends State<ItemSelection> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    if (widget.customerId == null ||
-                        widget.customerId.isEmpty) {
-                    } else {
-                      FocusManager.instance.primaryFocus?.unfocus();
-                      Provider.of<Controller>(context, listen: false)
-                          .getBagDetails(widget.customerId, widget.os);
+                   if (widget.customerId == null || widget.customerId.isEmpty) {
+                } else {
+                  FocusManager.instance.primaryFocus?.unfocus();
+                  Provider.of<Controller>(context, listen: false)
+                      .getBagDetails(widget.customerId, widget.os);
 
-                      Navigator.of(context).push(
-                        PageRouteBuilder(
-                          opaque: false, // set to false
-                          pageBuilder: (_, __, ___) => CartList(
-                            areaId: widget.areaId,
-                            custmerId: widget.customerId,
-                            os: widget.os,
-                            areaname: widget.areaName,
-                          ),
-                        ),
-                      );
-                    }
+                  Navigator.of(context).push(
+                    PageRouteBuilder(
+                      opaque: false, // set to false
+                      pageBuilder: (_, __, ___) => CartList(
+                        areaId: widget.areaId,
+                        custmerId: widget.customerId,
+                        os: widget.os,
+                        areaname: widget.areaName,
+                      ),
+                    ),
+                  );
+                }
                   },
                   child: Container(
                       alignment: Alignment.center,
@@ -324,8 +323,7 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                   "(\u{20B9} ${value.productName[index]["rate1"]})",
                                                   style: TextStyle(
                                                       fontSize: 14,
-                                                      color:
-                                                          P_Settings.ratecolor),
+                                                      color: P_Settings.ratecolor),
                                                 ),
                                                 trailing: Row(
                                                   mainAxisSize:
@@ -589,8 +587,7 @@ class _ItemSelectionState extends State<ItemSelection> {
                                         subtitle: Text(
                                           "(\u{20B9} ${value.productName[index]["rate1"]})",
                                           style: TextStyle(
-                                              fontSize: 14,
-                                              color: P_Settings.ratecolor),
+                                              fontSize: 14, color: P_Settings.ratecolor),
                                         ),
                                         trailing: Row(
                                           mainAxisSize: MainAxisSize.min,
