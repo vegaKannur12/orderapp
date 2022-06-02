@@ -8,6 +8,7 @@ import 'package:orderapp/model/accounthead_model.dart';
 import 'package:orderapp/model/productCompany_model.dart';
 import 'package:orderapp/model/productsCategory_model.dart';
 import 'package:orderapp/model/registration_model.dart';
+import 'package:orderapp/model/sideMenu_model.dart';
 import 'package:orderapp/screen/2_companyDetailsscreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -19,6 +20,7 @@ import '../model/staffdetails_model.dart';
 class Controller extends ChangeNotifier {
   bool isLoading = false;
   bool isListLoading = false;
+
   CustomSnackbar snackbar = CustomSnackbar();
   bool isSearch = false;
   bool isVisible = false;
@@ -43,6 +45,7 @@ class Controller extends ChangeNotifier {
   List<CD> data = [];
   double? totalPrice;
   List<String> areaAutoComplete = [];
+  List<Menu> menuList = [];
 
   List<Map<String, dynamic>> listWidget = [];
   List<TextEditingController> controller = [];
@@ -96,12 +99,7 @@ class Controller extends ChangeNotifier {
           RegistrationData regModel = RegistrationData.fromJson(map);
           sof = regModel.sof;
           print("sof----${sof}");
-          if (sof == "0") {
-            CustomSnackbar snackbar = CustomSnackbar();
-            snackbar.showSnackbar(context, "Invalid Company Key");
-          }
-
-          if (sof == "1") {
+          if (sof == "1" && company_code.length >= 10) {
             /////////////// insert into local db /////////////////////
             late CD dataDetails;
             String? fp = regModel.fp;
@@ -121,11 +119,60 @@ class Controller extends ChangeNotifier {
             notifyListeners();
             SharedPreferences prefs = await SharedPreferences.getInstance();
             prefs.setString("company_id", company_code);
+            getMenu(cid!, fp!, context);
+
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => CompanyDetails()),
             );
           }
+          /////////////////////////////////////////////////////
+          if (sof == "0" || company_code.length < 10) {
+            CustomSnackbar snackbar = CustomSnackbar();
+            snackbar.showSnackbar(context, "Invalid Company Key");
+          }
+
+          notifyListeners();
+        } catch (e) {
+          print(e);
+          return null;
+        }
+      }
+    });
+  }
+
+  //////////////////////getMenu////////////////////////////////////////
+  Future<RegistrationData?> getMenu(
+      String company_code, String fp, BuildContext context) async {
+    NetConnection.networkConnection(context).then((value) async {
+      if (value == true) {
+        print("company_code---fp-${company_code}---${fp}");
+
+        try {
+          Uri url = Uri.parse("http://trafiqerp.in/order/fj/get_menu.php");
+          Map body = {
+            'company_code': company_code,
+            'fingerprint': fp,
+          };
+
+          http.Response response = await http.post(
+            url,
+            body: body,
+          );
+
+          print("body ${body}");
+          var map = jsonDecode(response.body);
+          print("map menu ${map}");
+
+          SideMenu sidemenuModel = SideMenu.fromJson(map);
+          for (var menuItem in sidemenuModel.menu!) {
+            print("menuitem----${menuItem.menu_name}");
+            // print("menuitem----${menuItem.menu_name}");
+
+            menuList.add(menuItem);
+          }
+
+          // print("menuList----${menuList.}");
           notifyListeners();
         } catch (e) {
           print(e);
@@ -138,7 +185,8 @@ class Controller extends ChangeNotifier {
   /////////////////////// Staff details////////////////////////////////
 
   Future<StaffDetails?> getStaffDetails(String cid) async {
-    // print("cid...............${cid}");
+    print("getStaffDetails...............${cid}");
+    var restaff;
     try {
       Uri url = Uri.parse("http://trafiqerp.in/order/fj/get_staff.php");
       Map body = {
@@ -151,13 +199,16 @@ class Controller extends ChangeNotifier {
       );
       // print("body ${body}");
       List map = jsonDecode(response.body);
+       print("map ${map}");
 
       for (var staff in map) {
         // print("staff----${staff}");
         staffModel = StaffDetails.fromJson(staff);
-        var restaff = await OrderAppDB.instance.insertStaffDetails(staffModel);
+        restaff = await OrderAppDB.instance.insertStaffDetails(staffModel);
         // print("inserted ${restaff}");
       }
+        print("inserted staff ${restaff}");
+
       /////////////// insert into local db /////////////////////
       notifyListeners();
       return staffModel;
@@ -948,6 +999,7 @@ class Controller extends ChangeNotifier {
       return null;
     }
   }
+
 ///////////////////////////upload order data//////////////////////////////////////////
   uploadOrdersData(String cid, BuildContext context) async {
     List<Map<String, dynamic>> resultQuery = [];

@@ -26,8 +26,14 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  int _selectedDrawerIndex = 0;
+  // int _selectedDrawerIndex = 0;
+
+  ValueNotifier<bool> upselected = ValueNotifier(false);
+  ValueNotifier<bool> dwnselected = ValueNotifier(false);
+
   String? cid;
+  String menu_index = "S1";
+  List defaultitems = ["upload data", "download page", "logout"];
   List companyAttributes = [
     "Dashboard",
     "Logged in",
@@ -40,11 +46,19 @@ class _DashboardState extends State<Dashboard> {
   ];
   int _selectedIndex = 0;
 
-  _onSelectItem(int index) {
+  _onSelectItem(int index, String menu) {
     setState(() {
       _selectedIndex = index;
+      menu_index = menu;
     });
     Navigator.of(context).pop(); // close the drawer
+  }
+
+  _onSelectdefaultItem(String menu) {
+    setState(() {
+      menu_index = menu;
+    });
+    Navigator.of(context).pop();
   }
 
   @override
@@ -54,19 +68,21 @@ class _DashboardState extends State<Dashboard> {
     super.initState();
     Provider.of<Controller>(context, listen: false).setCname();
     Provider.of<Controller>(context, listen: false).setSname();
-    getCompaniId() ;
+    getCompaniId();
   }
+
   getCompaniId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    cid=prefs.getString("cid");
+    cid = prefs.getString("cid");
     print("cid----$cid");
   }
-  _getDrawerItemWidget(int pos) {
+
+  _getDrawerItemWidget(String pos) {
     print("pos---${pos}");
     switch (pos) {
-      case 0:
+      case "S1":
         return new MainDashboard();
-      case 3:
+      case "S2":
         if (widget.type == "return from cartList") {
           return OrderForm(widget.areaName!);
         } else {
@@ -74,17 +90,45 @@ class _DashboardState extends State<Dashboard> {
             "",
           );
         }
-      case 5:
+      case "S3":
+        return null;
+      case "SAC1":
+        return null;
+
+      case "S4":
+        return null;
+
+      case "S5":
+        return null;
+
+      case "SA1":
+        return null;
+
+      case "SA2":
+        return null;
+
+      case "UL":
+        return Uploaddata(
+          cid: cid!,
+          type: "drawer call",
+        );
+      case "dP":
         return DownloadedPage(
           type: "drawer call",
         );
-      case 6:
-        return Uploaddata(cid:cid!,
-        type: "drawer call",);
-      case 7:
-        return History(
-          page: "History Page",
-        );
+
+      // return DownloadedPage(
+      //   type: "drawer call",
+      // );
+      // case 6:
+      //   return Uploaddata(
+      //     cid: cid!,
+      //     type: "drawer call",
+      //   );
+      // case 7:
+      //   return History(
+      //     page: "History Page",
+      //   );
     }
   }
 
@@ -93,9 +137,9 @@ class _DashboardState extends State<Dashboard> {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     if (widget.type == "return from cartList") {
-      _selectedIndex = 3;
+      menu_index = "S1";
     }
-    print("_seletdde---$_selectedIndex");
+    // print("_seletdde---$_selectedIndex");
   }
 
   @override
@@ -103,51 +147,36 @@ class _DashboardState extends State<Dashboard> {
     List<Widget> drawerOpts = [];
     print("clicked");
     // companyAttributes.clear();
-    for (var i = 0; i < companyAttributes.length; i++) {
+    for (var i = 0;
+        i < Provider.of<Controller>(context, listen: false).menuList.length;
+        i++) {
       // var d =Provider.of<Controller>(context, listen: false).drawerItems[i];
-      drawerOpts.add(ListTile(
-        title: Text(
-          companyAttributes[i],
-          style: TextStyle(fontFamily: P_Font.kronaOne, fontSize: 17),
-        ),
-        selected: i == _selectedIndex,
-        onTap: () {
-          _onSelectItem(i);
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(builder: (context) => OrderForm()),
-          // );
-          // Provider.of<Controller>(context, listen: false).getCategoryReportList(
-          //     value.reportCategoryList[i].values.elementAt(0));
-        },
-      )
-          // Consumer<Controller>(
-          //   builder: (context, value, child) {
-          //     return ListTile(
-          //       // leading: new Icon(d.icon),
-          //       title: Text(
-          //         value.reportCategoryList[i].values.elementAt(1),
-          //         style: TextStyle(fontFamily: P_Font.kronaOne, fontSize: 17),
-          //       ),
-          //       selected: i == _selectedIndex.value,
-          //       onTap: () {
-          //         _onSelectItem(
-          //             i, value.reportCategoryList[i].values.elementAt(1));
-          //         Provider.of<Controller>(context, listen: false)
-          //             .getCategoryReportList(
-          //                 value.reportCategoryList[i].values.elementAt(0));
-          //       },
-          //     );
-          //   },
-          // ),
+      drawerOpts.add(Consumer<Controller>(
+        builder: (context, value, child) {
+          return ListTile(
+            title: Text(
+              value.menuList[i].menu_name!.toLowerCase(),
+              style: TextStyle(fontFamily: P_Font.kronaOne, fontSize: 17),
+            ),
+            selected: i == _selectedIndex,
+            onTap: () {
+              upselected.value = false;
+              dwnselected.value = false;
+              _onSelectItem(
+                i,
+                value.menuList[i].menu_index!,
+              );
+            },
           );
+        },
+      ));
     }
     Size size = MediaQuery.of(context).size;
     return WillPopScope(
       onWillPop: () => _onBackPressed(context),
       child: Scaffold(
         backgroundColor: P_Settings.wavecolor,
-        appBar: _selectedIndex == 5 || _selectedIndex==6
+        appBar: menu_index == "UL" || menu_index == "dP"
             ? AppBar(
                 elevation: 0,
                 backgroundColor: P_Settings.wavecolor,
@@ -176,17 +205,17 @@ class _DashboardState extends State<Dashboard> {
                 backgroundColor: P_Settings.wavecolor,
                 actions: [
                   IconButton(
-              onPressed: () async {
-                List<Map<String, dynamic>> list =
-                    await OrderAppDB.instance.getListOfTables();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => TableList(list: list)),
-                );
-              },
-              icon: Icon(Icons.table_bar),
-            ),
+                    onPressed: () async {
+                      List<Map<String, dynamic>> list =
+                          await OrderAppDB.instance.getListOfTables();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => TableList(list: list)),
+                      );
+                    },
+                    icon: Icon(Icons.table_bar),
+                  ),
                 ],
               ),
         drawer: Drawer(
@@ -223,6 +252,41 @@ class _DashboardState extends State<Dashboard> {
                 indent: 20,
                 endIndent: 20,
               ),
+              ValueListenableBuilder(
+                  valueListenable: dwnselected,
+                  builder: (BuildContext context, bool valueC, Widget? child) {
+                    return ListTile(
+                      onTap: () async {
+                        upselected.value = false;
+                        dwnselected.value = true;
+                        // _selectedIndex=0;
+                        _onSelectdefaultItem("dP");
+                      },
+                      title: Text(
+                        "Download page",
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: valueC ? P_Settings.wavecolor : null),
+                      ),
+                    );
+                  }),
+              ValueListenableBuilder(
+                  valueListenable: upselected,
+                  builder: (BuildContext context, bool valueD, Widget? child) {
+                    return ListTile(
+                      onTap: () async {
+                        dwnselected.value = false;
+                        upselected.value = true;
+                        _onSelectdefaultItem("UL");
+                      },
+                      title: Text(
+                        "Upload data",
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: valueD ? P_Settings.wavecolor : null),
+                      ),
+                    );
+                  }),
               ListTile(
                 trailing: Icon(Icons.logout),
                 onTap: () async {
@@ -240,7 +304,7 @@ class _DashboardState extends State<Dashboard> {
             ],
           ),
         ),
-        body: _getDrawerItemWidget(_selectedIndex),
+        body: _getDrawerItemWidget(menu_index),
       ),
     );
   }
