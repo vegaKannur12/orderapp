@@ -293,8 +293,18 @@ class OrderAppDB {
           ''');
   }
 
-  ///////////////////////////////////////////////////////////
+  ////////////////////////company details select///////////////////////////////////
+  selectCompany(String cid) async {
+    List result;
+    Database db = await instance.database;
 
+    result = await db.rawQuery('select * from registrationTable');
+    if (result.length > 0) {
+      return result;
+    } else {
+      return null;
+    }
+  }
   ////////////// cart order ////////////////////////////
   // Future insertorderMasterTable(String ordernum, String orderdate, String os,
   //     String customerid, String userid, String areaid, int status) async {
@@ -475,7 +485,8 @@ class OrderAppDB {
     for (var staff in list) {
       print(
           "staff['uname'] & staff['pwd']------------------${staff['uname']}--${staff['pwd']}");
-      if (uname == staff["uname"] && pwd == staff["pwd"]) {
+      if (uname == staff["uname"].toLowerCase() ||
+          uname == staff["uname"].toUpperCase() && pwd == staff["pwd"]) {
         sid = staff['sid'];
         print("staffid..$sid");
 
@@ -843,7 +854,7 @@ class OrderAppDB {
     }
   }
 
-  /////////////////////
+  /////////////////////////////////////////////
   getDataFromMasterAndDetails(int order_id) async {
     List<Map<String, dynamic>> result;
     Database db = await instance.database;

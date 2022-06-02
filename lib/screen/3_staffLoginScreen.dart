@@ -153,11 +153,12 @@ class StaffLogin extends StatelessWidget {
                                             // toggle();
                                             if (_formKey.currentState!
                                                 .validate()) {
-                                             List result = await OrderAppDB
+                                              List result = await OrderAppDB
                                                   .instance
                                                   .selectStaff(controller1.text,
                                                       controller2.text);
-                                              if (result[0] == "success" && result[1] != null ) {
+                                              if (result[0] == "success" &&
+                                                  result[1] != null) {
                                                 visible.value = false;
                                                 Provider.of<Controller>(context,
                                                         listen: false)
@@ -167,8 +168,7 @@ class StaffLogin extends StatelessWidget {
                                                     await SharedPreferences
                                                         .getInstance();
                                                 await prefs.setString(
-                                                    'sid',
-                                                    result[1]);
+                                                    'sid', result[1]);
                                                 await prefs.setString(
                                                     'st_username',
                                                     controller1.text);
@@ -356,6 +356,7 @@ class StaffLogin extends StatelessWidget {
           valueListenable: _isObscure,
           builder: (context, value, child) {
             return TextFormField(
+              // textCapitalization: TextCapitalization.characters,
               obscureText: type == "password" ? _isObscure.value : false,
               controller: controllerValue,
               decoration: InputDecoration(

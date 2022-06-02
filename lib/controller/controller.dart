@@ -34,6 +34,7 @@ class Controller extends ChangeNotifier {
   String? cid;
   String? cname;
   int? qtyinc;
+  String? itemRate;
   List<CD> c_d = [];
   List<Map<String, dynamic>> historyList = [];
   List<Map<String, dynamic>> historydataList = [];
@@ -59,8 +60,10 @@ class Controller extends ChangeNotifier {
   List<Map<String, dynamic>> staffId = [];
   List<Map<String, dynamic>> productName = [];
   List<Map<String, dynamic>> areDetails = [];
+  List<Map<String, dynamic>> cmpDetails = [];
   List<Map<String, dynamic>> custmerDetails = [];
   List<Map<String, dynamic>> areaList = [];
+  List<Map<String, dynamic>> companyList = [];
   List<Map<String, dynamic>> customerList = [];
   List<Map<String, dynamic>> copyCus = [];
   List<Map<String, dynamic>> prodctItems = [];
@@ -382,6 +385,24 @@ class Controller extends ChangeNotifier {
     }
   }
 
+///////////////////////////////////////////////////////
+  getCompanyData() async {
+    try {
+      companyList = await OrderAppDB.instance.selectCompany(cid!);
+      print("companyList----${companyList}");
+      for (var item in companyList) {
+        areDetails.add(item);
+      }
+      print("areaList adding ----${areaList}");
+
+      notifyListeners();
+    } catch (e) {
+      print(e);
+      return null;
+    }
+    notifyListeners();
+  }
+
   //////////////////////////////////////////////////////
   getArea(String staffName) async {
     String areaName;
@@ -411,28 +432,14 @@ class Controller extends ChangeNotifier {
       customerList = await OrderAppDB.instance.getCustomer(aid);
       print("customerList----${customerList}");
       for (var item in customerList) {
-        custmerDetails.add(item);
+        cmpDetails.add(item);
       }
-      print("custmerDetails adding $custmerDetails");
+      print("custmerDetails adding $cmpDetails");
       notifyListeners();
     } catch (e) {
       print(e);
       return null;
     }
-    notifyListeners();
-  }
-
-///////////////////////////////////
-  getStaffid() async {
-    String? staffName;
-    final prefs = await SharedPreferences.getInstance();
-    staffName = prefs.getString("st_username");
-    String sId = staffName!;
-    // print("sid......$sid");
-    print("Sname..........$sId");
-    // try {
-    //   String result =
-    //       await OrderAppDB.instance.selectStaff(staffName!, password);
     notifyListeners();
   }
 
@@ -948,6 +955,7 @@ class Controller extends ChangeNotifier {
       return null;
     }
   }
+
 ///////////////////////////upload order data//////////////////////////////////////////
   uploadOrdersData(String cid, BuildContext context) async {
     List<Map<String, dynamic>> resultQuery = [];

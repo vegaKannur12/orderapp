@@ -117,12 +117,15 @@ class _CartListState extends State<CartList> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(" Order Total   : ",
+                            Text(" Order Total  : ",
                                 style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 18)),
-                            Text("\u{20B9}${value.orderTotal}",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 18))
+                                    fontWeight: FontWeight.bold, fontSize: 15)),
+                            Flexible(
+                              child: Text("\u{20B9}${value.orderTotal}",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16)),
+                            )
                           ],
                         ),
                       ),
@@ -137,7 +140,7 @@ class _CartListState extends State<CartList> {
                                   .length >
                               0) {
                             final prefs = await SharedPreferences.getInstance();
-                            String? sid=await prefs.getString('sid');
+                            String? sid = await prefs.getString('sid');
                             Provider.of<Controller>(context, listen: false)
                                 .insertToOrderbagAndMaster(
                                     widget.os,
@@ -281,6 +284,7 @@ class _CartListState extends State<CartList> {
                                   flex: 5,
                                   child: Text(
                                     "${itemName} ",
+                                    overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18,
@@ -302,81 +306,224 @@ class _CartListState extends State<CartList> {
                             Flexible(
                               child: Padding(
                                 padding: const EdgeInsets.only(left: 5, top: 0),
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      "Rate :",
-                                      style: TextStyle(fontSize: 13),
-                                    ),
-                                    SizedBox(
-                                      width: size.width * 0.02,
-                                    ),
-                                    Text(
-                                      "\u{20B9}${rate}",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15),
-                                    ),
-                                    SizedBox(
-                                      width: size.width * 0.3,
-                                    ),
-                                    Flexible(
-                                      child: IconButton(
-                                        onPressed: () {
-                                          showDialog(
-                                            context: context,
-                                            builder: (ctx) => AlertDialog(
-                                              content: Text("delete?"),
-                                              actions: <Widget>[
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.end,
-                                                  children: [
-                                                    ElevatedButton(
-                                                      style: ElevatedButton
-                                                          .styleFrom(
-                                                              primary: P_Settings
-                                                                  .wavecolor),
-                                                      onPressed: () {
-                                                        Navigator.of(ctx).pop();
-                                                      },
-                                                      child: Text("cancel"),
-                                                    ),
-                                                    SizedBox(
-                                                      width: size.width * 0.01,
-                                                    ),
-                                                    ElevatedButton(
-                                                      style: ElevatedButton
-                                                          .styleFrom(
-                                                              primary: P_Settings
-                                                                  .wavecolor),
-                                                      onPressed: () async {
-                                                        Provider.of<Controller>(
-                                                                context,
-                                                                listen: false)
-                                                            .deleteFromOrderBagTable(
-                                                                cartrowno,
-                                                                widget
-                                                                    .custmerId,
-                                                                index);
-                                                        Navigator.of(ctx).pop();
-                                                      },
-                                                      child: Text("ok"),
-                                                    ),
-                                                  ],
+                                child: GestureDetector(
+                                  onTap: () {
+                                    showModalBottomSheet<void>(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return Consumer<Controller>(
+                                          builder: (context, value, child) {
+                                            return Container(
+                                              height: size.height * 0.3,
+                                              color: Colors.white,
+                                              child: Center(
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Column(
+                                                    children: <Widget>[
+                                                      SizedBox(
+                                                        height:
+                                                            size.height * 0.01,
+                                                      ),
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .end,
+                                                        children: [
+                                                          IconButton(
+                                                            icon: Icon(
+                                                                Icons.close),
+                                                            onPressed: () {
+                                                              Navigator.pop(
+                                                                  context);
+                                                            },
+                                                          )
+                                                        ],
+                                                      ),
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    left: 15.0,
+                                                                    right: 15),
+                                                            child: Text(
+                                                              // "\u{20B9}${value.totalPrice.toString()}",
+                                                              value.totalPrice.toString(),
+
+                                                              style: TextStyle(
+                                                                  fontSize: 20),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      SizedBox(
+                                                        height:
+                                                            size.height * 0.02,
+                                                      ),
+                                                      Divider(
+                                                        thickness: 1,
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                top: 8.0,
+                                                                bottom: 8),
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Text(
+                                                              "Total Price :",
+                                                              style: TextStyle(
+                                                                  fontSize: 17),
+                                                            ),
+                                                            Flexible(
+                                                              child: Text(
+                                                                "\u{20B9}${value.totalPrice.toString()}",
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        17),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      Divider(
+                                                        thickness: 1,
+                                                      ),
+                                                      SizedBox(
+                                                        height:
+                                                            size.height * 0.02,
+                                                      ),
+                                                      Flexible(
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Container(
+                                                              height:
+                                                                  size.height *
+                                                                      0.035,
+                                                              width:
+                                                                  size.width *
+                                                                      0.6,
+                                                              child:
+                                                                  ElevatedButton(
+                                                                      onPressed:
+                                                                          () {
+                                                                        Provider.of<Controller>(context, listen: false).updateQty(
+                                                                            value.qtyinc.toString(),
+                                                                            cartrowno,
+                                                                            widget.custmerId,
+                                                                            rate);
+
+                                                                        Navigator.pop(
+                                                                            context);
+                                                                      },
+                                                                      child: Text(
+                                                                          "continue..")),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
                                                 ),
-                                              ],
-                                            ),
-                                          );
-                                        },
-                                        icon: Icon(
-                                          Icons.delete,
-                                          size: 17,
-                                        ),
-                                        color: P_Settings.extracolor,
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      },
+                                    );
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        "Rate :",
+                                        style: TextStyle(fontSize: 13),
                                       ),
-                                    ),
-                                  ],
+                                      SizedBox(
+                                        width: size.width * 0.02,
+                                      ),
+                                      Text(
+                                        "\u{20B9}${rate}",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15),
+                                      ),
+                                      SizedBox(
+                                        width: size.width * 0.3,
+                                      ),
+                                      Flexible(
+                                        child: IconButton(
+                                          onPressed: () {
+                                            showDialog(
+                                              context: context,
+                                              builder: (ctx) => AlertDialog(
+                                                content: Text("delete?"),
+                                                actions: <Widget>[
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.end,
+                                                    children: [
+                                                      ElevatedButton(
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                                primary: P_Settings
+                                                                    .wavecolor),
+                                                        onPressed: () {
+                                                          Navigator.of(ctx)
+                                                              .pop();
+                                                        },
+                                                        child: Text("cancel"),
+                                                      ),
+                                                      SizedBox(
+                                                        width:
+                                                            size.width * 0.01,
+                                                      ),
+                                                      ElevatedButton(
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                                primary: P_Settings
+                                                                    .wavecolor),
+                                                        onPressed: () async {
+                                                          Provider.of<Controller>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .deleteFromOrderBagTable(
+                                                                  cartrowno,
+                                                                  widget
+                                                                      .custmerId,
+                                                                  index);
+                                                          Navigator.of(ctx)
+                                                              .pop();
+                                                        },
+                                                        child: Text("ok"),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          },
+                                          icon: Icon(
+                                            Icons.delete,
+                                            size: 17,
+                                          ),
+                                          color: P_Settings.extracolor,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -434,13 +581,12 @@ class _CartListState extends State<CartList> {
                                                                   backgroundColor:
                                                                       Colors
                                                                           .grey,
-                                                                  child: Icon(
-                                                                      Icons
-                                                                          .add),
+                                                                  child: Icon(Icons
+                                                                      .remove),
                                                                   onPressed:
                                                                       () {
                                                                     value
-                                                                        .qtyIncrement();
+                                                                        .qtyDecrement();
                                                                     value.totalCalculation(
                                                                         rate);
                                                                   }),
@@ -462,12 +608,13 @@ class _CartListState extends State<CartList> {
                                                                   backgroundColor:
                                                                       Colors
                                                                           .grey,
-                                                                  child: Icon(Icons
-                                                                      .remove),
+                                                                  child: Icon(
+                                                                      Icons
+                                                                          .add),
                                                                   onPressed:
                                                                       () {
                                                                     value
-                                                                        .qtyDecrement();
+                                                                        .qtyIncrement();
                                                                     value.totalCalculation(
                                                                         rate);
                                                                   }),
@@ -492,14 +639,17 @@ class _CartListState extends State<CartList> {
                                                                   .spaceBetween,
                                                           children: [
                                                             Text(
-                                                              "Total Price",
+                                                              "Total Price :",
                                                               style: TextStyle(
                                                                   fontSize: 17),
                                                             ),
-                                                            Text(
-                                                              "\u{20B9}${value.totalPrice.toString()}",
-                                                              style: TextStyle(
-                                                                  fontSize: 17),
+                                                            Flexible(
+                                                              child: Text(
+                                                                "\u{20B9}${value.totalPrice.toString()}",
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        17),
+                                                              ),
                                                             ),
                                                           ],
                                                         ),
@@ -587,12 +737,14 @@ class _CartListState extends State<CartList> {
                         "Total price : ",
                         style: TextStyle(fontSize: 13),
                       ),
-                      Text(
-                        "\u{20B9}${totalamount}",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                            color: P_Settings.extracolor),
+                      Flexible(
+                        child: Text(
+                          "\u{20B9}${totalamount}",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                              color: P_Settings.extracolor),
+                        ),
                       ),
                     ],
                   ),

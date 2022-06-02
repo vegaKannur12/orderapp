@@ -54,13 +54,16 @@ class _DashboardState extends State<Dashboard> {
     super.initState();
     Provider.of<Controller>(context, listen: false).setCname();
     Provider.of<Controller>(context, listen: false).setSname();
-    getCompaniId() ;
+    getCompaniId();
+    Provider.of<Controller>(context, listen: false).getCompanyData();
   }
+
   getCompaniId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    cid=prefs.getString("cid");
+    cid = prefs.getString("cid");
     print("cid----$cid");
   }
+
   _getDrawerItemWidget(int pos) {
     print("pos---${pos}");
     switch (pos) {
@@ -79,8 +82,10 @@ class _DashboardState extends State<Dashboard> {
           type: "drawer call",
         );
       case 6:
-        return Uploaddata(cid:cid!,
-        type: "drawer call",);
+        return Uploaddata(
+          cid: cid!,
+          type: "drawer call",
+        );
       case 7:
         return History(
           page: "History Page",
@@ -147,7 +152,7 @@ class _DashboardState extends State<Dashboard> {
       onWillPop: () => _onBackPressed(context),
       child: Scaffold(
         backgroundColor: P_Settings.wavecolor,
-        appBar: _selectedIndex == 5 || _selectedIndex==6
+        appBar: _selectedIndex == 5 || _selectedIndex == 6
             ? AppBar(
                 elevation: 0,
                 backgroundColor: P_Settings.wavecolor,
@@ -176,17 +181,17 @@ class _DashboardState extends State<Dashboard> {
                 backgroundColor: P_Settings.wavecolor,
                 actions: [
                   IconButton(
-              onPressed: () async {
-                List<Map<String, dynamic>> list =
-                    await OrderAppDB.instance.getListOfTables();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => TableList(list: list)),
-                );
-              },
-              icon: Icon(Icons.table_bar),
-            ),
+                    onPressed: () async {
+                      List<Map<String, dynamic>> list =
+                          await OrderAppDB.instance.getListOfTables();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => TableList(list: list)),
+                      );
+                    },
+                    icon: Icon(Icons.table_bar),
+                  ),
                 ],
               ),
         drawer: Drawer(
@@ -214,6 +219,9 @@ class _DashboardState extends State<Dashboard> {
                       "Menus",
                       style: TextStyle(fontSize: 20, color: Colors.white),
                     ),
+                    Column(
+                       
+                    )
                   ],
                 ),
               ),

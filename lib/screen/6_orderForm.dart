@@ -118,7 +118,7 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Container(
-                            height: size.height * 0.24,
+                            height: size.height * 0.2,
                             decoration: BoxDecoration(
                               color: P_Settings.wavecolor,
                               borderRadius: BorderRadius.only(
@@ -130,8 +130,9 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Icon(
-                                    Icons.person, color: P_Settings.bottomColor,
-                                    size: 30,
+                                    Icons.point_of_sale_outlined,
+                                    color: P_Settings.bottomColor,
+                                    size: 25,
                                     // color: Colors.white,
                                   ),
                                   SizedBox(
@@ -580,6 +581,9 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                               ),
                                             ),
                                           ),
+                                        ),
+                                        SizedBox(
+                                          height: size.height * 0.01,
                                         ),
                                       ],
                                     ),
