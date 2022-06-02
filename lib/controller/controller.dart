@@ -28,6 +28,7 @@ class Controller extends ChangeNotifier {
   String? order_id;
   String? searchkey;
   String? sname;
+  String? sid;
   String? orderTotal;
   String? ordernumber;
   String? cid;
@@ -55,6 +56,7 @@ class Controller extends ChangeNotifier {
   List<Map<String, dynamic>> orderdetailsList = [];
 
   List<Map<String, dynamic>> staffList = [];
+  List<Map<String, dynamic>> staffId = [];
   List<Map<String, dynamic>> productName = [];
   List<Map<String, dynamic>> areDetails = [];
   List<Map<String, dynamic>> custmerDetails = [];
@@ -249,6 +251,7 @@ class Controller extends ChangeNotifier {
   setSname() async {
     final prefs = await SharedPreferences.getInstance();
     String? same = prefs.getString("st_username");
+
     sname = same;
     notifyListeners();
   }
@@ -419,6 +422,20 @@ class Controller extends ChangeNotifier {
     notifyListeners();
   }
 
+///////////////////////////////////
+  getStaffid() async {
+    String? staffName;
+    final prefs = await SharedPreferences.getInstance();
+    staffName = prefs.getString("st_username");
+    String sId = staffName!;
+    // print("sid......$sid");
+    print("Sname..........$sId");
+    // try {
+    //   String result =
+    //       await OrderAppDB.instance.selectStaff(staffName!, password);
+    notifyListeners();
+  }
+
   /////////////////////////////////////////////////////
   customerListClear() {
     customerList.clear();
@@ -512,6 +529,19 @@ class Controller extends ChangeNotifier {
   }
 
   /////////////////////////////////////
+  Future<dynamic> setStaffid(String sname) async {
+    print("Sname.............$sname");
+    try {
+      ordernum = await OrderAppDB.instance.setStaffid(sname);
+      print("ordernum----${ordernum}");
+
+      notifyListeners();
+    } catch (e) {
+      print(e);
+      return null;
+    }
+    notifyListeners();
+  }
 
 ////////////////////////////////
   generateTextEditingController() {
@@ -759,6 +789,7 @@ class Controller extends ChangeNotifier {
         await OrderAppDB.instance.insertStaffLoignDetails(sid, sname, datetime);
     notifyListeners();
   }
+/////////////////////////////////////////////////////////////////////////////////////
 
   ///////////////////////////////////////////////////////////////////////
   // downloadAllPages(String cid) async {
