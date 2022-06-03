@@ -8,7 +8,8 @@ import '../controller/controller.dart';
 
 class DownloadedPage extends StatefulWidget {
   String? type;
-  DownloadedPage({this.type});
+  String? title;
+  DownloadedPage({this.type,this.title});
 
   @override
   State<DownloadedPage> createState() => _DownloadedPageState();
@@ -65,6 +66,11 @@ class _DownloadedPageState extends State<DownloadedPage> {
           : null,
       body: Column(
         children: [
+          //  SizedBox(height: size.height*0.02,),
+          // Container(
+          //   child: Text(widget.toString(),style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
+          //   height: size.height*0.06,
+          // ),
           Flexible(
             child: Container(
               height: size.height * 0.5,
