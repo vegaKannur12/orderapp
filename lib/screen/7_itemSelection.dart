@@ -126,6 +126,8 @@ class _ItemSelectionState extends State<ItemSelection> {
               children: [
                 GestureDetector(
                   onTap: () {
+                    Provider.of<Controller>(context, listen: false)
+                      .getBagDetails(widget.customerId, widget.os);
                     Navigator.of(context).push(
                       PageRouteBuilder(
                         opaque: false, // set to false
@@ -312,6 +314,13 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                           ? Colors.green
                                                           : Colors.grey[700],
                                                       fontSize: 16),
+                                                ),
+                                                subtitle: Text(
+                                                  '\u{20B9}${value.newList[index]["rate1"]}',
+                                                  style: TextStyle(
+                                                    color: P_Settings.ratecolor,
+                                                    fontStyle: FontStyle.italic,
+                                                  ),
                                                 ),
                                                 trailing: Row(
                                                   mainAxisSize:
@@ -569,7 +578,13 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                   : Colors.green,
                                               fontSize: 16),
                                         ),
-                                        subtitle: Text('\u{20B9}${value.productName[index]["rate1"]}',style: TextStyle(color: P_Settings.ratecolor,fontStyle: FontStyle.italic,),),
+                                        subtitle: Text(
+                                          '\u{20B9}${value.productName[index]["rate1"]}',
+                                          style: TextStyle(
+                                            color: P_Settings.ratecolor,
+                                            fontStyle: FontStyle.italic,
+                                          ),
+                                        ),
                                         trailing: Row(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [

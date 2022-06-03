@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:orderapp/components/commoncolor.dart';
 import 'package:orderapp/db_helper.dart';
+import 'package:orderapp/screen/2_companyDetailsscreen.dart';
 import 'package:orderapp/screen/6_downloadedPage.dart';
 import 'package:orderapp/screen/6_historypage.dart';
 import 'package:orderapp/screen/5_mainDashboard.dart';
@@ -124,6 +125,11 @@ class _DashboardState extends State<Dashboard> {
           title: "Download Page",
           type: "drawer call",
         );
+      case "CD":
+        // title = "Download data";
+        return CompanyDetails(
+         type: "drawer call",
+        );
     }
   }
 
@@ -150,14 +156,14 @@ class _DashboardState extends State<Dashboard> {
         builder: (context, value, child) {
           return ListTile(
             title: Text(
-              value.menuList[i].menu_name!.toLowerCase(),
+              value.menuList[i]["menu_name"].toLowerCase(),
               style: TextStyle(fontFamily: P_Font.kronaOne, fontSize: 17),
             ),
             // selected: i == _selectedIndex,
             onTap: () {
               _onSelectItem(
                 i,
-                value.menuList[i].menu_index!,
+                value.menuList[i]["menu_index"],
               );
             },
           );
@@ -225,33 +231,42 @@ class _DashboardState extends State<Dashboard> {
                     SizedBox(
                       height: size.height * 0.045,
                     ),
-                    // Container(
-                    //   height: size.height * 0.2,
-                    //   width: size.width * 1,
-                    //   color: P_Settings.wavecolor,
-                    //   child: Row(
-                    //     children: [
-                    //       SizedBox(
-                    //         height: size.height * 0.07,
-                    //         width: size.width * 0.03,
-                    //       ),
-                    //       Icon(
-                    //         Icons.list_outlined,
-                    //         color: Colors.white,
-                    //       ),
-                    //       SizedBox(width: size.width * 0.04),
-                    //       Text(
-                    //         "Menus",
-                    //         style: TextStyle(fontSize: 20, color: Colors.white),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
+                    Container(
+                      height: size.height * 0.1,
+                      width: size.width * 1,
+                      color: P_Settings.wavecolor,
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            height: size.height * 0.07,
+                            width: size.width * 0.03,
+                          ),
+                          Icon(
+                            Icons.list_outlined,
+                            color: Colors.white,
+                          ),
+                          SizedBox(width: size.width * 0.04),
+                          Text(
+                            "Menus",
+                            style: TextStyle(fontSize: 20, color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    ),
                     Column(children: drawerOpts),
                     Divider(
                       color: Colors.black,
                       indent: 20,
                       endIndent: 20,
+                    ),
+                    ListTile(
+                      onTap: () async {
+                        _onSelectItem(0, "CD");
+                      },
+                      title: Text(
+                        "Company Details",
+                        style: TextStyle(fontSize: 17),
+                      ),
                     ),
                     ListTile(
                       onTap: () async {

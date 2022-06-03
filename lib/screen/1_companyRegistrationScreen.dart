@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:orderapp/components/customSnackbar.dart';
 import 'package:orderapp/controller/controller.dart';
+import 'package:orderapp/db_helper.dart';
 import 'package:provider/provider.dart';
 
 import '../components/commoncolor.dart';
@@ -29,6 +30,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    deletemenu();
+  }
+
+  deletemenu() async {
+    print("delete");
+    // await OrderAppDB.instance.deleteFromTableCommonQuery('menuTable', "");
   }
 
   @override
@@ -90,12 +97,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             labelText: 'Company Key',
                           ),
                           validator: (text) {
-
                             if (text == null || text.isEmpty) {
                               return 'Please Enter Company Key';
                             }
                             return null;
-                            
                           },
                           // scrollPadding: EdgeInsets.only(
                           //     top:100),

@@ -31,6 +31,8 @@ class Controller extends ChangeNotifier {
   String? searchkey;
   String? sname;
   String? sid;
+  String? userType;
+
   String? orderTotal;
   String? ordernumber;
   String? cid;
@@ -47,7 +49,7 @@ class Controller extends ChangeNotifier {
   double? totalPrice;
   String? totrate;
   List<String> areaAutoComplete = [];
-  List<Menu> menuList = [];
+  List<Map<String, dynamic>> menuList = [];
   String? firstMenu;
   List<Map<String, dynamic>> listWidget = [];
   List<TextEditingController> controller = [];
@@ -81,6 +83,8 @@ class Controller extends ChangeNotifier {
   Future<RegistrationData?> postRegistration(
       String company_code, BuildContext context) async {
     NetConnection.networkConnection(context).then((value) async {
+
+      await OrderAppDB.instance.deleteFromTableCommonQuery('menuTable', "");
       if (value == true) {
         try {
           Uri url =
@@ -101,6 +105,7 @@ class Controller extends ChangeNotifier {
           print("map ${map}");
           // print("response ${response}");
           RegistrationData regModel = RegistrationData.fromJson(map);
+          userType = regModel.type;
           sof = regModel.sof;
           print("sof----${sof}");
           if (sof == "1" && company_code.length >= 10) {
@@ -123,11 +128,14 @@ class Controller extends ChangeNotifier {
             notifyListeners();
             SharedPreferences prefs = await SharedPreferences.getInstance();
             prefs.setString("company_id", company_code);
-            getMenu(cid!, fp!, context);
-
+            // OrderAppDB.instance.deleteFromTableCommonQuery('menuTable',"");
+            getMenuAPi(cid!, fp!, context);
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => CompanyDetails()),
+              MaterialPageRoute(
+                  builder: (context) => CompanyDetails(
+                        type: "",
+                      )),
             );
           }
           /////////////////////////////////////////////////////
@@ -146,8 +154,9 @@ class Controller extends ChangeNotifier {
   }
 
   //////////////////////getMenu////////////////////////////////////////
-  Future<RegistrationData?> getMenu(
+  Future<RegistrationData?> getMenuAPi(
       String company_code, String fp, BuildContext context) async {
+        var res;
     NetConnection.networkConnection(context).then((value) async {
       if (value == true) {
         print("company_code---fp-${company_code}---${fp}");
@@ -171,20 +180,31 @@ class Controller extends ChangeNotifier {
           SideMenu sidemenuModel = SideMenu.fromJson(map);
           firstMenu = sidemenuModel.first;
           for (var menuItem in sidemenuModel.menu!) {
-            print("menuitem----${menuItem.menu_name}");
-            var res = await OrderAppDB.instance
+            // print("menuitem----${menuItem.menu_name}");
+             res = await OrderAppDB.instance
                 .insertMenuTable(menuItem.menu_index!, menuItem.menu_name!);
-            menuList.add(menuItem);
+            // menuList.add(menuItem);
           }
-
-          // print("menuList----${menuList.}");
-          notifyListeners();
+          print("insertion");
+         notifyListeners();
         } catch (e) {
           print(e);
           return null;
         }
       }
     });
+  }
+
+  ////////////////////menu table fetch///////////////////////////////
+  fetchMenusFromMenuTable() async {
+    menuList.clear();
+    var res = await OrderAppDB.instance.selectAllcommon('menuTable');
+    print("menu from table----$res");
+
+    for (var menu in res) {
+      menuList.add(menu);
+    }
+    print("menuList----${menuList}");
   }
 
   /////////////////////// Staff details////////////////////////////////

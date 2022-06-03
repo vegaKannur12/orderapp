@@ -31,7 +31,7 @@ class StaffLogin extends StatelessWidget {
   toggle() {
     visible.value = !visible.value;
   }
-
+   
   @override
   Widget build(BuildContext context) {
     date = DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
@@ -251,25 +251,7 @@ class StaffLogin extends StatelessWidget {
                                               shape: CircleBorder(),
                                             ),
                                             //////////////////////////////
-                                            MaterialButton(
-                                              onPressed: () {
-                                                CustomPopup popu =
-                                                    CustomPopup();
-                                                popup.buildPopupDialog(
-                                                    context, "Exit ap?");
-                                                exit(0);
-                                              },
-                                              color:
-                                                  P_Settings.roundedButtonColor,
-                                              textColor: Colors.white,
-                                              child: Icon(
-                                                Icons.close,
-                                                size: 24,
-                                                color: P_Settings.wavecolor,
-                                              ),
-                                              padding: EdgeInsets.all(16),
-                                              shape: CircleBorder(),
-                                            ),
+                                            
 
                                             MaterialButton(
                                               onPressed: () async {
@@ -305,7 +287,26 @@ class StaffLogin extends StatelessWidget {
                                               ),
                                               padding: EdgeInsets.all(16),
                                               shape: CircleBorder(),
-                                            )
+                                            ),
+                                            MaterialButton(
+                                              onPressed: () {
+                                                CustomPopup popu =
+                                                    CustomPopup();
+                                                popup.buildPopupDialog(
+                                                    context, "Exit ap?");
+                                                exit(0);
+                                              },
+                                              color:
+                                                  P_Settings.roundedButtonColor,
+                                              textColor: Colors.white,
+                                              child: Icon(
+                                                Icons.close,
+                                                size: 24,
+                                                color: P_Settings.wavecolor,
+                                              ),
+                                              padding: EdgeInsets.all(16),
+                                              shape: CircleBorder(),
+                                            ),
                                           ],
                                         ),
                                       ),

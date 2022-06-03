@@ -412,10 +412,12 @@ class OrderAppDB {
   //////////////////////////menu table//////////////////////////////////////////
   Future insertMenuTable(String menu_prefix, String menu_name) async {
     final db = await database;
+    // deleteFromTableCommonQuery('menuTable', "");
     var query1 =
         'INSERT INTO menuTable(menu_index,menu_name) VALUES("${menu_prefix}", "${menu_name}")';
     var res = await db.rawInsert(query1);
-    print("menu----${query1}");
+    // print("menu----${query1}");
+    print("menu----${res}");
     // print(res);
     return res;
   }
@@ -857,6 +859,16 @@ class OrderAppDB {
     }
 
     print("naaknsdJK-----$result");
+    return result;
+  }
+
+///////////////////////////////////////////////////////////
+  selectAllcommon(String table) async {
+    print("haiiiii");
+    List<Map<String, dynamic>> result;
+    Database db = await instance.database;
+     result = await db.rawQuery("SELECT * FROM '$table'");
+    print("result menu common----$result");
     return result;
   }
 
