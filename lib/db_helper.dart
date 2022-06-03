@@ -314,7 +314,6 @@ class OrderAppDB {
 
     result = await db.rawQuery('select * from registrationTable');
     if (result.length > 0) {
-      
       return result;
     } else {
       return null;
@@ -411,8 +410,7 @@ class OrderAppDB {
   }
 
   //////////////////////////menu table//////////////////////////////////////////
-  Future insertMenuTable(
-       String menu_prefix, String menu_name) async {
+  Future insertMenuTable(String menu_prefix, String menu_name) async {
     final db = await database;
     var query1 =
         'INSERT INTO menuTable(menu_index,menu_name) VALUES("${menu_prefix}", "${menu_name}")';
@@ -506,13 +504,14 @@ class OrderAppDB {
     print("uname---Password----${uname}--${pwd}");
     resultList.clear();
     Database db = await instance.database;
+
     List<Map<String, dynamic>> list =
         await db.rawQuery('SELECT * FROM staffDetailsTable');
     for (var staff in list) {
       print(
           "staff['uname'] & staff['pwd']------------------${staff['uname']}--${staff['pwd']}");
-      if (uname == staff["uname"].toLowerCase() ||
-          uname == staff["uname"].toUpperCase() && pwd == staff["pwd"]) {
+      if (uname.toLowerCase() == staff["uname"].toLowerCase() &&
+          pwd == staff["pwd"]) {
         sid = staff['sid'];
         print("staffid..$sid");
 

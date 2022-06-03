@@ -7,6 +7,7 @@ import 'package:orderapp/components/customSearchTile.dart';
 import 'package:orderapp/components/showMoadal.dart';
 import 'package:orderapp/db_helper.dart';
 import 'package:orderapp/screen/8_cartList.dart';
+// import 'package:orderapp/screen/cartList.dart';
 import 'package:provider/provider.dart';
 import '../controller/controller.dart';
 import '../components/customSnackbar.dart';
@@ -125,24 +126,17 @@ class _ItemSelectionState extends State<ItemSelection> {
               children: [
                 GestureDetector(
                   onTap: () {
-                   if (widget.customerId == null || widget.customerId.isEmpty) {
-                } else {
-                  FocusManager.instance.primaryFocus?.unfocus();
-                  Provider.of<Controller>(context, listen: false)
-                      .getBagDetails(widget.customerId, widget.os);
-
-                  Navigator.of(context).push(
-                    PageRouteBuilder(
-                      opaque: false, // set to false
-                      pageBuilder: (_, __, ___) => CartList(
-                        areaId: widget.areaId,
-                        custmerId: widget.customerId,
-                        os: widget.os,
-                        areaname: widget.areaName,
+                    Navigator.of(context).push(
+                      PageRouteBuilder(
+                        opaque: false, // set to false
+                        pageBuilder: (_, __, ___) => CartList(
+                          areaId: widget.areaId,
+                          custmerId: widget.customerId,
+                          os: widget.os,
+                          areaname: widget.areaName,
+                        ),
                       ),
-                    ),
-                  );
-                }
+                    );
                   },
                   child: Container(
                       alignment: Alignment.center,
@@ -319,19 +313,13 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                           : Colors.grey[700],
                                                       fontSize: 16),
                                                 ),
-                                                subtitle: Text(
-                                                  "(\u{20B9} ${value.productName[index]["rate1"]})",
-                                                  style: TextStyle(
-                                                      fontSize: 14,
-                                                      color: P_Settings.ratecolor),
-                                                ),
                                                 trailing: Row(
                                                   mainAxisSize:
                                                       MainAxisSize.min,
                                                   children: [
-                                                    SizedBox(
+                                                    Container(
                                                         width:
-                                                            size.width * 0.08,
+                                                            size.width * 0.06,
                                                         child: TextFormField(
                                                           controller:
                                                               value.qty[index],
@@ -433,7 +421,6 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                         );
 
                                                         /////////////////////////
-
                                                         (widget.customerId.isNotEmpty ||
                                                                     widget.customerId !=
                                                                         null) &&
@@ -568,33 +555,26 @@ class _ItemSelectionState extends State<ItemSelection> {
                                         }
                                       },
                                       child: ListTile(
-                                        title: Expanded(
-                                          child: Text(
-                                            '${value.productName[index]["code"]}' +
-                                                '-' +
-                                                '${value.productName[index]["item"]}',
-                                            style: TextStyle(
-                                                color: value.productName[index]
-                                                            ["cartrowno"] ==
-                                                        null
-                                                    ? value.selected[index]
-                                                        ? Colors.green
-                                                        : Colors.grey[700]
-                                                    : Colors.green,
-                                                fontSize: 16),
-                                          ),
-                                        ),
-                                        subtitle: Text(
-                                          "(\u{20B9} ${value.productName[index]["rate1"]})",
+                                        title: Text(
+                                          '${value.productName[index]["code"]}' +
+                                              '-' +
+                                              '${value.productName[index]["item"]}',
                                           style: TextStyle(
-                                              fontSize: 14, color: P_Settings.ratecolor),
+                                              color: value.productName[index]
+                                                          ["cartrowno"] ==
+                                                      null
+                                                  ? value.selected[index]
+                                                      ? Colors.green
+                                                      : Colors.grey[700]
+                                                  : Colors.green,
+                                              fontSize: 16),
                                         ),
+                                        subtitle: Text('\u{20B9}${value.productName[index]["rate1"]}',style: TextStyle(color: P_Settings.ratecolor,fontStyle: FontStyle.italic,),),
                                         trailing: Row(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
-                                            SizedBox(
-                                                // width: size.width * 0.06,
-                                                width: size.width * 0.09,
+                                            Container(
+                                                width: size.width * 0.06,
                                                 child: TextFormField(
                                                   controller: value.qty[index],
                                                   keyboardType:
@@ -670,7 +650,6 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                 );
 
                                                 /////////////////////////
-
                                                 (widget.customerId.isNotEmpty ||
                                                             widget.customerId !=
                                                                 null) &&
