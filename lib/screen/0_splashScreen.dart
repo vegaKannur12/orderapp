@@ -77,20 +77,25 @@ class _SplashScreenState extends State<SplashScreen>
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: P_Settings.wavecolor,
-      body: Center(
-          child: Column(
-        children: [
-          SizedBox(
-            height: size.height * 0.4,
-          ),
-          Container(
-              height: 200,
-              width: 200,
-              child: Image.asset(
-                "asset/logo_black_bg.png",
-              )),
-        ],
-      )),
+      body: InkWell(
+        onTap: () {
+          FocusScope.of(context).requestFocus(FocusNode());
+        },
+        child: Center(
+            child: Column(
+          children: [
+            SizedBox(
+              height: size.height * 0.4,
+            ),
+            Container(
+                height: 200,
+                width: 200,
+                child: Image.asset(
+                  "asset/logo_black_bg.png",
+                )),
+          ],
+        )),
+      ),
     );
   }
 }

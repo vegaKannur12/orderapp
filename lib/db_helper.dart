@@ -119,6 +119,12 @@ class OrderAppDB {
   static final row_num = 'row_num';
   static final itemName = 'itemName';
   static final numberof_items = 'numberof_items';
+
+////////////////////menu table////////////////
+  static final menu_index = 'menu_index';
+  static final menu_name = 'menu_name';
+  static final user = 'user';
+
   Future<Database> get database async {
     if (_database != null) return _database!;
     _database = await _initDB("orderapp.db");
@@ -291,10 +297,29 @@ class OrderAppDB {
             $cstatus INTEGER
           )
           ''');
+    /////////////////////////////////////////
+    await db.execute('''
+          CREATE TABLE menuTable (
+            $id INTEGER PRIMARY KEY AUTOINCREMENT,
+            $menu_index TEXT NOT NULL,
+            $menu_name TEXT
+          )
+          ''');
   }
 
-  ///////////////////////////////////////////////////////////
+  ////////////////////////company details select///////////////////////////////////
+  selectCompany(String cid) async {
+    List result;
+    Database db = await instance.database;
 
+    result = await db.rawQuery('select * from registrationTable');
+    if (result.length > 0) {
+      
+      return result;
+    } else {
+      return null;
+    }
+  }
   ////////////// cart order ////////////////////////////
   // Future insertorderMasterTable(String ordernum, String orderdate, String os,
   //     String customerid, String userid, String areaid, int status) async {
@@ -384,7 +409,18 @@ class OrderAppDB {
       print(query3);
     }
   }
-  //////////////////////////master table/////////////////////////////////////
+
+  //////////////////////////menu table//////////////////////////////////////////
+  Future insertMenuTable(
+       String menu_prefix, String menu_name) async {
+    final db = await database;
+    var query1 =
+        'INSERT INTO menuTable(menu_index,menu_name) VALUES("${menu_prefix}", "${menu_name}")';
+    var res = await db.rawInsert(query1);
+    print("menu----${query1}");
+    // print(res);
+    return res;
+  }
 
   ///////////////////// registration details insertion //////////////////////////
   Future insertRegistrationDetails(RegistrationData data) async {
@@ -475,7 +511,8 @@ class OrderAppDB {
     for (var staff in list) {
       print(
           "staff['uname'] & staff['pwd']------------------${staff['uname']}--${staff['pwd']}");
-      if (uname == staff["uname"] && pwd == staff["pwd"]) {
+      if (uname == staff["uname"].toLowerCase() ||
+          uname == staff["uname"].toUpperCase() && pwd == staff["pwd"]) {
         sid = staff['sid'];
         print("staffid..$sid");
 
@@ -843,7 +880,7 @@ class OrderAppDB {
     }
   }
 
-  /////////////////////
+  /////////////////////////////////////////////
   getDataFromMasterAndDetails(int order_id) async {
     List<Map<String, dynamic>> result;
     Database db = await instance.database;

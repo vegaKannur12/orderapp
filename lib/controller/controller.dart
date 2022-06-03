@@ -36,6 +36,7 @@ class Controller extends ChangeNotifier {
   String? cid;
   String? cname;
   int? qtyinc;
+  String? itemRate;
   List<CD> c_d = [];
   List<Map<String, dynamic>> historyList = [];
   List<Map<String, dynamic>> historydataList = [];
@@ -44,9 +45,10 @@ class Controller extends ChangeNotifier {
   double amt = 0.0;
   List<CD> data = [];
   double? totalPrice;
+  String? totrate;
   List<String> areaAutoComplete = [];
   List<Menu> menuList = [];
-
+  String? firstMenu;
   List<Map<String, dynamic>> listWidget = [];
   List<TextEditingController> controller = [];
   List<TextEditingController> qty = [];
@@ -62,8 +64,10 @@ class Controller extends ChangeNotifier {
   List<Map<String, dynamic>> staffId = [];
   List<Map<String, dynamic>> productName = [];
   List<Map<String, dynamic>> areDetails = [];
+  List<Map<String, dynamic>> cmpDetails = [];
   List<Map<String, dynamic>> custmerDetails = [];
   List<Map<String, dynamic>> areaList = [];
+  List<Map<String, dynamic>> companyList = [];
   List<Map<String, dynamic>> customerList = [];
   List<Map<String, dynamic>> copyCus = [];
   List<Map<String, dynamic>> prodctItems = [];
@@ -165,10 +169,11 @@ class Controller extends ChangeNotifier {
           print("map menu ${map}");
 
           SideMenu sidemenuModel = SideMenu.fromJson(map);
+          firstMenu = sidemenuModel.first;
           for (var menuItem in sidemenuModel.menu!) {
             print("menuitem----${menuItem.menu_name}");
-            // print("menuitem----${menuItem.menu_name}");
-
+            var res = await OrderAppDB.instance
+                .insertMenuTable(menuItem.menu_index!, menuItem.menu_name!);
             menuList.add(menuItem);
           }
 
@@ -199,7 +204,7 @@ class Controller extends ChangeNotifier {
       );
       // print("body ${body}");
       List map = jsonDecode(response.body);
-       print("map ${map}");
+      print("map ${map}");
 
       for (var staff in map) {
         // print("staff----${staff}");
@@ -207,7 +212,7 @@ class Controller extends ChangeNotifier {
         restaff = await OrderAppDB.instance.insertStaffDetails(staffModel);
         // print("inserted ${restaff}");
       }
-        print("inserted staff ${restaff}");
+      print("inserted staff ${restaff}");
 
       /////////////// insert into local db /////////////////////
       notifyListeners();
@@ -433,6 +438,24 @@ class Controller extends ChangeNotifier {
     }
   }
 
+///////////////////////////////////////////////////////
+  getCompanyData() async {
+    try {
+      var res = await OrderAppDB.instance.selectCompany(cid!);
+      print("res companyList----${res}");
+      for (var item in res) {
+        companyList.add(item);
+      }
+      print("companyList ----${companyList}");
+
+      notifyListeners();
+    } catch (e) {
+      print(e);
+      return null;
+    }
+    notifyListeners();
+  }
+
   //////////////////////////////////////////////////////
   getArea(String staffName) async {
     String areaName;
@@ -464,26 +487,12 @@ class Controller extends ChangeNotifier {
       for (var item in customerList) {
         custmerDetails.add(item);
       }
-      print("custmerDetails adding $custmerDetails");
+      print("custmerDetails adding $cmpDetails");
       notifyListeners();
     } catch (e) {
       print(e);
       return null;
     }
-    notifyListeners();
-  }
-
-///////////////////////////////////
-  getStaffid() async {
-    String? staffName;
-    final prefs = await SharedPreferences.getInstance();
-    staffName = prefs.getString("st_username");
-    String sId = staffName!;
-    // print("sid......$sid");
-    print("Sname..........$sId");
-    // try {
-    //   String result =
-    //       await OrderAppDB.instance.selectStaff(staffName!, password);
     notifyListeners();
   }
 
@@ -881,6 +890,13 @@ class Controller extends ChangeNotifier {
   setQty(int qty) {
     qtyinc = qty;
     // notifyListeners();
+  }
+
+/////////////////////
+  setPrice(String rate) {
+    totrate = rate;
+    print("rate.$rate");
+    notifyListeners();
   }
 
   ///////////////////////

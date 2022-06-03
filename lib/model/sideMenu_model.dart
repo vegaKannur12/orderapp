@@ -1,15 +1,14 @@
 class SideMenu {
-  String? cid;
-  String? fp;
+  String? first;
   List<Menu>? menu;
   String? msg;
   String? sof;
 
-  SideMenu({this.cid, this.fp, this.menu, this.msg, this.sof});
+  SideMenu({this.first, this.menu, this.msg, this.sof});
 
   SideMenu.fromJson(Map<String, dynamic> json) {
-    cid = json['cid'];
-    fp = json['fp'];
+    first = json['first'];
+
     if (json['menu'] != null) {
       menu = <Menu>[];
       json['menu'].forEach((v) {
@@ -22,8 +21,8 @@ class SideMenu {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['cid'] = this.cid;
-    data['fp'] = this.fp;
+    data['first'] = this.first;
+
     if (this.menu != null) {
       data['menu'] = this.menu!.map((v) => v.toJson()).toList();
     }

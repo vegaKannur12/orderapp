@@ -69,6 +69,10 @@ class _DashboardState extends State<Dashboard> {
     Provider.of<Controller>(context, listen: false).setCname();
     Provider.of<Controller>(context, listen: false).setSname();
     getCompaniId();
+    Provider.of<Controller>(context, listen: false).getCompanyData();
+    if (Provider.of<Controller>(context, listen: false).firstMenu != null) {
+      menu_index = Provider.of<Controller>(context, listen: false).firstMenu!;
+    }
   }
 
   getCompaniId() async {
@@ -115,9 +119,9 @@ class _DashboardState extends State<Dashboard> {
           type: "drawer call",
         );
       case "dP":
-      // title = "Download data";
+        // title = "Download data";
         return DownloadedPage(
-           title: "Download Page",
+          title: "Download Page",
           type: "drawer call",
         );
     }
@@ -128,7 +132,7 @@ class _DashboardState extends State<Dashboard> {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     if (widget.type == "return from cartList") {
-      menu_index = "S1";
+      menu_index = "S2";
     }
     // print("_seletdde---$_selectedIndex");
   }
@@ -168,9 +172,10 @@ class _DashboardState extends State<Dashboard> {
         appBar: menu_index == "UL" || menu_index == "dP"
             ? AppBar(
                 elevation: 0,
-                title: Text(title,style: TextStyle(
-                  fontSize: 16 
-                ),),
+                title: Text(
+                  title,
+                  style: TextStyle(fontSize: 16),
+                ),
                 backgroundColor: P_Settings.wavecolor,
                 bottom: PreferredSize(
                   preferredSize: Size.fromHeight(6.0),
@@ -214,77 +219,78 @@ class _DashboardState extends State<Dashboard> {
           child: LayoutBuilder(
             builder: (context, constraints) {
               return SingleChildScrollView(
-              scrollDirection:Axis.vertical,
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: size.height * 0.045,
-                  ),
-                  // Container(
-                  //   height: size.height * 0.2,
-                  //   width: size.width * 1,
-                  //   color: P_Settings.wavecolor,
-                  //   child: Row(
-                  //     children: [
-                  //       SizedBox(
-                  //         height: size.height * 0.07,
-                  //         width: size.width * 0.03,
-                  //       ),
-                  //       Icon(
-                  //         Icons.list_outlined,
-                  //         color: Colors.white,
-                  //       ),
-                  //       SizedBox(width: size.width * 0.04),
-                  //       Text(
-                  //         "Menus",
-                  //         style: TextStyle(fontSize: 20, color: Colors.white),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
-                  Column(children: drawerOpts),
-                  Divider(
-                    color: Colors.black,
-                    indent: 20,
-                    endIndent: 20,
-                  ),
-                  ListTile(
-                    onTap: () async {
-                      _onSelectItem(0, "dP");
-                    },
-                    title: Text(
-                      "Download page",
-                      style: TextStyle(fontSize: 17),
+                scrollDirection: Axis.vertical,
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: size.height * 0.045,
                     ),
-                  ),
-                  ListTile(
-                    onTap: () async {
-                      _onSelectItem(0, "UL");
-                    },
-                    title: Text(
-                      "Upload data",
-                      style: TextStyle(fontSize: 17),
+                    // Container(
+                    //   height: size.height * 0.2,
+                    //   width: size.width * 1,
+                    //   color: P_Settings.wavecolor,
+                    //   child: Row(
+                    //     children: [
+                    //       SizedBox(
+                    //         height: size.height * 0.07,
+                    //         width: size.width * 0.03,
+                    //       ),
+                    //       Icon(
+                    //         Icons.list_outlined,
+                    //         color: Colors.white,
+                    //       ),
+                    //       SizedBox(width: size.width * 0.04),
+                    //       Text(
+                    //         "Menus",
+                    //         style: TextStyle(fontSize: 20, color: Colors.white),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
+                    Column(children: drawerOpts),
+                    Divider(
+                      color: Colors.black,
+                      indent: 20,
+                      endIndent: 20,
                     ),
-                  ),
-                  ListTile(
-                    trailing: Icon(Icons.logout),
-                    onTap: () async {
-                      final prefs = await SharedPreferences.getInstance();
-                      await prefs.remove('st_username');
-                      await prefs.remove('st_pwd');
-                      Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (context) => StaffLogin()));
-                    },
-                    title: Text(
-                      "Logout",
-                      style: TextStyle(fontSize: 17),
+                    ListTile(
+                      onTap: () async {
+                        _onSelectItem(0, "dP");
+                      },
+                      title: Text(
+                        "Download page",
+                        style: TextStyle(fontSize: 17),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            );
+                    ListTile(
+                      onTap: () async {
+                        _onSelectItem(0, "UL");
+                      },
+                      title: Text(
+                        "Upload data",
+                        style: TextStyle(fontSize: 17),
+                      ),
+                    ),
+                    ListTile(
+                      trailing: Icon(Icons.logout),
+                      onTap: () async {
+                        final prefs = await SharedPreferences.getInstance();
+                        await prefs.remove('st_username');
+                        await prefs.remove('st_pwd');
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => StaffLogin()));
+                      },
+                      title: Text(
+                        "Logout",
+                        style: TextStyle(fontSize: 17),
+                      ),
+                    ),
+                  ],
+                ),
+              );
             },
-            
           ),
         ),
         body: _getDrawerItemWidget(menu_index),

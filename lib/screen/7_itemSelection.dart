@@ -123,28 +123,50 @@ class _ItemSelectionState extends State<ItemSelection> {
           builder: (context, value, child) {
             return Column(
               children: [
-                Container(
-                    alignment: Alignment.center,
-                    height: size.height * 0.045,
-                    width: size.width * 0.2,
-                    child: value.isLoading
-                        ? Center(
-                            child: SpinKitThreeBounce(
-                            color: P_Settings.wavecolor,
-                            size: 15,
-                          ))
-                        : Text(
-                            "${value.count}",
-                            style: TextStyle(
-                                fontSize: 19, fontWeight: FontWeight.bold),
-                          ),
-                    decoration: BoxDecoration(
-                      color: P_Settings.roundedButtonColor,
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(50),
-                        bottomRight: Radius.circular(50),
+                GestureDetector(
+                  onTap: () {
+                   if (widget.customerId == null || widget.customerId.isEmpty) {
+                } else {
+                  FocusManager.instance.primaryFocus?.unfocus();
+                  Provider.of<Controller>(context, listen: false)
+                      .getBagDetails(widget.customerId, widget.os);
+
+                  Navigator.of(context).push(
+                    PageRouteBuilder(
+                      opaque: false, // set to false
+                      pageBuilder: (_, __, ___) => CartList(
+                        areaId: widget.areaId,
+                        custmerId: widget.customerId,
+                        os: widget.os,
+                        areaname: widget.areaName,
                       ),
-                    )),
+                    ),
+                  );
+                }
+                  },
+                  child: Container(
+                      alignment: Alignment.center,
+                      height: size.height * 0.045,
+                      width: size.width * 0.2,
+                      child: value.isLoading
+                          ? Center(
+                              child: SpinKitThreeBounce(
+                              color: P_Settings.wavecolor,
+                              size: 15,
+                            ))
+                          : Text(
+                              "${value.count}",
+                              style: TextStyle(
+                                  fontSize: 19, fontWeight: FontWeight.bold),
+                            ),
+                      decoration: BoxDecoration(
+                        color: P_Settings.roundedButtonColor,
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(50),
+                          bottomRight: Radius.circular(50),
+                        ),
+                      )),
+                ),
                 SizedBox(
                   height: size.height * 0.01,
                 ),
@@ -297,13 +319,19 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                           : Colors.grey[700],
                                                       fontSize: 16),
                                                 ),
+                                                subtitle: Text(
+                                                  "(\u{20B9} ${value.productName[index]["rate1"]})",
+                                                  style: TextStyle(
+                                                      fontSize: 14,
+                                                      color: P_Settings.ratecolor),
+                                                ),
                                                 trailing: Row(
                                                   mainAxisSize:
                                                       MainAxisSize.min,
                                                   children: [
-                                                    Container(
+                                                    SizedBox(
                                                         width:
-                                                            size.width * 0.06,
+                                                            size.width * 0.08,
                                                         child: TextFormField(
                                                           controller:
                                                               value.qty[index],
@@ -556,12 +584,17 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                 fontSize: 16),
                                           ),
                                         ),
+                                        subtitle: Text(
+                                          "(\u{20B9} ${value.productName[index]["rate1"]})",
+                                          style: TextStyle(
+                                              fontSize: 14, color: P_Settings.ratecolor),
+                                        ),
                                         trailing: Row(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
                                             SizedBox(
                                                 // width: size.width * 0.06,
-                                                 width: size.width*0.08,
+                                                width: size.width * 0.09,
                                                 child: TextFormField(
                                                   controller: value.qty[index],
                                                   keyboardType:
