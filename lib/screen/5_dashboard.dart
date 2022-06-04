@@ -221,6 +221,7 @@ class _DashboardState extends State<Dashboard> {
                   builder: (context) => IconButton(
                       icon: new Icon(Icons.menu),
                       onPressed: () {
+                        drawerOpts.clear();
                         print("clicked");
                         // companyAttributes.clear();
                         for (var i = 0;
