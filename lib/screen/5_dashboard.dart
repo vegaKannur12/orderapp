@@ -144,7 +144,7 @@ class _DashboardState extends State<Dashboard> {
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-    Provider.of<Controller>(context, listen: false).fetchMenusFromMenuTable();
+    // Provider.of<Controller>(context, listen: false).fetchMenusFromMenuTable();
 
     if (widget.type == "return from cartList") {
       menu_index = "S2";
