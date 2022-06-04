@@ -25,6 +25,8 @@ class Controller extends ChangeNotifier {
   bool isSearch = false;
   bool isVisible = false;
   List<bool> selected = [];
+  List<bool> settingOption = [];
+
   List<String> tableColumn = [];
   List<String> tableHistorydataColumn = [];
   String? editedRate;
@@ -1054,7 +1056,7 @@ class Controller extends ChangeNotifier {
       print("entede");
       saveOrderDetails(cid, om, context);
     } else {
-      snackbar.showSnackbar(context, "Nothing to upload");
+      snackbar.showSnackbar(context, "Nothing to upload!!!");
     }
     print("om----$om");
     notifyListeners();
@@ -1081,5 +1083,10 @@ class Controller extends ChangeNotifier {
     }
     print("settingsList--$settingsList");
     notifyListeners();
+  }
+  ///////////////////////////////////////////////////////
+  setSettingOption(int length){
+  settingOption=  List.generate(length, (index) => false);
+  notifyListeners();
   }
 }
