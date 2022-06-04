@@ -23,7 +23,6 @@ class _CompanyDetailsState extends State<CompanyDetails> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    // Provider.of<Controller>(context, listen: false).fetchMenusFromMenuTable();
   }
 
   @override
@@ -66,8 +65,10 @@ class _CompanyDetailsState extends State<CompanyDetails> {
               children: [
                 Text(
                   "Company Details",
-                  style:
-                      TextStyle(fontSize: 20, color: P_Settings.headingColor,fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      fontSize: 20,
+                      color: P_Settings.headingColor,
+                      fontWeight: FontWeight.bold),
                 ),
               ],
             ),
@@ -238,6 +239,10 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                                 ),
                                 ElevatedButton(
                                   onPressed: () async {
+                                    Provider.of<Controller>(context,
+                                            listen: false)
+                                        .fetchMenusFromMenuTable();
+
                                     String cid = Provider.of<Controller>(
                                             context,
                                             listen: false)
@@ -260,7 +265,6 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                                     //         listen: false)
                                     //     .setCname();
 
-                                    Provider.of<Controller>(context, listen: false).fetchMenusFromMenuTable();
                                     if (Provider.of<Controller>(context,
                                                 listen: false)
                                             .userType ==

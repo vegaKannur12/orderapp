@@ -25,6 +25,7 @@ class CartList extends StatefulWidget {
 }
 
 class _CartListState extends State<CartList> {
+  TextEditingController rateController = TextEditingController();
   DateTime now = DateTime.now();
   String? date;
   String? sid;
@@ -86,6 +87,7 @@ class _CartListState extends State<CartList> {
           if (value.isLoading) {
             return CircularProgressIndicator();
           } else {
+            print("value.rateEdit----${value.rateEdit}");
             return Column(
               children: [
                 Expanded(
@@ -95,7 +97,9 @@ class _CartListState extends State<CartList> {
                       return listItemFunction(
                           value.bagList[index]["cartrowno"],
                           value.bagList[index]["itemName"],
-                          value.bagList[index]["rate"],
+                          value.rateEdit[index]
+                              ? value.editedRate
+                              : value.bagList[index]["rate"],
                           value.bagList[index]["totalamount"],
                           value.bagList[index]["qty"],
                           size,
@@ -157,6 +161,7 @@ class _CartListState extends State<CartList> {
                                   Future.delayed(Duration(milliseconds: 500),
                                       () {
                                     value.areDetails.clear();
+                                    print("cleardd----${value.areDetails.length}");
                                     Navigator.of(context).pop(true);
 
                                     Navigator.of(context).push(
@@ -308,146 +313,9 @@ class _CartListState extends State<CartList> {
                                 padding: const EdgeInsets.only(left: 5, top: 0),
                                 child: GestureDetector(
                                   onTap: () {
-                                    Provider.of<Controller>(context,
-                                            listen: false)
-                                        .setPrice(rate);
-                                    showModalBottomSheet<void>(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return Consumer<Controller>(
-                                          builder: (context, value, child) {
-                                            return Container(
-                                              height: size.height * 0.3,
-                                              color: Colors.white,
-                                              child: Center(
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: Column(
-                                                    children: <Widget>[
-                                                      SizedBox(
-                                                        height:
-                                                            size.height * 0.01,
-                                                      ),
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .end,
-                                                        children: [
-                                                          IconButton(
-                                                            icon: Icon(
-                                                                Icons.close),
-                                                            onPressed: () {
-                                                              Navigator.pop(
-                                                                  context);
-                                                            },
-                                                          )
-                                                        ],
-                                                      ),
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    left: 15.0,
-                                                                    right: 15),
-                                                            child: Text(
-                                                              // "\u{20B9}${value.totalPrice.toString()}",
-                                                              value.totalPrice
-                                                                  .toString(),
-
-                                                              style: TextStyle(
-                                                                  fontSize: 20),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      SizedBox(
-                                                        height:
-                                                            size.height * 0.02,
-                                                      ),
-                                                      Divider(
-                                                        thickness: 1,
-                                                      ),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                top: 8.0,
-                                                                bottom: 8),
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          children: [
-                                                            Text(
-                                                              "Total Price :",
-                                                              style: TextStyle(
-                                                                  fontSize: 17),
-                                                            ),
-                                                            Flexible(
-                                                              child: Text(
-                                                                "\u{20B9}${value.totalPrice.toString()}",
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        17),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      Divider(
-                                                        thickness: 1,
-                                                      ),
-                                                      SizedBox(
-                                                        height:
-                                                            size.height * 0.02,
-                                                      ),
-                                                      Flexible(
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            Container(
-                                                              height:
-                                                                  size.height *
-                                                                      0.035,
-                                                              width:
-                                                                  size.width *
-                                                                      0.6,
-                                                              child:
-                                                                  ElevatedButton(
-                                                                      onPressed:
-                                                                          () {
-                                                                        Provider.of<Controller>(context, listen: false).updateQty(
-                                                                            value.qtyinc.toString(),
-                                                                            cartrowno,
-                                                                            widget.custmerId,
-                                                                            rate);
-
-                                                                        Navigator.pop(
-                                                                            context);
-                                                                      },
-                                                                      child: Text(
-                                                                          "continue..")),
-                                                            )
-                                                          ],
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            );
-                                          },
-                                        );
-                                      },
-                                    );
+                                    String item = "${itemName} (${code})";
+                                    Provider.of<Controller>(context, listen: false).settingsRateOption?
+                                    popup(item, rate, size, index):null;
                                   },
                                   child: Row(
                                     children: [
@@ -759,5 +627,69 @@ class _CartListState extends State<CartList> {
         ),
       ),
     );
+  }
+
+  popup(String item, String rate, Size size, int index) {
+    return showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return new AlertDialog(
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  item,
+                  style: TextStyle(fontSize: 15),
+                )
+              ],
+            ),
+            // title: const Text('Popup example'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(
+                  height: size.height * 0.02,
+                ),
+                Row(
+                  children: [
+                    Text("Old rate    :"),
+                    Text("   \u{20B9}${rate}"),
+                  ],
+                ),
+                SizedBox(
+                  height: size.height * 0.02,
+                ),
+                Row(
+                  children: [
+                    Text("New rate  :"),
+                    Container(
+                        width: size.width * 0.2,
+                        child: TextField(
+                          controller: rateController,
+                        ))
+                  ],
+                ),
+              ],
+            ),
+            actions: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      Provider.of<Controller>(context, listen: false)
+                          .editRate(rateController.text, index);
+                      Navigator.of(context).pop();
+                    },
+                    // textColor: Theme.of(context).primaryColor,
+                    child: Text('Save'),
+                  ),
+                ],
+              )
+            ],
+          );
+        });
   }
 }

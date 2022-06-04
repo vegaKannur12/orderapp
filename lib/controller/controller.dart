@@ -27,6 +27,7 @@ class Controller extends ChangeNotifier {
   List<bool> selected = [];
   List<String> tableColumn = [];
   List<String> tableHistorydataColumn = [];
+  String? editedRate;
   String? order_id;
   String? searchkey;
   String? sname;
@@ -54,14 +55,14 @@ class Controller extends ChangeNotifier {
   List<Map<String, dynamic>> listWidget = [];
   List<TextEditingController> controller = [];
   List<TextEditingController> qty = [];
-
+  List<bool> rateEdit = [];
   String count = "0";
   String? sof;
   List<Map<String, dynamic>> bagList = [];
   List<Map<String, dynamic>> newList = [];
   List<Map<String, dynamic>> masterList = [];
   List<Map<String, dynamic>> orderdetailsList = [];
-
+  bool settingsRateOption = false;
   List<Map<String, dynamic>> staffList = [];
   List<Map<String, dynamic>> staffId = [];
   List<Map<String, dynamic>> productName = [];
@@ -83,7 +84,6 @@ class Controller extends ChangeNotifier {
   Future<RegistrationData?> postRegistration(
       String company_code, BuildContext context) async {
     NetConnection.networkConnection(context).then((value) async {
-
       await OrderAppDB.instance.deleteFromTableCommonQuery('menuTable', "");
       if (value == true) {
         try {
@@ -156,7 +156,7 @@ class Controller extends ChangeNotifier {
   //////////////////////getMenu////////////////////////////////////////
   Future<RegistrationData?> getMenuAPi(
       String company_code, String fp, BuildContext context) async {
-        var res;
+    var res;
     NetConnection.networkConnection(context).then((value) async {
       if (value == true) {
         print("company_code---fp-${company_code}---${fp}");
@@ -181,12 +181,12 @@ class Controller extends ChangeNotifier {
           firstMenu = sidemenuModel.first;
           for (var menuItem in sidemenuModel.menu!) {
             // print("menuitem----${menuItem.menu_name}");
-             res = await OrderAppDB.instance
+            res = await OrderAppDB.instance
                 .insertMenuTable(menuItem.menu_index!, menuItem.menu_name!);
             // menuList.add(menuItem);
           }
           print("insertion");
-         notifyListeners();
+          notifyListeners();
         } catch (e) {
           print(e);
           return null;
@@ -205,6 +205,8 @@ class Controller extends ChangeNotifier {
       menuList.add(menu);
     }
     print("menuList----${menuList}");
+
+    notifyListeners();
   }
 
   /////////////////////// Staff details////////////////////////////////
@@ -479,14 +481,15 @@ class Controller extends ChangeNotifier {
   //////////////////////////////////////////////////////
   getArea(String staffName) async {
     String areaName;
-    print("staff...............${staffName}");
+    areDetails.clear();
+        print("staff...............${staffName}");
     try {
       areaList = await OrderAppDB.instance.getArea(staffName);
       print("areaList----${areaList}");
       for (var item in areaList) {
         areDetails.add(item);
       }
-      print("areaList adding ----${areaList}");
+      print("areaList adding ----${areDetails}");
 
       notifyListeners();
     } catch (e) {
@@ -648,6 +651,7 @@ class Controller extends ChangeNotifier {
     for (var item in res) {
       bagList.add(item);
     }
+    rateEdit = List.generate(bagList.length, (index) => false);
     generateTextEditingController();
     print("bagList vxdvxd----$bagList");
 
@@ -1058,5 +1062,18 @@ class Controller extends ChangeNotifier {
     }
     print("om----$om");
     notifyListeners();
+  }
+
+  ////////////////////////////////////////////////////
+  editRate(String rate, int index) {
+    rateEdit[index] = true;
+    editedRate = rate;
+    notifyListeners();
+  }
+
+  generateEditRateList() {
+    var length = bagList.length;
+    List.generate(length, (index) => false);
+    // notifyListeners();
   }
 }

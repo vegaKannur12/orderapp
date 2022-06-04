@@ -9,6 +9,7 @@ import 'package:orderapp/screen/6_historypage.dart';
 import 'package:orderapp/screen/5_mainDashboard.dart';
 import 'package:orderapp/screen/3_staffLoginScreen.dart';
 import 'package:orderapp/screen/6_uploaddata.dart';
+import 'package:orderapp/screen/settings.dart';
 import 'package:orderapp/service/tableList.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -28,6 +29,7 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   // int _selectedDrawerIndex = 0;
+  List<Widget> drawerOpts = [];
 
   ValueNotifier<bool> upselected = ValueNotifier(false);
   ValueNotifier<bool> dwnselected = ValueNotifier(false);
@@ -35,6 +37,7 @@ class _DashboardState extends State<Dashboard> {
   String? cid;
   String menu_index = "S1";
   List defaultitems = ["upload data", "download page", "logout"];
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   List companyAttributes = [
     "Dashboard",
     "Logged in",
@@ -67,6 +70,7 @@ class _DashboardState extends State<Dashboard> {
     // Provider.of<Controller>(context, listen: false).postRegistration("RONPBQ9AD5D",context);
     // TODO: implement initState
     super.initState();
+    // Provider.of<Controller>(context, listen: false).fetchMenusFromMenuTable();
     Provider.of<Controller>(context, listen: false).setCname();
     Provider.of<Controller>(context, listen: false).setSname();
     getCompaniId();
@@ -128,8 +132,11 @@ class _DashboardState extends State<Dashboard> {
       case "CD":
         // title = "Download data";
         return CompanyDetails(
-         type: "drawer call",
+          type: "drawer call",
         );
+      case "ST":
+        // title = "Download data";
+        return Settings();
     }
   }
 
@@ -137,6 +144,8 @@ class _DashboardState extends State<Dashboard> {
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
+    Provider.of<Controller>(context, listen: false).fetchMenusFromMenuTable();
+
     if (widget.type == "return from cartList") {
       menu_index = "S2";
     }
@@ -145,35 +154,39 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> drawerOpts = [];
-    print("clicked");
-    // companyAttributes.clear();
-    for (var i = 0;
-        i < Provider.of<Controller>(context, listen: false).menuList.length;
-        i++) {
-      // var d =Provider.of<Controller>(context, listen: false).drawerItems[i];
-      drawerOpts.add(Consumer<Controller>(
-        builder: (context, value, child) {
-          return ListTile(
-            title: Text(
-              value.menuList[i]["menu_name"].toLowerCase(),
-              style: TextStyle(fontFamily: P_Font.kronaOne, fontSize: 17),
-            ),
-            // selected: i == _selectedIndex,
-            onTap: () {
-              _onSelectItem(
-                i,
-                value.menuList[i]["menu_index"],
-              );
-            },
-          );
-        },
-      ));
-    }
+    print("${Provider.of<Controller>(context, listen: false).menuList.length}");
+    // List<Widget> drawerOpts = [];
+    // print("clicked");
+    // // companyAttributes.clear();
+    // for (var i = 0;
+    //     i < Provider.of<Controller>(context, listen: false).menuList.length;
+    //     i++) {
+    //   // var d =Provider.of<Controller>(context, listen: false).drawerItems[i];
+    //   setState(() {
+    //     drawerOpts.add(Consumer<Controller>(
+    //       builder: (context, value, child) {
+    //         return ListTile(
+    //           title: Text(
+    //             value.menuList[i]["menu_name"].toLowerCase(),
+    //             style: TextStyle(fontFamily: P_Font.kronaOne, fontSize: 17),
+    //           ),
+    //           // selected: i == _selectedIndex,
+    //           onTap: () {
+    //             _onSelectItem(
+    //               i,
+    //               value.menuList[i]["menu_index"],
+    //             );
+    //           },
+    //         );
+    //       },
+    //     ));
+    //   });
+    // }
     Size size = MediaQuery.of(context).size;
     return WillPopScope(
       onWillPop: () => _onBackPressed(context),
       child: Scaffold(
+        key: _key, //
         backgroundColor: P_Settings.wavecolor,
         appBar: menu_index == "UL" || menu_index == "dP"
             ? AppBar(
@@ -204,6 +217,46 @@ class _DashboardState extends State<Dashboard> {
                 // title: Text("Company Details",style: TextStyle(fontSize: 20),),
               )
             : AppBar(
+                leading: Builder(
+                  builder: (context) => IconButton(
+                      icon: new Icon(Icons.menu),
+                      onPressed: () {
+                        print("clicked");
+                        // companyAttributes.clear();
+                        for (var i = 0;
+                            i <
+                                Provider.of<Controller>(context, listen: false)
+                                    .menuList
+                                    .length;
+                            i++) {
+                          // var d =Provider.of<Controller>(context, listen: false).drawerItems[i];
+                          setState(() {
+                            drawerOpts.add(Consumer<Controller>(
+                              builder: (context, value, child) {
+                                return ListTile(
+                                  title: Text(
+                                    value.menuList[i]["menu_name"]
+                                        .toLowerCase(),
+                                    style: TextStyle(
+                                        fontFamily: P_Font.kronaOne,
+                                        fontSize: 17),
+                                  ),
+                                  // selected: i == _selectedIndex,
+                                  onTap: () {
+                                    _onSelectItem(
+                                      i,
+                                      value.menuList[i]["menu_index"],
+                                    );
+                                  },
+                                );
+                              },
+                            ));
+                          });
+                        }
+                        // Provider.of<Controller>(context, listen: false).fetchMenusFromMenuTable();
+                        Scaffold.of(context).openDrawer();
+                      }),
+                ),
                 elevation: 0,
                 backgroundColor: P_Settings.wavecolor,
                 actions: [
@@ -283,6 +336,16 @@ class _DashboardState extends State<Dashboard> {
                       },
                       title: Text(
                         "Upload data",
+                        style: TextStyle(fontSize: 17),
+                      ),
+                    ),
+                    ListTile(
+                      trailing: Icon(Icons.settings),
+                      onTap: () async {
+                        _onSelectItem(0, "ST");
+                      },
+                      title: Text(
+                        "Settings",
                         style: TextStyle(fontSize: 17),
                       ),
                     ),

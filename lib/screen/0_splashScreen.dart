@@ -19,7 +19,7 @@ class _SplashScreenState extends State<SplashScreen>
   String? st_pwd;
 
   navigate() async {
-    await Future.delayed(Duration(seconds: 2), () async {
+    await Future.delayed(Duration(seconds: 3), () async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       cid = prefs.getString("company_id");
       st_uname = prefs.getString("st_username");
@@ -53,7 +53,7 @@ class _SplashScreenState extends State<SplashScreen>
     // TODO: implement initState
     // Provider.of<Controller>(context, listen: false).getRegistrationDetails();
     super.initState();
-
+    Provider.of<Controller>(context, listen: false).fetchMenusFromMenuTable();
     navigate();
   }
 
@@ -69,10 +69,12 @@ class _SplashScreenState extends State<SplashScreen>
   void dispose() {
     // _controller.dispose();
     super.dispose();
+
   }
 
   @override
   Widget build(BuildContext context) {
+
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       resizeToAvoidBottomInset: false,

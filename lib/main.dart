@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:orderapp/controller/controller.dart';
 import 'package:orderapp/screen/1_companyRegistrationScreen.dart';
+import 'package:orderapp/screen/2_companyDetailsscreen.dart';
+import 'package:orderapp/screen/3_staffLoginScreen.dart';
 import 'package:orderapp/screen/5_dashboard.dart';
 import 'package:orderapp/screen/6_historypage.dart';
 import 'package:orderapp/screen/0_splashScreen.dart';
@@ -49,7 +51,7 @@ class MyApp extends StatelessWidget {
           ),  
         ),
       ),
-      home: RegistrationScreen(),
+      home: SplashScreen(),
       // home: MyWaveClipper(),
     );
   }
