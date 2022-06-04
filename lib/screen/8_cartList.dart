@@ -161,7 +161,8 @@ class _CartListState extends State<CartList> {
                                   Future.delayed(Duration(milliseconds: 500),
                                       () {
                                     value.areDetails.clear();
-                                    print("cleardd----${value.areDetails.length}");
+                                    print(
+                                        "cleardd----${value.areDetails.length}");
                                     Navigator.of(context).pop(true);
 
                                     Navigator.of(context).push(
@@ -314,8 +315,11 @@ class _CartListState extends State<CartList> {
                                 child: GestureDetector(
                                   onTap: () {
                                     String item = "${itemName} (${code})";
-                                    Provider.of<Controller>(context, listen: false).settingsRateOption?
-                                    popup(item, rate, size, index):null;
+                                    Provider.of<Controller>(context,
+                                                listen: false)
+                                            .settingsRateOption
+                                        ? popup(item, rate, size, index, qty)
+                                        : null;
                                   },
                                   child: Row(
                                     children: [
@@ -555,7 +559,9 @@ class _CartListState extends State<CartList> {
                                                                             cartrowno,
                                                                             widget.custmerId,
                                                                             rate);
-
+                                                                        Provider.of<Controller>(context, listen: false).calculateTotal(
+                                                                            widget.os,
+                                                                            widget.custmerId);
                                                                         Navigator.pop(
                                                                             context);
                                                                       },
@@ -629,7 +635,7 @@ class _CartListState extends State<CartList> {
     );
   }
 
-  popup(String item, String rate, Size size, int index) {
+  popup(String item, String rate, Size size, int index, int qty) {
     return showDialog(
         context: context,
         barrierDismissible: true,
@@ -681,6 +687,13 @@ class _CartListState extends State<CartList> {
                     onPressed: () {
                       Provider.of<Controller>(context, listen: false)
                           .editRate(rateController.text, index);
+                      Provider.of<Controller>(context, listen: false).updateQty(
+                          qty.toString(),
+                          index + 1,
+                          widget.custmerId,
+                          rateController.text);
+                      Provider.of<Controller>(context, listen: false)
+                          .calculateTotal(widget.os, widget.custmerId);
                       Navigator.of(context).pop();
                     },
                     // textColor: Theme.of(context).primaryColor,

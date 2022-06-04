@@ -125,6 +125,10 @@ class OrderAppDB {
   static final menu_name = 'menu_name';
   static final user = 'user';
 
+  ////////////settings//////////////////////
+  static final options = 'options';
+  static final value = 'value';
+
   Future<Database> get database async {
     if (_database != null) return _database!;
     _database = await _initDB("orderapp.db");
@@ -305,6 +309,13 @@ class OrderAppDB {
             $menu_name TEXT
           )
           ''');
+    await db.execute('''
+          CREATE TABLE settings (
+            $id INTEGER PRIMARY KEY AUTOINCREMENT,
+            $options TEXT NOT NULL,
+            $value INTEGER
+          )
+          ''');
   }
 
   ////////////////////////company details select///////////////////////////////////
@@ -418,6 +429,19 @@ class OrderAppDB {
     var res = await db.rawInsert(query1);
     // print("menu----${query1}");
     print("menu----${res}");
+    // print(res);
+    return res;
+  }
+
+  ////////////////////////settings insertion///////////////////////////////////
+  Future insertsettingsTable(String options, int value) async {
+    final db = await database;
+    // deleteFromTableCommonQuery('menuTable', "");
+    var query1 =
+        'INSERT INTO settings(options,value) VALUES("${options}", ${value})';
+    var res = await db.rawInsert(query1);
+    // print("menu----${query1}");
+    print("settingzz---${query1}");
     // print(res);
     return res;
   }
@@ -734,7 +758,7 @@ class OrderAppDB {
     print("updatedqty----$updatedQty");
     // gettotalSum(String os, String customerId);
     var res = await db.rawUpdate(
-        'UPDATE orderBagTable SET qty=$updatedQty , totalamount="${amount}" WHERE cartrowno=$cartrowno AND customerid="$customerId"');
+        'UPDATE orderBagTable SET qty=$updatedQty , totalamount="${amount}" , rate="${rate}" WHERE cartrowno=$cartrowno AND customerid="$customerId"');
     print("response-------$res");
 
     if (res == 1) {
@@ -863,11 +887,15 @@ class OrderAppDB {
   }
 
 ///////////////////////////////////////////////////////////
-  selectAllcommon(String table) async {
+  selectAllcommon(String table, String? condition) async {
     print("haiiiii");
     List<Map<String, dynamic>> result;
     Database db = await instance.database;
-     result = await db.rawQuery("SELECT * FROM '$table'");
+    if (condition == null || condition.isEmpty) {
+      result = await db.rawQuery("SELECT * FROM '$table'");
+    } else {
+      result = await db.rawQuery("SELECT * FROM '$table' WHERE $condition");
+    }
     print("result menu common----$result");
     return result;
   }
@@ -928,8 +956,13 @@ class OrderAppDB {
   upadteCommonQuery(String table, String fields, String condition) async {
     Database db = await instance.database;
     var res = await db.rawUpdate('UPDATE $table SET $fields WHERE $condition ');
+    print("UPDATE $table SET $fields WHERE $condition");
     print("response-------$res");
+    return res;
   }
+
+  ////////////////////////////////////////////////////
+  selectsettingsValue() {}
 
 ////////////////////////////////////////////////////
   // selectFrommasterQuery(String table, String? condition) async {

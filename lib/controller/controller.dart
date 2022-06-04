@@ -42,6 +42,7 @@ class Controller extends ChangeNotifier {
   String? itemRate;
   List<CD> c_d = [];
   List<Map<String, dynamic>> historyList = [];
+  List<Map<String, dynamic>> settingsList = [];
   List<Map<String, dynamic>> historydataList = [];
   String? area;
   String? splittedCode;
@@ -198,7 +199,7 @@ class Controller extends ChangeNotifier {
   ////////////////////menu table fetch///////////////////////////////
   fetchMenusFromMenuTable() async {
     menuList.clear();
-    var res = await OrderAppDB.instance.selectAllcommon('menuTable');
+    var res = await OrderAppDB.instance.selectAllcommon('menuTable',"");
     print("menu from table----$res");
 
     for (var menu in res) {
@@ -210,7 +211,6 @@ class Controller extends ChangeNotifier {
   }
 
   /////////////////////// Staff details////////////////////////////////
-
   Future<StaffDetails?> getStaffDetails(String cid) async {
     print("getStaffDetails...............${cid}");
     var restaff;
@@ -367,7 +367,6 @@ class Controller extends ChangeNotifier {
       isLoading = false;
       notifyListeners();
       /////////////// insert into local db /////////////////////
-
     } catch (e) {
       print(e);
       return null;
@@ -453,7 +452,6 @@ class Controller extends ChangeNotifier {
         // print("inserted ${account}");
       }
       /////////////// insert into local db /////////////////////
-
     } catch (e) {
       print(e);
       return null;
@@ -727,7 +725,6 @@ class Controller extends ChangeNotifier {
   }
 
   //////////////insert to order master and details///////////////////////
-
   insertToOrderbagAndMaster(String os, String date, String customer_id,
       String user_id, String aid, String total_price) async {
     List<Map<String, dynamic>> om = [];
@@ -874,7 +871,6 @@ class Controller extends ChangeNotifier {
     notifyListeners();
   }
 /////////////////////////////////////////////////////////////////////////////////////
-
   ///////////////////////////////////////////////////////////////////////
   // downloadAllPages(String cid) async {
   //   isLoading = true;
@@ -1075,5 +1071,15 @@ class Controller extends ChangeNotifier {
     var length = bagList.length;
     List.generate(length, (index) => false);
     // notifyListeners();
+  }
+
+  selectFromSettings()async{
+    settingsList.clear();
+    var res = await OrderAppDB.instance.selectAllcommon('settings',"");
+    for(var item in res){
+      settingsList.add(item);
+    }
+    print("settingsList--$settingsList");
+    notifyListeners();
   }
 }

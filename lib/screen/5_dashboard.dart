@@ -73,11 +73,17 @@ class _DashboardState extends State<Dashboard> {
     // Provider.of<Controller>(context, listen: false).fetchMenusFromMenuTable();
     Provider.of<Controller>(context, listen: false).setCname();
     Provider.of<Controller>(context, listen: false).setSname();
+    insertSettings();
     getCompaniId();
     Provider.of<Controller>(context, listen: false).getCompanyData();
     if (Provider.of<Controller>(context, listen: false).firstMenu != null) {
       menu_index = Provider.of<Controller>(context, listen: false).firstMenu!;
     }
+  }
+
+  insertSettings() async {
+    await OrderAppDB.instance.deleteFromTableCommonQuery("settings", "");
+    await OrderAppDB.instance.insertsettingsTable("rate Edit", 0);
   }
 
   getCompaniId() async {
@@ -221,6 +227,9 @@ class _DashboardState extends State<Dashboard> {
                   builder: (context) => IconButton(
                       icon: new Icon(Icons.menu),
                       onPressed: () {
+                        Provider.of<Controller>(context, listen: false)
+                            .selectFromSettings();
+
                         drawerOpts.clear();
                         print("clicked");
                         // companyAttributes.clear();
