@@ -80,7 +80,7 @@ class Controller extends ChangeNotifier {
   List<Map<String, dynamic>> prodctItems = [];
   List<Map<String, dynamic>> ordernum = [];
   List<Map<String, dynamic>> approximateSum = [];
-  List<WalletModal> wallet = [];
+  // List<WalletModal> wallet = [];
   StaffDetails staffModel = StaffDetails();
   AccountHead accountHead = AccountHead();
   StaffArea staffArea = StaffArea();
@@ -134,6 +134,8 @@ class Controller extends ChangeNotifier {
             SharedPreferences prefs = await SharedPreferences.getInstance();
             prefs.setString("company_id", company_code);
             prefs.setString("cid", cid!);
+            prefs.setString("os", os!);
+
             getCompanyData();
 
             // OrderAppDB.instance.deleteFromTableCommonQuery('menuTable',"");
@@ -307,13 +309,12 @@ class Controller extends ChangeNotifier {
               .deleteFromTableCommonQuery("walletTable", "");
           var map = jsonDecode(response.body);
           print("map ${map}");
-          WalletModal walletModal ;
-          
+          WalletModal walletModal;
+
           // walletModal.
           for (var item in map) {
-            walletModal= WalletModal.fromJson(item);
-            wallet = await OrderAppDB.instance
-                .insertwalletTable(walletModal);
+            walletModal = WalletModal.fromJson(item);
+             await OrderAppDB.instance.insertwalletTable(walletModal);
             // menuList.add(menuItem);
           }
           isLoading = false;
@@ -492,9 +493,9 @@ class Controller extends ChangeNotifier {
         productCompany = ProductCompanymodel.fromJson(proComp);
         var product =
             await OrderAppDB.instance.insertProductCompany(productCompany);
-
-      }isLoading = false;
-        notifyListeners();
+      }
+      isLoading = false;
+      notifyListeners();
       /////////////// insert into local db /////////////////////
     } catch (e) {
       print(e);

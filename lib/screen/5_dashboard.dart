@@ -36,6 +36,7 @@ class _DashboardState extends State<Dashboard> {
   ValueNotifier<bool> dwnselected = ValueNotifier(false);
   String title = "";
   String? cid;
+  String? os;
   String menu_index = "S1";
   List defaultitems = ["upload data", "download page", "logout"];
   final GlobalKey<ScaffoldState> _key = GlobalKey();
@@ -91,6 +92,8 @@ class _DashboardState extends State<Dashboard> {
   getCompaniId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     cid = prefs.getString("cid");
+    os = prefs.getString("os");
+
     print("cid----$cid");
   }
 
@@ -145,7 +148,7 @@ class _DashboardState extends State<Dashboard> {
       case "CL":
         // title = "Download data";
         return CollectionPage(
-          type: "drawer call",
+          os:os
         );
 
       case "ST":
@@ -237,7 +240,8 @@ class _DashboardState extends State<Dashboard> {
                   builder: (context) => IconButton(
                       icon: new Icon(Icons.menu),
                       onPressed: () {
-                        Provider.of<Controller>(context, listen: false).getCompanyData();
+                        Provider.of<Controller>(context, listen: false)
+                            .getCompanyData();
                         // Provider.of<Controller>(context, listen: false)
                         //     .selectFromSettings();
                         // Provider.of<Controller>(context, listen: false)
@@ -373,6 +377,15 @@ class _DashboardState extends State<Dashboard> {
                       ),
                     ),
                     ListTile(
+                      onTap: () async {
+                        _onSelectItem(0, "CL");
+                      },
+                      title: Text(
+                        "Collection",
+                        style: TextStyle(fontSize: 17),
+                      ),
+                    ),
+                    ListTile(
                       trailing: Icon(Icons.logout),
                       onTap: () async {
                         final prefs = await SharedPreferences.getInstance();
@@ -385,15 +398,6 @@ class _DashboardState extends State<Dashboard> {
                       },
                       title: Text(
                         "Logout",
-                        style: TextStyle(fontSize: 17),
-                      ),
-                    ),
-                    ListTile(
-                      onTap: () async {
-                        _onSelectItem(0, "CL");
-                      },
-                      title: Text(
-                        "Collection",
                         style: TextStyle(fontSize: 17),
                       ),
                     ),

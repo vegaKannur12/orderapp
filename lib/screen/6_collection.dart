@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:orderapp/components/commoncolor.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CollectionPage extends StatefulWidget {
-  String? type;
-  CollectionPage({this.type});
+  String? os;
+  CollectionPage({this.os});
 
   @override
   State<CollectionPage> createState() => _CollectionPageState();
@@ -11,6 +12,22 @@ class CollectionPage extends StatefulWidget {
 
 class _CollectionPageState extends State<CollectionPage> {
   List<String> items=["Cash receipt","Google pay"];
+  String selected="Cash receipt";
+  String? os;
+  TextEditingController amtController=TextEditingController();
+  TextEditingController dscController=TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    shared();
+  }
+  shared()async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    os=prefs.getString("os");
+    print("os---$os");
+  }
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -52,10 +69,7 @@ class _CollectionPageState extends State<CollectionPage> {
                           color: P_Settings.collection,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              "web102",
-                              style: TextStyle(color: Colors.grey[600]),
-                            ),
+                            child: Text(widget.os.toString()),
                           ),
                         ),
                       ),
@@ -106,20 +120,16 @@ class _CollectionPageState extends State<CollectionPage> {
                                   )))
                               .toList(),
                           onChanged: (item) {
-                            // Provider.of<Controller>(context, listen: false)
-                            //     .customerList
-                            //     .length = 0;
                             print("clicked");
 
                             if (item != null) {
                               setState(() {
-                                // selected = item;
-                                // print("selected area..........${selected}");
+                                selected = item;
                               });
                             }
                             // Provider.of<Controller>(context, listen: false).getArea(selected!);
                           },
-                          // value: selected,
+                          value: selected,
                           // disabledHint: Text(selected ?? "null"),
                         ),
                       ),
@@ -136,6 +146,7 @@ class _CollectionPageState extends State<CollectionPage> {
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: TextFormField( 
+                              controller: amtController,
                               keyboardType: TextInputType.number,
                               decoration: new InputDecoration(
                               border: InputBorder.none,
@@ -156,6 +167,7 @@ class _CollectionPageState extends State<CollectionPage> {
                           child: Padding(
                             padding: EdgeInsets.all(8.0),
                             child: TextFormField(
+                              controller: dscController,
                               keyboardType: TextInputType.number,
                                 decoration: new InputDecoration(
                               border: InputBorder.none,
@@ -188,9 +200,20 @@ class _CollectionPageState extends State<CollectionPage> {
                       SizedBox(
                         height: size.height * 0.02,
                       ),
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: Text('Save'),
+                      Center(
+                        child: Container(
+                          width: size.width  * 0.3,
+                          height: size.height * 0.05,
+                          child: ElevatedButton(
+                            onPressed: () {
+                             double sum=double.parse( amtController.text)+double.parse( dscController.text);
+                             if(sum>0){
+                               
+                             }
+                            },
+                            child: Text('Save'),
+                          ),
+                        ),
                       ),
                     ],
                   ),
