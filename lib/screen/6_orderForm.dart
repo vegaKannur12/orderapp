@@ -69,15 +69,14 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
   int num = 0;
   DateTime now = DateTime.now();
   String? date;
-@override
+  @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     print("hellooo");
     Provider.of<Controller>(context, listen: false).getArea;
-
-
   }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -88,8 +87,6 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
 
     sharedPref();
   }
-
-
 
   sharedPref() async {
     final prefs = await SharedPreferences.getInstance();

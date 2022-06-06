@@ -164,9 +164,12 @@ class StaffLogin extends StatelessWidget {
                                                     .selectStaff(
                                                         controller1.text,
                                                         controller2.text);
+                                                  print("result login......${controller1.text}...${controller2.text}");
+
                                                 if (result[0] == "success" &&
                                                     result[1] != null) {
                                                   visible.value = false;
+                                                  print("result login......${result[0]}");
                                                   Provider.of<Controller>(
                                                           context,
                                                           listen: false)
