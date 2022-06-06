@@ -170,6 +170,7 @@ class StaffLogin extends StatelessWidget {
                                                 if (result[0] == "success" &&
                                                     result[1] != null) {
                                                   visible.value = false;
+                                                  print("result login......${result[0]}");
                                                   Provider.of<Controller>(
                                                           context,
                                                           listen: false)

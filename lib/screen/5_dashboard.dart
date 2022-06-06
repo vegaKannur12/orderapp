@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:orderapp/components/commoncolor.dart';
 import 'package:orderapp/db_helper.dart';
 import 'package:orderapp/screen/2_companyDetailsscreen.dart';
+import 'package:orderapp/screen/6_collection.dart';
 import 'package:orderapp/screen/6_downloadedPage.dart';
 import 'package:orderapp/screen/6_historypage.dart';
 import 'package:orderapp/screen/5_mainDashboard.dart';
@@ -141,6 +142,12 @@ class _DashboardState extends State<Dashboard> {
         return CompanyDetails(
           type: "drawer call",
         );
+      case "CL":
+        // title = "Download data";
+        return CollectionPage(
+          type: "drawer call",
+        );
+
       case "ST":
         // title = "Download data";
         return Settings();
@@ -378,6 +385,15 @@ class _DashboardState extends State<Dashboard> {
                       },
                       title: Text(
                         "Logout",
+                        style: TextStyle(fontSize: 17),
+                      ),
+                    ),
+                    ListTile(
+                      onTap: () async {
+                        _onSelectItem(0, "CL");
+                      },
+                      title: Text(
+                        "Collection",
                         style: TextStyle(fontSize: 17),
                       ),
                     ),
