@@ -99,7 +99,9 @@ class _RemarkPageState extends State<RemarkPage> {
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
                           child: Text(
                             'Save',
                             style: TextStyle(fontSize: 18),
