@@ -10,6 +10,7 @@ class CollectionPage extends StatefulWidget {
 }
 
 class _CollectionPageState extends State<CollectionPage> {
+  List<String> items=["Cash receipt","Google pay"];
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -23,7 +24,10 @@ class _CollectionPageState extends State<CollectionPage> {
               children: [
                 Text(
                   "Collection",
-                  style: TextStyle(color: P_Settings.wavecolor, fontSize: 20,fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      color: P_Settings.wavecolor,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
                 ),
                 Divider(
                   thickness: 2,
@@ -68,46 +72,47 @@ class _CollectionPageState extends State<CollectionPage> {
                       SizedBox(
                         height: size.height * 0.01,
                       ),
-                      Text("Transaction Mode",
-                          style: TextStyle(
-                               fontSize: 15)),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(""),
+                      Text("Transaction Mode", style: TextStyle(fontSize: 15)),
+                     SizedBox(
+                        height: size.height * 0.01,
                       ),
-                      // DropdownButton<String>(
-                      //   hint: Text("Select"),
-                      //   isExpanded: true,
-                      //   autofocus: false,
-                      //   underline: SizedBox(),
-                      //   elevation: 0,
-                      //   items: items
-                      //       .map((item) => DropdownMenuItem<String>(
-                      //           value: item["aid"].toString(),
-                      //           child: Container(
-                      //             width: size.width * 0.5,
-                      //             child: Padding(
-                      //                 padding: EdgeInsets.all(8.0),
-                      //                 child: Text(item["aname"].toString())),
-                      //           )))
-                      //       .toList(),
-                      //   onChanged: (item) {
-                      //     // Provider.of<Controller>(context, listen: false)
-                      //     //     .customerList
-                      //     //     .length = 0;
-                      //     print("clicked");
+                      Container(
+                        color: Colors.grey[200],
+                        height: size.height*0.04,
+                        child: DropdownButton<String>(
+                          hint: Text("Select"),
+                          isExpanded: true,
+                          autofocus: false,
+                          underline: SizedBox(),
+                          elevation: 0,
+                          items: items
+                              .map((item) => DropdownMenuItem<String>(
+                                  value: item.toString(),
+                                  child: Container(
+                                    width: size.width * 0.5,
+                                    child: Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: Text(item.toString())),
+                                  )))
+                              .toList(),
+                          onChanged: (item) {
+                            // Provider.of<Controller>(context, listen: false)
+                            //     .customerList
+                            //     .length = 0;
+                            print("clicked");
 
-                      //     if (item != null) {
-                      //       setState(() {
-                      //         // selected = item;
-                      //         print("selected area..........${selected}");
-                      //       });
-                      //     }
-                      //     // Provider.of<Controller>(context, listen: false).getArea(selected!);
-                      //   },
-                      //   // value: selected,
-                      //   // disabledHint: Text(selected ?? "null"),
-                      // ),
+                            if (item != null) {
+                              setState(() {
+                                // selected = item;
+                                // print("selected area..........${selected}");
+                              });
+                            }
+                            // Provider.of<Controller>(context, listen: false).getArea(selected!);
+                          },
+                          // value: selected,
+                          // disabledHint: Text(selected ?? "null"),
+                        ),
+                      ),
                       Padding(
                         padding: const EdgeInsets.only(top: 10),
                         child: Text("Amount", style: TextStyle(fontSize: 15)),
@@ -115,11 +120,16 @@ class _CollectionPageState extends State<CollectionPage> {
                       Padding(
                         padding: const EdgeInsets.only(top: 10),
                         child: Container(
+                          height: size.height * 0.04,
                           width: size.width * 0.9,
                           color: P_Settings.collection,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Text("\u{20B9}453"),
+                            child: TextFormField( 
+                              keyboardType: TextInputType.number,
+                              decoration: new InputDecoration(
+                              border: InputBorder.none,
+                            )),
                           ),
                         ),
                       ),
@@ -130,11 +140,16 @@ class _CollectionPageState extends State<CollectionPage> {
                       Padding(
                         padding: const EdgeInsets.only(top: 10),
                         child: Container(
+                          height: size.height * 0.04,
                           width: size.width * 0.9,
                           color: P_Settings.collection,
                           child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text("\u{20B9}ryrt"),
+                            padding: EdgeInsets.all(8.0),
+                            child: TextFormField(
+                              keyboardType: TextInputType.number,
+                                decoration: new InputDecoration(
+                              border: InputBorder.none,
+                            )),
                           ),
                         ),
                       ),
@@ -145,9 +160,12 @@ class _CollectionPageState extends State<CollectionPage> {
                       Padding(
                         padding: EdgeInsets.only(top: 10),
                         child: SizedBox(
-                          width: 500,
+                          width: size.width * 0.9,
                           child: TextField(
+                            minLines:
+                                4, // any number you need (It works as the rows for the textarea)
                             keyboardType: TextInputType.multiline,
+                            maxLines: null,
                             decoration: InputDecoration(
                               contentPadding: EdgeInsets.symmetric(
                                   vertical: 40, horizontal: 20),
