@@ -23,7 +23,7 @@ class _CollectionPageState extends State<CollectionPage> {
               children: [
                 Text(
                   "Collection",
-                  style: TextStyle(color: P_Settings.wavecolor, fontSize: 20),
+                  style: TextStyle(color: P_Settings.wavecolor, fontSize: 20,fontWeight: FontWeight.bold),
                 ),
                 Divider(
                   thickness: 2,
@@ -36,15 +36,13 @@ class _CollectionPageState extends State<CollectionPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Series",
-                          style: TextStyle(
-                              color: P_Settings.collection, fontSize: 15)),
+                      Text("Series", style: TextStyle(fontSize: 15)),
 
                       Padding(
                         padding: const EdgeInsets.only(top: 10),
                         child: Container(
                           width: size.width * 0.9,
-                          color: P_Settings.roundedButtonColor,
+                          color: P_Settings.collection,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text("web102"),
@@ -54,15 +52,13 @@ class _CollectionPageState extends State<CollectionPage> {
                       SizedBox(
                         height: size.height * 0.01,
                       ),
-                      Text("Date",
-                          style: TextStyle(
-                              color: P_Settings.collection, fontSize: 15)),
+                      Text("Date", style: TextStyle(fontSize: 15)),
 
                       Padding(
                         padding: const EdgeInsets.only(top: 10),
                         child: Container(
                           width: size.width * 0.9,
-                          color: P_Settings.roundedButtonColor,
+                          color: P_Settings.collection,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text("06-06-2022"),
@@ -74,10 +70,10 @@ class _CollectionPageState extends State<CollectionPage> {
                       ),
                       Text("Transaction Mode",
                           style: TextStyle(
-                              color: P_Settings.collection, fontSize: 15)),
+                               fontSize: 15)),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text("dropdown"),
+                        child: Text(""),
                       ),
                       // DropdownButton<String>(
                       //   hint: Text("Select"),
@@ -114,15 +110,13 @@ class _CollectionPageState extends State<CollectionPage> {
                       // ),
                       Padding(
                         padding: const EdgeInsets.only(top: 10),
-                        child: Text("Amount",
-                            style: TextStyle(
-                                color: P_Settings.collection, fontSize: 15)),
+                        child: Text("Amount", style: TextStyle(fontSize: 15)),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 10),
                         child: Container(
                           width: size.width * 0.9,
-                          color: P_Settings.roundedButtonColor,
+                          color: P_Settings.collection,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text("\u{20B9}453"),
@@ -132,14 +126,12 @@ class _CollectionPageState extends State<CollectionPage> {
                       SizedBox(
                         height: size.height * 0.01,
                       ),
-                      Text("Discount",
-                          style: TextStyle(
-                              color: P_Settings.collection, fontSize: 15)),
+                      Text("Discount", style: TextStyle(fontSize: 15)),
                       Padding(
                         padding: const EdgeInsets.only(top: 10),
                         child: Container(
                           width: size.width * 0.9,
-                          color: P_Settings.roundedButtonColor,
+                          color: P_Settings.collection,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text("\u{20B9}ryrt"),
@@ -149,9 +141,7 @@ class _CollectionPageState extends State<CollectionPage> {
                       SizedBox(
                         height: size.height * 0.01,
                       ),
-                      Text("Remarks",
-                          style: TextStyle(
-                              color: P_Settings.collection, fontSize: 15)),
+                      Text("Remarks", style: TextStyle(fontSize: 15)),
                       Padding(
                         padding: EdgeInsets.only(top: 10),
                         child: SizedBox(
