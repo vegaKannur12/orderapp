@@ -9,6 +9,7 @@ import 'package:orderapp/model/productCompany_model.dart';
 import 'package:orderapp/model/productsCategory_model.dart';
 import 'package:orderapp/model/registration_model.dart';
 import 'package:orderapp/model/sideMenu_model.dart';
+import 'package:orderapp/model/wallet_model.dart';
 import 'package:orderapp/screen/2_companyDetailsscreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -79,6 +80,7 @@ class Controller extends ChangeNotifier {
   List<Map<String, dynamic>> prodctItems = [];
   List<Map<String, dynamic>> ordernum = [];
   List<Map<String, dynamic>> approximateSum = [];
+  List<WalletModal> wallet = [];
   StaffDetails staffModel = StaffDetails();
   AccountHead accountHead = AccountHead();
   StaffArea staffArea = StaffArea();
@@ -131,7 +133,8 @@ class Controller extends ChangeNotifier {
             notifyListeners();
             SharedPreferences prefs = await SharedPreferences.getInstance();
             prefs.setString("company_id", company_code);
-            // getCompanyData();
+            prefs.setString("cid", cid!);
+            getCompanyData();
 
             // OrderAppDB.instance.deleteFromTableCommonQuery('menuTable',"");
             getMenuAPi(cid!, fp!, context);
@@ -281,7 +284,49 @@ class Controller extends ChangeNotifier {
     }
   }
 
-  ////////////////////////// account head ///////////////////////////////////////
+  ////////////////////////// wallet///////////////////////////////////////
+  Future<WalletModal?> getWallet(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? cid = prefs.getString("cid");
+    NetConnection.networkConnection(context).then((value) async {
+      // await OrderAppDB.instance.deleteFromTableCommonQuery('menuTable', "");
+      if (value == true) {
+        try {
+          Uri url = Uri.parse("http://trafiqerp.in/order/fj/get_wallet.php");
+          Map body = {
+            'cid': cid,
+          };
+          // print("compny----${company_code}");
+          isLoading = true;
+          notifyListeners();
+          http.Response response = await http.post(
+            url,
+            body: body,
+          );
+          await OrderAppDB.instance
+              .deleteFromTableCommonQuery("walletTable", "");
+          var map = jsonDecode(response.body);
+          print("map ${map}");
+          WalletModal walletModal ;
+          
+          // walletModal.
+          for (var item in map) {
+            walletModal= WalletModal.fromJson(item);
+            wallet = await OrderAppDB.instance
+                .insertwalletTable(walletModal);
+            // menuList.add(menuItem);
+          }
+          isLoading = false;
+          notifyListeners();
+        } catch (e) {
+          print(e);
+          return null;
+        }
+      }
+    });
+  }
+
+  ///////////////////////////////////account head////////////////////////////////////////////
   Future<AccountHead?> getaccountHeadsDetails(
     String cid,
   ) async {
@@ -402,7 +447,6 @@ class Controller extends ChangeNotifier {
       List map = jsonDecode(response.body);
       print("map ${map}");
       ProductsCategoryModel category;
-      ;
       for (var cat in map) {
         category = ProductsCategoryModel.fromJson(cat);
         var product = await OrderAppDB.instance.insertProductCategory(category);
@@ -449,12 +493,8 @@ class Controller extends ChangeNotifier {
         var product =
             await OrderAppDB.instance.insertProductCompany(productCompany);
 
-        isLoading = false;
+      }isLoading = false;
         notifyListeners();
-        // notifyListeners();
-
-        // print("inserted ${account}");
-      }
       /////////////// insert into local db /////////////////////
     } catch (e) {
       print(e);
@@ -467,7 +507,10 @@ class Controller extends ChangeNotifier {
     try {
       isLoading = true;
       // notifyListeners();
-      var res = await OrderAppDB.instance.selectCompany(cid!);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? cid = prefs.getString("cid");
+      print('cojhkjd---$cid');
+      var res = await OrderAppDB.instance.selectCompany("cid='${cid}'");
       print("res companyList----${res}");
       for (var item in res) {
         companyList.add(item);
@@ -483,12 +526,12 @@ class Controller extends ChangeNotifier {
   }
 
   //////////////////////////////////////////////////////
-  getArea(String staffName) async {
+  getArea(String sid) async {
     String areaName;
     areDetails.clear();
-    print("staff...............${staffName}");
+    print("staff...............${sid}");
     try {
-      areaList = await OrderAppDB.instance.getArea(staffName);
+      areaList = await OrderAppDB.instance.getArea(sid);
       print("areaList----${areaList}");
       for (var item in areaList) {
         areDetails.add(item);

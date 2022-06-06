@@ -156,7 +156,7 @@ class _DashboardState extends State<Dashboard> {
     if (widget.type == "return from cartList") {
       menu_index = "S2";
     }
-    Provider.of<Controller>(context, listen: false).getCompanyData();
+    print("dididdd");
 
     // print("_seletdde---$_selectedIndex");
   }
@@ -230,6 +230,7 @@ class _DashboardState extends State<Dashboard> {
                   builder: (context) => IconButton(
                       icon: new Icon(Icons.menu),
                       onPressed: () {
+                        Provider.of<Controller>(context, listen: false).getCompanyData();
                         // Provider.of<Controller>(context, listen: false)
                         //     .selectFromSettings();
                         // Provider.of<Controller>(context, listen: false)

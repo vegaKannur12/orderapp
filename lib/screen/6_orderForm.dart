@@ -12,7 +12,7 @@ import '../components/customSnackbar.dart';
 
 class OrderForm extends StatefulWidget {
   String areaname;
-
+  
   OrderForm(
     this.areaname,
   );
@@ -54,7 +54,7 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
   String? selectedCus;
   String? common;
   String? custmerId;
-  String? staffname;
+  String? sid;
   bool areavisible = false;
   bool visible = false;
   String itemName = '';
@@ -74,7 +74,7 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     print("hellooo");
-    Provider.of<Controller>(context, listen: false).getArea;
+    
 
 
   }
@@ -84,7 +84,7 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
     super.initState();
     Provider.of<Controller>(context, listen: false).getOrderno();
     date = DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
-    // Provider.of<Controller>(context, listen: false).getArea;
+
 
     sharedPref();
   }
@@ -93,9 +93,9 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
 
   sharedPref() async {
     final prefs = await SharedPreferences.getInstance();
-    staffname = prefs.getString('st_username');
-    print("staffname---${staffname}");
-    Provider.of<Controller>(context, listen: false).getArea(staffname!);
+    sid = prefs.getString('sid');
+    print("sid---${sid}");
+    Provider.of<Controller>(context, listen: false).getArea(sid!);
   }
 
   @override

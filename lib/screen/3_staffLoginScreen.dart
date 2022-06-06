@@ -25,6 +25,7 @@ class StaffLogin extends StatelessWidget {
   TextEditingController controller1 = TextEditingController();
   TextEditingController controller2 = TextEditingController();
   CustomPopup popup = CustomPopup();
+  List result = [];
   // GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   ValueNotifier<bool> visible = ValueNotifier(false);
 
@@ -156,14 +157,16 @@ class StaffLogin extends StatelessWidget {
                                               ),
                                             ),
                                             onPressed: () async {
+                                              result.clear();
                                               // toggle();
                                               if (_formKey.currentState!
                                                   .validate()) {
-                                                List result = await OrderAppDB
+                                                result = await OrderAppDB
                                                     .instance
                                                     .selectStaff(
                                                         controller1.text,
                                                         controller2.text);
+                                                print("selection----$result");
                                                 if (result[0] == "success" &&
                                                     result[1] != null) {
                                                   visible.value = false;

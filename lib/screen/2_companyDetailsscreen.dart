@@ -18,13 +18,20 @@ class CompanyDetails extends StatefulWidget {
 }
 
 class _CompanyDetailsState extends State<CompanyDetails> {
+  String? cid;
   CustomSnackbar _snackbar = CustomSnackbar();
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    Provider.of<Controller>(context, listen: false).getCompanyData();
+    getCid();
+    // Provider.of<Controller>(context, listen: false).getCompanyData(cid!);
 
+  }
+
+  getCid()async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+        cid=prefs.getString("cid");
   }
 
   @override
@@ -261,7 +268,7 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                                     print("cid-----${cid}");
                                     SharedPreferences prefs =
                                         await SharedPreferences.getInstance();
-                                    prefs.setString("cid", cid);
+                                    // prefs.setString("cid", cid);
                                     prefs.setString("cname", value.cname!);
                                     // Provider.of<Controller>(context,
                                     //         listen: false)
