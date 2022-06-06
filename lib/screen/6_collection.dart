@@ -23,7 +23,10 @@ class _CollectionPageState extends State<CollectionPage> {
               children: [
                 Text(
                   "Collection",
-                  style: TextStyle(color: P_Settings.wavecolor, fontSize: 20,fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      color: P_Settings.wavecolor,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
                 ),
                 Divider(
                   thickness: 2,
@@ -36,7 +39,10 @@ class _CollectionPageState extends State<CollectionPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Series", style: TextStyle(fontSize: 15)),
+                      Text("Series",
+                          style: TextStyle(
+                            fontSize: 15,
+                          )),
 
                       Padding(
                         padding: const EdgeInsets.only(top: 10),
@@ -45,7 +51,10 @@ class _CollectionPageState extends State<CollectionPage> {
                           color: P_Settings.collection,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Text("web102"),
+                            child: Text(
+                              "web102",
+                              style: TextStyle(color: Colors.grey[600]),
+                            ),
                           ),
                         ),
                       ),
@@ -61,16 +70,17 @@ class _CollectionPageState extends State<CollectionPage> {
                           color: P_Settings.collection,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Text("06-06-2022"),
+                            child: Text(
+                              "06-06-2022",
+                              style: TextStyle(color: Colors.grey[600]),
+                            ),
                           ),
                         ),
                       ),
                       SizedBox(
                         height: size.height * 0.01,
                       ),
-                      Text("Transaction Mode",
-                          style: TextStyle(
-                               fontSize: 15)),
+                      Text("Transaction Mode", style: TextStyle(fontSize: 15)),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(""),
@@ -118,8 +128,13 @@ class _CollectionPageState extends State<CollectionPage> {
                           width: size.width * 0.9,
                           color: P_Settings.collection,
                           child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text("\u{20B9}453"),
+                            padding: EdgeInsets.all(3.0),
+                            child: TextField(
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: '',
+                              ),
+                            ),
                           ),
                         ),
                       ),
@@ -134,7 +149,10 @@ class _CollectionPageState extends State<CollectionPage> {
                           color: P_Settings.collection,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Text("\u{20B9}ryrt"),
+                            child: Text(
+                              "\u{20B9}ryrt",
+                              style: TextStyle(color: Colors.grey[600]),
+                            ),
                           ),
                         ),
                       ),
@@ -145,9 +163,12 @@ class _CollectionPageState extends State<CollectionPage> {
                       Padding(
                         padding: EdgeInsets.only(top: 10),
                         child: SizedBox(
-                          width: 500,
+                          width: size.width * 0.9,
                           child: TextField(
+                            minLines:
+                                4, // any number you need (It works as the rows for the textarea)
                             keyboardType: TextInputType.multiline,
+                            maxLines: null,
                             decoration: InputDecoration(
                               contentPadding: EdgeInsets.symmetric(
                                   vertical: 40, horizontal: 20),
