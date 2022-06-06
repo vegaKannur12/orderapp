@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:orderapp/components/commoncolor.dart';
 import 'package:orderapp/controller/controller.dart';
+import 'package:orderapp/screen/6.1_remarks.dart';
 import 'package:orderapp/screen/7_itemSelection.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,7 +13,7 @@ import '../components/customSnackbar.dart';
 
 class OrderForm extends StatefulWidget {
   String areaname;
-  
+
   OrderForm(
     this.areaname,
   );
@@ -74,9 +75,6 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     print("hellooo");
-    
-
-
   }
 
   @override
@@ -85,7 +83,6 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
     super.initState();
     Provider.of<Controller>(context, listen: false).getOrderno();
     date = DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
-
 
     sharedPref();
   }
@@ -511,114 +508,118 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                         SizedBox(
                                           height: size.height * 0.02,
                                         ),
-                                        Center(
-                                          child: Container(
-                                            width: size.width * 0.4,
-                                            height: size.height * 0.05,
-                                            child: ElevatedButton.icon(
-                                              icon: Icon(
-                                                Icons.library_add_check,
-                                                color: Colors.white,
-                                                size: 30.0,
-                                              ),
-                                              label: Text("Add Items"),
-                                              onPressed: () async {
-                                                print(
-                                                    "fieldText----${fieldText.text}");
-                                                FocusScopeNode currentFocus =
-                                                    FocusScope.of(context);
-
-                                                if (!currentFocus
-                                                    .hasPrimaryFocus) {
-                                                  currentFocus.unfocus();
-                                                }
-
-                                                if (customerValidation) {
-                                                  visibleValidation.value =
-                                                      true;
-                                                } else {
-                                                  visibleValidation.value =
-                                                      false;
-
-                                                  Provider.of<Controller>(
-                                                          context,
-                                                          listen: false)
-                                                      .countFromTable(
-                                                    "orderBagTable",
-                                                    values.ordernum[0]['os'],
-                                                    custmerId.toString(),
-                                                  );
-
-                                                  print(
-                                                      "area name....${Provider.of<Controller>(context, listen: false).areaAutoComplete[1]}");
+                                        Row(
+                                          children: [
+                                            Container(
+                                              width: size.width * 0.4,
+                                              height: size.height * 0.05,
+                                              child: ElevatedButton.icon(
+                                                onPressed: () {
                                                   Navigator.of(context).push(
                                                     PageRouteBuilder(
                                                       opaque:
                                                           false, // set to false
                                                       pageBuilder:
                                                           (_, __, ___) =>
-                                                              ItemSelection(
-                                                        customerId: custmerId
-                                                            .toString(),
-                                                        areaId: Provider.of<
-                                                                    Controller>(
-                                                                context,
-                                                                listen: false)
-                                                            .areaAutoComplete[0],
-                                                        os: values.ordernum[0]
-                                                            ['os'],
-                                                        areaName: Provider.of<
-                                                                    Controller>(
-                                                                context,
-                                                                listen: false)
-                                                            .areaAutoComplete[1],
-                                                      ),
+                                                              RemarkPage(),
                                                     ),
                                                   );
-                                                }
-                                                ;
-                                              },
-                                              style: ElevatedButton.styleFrom(
-                                                primary: P_Settings.wavecolor,
-                                                shape:
-                                                    new RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      new BorderRadius.circular(
-                                                          10.0),
+                                                },
+                                                label: Text('Remarks'),
+                                                icon: Icon(Icons.comment),
+                                                style: ElevatedButton.styleFrom(
+                                                  primary: Colors.lightBlue,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10.0),
+                                                  ),
                                                 ),
                                               ),
                                             ),
-                                          ),
+                                            Spacer(),
+                                            Container(
+                                              width: size.width * 0.4,
+                                              height: size.height * 0.05,
+                                              child: ElevatedButton.icon(
+                                                icon: Icon(
+                                                  Icons.library_add_check,
+                                                  color: Colors.white,
+                                                  size: 30.0,
+                                                ),
+                                                label: Text("Add Items"),
+                                                onPressed: () async {
+                                                  print(
+                                                      "fieldText----${fieldText.text}");
+                                                  FocusScopeNode currentFocus =
+                                                      FocusScope.of(context);
+
+                                                  if (!currentFocus
+                                                      .hasPrimaryFocus) {
+                                                    currentFocus.unfocus();
+                                                  }
+
+                                                  if (customerValidation) {
+                                                    visibleValidation.value =
+                                                        true;
+                                                  } else {
+                                                    visibleValidation.value =
+                                                        false;
+
+                                                    Provider.of<Controller>(
+                                                            context,
+                                                            listen: false)
+                                                        .countFromTable(
+                                                      "orderBagTable",
+                                                      values.ordernum[0]['os'],
+                                                      custmerId.toString(),
+                                                    );
+
+                                                    print(
+                                                        "area name....${Provider.of<Controller>(context, listen: false).areaAutoComplete[1]}");
+                                                    Navigator.of(context).push(
+                                                      PageRouteBuilder(
+                                                        opaque:
+                                                            false, // set to false
+                                                        pageBuilder:
+                                                            (_, __, ___) =>
+                                                                ItemSelection(
+                                                          customerId: custmerId
+                                                              .toString(),
+                                                          areaId: Provider.of<
+                                                                      Controller>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .areaAutoComplete[0],
+                                                          os: values.ordernum[0]
+                                                              ['os'],
+                                                          areaName: Provider.of<
+                                                                      Controller>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .areaAutoComplete[1],
+                                                        ),
+                                                      ),
+                                                    );
+                                                  }
+                                                  ;
+                                                },
+                                                style: ElevatedButton.styleFrom(
+                                                  primary: P_Settings.wavecolor,
+                                                  shape:
+                                                      new RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        new BorderRadius
+                                                            .circular(10.0),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),
                                   ),
-                                  // Column(
-                                  //   children: [
-                                  //     Container(
-                                  //       height: size.height * 0.2,
-                                  //       alignment: Alignment.topLeft,
-                                  //       child: Padding(
-                                  //           padding:
-                                  //               const EdgeInsets.only(left: 10),
-                                  //           child: ElevatedButton(
-                                  //             child: Text("Brosher"),
-                                  //             onPressed: () {
-                                  //               var platform;
-
-                                  //               AndroidIntent intent = AndroidIntent(
-                                  //                   action:
-                                  //                       'android.intent.action.MAIN',
-                                  //                   data: Uri.encodeFull(
-                                  //                       'http://schemas.android.com/apk/res/android'),
-                                  //                   package: 'com.example.g7');
-
-                                  //               intent.launch();
-                                  //             },
-                                  //           )),
-                                  //     ),
-                                  //   ],
-                                  // ),
                                 ],
                               ),
                             ),
