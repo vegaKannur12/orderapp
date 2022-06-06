@@ -232,14 +232,14 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                                 SizedBox(
                                   height: size.height * 0.04,
                                 ),
-                                Text(
+                                 widget.type=="drawer call"?Container():Text(
                                   "Company Registration Successfull",
                                   style: TextStyle(color: Colors.red),
                                 ),
                                 SizedBox(
                                   height: size.height * 0.02,
                                 ),
-                                ElevatedButton(
+                                widget.type=="drawer call"?Container():ElevatedButton(
                                   onPressed: () async {
                                     Provider.of<Controller>(context,
                                             listen: false)
