@@ -541,7 +541,7 @@ class OrderAppDB {
     for (var staff in list) {
       print(
           "staff['uname'] & staff['pwd']------------------${staff['uname']}--${staff['pwd']}");
-      if (uname.toLowerCase() == staff["uname"].toLowerCase() &&
+      if (uname.toUpperCase() == staff["uname"].toUpperCase() &&
           pwd == staff["pwd"]) {
         sid = staff['sid'];
         print("staffid..$sid");
