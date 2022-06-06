@@ -132,7 +132,27 @@ class OrderAppDB {
 /////////wallet table//////////////////
   static final waid = 'waid';
   static final wname = 'wname';
+////////////collection table///////////////
+  static final rec_date = 'rec_date';
+  static final rec_cusid = 'rec_cusid';
+  static final rec_series = 'rec_series';
+  static final rec_mode = 'rec_mode';
+  static final rec_amount = 'rec_amount';
+  static final rec_disc = 'rec_disc';
+  static final rec_note = 'rec_note';
+  static final rec_staffid = 'rec_staffid';
+  static final rec_cancel = 'rec_cancel';
+  static final rec_status = 'rec_status';
+///////remark table//////////////////////
 
+  static final rem_date = 'rem_date';
+  static final rem_cusid = 'rem_cusid';
+  static final rem_series = 'rem_series';
+  static final rem_text = 'rem_text';
+  static final rem_staffid = 'rem_staffid';
+
+  static final rem_cancel = 'rem_cancel';
+  static final rem_status = 'rem_status';
 
   Future<Database> get database async {
     if (_database != null) return _database!;
@@ -321,13 +341,40 @@ class OrderAppDB {
             $value INTEGER
           )
           ''');
-     await db.execute('''
+    await db.execute('''
           CREATE TABLE walletTable (
             $id INTEGER PRIMARY KEY AUTOINCREMENT,
             $waid TEXT NOT NULL,
             $wname TEXT
           )
           ''');
+    await db.execute(''' 
+      CREATE TABLE collectionTable (
+        $id INTEGER PRIMARY KEY AUTOINCREMENT,
+        $rec_date TEXT NOT NULL,
+        $rec_cusid TEXT,
+        $rec_series TEXT NOT NULL,
+        $rec_mode TEXT,
+        $rec_amount INTEGER,
+        $rec_disc TEXT,
+        $rec_note INTEGER,
+        $rec_staffid TEXT,
+        $rec_cancel TEXT,
+        $rec_status INTEGER
+      )
+      ''');
+    await db.execute(''' 
+      CREATE TABLE remarksTable (
+        $id INTEGER PRIMARY KEY AUTOINCREMENT,
+        $rem_date TEXT NOT NULL,
+        $rem_cusid TEXT,
+        $rem_series TEXT NOT NULL,
+        $rem_text TEXT,
+        $rem_staffid TEXT,
+        $rem_cancel TEXT,
+        $rem_status INTEGER
+      )
+      ''');
   }
 
   ////////////////////////company details select///////////////////////////////////
@@ -335,7 +382,8 @@ class OrderAppDB {
     List result;
     Database db = await instance.database;
 
-    result = await db.rawQuery('select * from registrationTable where $condition');
+    result =
+        await db.rawQuery('select * from registrationTable where $condition');
 
     print("select * from registrationTable where $condition");
 
@@ -448,8 +496,9 @@ class OrderAppDB {
     // print(res);
     return res;
   }
+
   //////////////////////////wallet table/////////////////////////////////////
-    Future insertwalletTable(WalletModal wallet) async {
+  Future insertwalletTable(WalletModal wallet) async {
     final db = await database;
     var query1 =
         'INSERT INTO walletTable(waid,wname) VALUES("${wallet.waid}", "${wallet.wanme}")';
@@ -561,7 +610,8 @@ class OrderAppDB {
     for (var staff in list) {
       // print(
       //     "staff['uname'] & staff['pwd']------------------${staff['uname']}--${staff['pwd']}");
-      if (uname.toLowerCase() == staff["uname"].toLowerCase() && pwd == staff["pwd"]) {
+      if (uname.toLowerCase() == staff["uname"].toLowerCase() &&
+          pwd == staff["pwd"]) {
         print("match");
         sid = staff['sid'];
         result = "success";
@@ -621,6 +671,44 @@ class OrderAppDB {
     return res;
   }
 
+/////////////////////////collectionTable/////////////////////////////
+  Future insertCollectionTable(
+      String rec_date,
+      String rec_cusid,
+      String ser,
+      String mode,
+      String amt,
+      String disc,
+      String note,
+      String sttid,
+      String cancel,
+      String status) async {
+    final db = await database;
+    var query =
+        'INSERT INTO collectionTable(rec_date, rec_cusid, rec_series, rec_mode, rec_amount, rec_disc, rec_note, rec_staffid, rec_cancel, rec_status) VALUES("${rec_date}", "${rec_cusid}", "${ser}", "${mode}", "${amt}", "${disc}", "${note}", "${sttid}", "${cancel}", "${status}")';
+    var res = await db.rawInsert(query);
+    print(query);
+    // print(res);
+    return res;
+  }
+////////////////////////insert remark/////////////////////////////////
+  Future insertremarkTable(
+      String rem_date,
+      String rem_cusid,
+      String ser,
+      String text,
+      String sttid,
+      String cancel,
+      String status) async {
+    final db = await database;
+    var query =
+        'INSERT INTO remarksTable(rem_date, rem_cusid, rem_series, rem_text, rem_staffid, rem_cancel, rem_status) VALUES("${rem_date}", "${rem_cusid}", "${ser}", "${text}","${sttid}", "${cancel}", "${status}")';
+    var res = await db.rawInsert(query);
+    print(query);
+    // print(res);
+    return res;
+  }
+
   ////////////////////////////////////////////////////////////////////
   getListOfTables() async {
     Database db = await instance.database;
@@ -652,13 +740,14 @@ class OrderAppDB {
     String result = "";
     print("sid---${sid}");
     Database db = await instance.database;
-    List<Map<String, dynamic>> area = await db.rawQuery(
-        'SELECT area FROM staffDetailsTable WHERE sid="${sid}"');
-    String areaid=area[0]["area"];
+    List<Map<String, dynamic>> area = await db
+        .rawQuery('SELECT area FROM staffDetailsTable WHERE sid="${sid}"');
+    String areaid = area[0]["area"];
     if (areaid == "") {
       list = await db.rawQuery('SELECT aname,aid FROM areaDetailsTable');
-    }else{
-      list = await db.rawQuery('SELECT aname,aid FROM areaDetailsTable where aid=${areaid}');
+    } else {
+      list = await db.rawQuery(
+          'SELECT aname,aid FROM areaDetailsTable where aid=${areaid}');
     }
 
     print("res===${result}");
