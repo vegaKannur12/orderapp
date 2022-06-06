@@ -694,7 +694,9 @@ class _CartListState extends State<CartList> {
                           rateController.text);
                       Provider.of<Controller>(context, listen: false)
                           .calculateTotal(widget.os, widget.custmerId);
+                      rateController.clear();
                       Navigator.of(context).pop();
+
                     },
                     // textColor: Theme.of(context).primaryColor,
                     child: Text('Save'),

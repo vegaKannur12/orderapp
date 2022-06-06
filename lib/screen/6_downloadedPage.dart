@@ -22,6 +22,7 @@ class _DownloadedPageState extends State<DownloadedPage> {
     "Product Details",
     "Product category",
     "Company",
+    "Wallet",
     "Images"
   ];
   @override
@@ -101,6 +102,10 @@ class _DownloadedPageState extends State<DownloadedPage> {
                             if (downloadItems[index] == "Product Details") {
                               Provider.of<Controller>(context, listen: false)
                                   .getProductDetails(cid!);
+                            }
+                            if (downloadItems[index] == "Wallet") {
+                              Provider.of<Controller>(context, listen: false)
+                                  .getWallet(context);
                             }
                           },
                           icon: Icon(Icons.download),

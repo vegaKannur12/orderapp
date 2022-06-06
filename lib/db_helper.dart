@@ -5,6 +5,7 @@ import 'package:orderapp/controller/controller.dart';
 import 'package:orderapp/model/accounthead_model.dart';
 import 'package:orderapp/model/productdetails_model.dart';
 import 'package:orderapp/model/productsCategory_model.dart';
+import 'package:orderapp/model/wallet_model.dart';
 import 'package:provider/provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -128,7 +129,10 @@ class OrderAppDB {
   ////////////settings//////////////////////
   static final options = 'options';
   static final value = 'value';
-/////////company details///////////////////
+/////////wallet table//////////////////
+  static final waid = 'waid';
+  static final wname = 'wname';
+
 
   Future<Database> get database async {
     if (_database != null) return _database!;
@@ -317,16 +321,23 @@ class OrderAppDB {
             $value INTEGER
           )
           ''');
+     await db.execute('''
+          CREATE TABLE walletTable (
+            $id INTEGER PRIMARY KEY AUTOINCREMENT,
+            $waid TEXT NOT NULL,
+            $wname TEXT
+          )
+          ''');
   }
 
   ////////////////////////company details select///////////////////////////////////
-  selectCompany(String cid) async {
+  selectCompany(String? condition) async {
     List result;
     Database db = await instance.database;
 
-    result = await db.rawQuery('select * from registrationTable');
+    result = await db.rawQuery('select * from registrationTable where $condition');
 
-    print("select * from registrationTable");
+    print("select * from registrationTable where $condition");
 
     print("company deta-=-$result");
     if (result.length > 0) {
@@ -437,6 +448,16 @@ class OrderAppDB {
     // print(res);
     return res;
   }
+  //////////////////////////wallet table/////////////////////////////////////
+    Future insertwalletTable(WalletModal wallet) async {
+    final db = await database;
+    var query1 =
+        'INSERT INTO walletTable(waid,wname) VALUES("${wallet.waid}", "${wallet.wanme}")';
+    var res = await db.rawInsert(query1);
+    print("wallet----${res}");
+    // print(res);
+    return res;
+  }
 
   ////////////////////////settings insertion///////////////////////////////////
   Future insertsettingsTable(String options, int value) async {
@@ -535,33 +556,31 @@ class OrderAppDB {
     print("uname---Password----${uname}--${pwd}");
     resultList.clear();
     Database db = await instance.database;
-
     List<Map<String, dynamic>> list =
         await db.rawQuery('SELECT * FROM staffDetailsTable');
     for (var staff in list) {
-      print(
-          "staff['uname'] & staff['pwd']------------------${staff['uname']}--${staff['pwd']}");
-      if (uname.toUpperCase() == staff["uname"].toUpperCase()  &&
-          pwd == staff["pwd"]) {
+      // print(
+      //     "staff['uname'] & staff['pwd']------------------${staff['uname']}--${staff['pwd']}");
+      if (uname.toLowerCase() == staff["uname"].toLowerCase() && pwd == staff["pwd"]) {
+        print("match");
         sid = staff['sid'];
-        print("staffid..$sid");
-
-        print("ok");
         result = "success";
-        sid = staff["sid"];
+
+        print("staffid..$sid");
+        print("ok");
         resultList.add(result);
         resultList.add(sid!);
-        // resultList[0] = result;
-        // resultList[1] = sid!;
         break;
       } else {
+        print("No match");
+
         result = "failed";
         sid = "";
-        resultList.add(result);
-        resultList.add(sid);
+        // resultList.add(result);
+        // resultList.add(sid);
       }
     }
-    print("res===${result}");
+    print("res===${resultList}");
 
     print("all data ${list}");
 
@@ -628,15 +647,18 @@ class OrderAppDB {
   }
 
   //////////////////////////////////////////////////////////
-  Future<List<Map<String, dynamic>>> getArea(String staffName) async {
+  Future<List<Map<String, dynamic>>> getArea(String sid) async {
     List<Map<String, dynamic>> list = [];
     String result = "";
-    print("staffName---${staffName}");
+    print("sid---${sid}");
     Database db = await instance.database;
-    var area = await db.rawQuery(
-        'SELECT area FROM staffDetailsTable WHERE sname="${staffName}"');
-    if (area[0]["area"] == "") {
+    List<Map<String, dynamic>> area = await db.rawQuery(
+        'SELECT area FROM staffDetailsTable WHERE sid="${sid}"');
+    String areaid=area[0]["area"];
+    if (areaid == "") {
       list = await db.rawQuery('SELECT aname,aid FROM areaDetailsTable');
+    }else{
+      list = await db.rawQuery('SELECT aname,aid FROM areaDetailsTable where aid=${areaid}');
     }
 
     print("res===${result}");
