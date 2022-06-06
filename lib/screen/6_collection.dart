@@ -11,6 +11,7 @@ class CollectionPage extends StatefulWidget {
 
 class _CollectionPageState extends State<CollectionPage> {
   List<String> items=["Cash receipt","Google pay"];
+  String selected="Cash receipt";
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -96,20 +97,16 @@ class _CollectionPageState extends State<CollectionPage> {
                                   )))
                               .toList(),
                           onChanged: (item) {
-                            // Provider.of<Controller>(context, listen: false)
-                            //     .customerList
-                            //     .length = 0;
                             print("clicked");
 
                             if (item != null) {
                               setState(() {
-                                // selected = item;
-                                // print("selected area..........${selected}");
+                                selected = item;
                               });
                             }
                             // Provider.of<Controller>(context, listen: false).getArea(selected!);
                           },
-                          // value: selected,
+                          value: selected,
                           // disabledHint: Text(selected ?? "null"),
                         ),
                       ),
