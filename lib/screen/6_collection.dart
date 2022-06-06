@@ -10,6 +10,7 @@ class CollectionPage extends StatefulWidget {
 }
 
 class _CollectionPageState extends State<CollectionPage> {
+  List<String> items=["Cash receipt","Google pay"];
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -85,39 +86,43 @@ class _CollectionPageState extends State<CollectionPage> {
                         padding: const EdgeInsets.all(8.0),
                         child: Text(""),
                       ),
-                      // DropdownButton<String>(
-                      //   hint: Text("Select"),
-                      //   isExpanded: true,
-                      //   autofocus: false,
-                      //   underline: SizedBox(),
-                      //   elevation: 0,
-                      //   items: items
-                      //       .map((item) => DropdownMenuItem<String>(
-                      //           value: item["aid"].toString(),
-                      //           child: Container(
-                      //             width: size.width * 0.5,
-                      //             child: Padding(
-                      //                 padding: EdgeInsets.all(8.0),
-                      //                 child: Text(item["aname"].toString())),
-                      //           )))
-                      //       .toList(),
-                      //   onChanged: (item) {
-                      //     // Provider.of<Controller>(context, listen: false)
-                      //     //     .customerList
-                      //     //     .length = 0;
-                      //     print("clicked");
+                      Container(
+                        color: Colors.grey[200],
+                        height: size.height*0.04,
+                        child: DropdownButton<String>(
+                          hint: Text("Select"),
+                          isExpanded: true,
+                          autofocus: false,
+                          underline: SizedBox(),
+                          elevation: 0,
+                          items: items
+                              .map((item) => DropdownMenuItem<String>(
+                                  value: item.toString(),
+                                  child: Container(
+                                    width: size.width * 0.5,
+                                    child: Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: Text(item.toString())),
+                                  )))
+                              .toList(),
+                          onChanged: (item) {
+                            // Provider.of<Controller>(context, listen: false)
+                            //     .customerList
+                            //     .length = 0;
+                            print("clicked");
 
-                      //     if (item != null) {
-                      //       setState(() {
-                      //         // selected = item;
-                      //         print("selected area..........${selected}");
-                      //       });
-                      //     }
-                      //     // Provider.of<Controller>(context, listen: false).getArea(selected!);
-                      //   },
-                      //   // value: selected,
-                      //   // disabledHint: Text(selected ?? "null"),
-                      // ),
+                            if (item != null) {
+                              setState(() {
+                                // selected = item;
+                                // print("selected area..........${selected}");
+                              });
+                            }
+                            // Provider.of<Controller>(context, listen: false).getArea(selected!);
+                          },
+                          // value: selected,
+                          // disabledHint: Text(selected ?? "null"),
+                        ),
+                      ),
                       Padding(
                         padding: const EdgeInsets.only(top: 10),
                         child: Text("Amount", style: TextStyle(fontSize: 15)),
@@ -125,16 +130,16 @@ class _CollectionPageState extends State<CollectionPage> {
                       Padding(
                         padding: const EdgeInsets.only(top: 10),
                         child: Container(
+                          height: size.height * 0.04,
                           width: size.width * 0.9,
                           color: P_Settings.collection,
                           child: Padding(
-                            padding: EdgeInsets.all(3.0),
-                            child: TextField(
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: '',
-                              ),
-                            ),
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextFormField( 
+                              keyboardType: TextInputType.number,
+                              decoration: new InputDecoration(
+                              border: InputBorder.none,
+                            )),
                           ),
                         ),
                       ),
@@ -145,14 +150,16 @@ class _CollectionPageState extends State<CollectionPage> {
                       Padding(
                         padding: const EdgeInsets.only(top: 10),
                         child: Container(
+                          height: size.height * 0.04,
                           width: size.width * 0.9,
                           color: P_Settings.collection,
                           child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              "\u{20B9}ryrt",
-                              style: TextStyle(color: Colors.grey[600]),
-                            ),
+                            padding: EdgeInsets.all(8.0),
+                            child: TextFormField(
+                              keyboardType: TextInputType.number,
+                                decoration: new InputDecoration(
+                              border: InputBorder.none,
+                            )),
                           ),
                         ),
                       ),
