@@ -372,7 +372,7 @@ class StaffLogin extends StatelessWidget {
           valueListenable: _isObscure,
           builder: (context, value, child) {
             return TextFormField(
-              // textCapitalization: TextCapitalization.characters,
+              textCapitalization: TextCapitalization.characters,
               obscureText: type == "password" ? _isObscure.value : false,
               controller: controllerValue,
               decoration: InputDecoration(
