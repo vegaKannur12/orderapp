@@ -23,6 +23,8 @@ class _CompanyDetailsState extends State<CompanyDetails> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    Provider.of<Controller>(context, listen: false).getCompanyData();
+
   }
 
   @override
@@ -88,7 +90,7 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                         ),
                       );
                     } else {
-                      if (value.c_d != null && value.c_d.length > 0) {
+                      if (value.companyList.length > 0) {
                         return FittedBox(
                           child: Container(
                             height: size.height * 0.9,
@@ -105,7 +107,7 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                                       width: size.width * 0.02,
                                     ),
                                     Text(
-                                        "company name : ${(value.c_d[0].cnme == null) && (value.c_d[0].cnme!.isEmpty) ? "" : value.c_d[0].cnme}"),
+                                        "company name : ${(value.companyList[0]["cnme"] == null) && (value.companyList[0]["cnme"].isEmpty) ? "" : value.companyList[0]["cnme"]}"),
                                   ],
                                 ),
                                 SizedBox(
@@ -118,7 +120,7 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                                       width: size.width * 0.02,
                                     ),
                                     Text(
-                                      "Address1           : ${value.c_d[0].ad1}",
+                                      "Address1           : ${value.companyList[0]['ad1']}",
                                     ),
                                   ],
                                 ),
@@ -132,7 +134,7 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                                       width: size.width * 0.02,
                                     ),
                                     Text(
-                                      "Address2            : ${value.c_d[0].ad2}",
+                                      "Address2            : ${value.companyList[0]['ad2']}",
                                       // value.reportList![index]['filter_names'],
                                     ),
                                   ],
@@ -162,7 +164,7 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                                       width: size.width * 0.02,
                                     ),
                                     Text(
-                                      "CompanyPrefix  : ${value.c_d[0].cpre}",
+                                      "CompanyPrefix  : ${value.companyList[0]["cpre"]}",
                                       // value.reportList![index]['filter_names'],
                                     ),
                                   ],
@@ -177,7 +179,7 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                                       width: size.width * 0.02,
                                     ),
                                     Text(
-                                      "Land                    : ${value.c_d[0].land}",
+                                      "Land                    : ${value.companyList[0]["land"]}",
                                       // value.reportList![index]['filter_names'],
                                     ),
                                   ],
@@ -192,7 +194,7 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                                       width: size.width * 0.02,
                                     ),
                                     Text(
-                                      "Mobile                 : ${value.c_d[0].mob}",
+                                      "Mobile                 : ${value.companyList[0]["mob"]}",
                                       // value.reportList![index]['filter_names'],
                                     ),
                                   ],
@@ -207,7 +209,7 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                                       width: size.width * 0.02,
                                     ),
                                     Text(
-                                      "GST                      : ${value.c_d[0].gst}",
+                                      "GST                      : ${value.companyList[0]["gst"]}",
                                       // value.reportList![index]['filter_names'],
                                     ),
                                   ],
@@ -222,7 +224,7 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                                       width: size.width * 0.02,
                                     ),
                                     Text(
-                                      "Country Code     : ${value.c_d[0].ccode}",
+                                      "Country Code     : ${value.companyList[0]["ccode"]}",
                                       // value.reportList![index]['filter_names'],
                                     ),
                                   ],

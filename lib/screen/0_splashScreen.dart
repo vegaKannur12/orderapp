@@ -51,9 +51,10 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   void initState() {
     // TODO: implement initState
-    // Provider.of<Controller>(context, listen: false).getRegistrationDetails();
     super.initState();
+
     Provider.of<Controller>(context, listen: false).fetchMenusFromMenuTable();
+
     navigate();
   }
 
@@ -69,12 +70,10 @@ class _SplashScreenState extends State<SplashScreen>
   void dispose() {
     // _controller.dispose();
     super.dispose();
-
   }
 
   @override
   Widget build(BuildContext context) {
-
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       resizeToAvoidBottomInset: false,

@@ -131,6 +131,8 @@ class Controller extends ChangeNotifier {
             notifyListeners();
             SharedPreferences prefs = await SharedPreferences.getInstance();
             prefs.setString("company_id", company_code);
+            // getCompanyData();
+
             // OrderAppDB.instance.deleteFromTableCommonQuery('menuTable',"");
             getMenuAPi(cid!, fp!, context);
             Navigator.push(
@@ -201,13 +203,13 @@ class Controller extends ChangeNotifier {
   ////////////////////menu table fetch///////////////////////////////
   fetchMenusFromMenuTable() async {
     menuList.clear();
-    var res = await OrderAppDB.instance.selectAllcommon('menuTable',"");
-    print("menu from table----$res");
+    var res = await OrderAppDB.instance.selectAllcommon('menuTable', "");
+    // print("menu from table----$res");
 
     for (var menu in res) {
       menuList.add(menu);
     }
-    print("menuList----${menuList}");
+    // print("menuList----${menuList}");
 
     notifyListeners();
   }
@@ -463,13 +465,15 @@ class Controller extends ChangeNotifier {
 ///////////////////////////////////////////////////////
   getCompanyData() async {
     try {
+      isLoading = true;
+      // notifyListeners();
       var res = await OrderAppDB.instance.selectCompany(cid!);
       print("res companyList----${res}");
       for (var item in res) {
         companyList.add(item);
       }
       print("companyList ----${companyList}");
-
+      isLoading = false;
       notifyListeners();
     } catch (e) {
       print(e);
@@ -482,7 +486,7 @@ class Controller extends ChangeNotifier {
   getArea(String staffName) async {
     String areaName;
     areDetails.clear();
-        print("staff...............${staffName}");
+    print("staff...............${staffName}");
     try {
       areaList = await OrderAppDB.instance.getArea(staffName);
       print("areaList----${areaList}");
@@ -1075,18 +1079,24 @@ class Controller extends ChangeNotifier {
     // notifyListeners();
   }
 
-  selectFromSettings()async{
+  selectFromSettings() async {
     settingsList.clear();
-    var res = await OrderAppDB.instance.selectAllcommon('settings',"");
-    for(var item in res){
+    var res = await OrderAppDB.instance.selectAllcommon('settings', "");
+    for (var item in res) {
       settingsList.add(item);
     }
     print("settingsList--$settingsList");
     notifyListeners();
   }
+
   ///////////////////////////////////////////////////////
-  setSettingOption(int length){
-  settingOption=  List.generate(length, (index) => false);
-  notifyListeners();
+  setSettingOption(int length) {
+    settingOption = List.generate(length, (index) => false);
+    notifyListeners();
   }
+
+  ///////////////company details///////////////////////////
+  // getCompany() async {
+  //   var res = await OrderAppDB.instance.selectCompany();
+  // }
 }

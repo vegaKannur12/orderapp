@@ -128,6 +128,7 @@ class OrderAppDB {
   ////////////settings//////////////////////
   static final options = 'options';
   static final value = 'value';
+/////////company details///////////////////
 
   Future<Database> get database async {
     if (_database != null) return _database!;
@@ -324,6 +325,10 @@ class OrderAppDB {
     Database db = await instance.database;
 
     result = await db.rawQuery('select * from registrationTable');
+
+    print("select * from registrationTable");
+
+    print("company deta-=-$result");
     if (result.length > 0) {
       return result;
     } else {
@@ -896,7 +901,7 @@ class OrderAppDB {
     } else {
       result = await db.rawQuery("SELECT * FROM '$table' WHERE $condition");
     }
-    print("result menu common----$result");
+    // print("result menu common----$result");
     return result;
   }
 

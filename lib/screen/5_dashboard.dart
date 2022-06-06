@@ -70,12 +70,13 @@ class _DashboardState extends State<Dashboard> {
     // Provider.of<Controller>(context, listen: false).postRegistration("RONPBQ9AD5D",context);
     // TODO: implement initState
     super.initState();
+    print("haiiiiii");
     // Provider.of<Controller>(context, listen: false).fetchMenusFromMenuTable();
     Provider.of<Controller>(context, listen: false).setCname();
     Provider.of<Controller>(context, listen: false).setSname();
-    insertSettings();
+    // insertSettings();
     getCompaniId();
-    Provider.of<Controller>(context, listen: false).getCompanyData();
+    // Provider.of<Controller>(context, listen: false).getCompanyData();
     if (Provider.of<Controller>(context, listen: false).firstMenu != null) {
       menu_index = Provider.of<Controller>(context, listen: false).firstMenu!;
     }
@@ -155,6 +156,8 @@ class _DashboardState extends State<Dashboard> {
     if (widget.type == "return from cartList") {
       menu_index = "S2";
     }
+    Provider.of<Controller>(context, listen: false).getCompanyData();
+
     // print("_seletdde---$_selectedIndex");
   }
 
@@ -227,8 +230,10 @@ class _DashboardState extends State<Dashboard> {
                   builder: (context) => IconButton(
                       icon: new Icon(Icons.menu),
                       onPressed: () {
-                        Provider.of<Controller>(context, listen: false)
-                            .selectFromSettings();
+                        // Provider.of<Controller>(context, listen: false)
+                        //     .selectFromSettings();
+                        // Provider.of<Controller>(context, listen: false)
+                        //     .getCompanyData();
 
                         drawerOpts.clear();
                         print("clicked");
