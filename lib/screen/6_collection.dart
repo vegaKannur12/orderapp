@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:orderapp/components/commoncolor.dart';
+import 'package:orderapp/db_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CollectionPage extends StatefulWidget {
@@ -205,10 +206,10 @@ class _CollectionPageState extends State<CollectionPage> {
                           width: size.width  * 0.3,
                           height: size.height * 0.05,
                           child: ElevatedButton(
-                            onPressed: () {
+                            onPressed: () async{
                              double sum=double.parse( amtController.text)+double.parse( dscController.text);
                              if(sum>0){
-                               
+                              //  await OrderAppDB.instance.insertCollectionTable(rec_date, rec_cusid, ser, mode, amt, disc, note, sttid, cancel, status);
                              }
                             },
                             child: Text('Save'),
