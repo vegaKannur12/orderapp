@@ -55,6 +55,7 @@ class Controller extends ChangeNotifier {
   String? totrate;
   List<String> areaAutoComplete = [];
   List<Map<String, dynamic>> menuList = [];
+  List<Map<String, dynamic>> remarkList = [];
   String? firstMenu;
   List<Map<String, dynamic>> listWidget = [];
   List<TextEditingController> controller = [];
@@ -214,7 +215,21 @@ class Controller extends ChangeNotifier {
     for (var menu in res) {
       menuList.add(menu);
     }
-    // print("menuList----${menuList}");
+    //print("menuList----${menuList}");
+
+    notifyListeners();
+  }
+
+  ////////////////////remark selection/////////
+  fetchremarkFromTable(String custmerId) async {
+    remarkList.clear();
+    var res = await OrderAppDB.instance
+        .selectAllcommon('remarksTable', "rem_cusid='${custmerId}'");
+
+    for (var menu in res) {
+      remarkList.add(menu);
+    }
+    print("remarkList----${remarkList}");
 
     notifyListeners();
   }
@@ -314,7 +329,7 @@ class Controller extends ChangeNotifier {
           // walletModal.
           for (var item in map) {
             walletModal = WalletModal.fromJson(item);
-             await OrderAppDB.instance.insertwalletTable(walletModal);
+            await OrderAppDB.instance.insertwalletTable(walletModal);
             // menuList.add(menuItem);
           }
           isLoading = false;
@@ -920,7 +935,14 @@ class Controller extends ChangeNotifier {
         await OrderAppDB.instance.insertStaffLoignDetails(sid, sname, datetime);
     notifyListeners();
   }
-/////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////Remarks/////////////////////////////////////
+  // insertRemarks(String date, String Cus_id, String ser, String text,
+  //     String sttid, String cancel, String status) async {
+  //   var logdata =
+  //       await OrderAppDB.instance.insertremarkTable(date, Cus_id, ser, text,sttid,cancel,status);
+  //   notifyListeners();
+  // }
   ///////////////////////////////////////////////////////////////////////
   // downloadAllPages(String cid) async {
   //   isLoading = true;

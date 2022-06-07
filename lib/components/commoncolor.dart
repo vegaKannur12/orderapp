@@ -31,6 +31,7 @@ class P_Settings {
   static Color get addbutonColor => Color.fromARGB(255, 243, 40, 4);
   static Color get ratecolor=> Color.fromARGB(255, 231, 133, 166);
   static Color get collection=> Color.fromARGB(255, 238, 238, 238);
+  static Color get editcolor=> Color.fromARGB(255, 22, 78, 30);
 
   static Color get bottomColor => Colors.yellow;
 

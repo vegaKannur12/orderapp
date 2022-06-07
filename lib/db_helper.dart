@@ -1,5 +1,7 @@
 // ignore_for_file: unused_local_variable
 
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:orderapp/controller/controller.dart';
 import 'package:orderapp/model/accounthead_model.dart';
@@ -371,7 +373,7 @@ class OrderAppDB {
         $rem_series TEXT NOT NULL,
         $rem_text TEXT,
         $rem_staffid TEXT,
-        $rem_cancel TEXT,
+        $rem_cancel INTEGER,
         $rem_status INTEGER
       )
       ''');
@@ -698,11 +700,11 @@ class OrderAppDB {
       String ser,
       String text,
       String sttid,
-      String cancel,
-      String status) async {
+      int cancel,
+      int status) async {
     final db = await database;
     var query =
-        'INSERT INTO remarksTable(rem_date, rem_cusid, rem_series, rem_text, rem_staffid, rem_cancel, rem_status) VALUES("${rem_date}", "${rem_cusid}", "${ser}", "${text}","${sttid}", "${cancel}", "${status}")';
+        'INSERT INTO remarksTable(rem_date, rem_cusid, rem_series, rem_text, rem_staffid, rem_cancel, rem_status) VALUES("${rem_date}", "${rem_cusid}", "${ser}", "${text}","${sttid}", ${cancel}, ${status})';
     var res = await db.rawInsert(query);
     print(query);
     // print(res);

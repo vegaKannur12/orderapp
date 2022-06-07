@@ -73,7 +73,7 @@ class _DashboardState extends State<Dashboard> {
     // TODO: implement initState
     super.initState();
     print("haiiiiii");
-    // Provider.of<Controller>(context, listen: false).fetchMenusFromMenuTable();
+    Provider.of<Controller>(context, listen: false).fetchMenusFromMenuTable();
     Provider.of<Controller>(context, listen: false).setCname();
     Provider.of<Controller>(context, listen: false).setSname();
     // insertSettings();
