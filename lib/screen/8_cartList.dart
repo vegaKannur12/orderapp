@@ -463,7 +463,7 @@ class _CartListState extends State<CartList> {
                                                                       () {
                                                                     if (value
                                                                             .qtyinc! >
-                                                                        0) {
+                                                                        1) {
                                                                       value
                                                                           .qtyDecrement();
                                                                       value.totalCalculation(
