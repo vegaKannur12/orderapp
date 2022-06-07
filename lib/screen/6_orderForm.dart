@@ -471,7 +471,7 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                                                               false)
                                                                       .custmerSelection =
                                                                   option[
-                                                                      "hname"];
+                                                                      "code"];
                                                             },
                                                             title: Text(
                                                                 option["hname"]
@@ -565,11 +565,11 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                                               CollectionPage(
                                                         os: os,
                                                         sid: sid,
-                                                        cuid:Provider.of<Controller>(
-                                                                          context,
-                                                                          listen:
-                                                                              false)
-                                                                      .custmerSelection,
+                                                        cuid: Provider.of<
+                                                                    Controller>(
+                                                                context,
+                                                                listen: false)
+                                                            .custmerSelection,
                                                       ),
                                                     ),
                                                   );
