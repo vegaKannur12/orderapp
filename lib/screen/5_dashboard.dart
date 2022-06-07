@@ -145,11 +145,11 @@ class _DashboardState extends State<Dashboard> {
         return CompanyDetails(
           type: "drawer call",
         );
-      case "CL":
-        // title = "Download data";
-        return CollectionPage(
-          os:os
-        );
+      // case "CL":
+      //   // title = "Download data";
+      //   return CollectionPage(
+      //     os:os
+      //   );
 
       case "ST":
         // title = "Download data";
@@ -376,15 +376,15 @@ class _DashboardState extends State<Dashboard> {
                         style: TextStyle(fontSize: 17),
                       ),
                     ),
-                    ListTile(
-                      onTap: () async {
-                        _onSelectItem(0, "CL");
-                      },
-                      title: Text(
-                        "Collection",
-                        style: TextStyle(fontSize: 17),
-                      ),
-                    ),
+                    // ListTile(
+                    //   onTap: () async {
+                    //     _onSelectItem(0, "CL");
+                    //   },
+                    //   title: Text(
+                    //     "Collection",
+                    //     style: TextStyle(fontSize: 17),
+                    //   ),
+                    // ),
                     ListTile(
                       trailing: Icon(Icons.logout),
                       onTap: () async {

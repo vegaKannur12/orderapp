@@ -549,8 +549,7 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                                 ),
                                                 label: Text("Add Items"),
                                                 onPressed: () async {
-                                                  print(
-                                                      "fieldText----${fieldText.text}");
+
                                                   FocusScopeNode currentFocus =
                                                       FocusScope.of(context);
 
@@ -560,6 +559,8 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                                   }
 
                                                   if (customerValidation) {
+
+                                                    print("helo==");
                                                     visibleValidation.value =
                                                         true;
                                                   } else {
@@ -575,8 +576,8 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                                       custmerId.toString(),
                                                     );
 
-                                                    print(
-                                                        "area name....${Provider.of<Controller>(context, listen: false).areaAutoComplete[1]}");
+                                                    // print(
+                                                    //     "area name....${Provider.of<Controller>(context, listen: false).areaAutoComplete[1]}");
                                                     Navigator.of(context).push(
                                                       PageRouteBuilder(
                                                         opaque:
