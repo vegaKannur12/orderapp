@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:orderapp/components/commoncolor.dart';
+import 'package:orderapp/components/customPopup.dart';
 import 'package:orderapp/db_helper.dart';
 import 'package:provider/provider.dart';
 
@@ -18,9 +19,10 @@ class RemarkPage extends StatefulWidget {
 
 class _RemarkPageState extends State<RemarkPage> {
   TextEditingController remarkController = TextEditingController();
+  TextEditingController remarkController1 = TextEditingController();
   DateTime now = DateTime.now();
   String? date;
-
+  CustomPopup popup = CustomPopup();
   @override
   void initState() {
     // TODO: implement initState
@@ -175,7 +177,83 @@ class _RemarkPageState extends State<RemarkPage> {
                               ),
                               trailing: IconButton(
                                 icon: Icon(Icons.edit),
-                                onPressed: () {},
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (ctx) => AlertDialog(
+                                      content: TextField(
+                                        controller: remarkController1,
+                                        minLines:
+                                            3, // any number you need (It works as the rows for the textarea)
+                                        keyboardType: TextInputType.multiline,
+                                        maxLines: null,
+                                        decoration: InputDecoration(
+                                          suffixIcon: IconButton(
+                                            onPressed: remarkController1.clear,
+                                            icon: Icon(
+                                              Icons.clear,
+                                              size: 18,
+                                            ),
+                                          ),
+                                          contentPadding: EdgeInsets.symmetric(
+                                              vertical: 40, horizontal: 20),
+                                          border: OutlineInputBorder(),
+                                          // hintText: value.remarkList[index]
+                                          //         ['rem_text']
+                                          //     .toString(),
+                                        ),
+                                        onChanged: (value) {
+                                          value = remarkController1.text;
+                                        },
+                                      ),
+                                      actions: <Widget>[
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                  primary:
+                                                      P_Settings.wavecolor),
+                                              onPressed: () {
+                                                Provider.of<Controller>(context,
+                                                        listen: false)
+                                                    .updateRemarks(
+                                                        1,
+                                                        widget.Cus_id,
+                                                        remarkController1.text);
+                                                Navigator.of(ctx).pop();
+                                              },
+                                              child: Text("Edit"),
+                                            ),
+                                            SizedBox(
+                                              width: size.width * 0.01,
+                                            ),
+                                            // ElevatedButton(
+                                            //   style: ElevatedButton
+                                            //       .styleFrom(
+                                            //           primary: P_Settings
+                                            //               .wavecolor),
+                                            //   onPressed: () async {
+                                            //     Provider.of<Controller>(
+                                            //             context,
+                                            //             listen: false)
+                                            //         .deleteFromOrderBagTable(
+                                            //             cartrowno,
+                                            //             widget
+                                            //                 .custmerId,
+                                            //             index);
+                                            //     Navigator.of(ctx)
+                                            //         .pop();
+                                            //   },
+                                            //   child: Text("ok"),
+                                            // ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
                               ),
                             ),
                           );

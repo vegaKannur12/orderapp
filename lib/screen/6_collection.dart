@@ -236,7 +236,8 @@ class _CollectionPageState extends State<CollectionPage> {
                               height: size.height * 0.05,
                               child: ElevatedButton(
                                 onPressed: () async {
-                                  FocusScope.of(context).requestFocus(FocusNode());
+                                  FocusScope.of(context)
+                                      .requestFocus(FocusNode());
                                   print(
                                       "hjfhdfhn---${amtController.text}---${dscController.text}");
                                   //  double sum=double.parse( amtController.text)+double.parse( dscController.text);

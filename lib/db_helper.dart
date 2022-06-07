@@ -368,6 +368,7 @@ class OrderAppDB {
     await db.execute(''' 
       CREATE TABLE remarksTable (
         $id INTEGER PRIMARY KEY AUTOINCREMENT,
+        $row_num INTEGER,
         $rem_date TEXT NOT NULL,
         $rem_cusid TEXT,
         $rem_series TEXT NOT NULL,
@@ -693,15 +694,10 @@ class OrderAppDB {
     // print(res);
     return res;
   }
+
 ////////////////////////insert remark/////////////////////////////////
-  Future insertremarkTable(
-      String rem_date,
-      String rem_cusid,
-      String ser,
-      String text,
-      String sttid,
-      int cancel,
-      int status) async {
+  Future insertremarkTable(String rem_date, String rem_cusid, String ser,
+      String text, String sttid, int cancel, int status) async {
     final db = await database;
     var query =
         'INSERT INTO remarksTable(rem_date, rem_cusid, rem_series, rem_text, rem_staffid, rem_cancel, rem_status) VALUES("${rem_date}", "${rem_cusid}", "${ser}", "${text}","${sttid}", ${cancel}, ${status})';
@@ -885,6 +881,26 @@ class OrderAppDB {
       print(res1);
     }
 
+    return res1;
+  }
+
+  ///////////////////////////////////////////////////////////////////
+  updateRemarks(String custmerId, String remark) async {
+    Database db = await instance.database;
+    print("remark.....${custmerId}${remark}");
+
+    var res1;
+    var res;
+    if (res !=null) {
+      res = await db.rawUpdate(
+          'UPDATE remarksTable SET rem_text="$remark" WHERE  rem_cusid="$custmerId"');
+
+      print("response-------$res");
+
+      res1 = await db
+          .rawQuery("SELECT * FROM remarksTable WHERE customerid='$custmerId'");
+      print(res1);
+    }
     return res1;
   }
 
