@@ -100,7 +100,10 @@ class _RemarkPageState extends State<RemarkPage> {
                             decoration: InputDecoration(
                                 suffixIcon: IconButton(
                                   onPressed: remarkController.clear,
-                                  icon: Icon(Icons.clear,size: 18,),
+                                  icon: Icon(
+                                    Icons.clear,
+                                    size: 18,
+                                  ),
                                 ),
                                 contentPadding: EdgeInsets.symmetric(
                                     vertical: 40, horizontal: 20),
