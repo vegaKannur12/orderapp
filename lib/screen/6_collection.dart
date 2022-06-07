@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:orderapp/components/commoncolor.dart';
 import 'package:orderapp/db_helper.dart';
@@ -28,6 +29,17 @@ class _CollectionPageState extends State<CollectionPage> {
   TextEditingController dscController = TextEditingController();
   TextEditingController noteController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  Future<bool?> toast(String message) {
+    Fluttertoast.cancel();
+    return Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        // timeInSecForIos: 4,
+        backgroundColor: Colors.redAccent,
+        textColor: Colors.white,
+        fontSize: 15.0);
+  }
 
   @override
   void initState() {
@@ -113,9 +125,8 @@ class _CollectionPageState extends State<CollectionPage> {
                           ),
                           Text("Transaction Mode",
                               style: TextStyle(fontSize: 15)),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(""),
+                          SizedBox(
+                            height: size.height * 0.01,
                           ),
                           Container(
                             color: Colors.grey[200],
@@ -225,6 +236,7 @@ class _CollectionPageState extends State<CollectionPage> {
                               height: size.height * 0.05,
                               child: ElevatedButton(
                                 onPressed: () async {
+                                  FocusScope.of(context).requestFocus(FocusNode());
                                   print(
                                       "hjfhdfhn---${amtController.text}---${dscController.text}");
                                   //  double sum=double.parse( amtController.text)+double.parse( dscController.text);
@@ -247,6 +259,11 @@ class _CollectionPageState extends State<CollectionPage> {
                                             widget.sid!,
                                             0,
                                             0);
+                                    amtController.clear();
+                                    dscController.clear();
+                                    noteController.clear();
+
+                                    toast("Success Data");
                                   }
 
                                   //  }
