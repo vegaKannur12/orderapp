@@ -691,15 +691,10 @@ class OrderAppDB {
     // print(res);
     return res;
   }
+
 ////////////////////////insert remark/////////////////////////////////
-  Future insertremarkTable(
-      String rem_date,
-      String rem_cusid,
-      String ser,
-      String text,
-      String sttid,
-      String cancel,
-      String status) async {
+  Future insertremarkTable(String rem_date, String rem_cusid, String ser,
+      String text, String sttid, String cancel, String status) async {
     final db = await database;
     var query =
         'INSERT INTO remarksTable(rem_date, rem_cusid, rem_series, rem_text, rem_staffid, rem_cancel, rem_status) VALUES("${rem_date}", "${rem_cusid}", "${ser}", "${text}","${sttid}", "${cancel}", "${status}")';
@@ -743,11 +738,17 @@ class OrderAppDB {
     List<Map<String, dynamic>> area = await db
         .rawQuery('SELECT area FROM staffDetailsTable WHERE sid="${sid}"');
     String areaid = area[0]["area"];
+    var aidsplit = areaid.split(",");
+    print("hudhuh---$aidsplit");
     if (areaid == "") {
       list = await db.rawQuery('SELECT aname,aid FROM areaDetailsTable');
     } else {
-      list = await db.rawQuery(
-          'SELECT aname,aid FROM areaDetailsTable where aid=${areaid}');
+      list = await db.query(
+        'areaDetailsTable',
+        where: "aid IN (${aidsplit.join(',')})",
+      );
+      // list = await db.rawQuery(
+      //     'SELECT aname,aid FROM areaDetailsTable where aid=${areaid}');
     }
 
     print("res===${result}");
