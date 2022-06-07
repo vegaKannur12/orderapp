@@ -461,10 +461,14 @@ class _CartListState extends State<CartList> {
                                                                       .remove),
                                                                   onPressed:
                                                                       () {
-                                                                    value
-                                                                        .qtyDecrement();
-                                                                    value.totalCalculation(
-                                                                        rate);
+                                                                    if (value
+                                                                            .qtyinc! >
+                                                                        0) {
+                                                                      value
+                                                                          .qtyDecrement();
+                                                                      value.totalCalculation(
+                                                                          rate);
+                                                                    }
                                                                   }),
                                                           Padding(
                                                             padding:
@@ -696,7 +700,6 @@ class _CartListState extends State<CartList> {
                           .calculateTotal(widget.os, widget.custmerId);
                       rateController.clear();
                       Navigator.of(context).pop();
-
                     },
                     // textColor: Theme.of(context).primaryColor,
                     child: Text('Save'),
