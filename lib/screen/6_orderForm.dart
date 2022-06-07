@@ -508,7 +508,13 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                                           false, // set to false
                                                       pageBuilder:
                                                           (_, __, ___) =>
-                                                              RemarkPage(),
+                                                              RemarkPage(
+                                                        Cus_id: custmerId
+                                                            .toString(),
+                                                        ser: values.ordernum[0]
+                                                            ['os'],
+                                                        sid: sid!,
+                                                      ),
                                                     ),
                                                   );
                                                 }},
