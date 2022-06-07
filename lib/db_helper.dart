@@ -361,7 +361,7 @@ class OrderAppDB {
         $rec_disc TEXT,
         $rec_note INTEGER,
         $rec_staffid TEXT,
-        $rec_cancel TEXT,
+        $rec_cancel INTEGER,
         $rec_status INTEGER
       )
       ''');
@@ -683,11 +683,11 @@ class OrderAppDB {
       String disc,
       String note,
       String sttid,
-      String cancel,
-      String status) async {
+      int cancel,
+      int status) async {
     final db = await database;
     var query =
-        'INSERT INTO collectionTable(rec_date, rec_cusid, rec_series, rec_mode, rec_amount, rec_disc, rec_note, rec_staffid, rec_cancel, rec_status) VALUES("${rec_date}", "${rec_cusid}", "${ser}", "${mode}", "${amt}", "${disc}", "${note}", "${sttid}", "${cancel}", "${status}")';
+        'INSERT INTO collectionTable(rec_date, rec_cusid, rec_series, rec_mode, rec_amount, rec_disc, rec_note, rec_staffid, rec_cancel, rec_status) VALUES("${rec_date}", "${rec_cusid}", "${ser}", "${mode}", "${amt}", "${disc}", "${note}", "${sttid}", ${cancel}, ${status})';
     var res = await db.rawInsert(query);
     print(query);
     // print(res);

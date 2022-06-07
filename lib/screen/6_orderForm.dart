@@ -57,6 +57,7 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
   String? common;
   String? custmerId;
   String? sid;
+  String? os;
   bool areavisible = false;
   bool visible = false;
   String itemName = '';
@@ -91,7 +92,9 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
   sharedPref() async {
     final prefs = await SharedPreferences.getInstance();
     sid = prefs.getString('sid');
-    print("sid---${sid}");
+    os = prefs.getString("os");
+
+    print("sid--os-${sid}--$os");
     Provider.of<Controller>(context, listen: false).getArea(sid!);
   }
 
@@ -414,12 +417,6 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                                       icon: Icon(Icons.clear),
                                                     ),
                                                   ),
-                                                  // focusNode: _focusNode,
-                                                  // scrollPadding:
-                                                  //     EdgeInsets.only(
-                                                  //         bottom: topInsets +
-                                                  //             size.height *
-                                                  //                 0.3),
                                                   focusNode: fieldFocusNode,
                                                   style: const TextStyle(
                                                       fontWeight:
@@ -467,6 +464,14 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                                                   "optonsssssssssssss$option");
                                                               onSelected(
                                                                   option);
+
+                                                              Provider.of<Controller>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .custmerSelection =
+                                                                  option[
+                                                                      "code"];
                                                             },
                                                             title: Text(
                                                                 option["hname"]
@@ -563,7 +568,15 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                                           false, // set to false
                                                       pageBuilder:
                                                           (_, __, ___) =>
-                                                              CollectionPage(),
+                                                              CollectionPage(
+                                                        os: os,
+                                                        sid: sid,
+                                                        cuid: Provider.of<
+                                                                    Controller>(
+                                                                context,
+                                                                listen: false)
+                                                            .custmerSelection,
+                                                      ),
                                                     ),
                                                   );
                                                 },
@@ -603,8 +616,6 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                                       TextStyle(fontSize: 12),
                                                 ),
                                                 onPressed: () async {
-                                                  print(
-                                                      "fieldText----${fieldText.text}");
                                                   FocusScopeNode currentFocus =
                                                       FocusScope.of(context);
 
@@ -614,6 +625,7 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                                   }
 
                                                   if (customerValidation) {
+                                                    print("helo==");
                                                     visibleValidation.value =
                                                         true;
                                                   } else {
@@ -629,8 +641,8 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                                       custmerId.toString(),
                                                     );
 
-                                                    print(
-                                                        "area name....${Provider.of<Controller>(context, listen: false).areaAutoComplete[1]}");
+                                                    // print(
+                                                    //     "area name....${Provider.of<Controller>(context, listen: false).areaAutoComplete[1]}");
                                                     Navigator.of(context).push(
                                                       PageRouteBuilder(
                                                         opaque:
