@@ -31,6 +31,7 @@ class Controller extends ChangeNotifier {
   String? areaSelection;
 
   List<String> tableColumn = [];
+  List<Map<String, dynamic>> res = [];
   List<String> tableHistorydataColumn = [];
   String? editedRate;
   String? order_id;
@@ -757,20 +758,19 @@ class Controller extends ChangeNotifier {
     }
   }
 
-////////////// total sum /////////////////////////////
-  // gettotalSum() async {
-  //   try {
-  //     approximateSum = await OrderAppDB.instance.gettotalSum();
+  ////////////// update remarks /////////////////////////////
+  updateRemarks(String customerId, String remark) async {
+    print("remark.....${customerId}${remark}");
+    res = await OrderAppDB.instance.updateRemarks(customerId, remark);
+    if (res != null) {
+      for (var item in res) {
+        remarkList.add(item);
+      }
+    }
 
-  //     print("total----${approximateSum}");
-
-  //     notifyListeners();
-  //   } catch (e) {
-  //     print(e);
-  //     return null;
-  //   }
-  //   notifyListeners();
-  // }
+    print("re from controller----$res");
+    notifyListeners();
+  }
 
   /////////calculate total////////////////
   calculateTotal(String os, String customerId) async {
