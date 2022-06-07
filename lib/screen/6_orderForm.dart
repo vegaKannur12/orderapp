@@ -299,11 +299,11 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                                     return ListTile(
                                                       onTap: () {
                                                         onSelected(option);
-                                                        Provider.of<Controller>(
-                                                                    context,
-                                                                    listen: false)
-                                                                .areaSelection =
-                                                            option["aid"];
+                                                        // Provider.of<Controller>(
+                                                        //             context,
+                                                        //             listen: false)
+                                                        //         .areaSelection =
+                                                        //     option["aid"];
                                                       },
                                                       title: Text(
                                                           option["aname"]
