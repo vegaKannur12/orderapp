@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:orderapp/components/commoncolor.dart';
 import 'package:orderapp/controller/controller.dart';
 import 'package:orderapp/screen/6.1_remarks.dart';
+import 'package:orderapp/screen/6_collection.dart';
 import 'package:orderapp/screen/7_itemSelection.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -556,7 +557,7 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                                           false, // set to false
                                                       pageBuilder:
                                                           (_, __, ___) =>
-                                                              RemarkPage(),
+                                                              CollectionPage(),
                                                     ),
                                                   );
                                                 },
