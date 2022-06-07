@@ -1,38 +1,49 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:orderapp/components/commoncolor.dart';
 import 'package:orderapp/db_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CollectionPage extends StatefulWidget {
   String? os;
-  CollectionPage({this.os});
+  String? sid;
+  String? cuid;
+
+  
+  CollectionPage({this.os,this.sid,this.cuid});
 
   @override
   State<CollectionPage> createState() => _CollectionPageState();
 }
 
 class _CollectionPageState extends State<CollectionPage> {
+  DateTime date=DateTime.now();
   List<String> items=["Cash receipt","Google pay"];
   String selected="Cash receipt";
   String? os;
+  String? formattedDate;
   TextEditingController amtController=TextEditingController();
   TextEditingController dscController=TextEditingController();
+  TextEditingController noteController=TextEditingController();
+
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    shared();
+    // shared();
+   formattedDate = DateFormat('yyyy-MM-dd').format(date);
   }
-  shared()async{
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    os=prefs.getString("os");
-    print("os---$os");
-  }
+  // shared()async{
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   os=prefs.getString("os");
+  //   print("os---$os");
+  // }
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      appBar: AppBar(),
       body: SingleChildScrollView(
         child: Container(
           child: Padding(
@@ -87,7 +98,7 @@ class _CollectionPageState extends State<CollectionPage> {
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
-                              "06-06-2022",
+                              formattedDate.toString(),
                               style: TextStyle(color: Colors.grey[600]),
                             ),
                           ),
@@ -185,6 +196,7 @@ class _CollectionPageState extends State<CollectionPage> {
                         child: SizedBox(
                           width: size.width * 0.9,
                           child: TextField(
+                            controller: noteController,
                             minLines:
                                 4, // any number you need (It works as the rows for the textarea)
                             keyboardType: TextInputType.multiline,
@@ -209,7 +221,7 @@ class _CollectionPageState extends State<CollectionPage> {
                             onPressed: () async{
                              double sum=double.parse( amtController.text)+double.parse( dscController.text);
                              if(sum>0){
-                              //  await OrderAppDB.instance.insertCollectionTable(rec_date, rec_cusid, ser, mode, amt, disc, note, sttid, cancel, status);
+                            await OrderAppDB.instance.insertCollectionTable(formattedDate!, widget.cuid!, widget.os!, selected, amtController.text, dscController.text, noteController.text, widget.sid!, 0, 0);
                              }
                             },
                             child: Text('Save'),

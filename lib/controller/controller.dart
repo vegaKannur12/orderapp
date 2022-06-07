@@ -27,7 +27,7 @@ class Controller extends ChangeNotifier {
   bool isVisible = false;
   List<bool> selected = [];
   List<bool> settingOption = [];
-
+  String? custmerSelection;
   List<String> tableColumn = [];
   List<String> tableHistorydataColumn = [];
   String? editedRate;
