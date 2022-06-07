@@ -511,7 +511,7 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                         Row(
                                           children: [
                                             Container(
-                                              width: size.width * 0.4,
+                                              width: size.width * 0.26,
                                               height: size.height * 0.05,
                                               child: ElevatedButton.icon(
                                                 onPressed: () {
@@ -525,8 +525,15 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                                     ),
                                                   );
                                                 },
-                                                label: Text('Remarks'),
-                                                icon: Icon(Icons.comment),
+                                                label: Text(
+                                                  'Remarks',
+                                                  style:
+                                                      TextStyle(fontSize: 12),
+                                                ),
+                                                icon: Icon(
+                                                  Icons.comment,
+                                                  size: 14,
+                                                ),
                                                 style: ElevatedButton.styleFrom(
                                                   primary: Colors.lightBlue,
                                                   shape: RoundedRectangleBorder(
@@ -539,15 +546,55 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                             ),
                                             Spacer(),
                                             Container(
-                                              width: size.width * 0.4,
+                                              width: size.width * 0.27,
+                                              height: size.height * 0.05,
+                                              child: ElevatedButton.icon(
+                                                onPressed: () {
+                                                  Navigator.of(context).push(
+                                                    PageRouteBuilder(
+                                                      opaque:
+                                                          false, // set to false
+                                                      pageBuilder:
+                                                          (_, __, ___) =>
+                                                              RemarkPage(),
+                                                    ),
+                                                  );
+                                                },
+                                                label: Text(
+                                                  'Collection',
+                                                  style:
+                                                      TextStyle(fontSize: 12),
+                                                ),
+                                                icon: Icon(
+                                                  Icons.comment,
+                                                  size: 15,
+                                                ),
+                                                style: ElevatedButton.styleFrom(
+                                                  primary: Color.fromARGB(
+                                                      255, 194, 85, 93),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10.0),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Spacer(),
+                                            Container(
+                                              width: size.width * 0.27,
                                               height: size.height * 0.05,
                                               child: ElevatedButton.icon(
                                                 icon: Icon(
                                                   Icons.library_add_check,
                                                   color: Colors.white,
-                                                  size: 30.0,
+                                                  size: 15.0,
                                                 ),
-                                                label: Text("Add Items"),
+                                                label: Text(
+                                                  "Add Items",
+                                                  style:
+                                                      TextStyle(fontSize: 12),
+                                                ),
                                                 onPressed: () async {
                                                   print(
                                                       "fieldText----${fieldText.text}");
