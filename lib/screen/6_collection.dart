@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:orderapp/components/commoncolor.dart';
+import 'package:orderapp/components/customToast.dart';
 import 'package:orderapp/db_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -29,17 +30,7 @@ class _CollectionPageState extends State<CollectionPage> {
   TextEditingController dscController = TextEditingController();
   TextEditingController noteController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  Future<bool?> toast(String message) {
-    Fluttertoast.cancel();
-    return Fluttertoast.showToast(
-        msg: message,
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        // timeInSecForIos: 4,
-        backgroundColor: Colors.redAccent,
-        textColor: Colors.white,
-        fontSize: 15.0);
-  }
+  CustomToast tst = CustomToast();
 
   @override
   void initState() {
@@ -263,8 +254,7 @@ class _CollectionPageState extends State<CollectionPage> {
                                     amtController.clear();
                                     dscController.clear();
                                     noteController.clear();
-
-                                    toast("Success Data");
+                                    tst.toast("Saved");
                                   }
 
                                   //  }

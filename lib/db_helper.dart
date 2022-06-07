@@ -741,11 +741,17 @@ class OrderAppDB {
     List<Map<String, dynamic>> area = await db
         .rawQuery('SELECT area FROM staffDetailsTable WHERE sid="${sid}"');
     String areaid = area[0]["area"];
+    var aidsplit = areaid.split(",");
+    print("hudhuh---$aidsplit");
     if (areaid == "") {
       list = await db.rawQuery('SELECT aname,aid FROM areaDetailsTable');
     } else {
-      list = await db.rawQuery(
-          'SELECT aname,aid FROM areaDetailsTable where aid=${areaid}');
+      list = await db.query(
+        'areaDetailsTable',
+        where: "aid IN (${aidsplit.join(',')})",
+      );
+      // list = await db.rawQuery(
+      //     'SELECT aname,aid FROM areaDetailsTable where aid=${areaid}');
     }
 
     print("res===${result}");

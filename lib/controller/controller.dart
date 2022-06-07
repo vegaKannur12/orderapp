@@ -28,6 +28,8 @@ class Controller extends ChangeNotifier {
   List<bool> selected = [];
   List<bool> settingOption = [];
   String? custmerSelection;
+  String? areaSelection;
+
   List<String> tableColumn = [];
   List<Map<String, dynamic>> res = [];
   List<String> tableHistorydataColumn = [];
