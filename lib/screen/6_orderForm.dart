@@ -492,7 +492,7 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                               height: size.height * 0.05,
                                               child: ElevatedButton.icon(
                                                 onPressed: () {
-                                                   FocusScopeNode currentFocus =
+                                                  FocusScopeNode currentFocus =
                                                       FocusScope.of(context);
 
                                                   if (!currentFocus
@@ -502,22 +502,24 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
 
                                                   if (_formKey.currentState!
                                                       .validate()) {
-                                                  Navigator.of(context).push(
-                                                    PageRouteBuilder(
-                                                      opaque:
-                                                          false, // set to false
-                                                      pageBuilder:
-                                                          (_, __, ___) =>
-                                                              RemarkPage(
-                                                        Cus_id: custmerId
-                                                            .toString(),
-                                                        ser: values.ordernum[0]
-                                                            ['os'],
-                                                        sid: sid!,
+                                                    Navigator.of(context).push(
+                                                      PageRouteBuilder(
+                                                        opaque:
+                                                            false, // set to false
+                                                        pageBuilder:
+                                                            (_, __, ___) =>
+                                                                RemarkPage(
+                                                          Cus_id: custmerId
+                                                              .toString(),
+                                                          ser:
+                                                              values.ordernum[0]
+                                                                  ['os'],
+                                                          sid: sid!,
+                                                        ),
                                                       ),
-                                                    ),
-                                                  );
-                                                }},
+                                                    );
+                                                  }
+                                                },
                                                 label: Text(
                                                   'Remarks',
                                                   style:

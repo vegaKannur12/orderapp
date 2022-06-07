@@ -760,6 +760,7 @@ class OrderAppDB {
     return list;
   }
 
+
   //////////////////////////////////////////////////////
   Future<List<Map<String, dynamic>>> getCustomer(String aid) async {
     print("enteredaid---${aid}");
@@ -891,15 +892,15 @@ class OrderAppDB {
   }
 
   ///////////////////////////////////////////////////////////////////
-  updateRemarks(String custmerId, String remark) async {
+  updateRemarks(int rowNo, String custmerId, String remark) async {
     Database db = await instance.database;
     print("remark.....${custmerId}${remark}");
 
     var res1;
     var res;
-    if (res !=null) {
+    if (res != null) {
       res = await db.rawUpdate(
-          'UPDATE remarksTable SET rem_text="$remark" WHERE  rem_cusid="$custmerId"');
+          'UPDATE remarksTable SET rem_text="$remark" WHERE  rem_cusid="$custmerId" AND row_num="$rowNo"');
 
       print("response-------$res");
 
@@ -1010,8 +1011,8 @@ class OrderAppDB {
       return null;
     }
   }
-
-/////////////////////////get historydetails//////////////////
+  //////////////select total amount form ordermasterTable ////////////
+ 
   selectCommonQuery(String table, String? condition) async {
     List<Map<String, dynamic>> result;
     Database db = await instance.database;
