@@ -759,18 +759,18 @@ class Controller extends ChangeNotifier {
   }
 
   ////////////// update remarks /////////////////////////////
-  updateRemarks(String customerId, String remark) async {
-    print("remark.....${customerId}${remark}");
-    res = await OrderAppDB.instance.updateRemarks(customerId, remark);
-    if (res != null) {
-      for (var item in res) {
-        remarkList.add(item);
-      }
-    }
+  // updateRemarks(String customerId, String remark) async {
+  //   print("remark.....${customerId}${remark}");
+  //   // res = await OrderAppDB.instance.updateRemarks(customerId, remark);
+  //   if (res != null) {
+  //     for (var item in res) {
+  //       remarkList.add(item);
+  //     }
+  //   }
 
-    print("re from controller----$res");
-    notifyListeners();
-  }
+  //   print("re from controller----$res");
+  //   notifyListeners();
+  // }
 
   /////////calculate total////////////////
   calculateTotal(String os, String customerId) async {

@@ -509,7 +509,7 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                                       pageBuilder:
                                                           (_, __, ___) =>
                                                               RemarkPage(
-                                                        Cus_id: custmerId
+                                                        cus_id: custmerId
                                                             .toString(),
                                                         ser: values.ordernum[0]
                                                             ['os'],

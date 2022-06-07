@@ -152,7 +152,7 @@ class OrderAppDB {
   static final rem_series = 'rem_series';
   static final rem_text = 'rem_text';
   static final rem_staffid = 'rem_staffid';
-
+  static final rem_row_num='rem_row_num';
   static final rem_cancel = 'rem_cancel';
   static final rem_status = 'rem_status';
 
@@ -368,12 +368,12 @@ class OrderAppDB {
     await db.execute(''' 
       CREATE TABLE remarksTable (
         $id INTEGER PRIMARY KEY AUTOINCREMENT,
-        $row_num INTEGER,
         $rem_date TEXT NOT NULL,
         $rem_cusid TEXT,
         $rem_series TEXT NOT NULL,
         $rem_text TEXT,
         $rem_staffid TEXT,
+        $rem_row_num INTEGER,
         $rem_cancel INTEGER,
         $rem_status INTEGER
       )
@@ -697,10 +697,10 @@ class OrderAppDB {
 
 ////////////////////////insert remark/////////////////////////////////
   Future insertremarkTable(String rem_date, String rem_cusid, String ser,
-      String text, String sttid, int cancel, int status) async {
+      String text, String sttid,int row_num, int cancel, int status,) async {
     final db = await database;
     var query =
-        'INSERT INTO remarksTable(rem_date, rem_cusid, rem_series, rem_text, rem_staffid, rem_cancel, rem_status) VALUES("${rem_date}", "${rem_cusid}", "${ser}", "${text}","${sttid}", ${cancel}, ${status})';
+        'INSERT INTO remarksTable(rem_date, rem_cusid, rem_series, rem_text, rem_staffid, rem_row_num, rem_cancel, rem_status) VALUES("${rem_date}", "${rem_cusid}", "${ser}", "${text}","${sttid}",${row_num},${cancel},${status})';
     var res = await db.rawInsert(query);
     print(query);
     // print(res);
@@ -891,24 +891,24 @@ class OrderAppDB {
   }
 
   ///////////////////////////////////////////////////////////////////
-  updateRemarks(String custmerId, String remark) async {
-    Database db = await instance.database;
-    print("remark.....${custmerId}${remark}");
+  // updateRemarks(String custmerId, String remark) async {
+  //   Database db = await instance.database;
+  //   print("remark.....${custmerId}${remark}");
 
-    var res1;
-    var res;
-    if (res !=null) {
-      res = await db.rawUpdate(
-          'UPDATE remarksTable SET rem_text="$remark" WHERE  rem_cusid="$custmerId"');
+  //   var res1;
+  //   var res;
+  //   if (res !=null) {
+  //     res = await db.rawUpdate(
+  //         'UPDATE remarksTable SET rem_text="$remark" WHERE  rem_cusid="$custmerId"');
 
-      print("response-------$res");
+  //     print("response-------$res");
 
-      res1 = await db
-          .rawQuery("SELECT * FROM remarksTable WHERE customerid='$custmerId'");
-      print(res1);
-    }
-    return res1;
-  }
+  //     res1 = await db
+  //         .rawQuery("SELECT * FROM remarksTable WHERE customerid='$custmerId'");
+  //     print(res1);
+  //   }
+  //   return res1;
+  // }
 
   /////////////////////////////////////////////////////////////////////
   deleteFromTableCommonQuery(String table, String? condition) async {
@@ -962,7 +962,6 @@ class OrderAppDB {
     var res;
     int max;
     Database db = await instance.database;
-
     print("field----condition---table ----${field}---${condition}----${table}");
     var result = await db.rawQuery("SELECT * FROM '$table' WHERE $condition");
     print("result max---$result");
