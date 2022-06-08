@@ -1108,8 +1108,6 @@ class OrderAppDB {
     return res;
   }
 
-<<<<<<< HEAD
-=======
   ////////////////////////////////////////////////////
   selectsettingsValue() {}
 
@@ -1156,7 +1154,6 @@ class OrderAppDB {
     }
   }
 
->>>>>>> d6686107e333d29fdf31dd51d9bc61ff6888375d
 ////////////////////////////////////////////////////
   // selectFrommasterQuery(String table, String? condition) async {
   //   List<Map<String, dynamic>> result;
