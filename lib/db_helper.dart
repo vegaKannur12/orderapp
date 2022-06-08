@@ -1041,7 +1041,7 @@ class OrderAppDB {
     if (condition == null || condition.isEmpty) {
       result = await db.rawQuery("SELECT * FROM '$table'");
     } else {
-      result = await db.rawQuery("SELECT * FROM '$table' WHERE $condition");
+      result = await db.rawQuery("SELECT * FROM '$table' WHERE $condition ");
     }
     // print("result menu common----$result");
     return result;
@@ -1108,6 +1108,55 @@ class OrderAppDB {
     return res;
   }
 
+<<<<<<< HEAD
+=======
+  ////////////////////////////////////////////////////
+  selectsettingsValue() {}
+
+//////////////////////////////////////////////////////
+  getReportDataFromOrderDetails() async {
+    List<Map<String, dynamic>> result;
+    Database db = await instance.database;
+
+    result = await db.rawQuery(
+        'select orderMasterTable.customerid as cusid, orderMasterTable.total_price  as total,accountHeadsTable.hname as name,accountHeadsTable.ac_ad1 as ad1,accountHeadsTable.mo as mob , accountHeadsTable.ba as bln from orderMasterTable inner join accountHeadsTable on orderMasterTable.customerid=accountHeadsTable.code');
+    if (result.length > 0) {
+      // print("result-order-----$result");
+      return result;
+    } else {
+      return null;
+    }
+  }
+
+  getReportDataFromRemarksTable() async {
+    List<Map<String, dynamic>> result;
+    Database db = await instance.database;
+
+    result = await db.rawQuery(
+        'select remarksTable.rem_cusid as cusid, accountHeadsTable.hname as name,accountHeadsTable.ac_ad1 as ad1, accountHeadsTable.ba as bln from remarksTable inner join accountHeadsTable on remarksTable.rem_cusid=accountHeadsTable.code');
+    if (result.length > 0) {
+      // print("result---remrk---$result");
+      return result;
+    } else {
+      return null;
+    }
+  }
+
+  getReportDataFromCollectionTable() async {
+    List<Map<String, dynamic>> result;
+    Database db = await instance.database;
+
+    result = await db.rawQuery(
+        'select collectionTable.rec_cusid as cusid, collectionTable.rec_mode as mode ,accountHeadsTable.hname as name,accountHeadsTable.ac_ad1 as ad1, accountHeadsTable.ba as bln from collectionTable inner join accountHeadsTable on collectionTable.rec_cusid=accountHeadsTable.code');
+    if (result.length > 0) {
+      // print("result---cooll---$result");
+      return result;
+    } else {
+      return null;
+    }
+  }
+
+>>>>>>> d6686107e333d29fdf31dd51d9bc61ff6888375d
 ////////////////////////////////////////////////////
   // selectFrommasterQuery(String table, String? condition) async {
   //   List<Map<String, dynamic>> result;

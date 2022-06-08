@@ -33,6 +33,8 @@ class Controller extends ChangeNotifier {
   List<String> tableColumn = [];
   List<Map<String, dynamic>> res = [];
   List<String> tableHistorydataColumn = [];
+  // List<Map<String, dynamic>> reportOriginalList1 = [];
+
   String? editedRate;
   String? order_id;
   String? searchkey;
@@ -48,6 +50,8 @@ class Controller extends ChangeNotifier {
   String? itemRate;
   List<CD> c_d = [];
   List<Map<String, dynamic>> historyList = [];
+  List<Map<String, dynamic>> reportOriginalList = [];
+
   List<Map<String, dynamic>> settingsList = [];
   List<Map<String, dynamic>> historydataList = [];
   List<Map<String, dynamic>> staffOrderTotal = [];
@@ -59,6 +63,8 @@ class Controller extends ChangeNotifier {
   String? totrate;
   List<String> areaAutoComplete = [];
   List<Map<String, dynamic>> menuList = [];
+  List<Map<String, dynamic>> reportData = [];
+
   List<Map<String, dynamic>> remarkList = [];
   String? firstMenu;
   List<Map<String, dynamic>> listWidget = [];
@@ -1216,8 +1222,56 @@ class Controller extends ChangeNotifier {
     notifyListeners();
   }
 
-  ///////////////company details///////////////////////////
-  // getCompany() async {
-  //   var res = await OrderAppDB.instance.selectCompany();
-  // }
+  selectReportFromOrder() async {
+    reportData.clear();
+    reportOriginalList.clear();
+    Map map = {};
+    isLoading = true;
+    // notifyListeners();
+    var res = await OrderAppDB.instance.getReportDataFromOrderDetails();
+    var rem = await OrderAppDB.instance.getReportDataFromRemarksTable();
+    var coll = await OrderAppDB.instance.getReportDataFromCollectionTable();
+
+    if (res.length > 0) {
+      for (var item in res) {
+        reportData.add(item);
+      }
+    }
+    if (rem.length > 0) {
+      for (var item in rem) {
+        reportData.add(item);
+      }
+    }
+
+    if (coll.length > 0) {
+      for (var item in coll) {
+        reportData.add(item);
+      }
+    }
+    List reportOriginalList1 = [];
+    List copy = [];
+    copy.clear();
+    reportOriginalList1.clear();
+    // reportData.forEach(
+    //   (element) {
+    //     if (reportOriginalList1.length == 0) {
+    //       reportOriginalList1.add(element);
+    //       copy.add(element);
+    //     } else {
+    //       for (var item in reportOriginalList1) {
+    //         if (item["cusid"] != element["cusid"]) {
+    //           // map=element;
+    //           copy.add(element);
+    //         }
+    //       }
+    //     //  copy.add(map);
+    //     }
+    //     reportOriginalList1 = copy;
+    //   },
+    // );
+
+    print("report-----$reportOriginalList1");
+    isLoading = false;
+    notifyListeners();
+  }
 }
