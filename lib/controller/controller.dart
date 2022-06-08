@@ -218,7 +218,7 @@ class Controller extends ChangeNotifier {
   }
 
   /////////////////////////// get balance ////////////////////////////
-  Future<Balance?> getBalance(String cid, String code) async {
+  Future<Balance?> getBalance(String? cid, String? code) async {
     print("get balance...............${cid}");
     var restaff;
     try {
@@ -235,11 +235,13 @@ class Controller extends ChangeNotifier {
       // print("body ${body}");
       List map = jsonDecode(response.body);
       print("map ${map}");
-
-      for (var getbal in map) {
-        balanceModel = Balance.fromJson(getbal);
-        // restaff = await OrderAppDB.instance.insertStaffDetails(staffModel);
+      if (map != null) {
+        for (var getbal in map) {
+          balanceModel = Balance.fromJson(getbal);
+          // restaff = await OrderAppDB.instance.insertStaffDetails(staffModel);
+        }
       }
+
       print("inserted staff ${balanceModel}");
 
       /////////////// insert into local db /////////////////////

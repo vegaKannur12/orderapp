@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
           ),  
         ),
       ),
-      home: FilterReport(),
+      home: SplashScreen(),
       // home: MyWaveClipper(),
     );
   }
