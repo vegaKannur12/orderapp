@@ -236,6 +236,8 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                           return Container(
                                             height: size.height * 0.08,
                                             child: TextFormField(
+                                              // scrollPadding: EdgeInsets.only(
+                                              //     top: 500,),
                                               maxLines: 1,
                                               decoration: InputDecoration(
                                                 border: OutlineInputBorder(
@@ -414,6 +416,11 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                                     return null;
                                                   },
                                                   controller: fieldText,
+                                                  scrollPadding:
+                                                      EdgeInsets.only(
+                                                          bottom: topInsets +
+                                                              size.height *
+                                                                  0.3),
                                                   focusNode: fieldFocusNode,
                                                   style: const TextStyle(
                                                       fontWeight:
@@ -502,22 +509,20 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
 
                                                   if (_formKey.currentState!
                                                       .validate()) {
-                                                    Navigator.of(context).push(
-                                                      PageRouteBuilder(
-                                                        opaque:
-                                                            false, // set to false
-                                                        pageBuilder:
-                                                            (_, __, ___) =>
-                                                                RemarkPage(
-                                                          Cus_id: custmerId
-                                                              .toString(),
-                                                          ser:
-                                                              values.ordernum[0]
-                                                                  ['os'],
-                                                          sid: sid!,
-                                                        ),
+                                                    Navigator.of(context)
+                                                        .push(PageRouteBuilder(
+                                                      opaque:
+                                                          false, // set to false
+                                                      pageBuilder:
+                                                          (_, __, ___) =>
+                                                              RemarkPage(
+                                                        cus_id: custmerId
+                                                            .toString(),
+                                                        ser: values.ordernum[0]
+                                                            ['os'],
+                                                        sid: sid!,
                                                       ),
-                                                    );
+                                                    ));
                                                   }
                                                 },
                                                 label: Text(
