@@ -768,6 +768,7 @@ class OrderAppDB {
     return list;
   }
 
+
   //////////////////////////////////////////////////////
   Future<List<Map<String, dynamic>>> getCustomer(String aid) async {
     print("enteredaid---${aid}");
@@ -1017,8 +1018,8 @@ class OrderAppDB {
       return null;
     }
   }
-
-/////////////////////////get historydetails//////////////////
+  //////////////select total amount form ordermasterTable ////////////
+ 
   selectCommonQuery(String table, String? condition) async {
     List<Map<String, dynamic>> result;
     Database db = await instance.database;

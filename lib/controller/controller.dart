@@ -28,7 +28,6 @@ class Controller extends ChangeNotifier {
   List<bool> selected = [];
   List<bool> settingOption = [];
   String? custmerSelection;
-  String? areaSelection;
 
   List<String> tableColumn = [];
   List<Map<String, dynamic>> res = [];
@@ -54,6 +53,7 @@ class Controller extends ChangeNotifier {
 
   List<Map<String, dynamic>> settingsList = [];
   List<Map<String, dynamic>> historydataList = [];
+  List<Map<String, dynamic>> staffOrderTotal = [];
   String? area;
   String? splittedCode;
   double amt = 0.0;
@@ -1075,6 +1075,23 @@ class Controller extends ChangeNotifier {
     isLoading = false;
     notifyListeners();
 
+    notifyListeners();
+  }
+
+  /////////////////SELCT TOTAL ORDER FROM MASTER TABLE///////////
+  getOrderMasterTotal(String table, String? condition) async {
+    print("inside select data");
+
+    List<Map<String, dynamic>> result =
+        await OrderAppDB.instance.selectAllcommon(table, condition);
+        print("resulttttt.....$result");
+    if (result != 0) {
+      for (var item in result) {
+        staffOrderTotal.add(item);
+      }
+    }
+
+    print("staff order total........$staffOrderTotal");
     notifyListeners();
   }
 

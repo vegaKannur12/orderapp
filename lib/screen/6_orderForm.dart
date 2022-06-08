@@ -236,6 +236,8 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                           return Container(
                                             height: size.height * 0.08,
                                             child: TextFormField(
+                                              // scrollPadding: EdgeInsets.only(
+                                              //     top: 500,),
                                               maxLines: 1,
                                               decoration: InputDecoration(
                                                 border: OutlineInputBorder(
@@ -414,6 +416,11 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                                     return null;
                                                   },
                                                   controller: fieldText,
+                                                  scrollPadding:
+                                                      EdgeInsets.only(
+                                                          bottom: topInsets +
+                                                              size.height *
+                                                                  0.3),
                                                   focusNode: fieldFocusNode,
                                                   style: const TextStyle(
                                                       fontWeight:
@@ -492,7 +499,7 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                               height: size.height * 0.05,
                                               child: ElevatedButton.icon(
                                                 onPressed: () {
-                                                   FocusScopeNode currentFocus =
+                                                  FocusScopeNode currentFocus =
                                                       FocusScope.of(context);
 
                                                   if (!currentFocus
@@ -502,8 +509,8 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
 
                                                   if (_formKey.currentState!
                                                       .validate()) {
-                                                  Navigator.of(context).push(
-                                                    PageRouteBuilder(
+                                                    Navigator.of(context)
+                                                        .push(PageRouteBuilder(
                                                       opaque:
                                                           false, // set to false
                                                       pageBuilder:
@@ -515,9 +522,9 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                                             ['os'],
                                                         sid: sid!,
                                                       ),
-                                                    ),
-                                                  );
-                                                }},
+                                                    ));
+                                                  }
+                                                },
                                                 label: Text(
                                                   'Remarks',
                                                   style:

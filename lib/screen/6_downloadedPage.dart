@@ -74,7 +74,7 @@ class _DownloadedPageState extends State<DownloadedPage> {
           // ),
           Flexible(
             child: Container(
-              height: size.height * 0.5,
+              height: size.height * 0.9,
               child: ListView.builder(
                 itemCount: downloadItems.length,
                 itemBuilder: (context, index) {
