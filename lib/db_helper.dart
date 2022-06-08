@@ -1112,47 +1112,60 @@ class OrderAppDB {
   selectsettingsValue() {}
 
 //////////////////////////////////////////////////////
-  getReportDataFromOrderDetails() async {
+ getReportDataFromOrderDetails() async {
     List<Map<String, dynamic>> result;
     Database db = await instance.database;
 
     result = await db.rawQuery(
-        'select orderMasterTable.customerid as cusid, orderMasterTable.total_price  as total,accountHeadsTable.hname as name,accountHeadsTable.ac_ad1 as ad1,accountHeadsTable.mo as mob , accountHeadsTable.ba as bln from orderMasterTable inner join accountHeadsTable on orderMasterTable.customerid=accountHeadsTable.code');
+        'select accountHeadsTable.code  as cusid, accountHeadsTable.hname as name,min(accountHeadsTable.ac_ad1) as ad1,min(accountHeadsTable.mo) as mob , min(accountHeadsTable.ba) as bln,sum(orderMasterTable.total_price)  as order_value,max(remarksTable.rem_row_num) as remark_count,min(collectionTable.rec_amount) as collection_sum from accountHeadsTable  left join orderMasterTable on orderMasterTable.customerid=accountHeadsTable.code  left join remarksTable on remarksTable.rem_cusid=accountHeadsTable.code  left join collectionTable on collectionTable.rec_cusid=accountHeadsTable.code where length(accountHeadsTable.code)>0  group by accountHeadsTable.code , accountHeadsTable.hname order by sum(orderMasterTable.total_price) desc');
     if (result.length > 0) {
-      // print("result-order-----$result");
+      print("result-order-----$result");
       return result;
     } else {
       return null;
     }
   }
+  // getReportDataFromOrderDetails() async {
+  //   List<Map<String, dynamic>> result;
+  //   Database db = await instance.database;
 
-  getReportDataFromRemarksTable() async {
-    List<Map<String, dynamic>> result;
-    Database db = await instance.database;
+  //   result = await db.rawQuery(
+  //       'select orderMasterTable.customerid as cusid, orderMasterTable.total_price  as total,accountHeadsTable.hname as name,accountHeadsTable.ac_ad1 as ad1,accountHeadsTable.mo as mob , accountHeadsTable.ba as bln from orderMasterTable inner join accountHeadsTable on orderMasterTable.customerid=accountHeadsTable.code');
+  //   if (result.length > 0) {
+  //     // print("result-order-----$result");
+  //     return result;
+  //   } else {
+  //     return null;
+  //   }
+  // }
 
-    result = await db.rawQuery(
-        'select remarksTable.rem_cusid as cusid, accountHeadsTable.hname as name,accountHeadsTable.ac_ad1 as ad1, accountHeadsTable.ba as bln from remarksTable inner join accountHeadsTable on remarksTable.rem_cusid=accountHeadsTable.code');
-    if (result.length > 0) {
-      // print("result---remrk---$result");
-      return result;
-    } else {
-      return null;
-    }
-  }
+  // getReportDataFromRemarksTable() async {
+  //   List<Map<String, dynamic>> result;
+  //   Database db = await instance.database;
 
-  getReportDataFromCollectionTable() async {
-    List<Map<String, dynamic>> result;
-    Database db = await instance.database;
+  //   result = await db.rawQuery(
+  //       'select remarksTable.rem_cusid as cusid, accountHeadsTable.hname as name,accountHeadsTable.ac_ad1 as ad1, accountHeadsTable.ba as bln from remarksTable inner join accountHeadsTable on remarksTable.rem_cusid=accountHeadsTable.code');
+  //   if (result.length > 0) {
+  //     // print("result---remrk---$result");
+  //     return result;
+  //   } else {
+  //     return null;
+  //   }
+  // }
 
-    result = await db.rawQuery(
-        'select collectionTable.rec_cusid as cusid, collectionTable.rec_mode as mode ,accountHeadsTable.hname as name,accountHeadsTable.ac_ad1 as ad1, accountHeadsTable.ba as bln from collectionTable inner join accountHeadsTable on collectionTable.rec_cusid=accountHeadsTable.code');
-    if (result.length > 0) {
-      // print("result---cooll---$result");
-      return result;
-    } else {
-      return null;
-    }
-  }
+  // getReportDataFromCollectionTable() async {
+  //   List<Map<String, dynamic>> result;
+  //   Database db = await instance.database;
+
+  //   result = await db.rawQuery(
+  //       'select collectionTable.rec_cusid as cusid, collectionTable.rec_mode as mode ,accountHeadsTable.hname as name,accountHeadsTable.ac_ad1 as ad1, accountHeadsTable.ba as bln from collectionTable inner join accountHeadsTable on collectionTable.rec_cusid=accountHeadsTable.code');
+  //   if (result.length > 0) {
+  //     // print("result---cooll---$result");
+  //     return result;
+  //   } else {
+  //     return null;
+  //   }
+  // }
 
 ////////////////////////////////////////////////////
   // selectFrommasterQuery(String table, String? condition) async {

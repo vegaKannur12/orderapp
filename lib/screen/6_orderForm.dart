@@ -720,31 +720,34 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                           ),
                                           Spacer(),
 
-                                         cid!=null&& custmerId!=null? Visibility(
-                                            visible: balVisible,
-                                            child: Flexible(
-                                              child: AnimatedTextKit(
-                                                animatedTexts: [
-                                                  TypewriterAnimatedText(
-                                                    '\u{20B9}${values.balanceModel.ba}',
-                                                    textStyle: const TextStyle(
-                                                      fontSize: 16.0,
-                                                      fontWeight:
-                                                          FontWeight.bold,
+                                          cid != null && custmerId != null
+                                              ? Visibility(
+                                                  visible: balVisible,
+                                                  child: Flexible(
+                                                    child: AnimatedTextKit(
+                                                      animatedTexts: [
+                                                        TypewriterAnimatedText(
+                                                          '\u{20B9}${values.balanceModel.ba}',
+                                                          textStyle:
+                                                              const TextStyle(
+                                                            fontSize: 16.0,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                          speed: const Duration(
+                                                              milliseconds: 20),
+                                                        ),
+                                                      ],
+                                                      totalRepeatCount: 4,
+                                                      pause: const Duration(
+                                                          milliseconds: 20),
+                                                      displayFullTextOnTap:
+                                                          true,
+                                                      stopPauseOnTap: true,
                                                     ),
-                                                    speed: const Duration(
-                                                        milliseconds: 20),
                                                   ),
-                                                ],
-                                                totalRepeatCount: 4,
-                                                pause: const Duration(
-                                                    milliseconds: 20),
-                                                displayFullTextOnTap: true,
-                                                stopPauseOnTap: true,
-                                              ),
-                                             
-                                            ),
-                                          ):Text("\u{20B9}0.00"),
+                                                )
+                                              : Text("\u{20B9}0.00"),
                                           //   ],
                                           // ),
                                         ],

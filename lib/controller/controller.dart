@@ -25,6 +25,8 @@ class Controller extends ChangeNotifier {
 
   CustomSnackbar snackbar = CustomSnackbar();
   bool isSearch = false;
+  bool isreportSearch = false;
+
   bool isVisible = false;
   List<bool> selected = [];
   List<bool> settingOption = [];
@@ -38,6 +40,7 @@ class Controller extends ChangeNotifier {
   String? editedRate;
   String? order_id;
   String? searchkey;
+  String? reportSearchkey;
   String? sname;
   String? sid;
   String? userType;
@@ -75,6 +78,9 @@ class Controller extends ChangeNotifier {
   String? sof;
   List<Map<String, dynamic>> bagList = [];
   List<Map<String, dynamic>> newList = [];
+
+  List<Map<String, dynamic>> newreportList = [];
+
   List<Map<String, dynamic>> masterList = [];
   List<Map<String, dynamic>> orderdetailsList = [];
   bool settingsRateOption = false;
@@ -1024,6 +1030,11 @@ class Controller extends ChangeNotifier {
     notifyListeners();
   }
 
+  setreportsearch(bool issearch) {
+    isreportSearch = issearch;
+    notifyListeners();
+  }
+
 ////////////////////////////////////////////////////////////////
   setQty(int qty) {
     qtyinc = qty;
@@ -1231,49 +1242,47 @@ class Controller extends ChangeNotifier {
     isLoading = true;
     // notifyListeners();
     var res = await OrderAppDB.instance.getReportDataFromOrderDetails();
-    var rem = await OrderAppDB.instance.getReportDataFromRemarksTable();
-    var coll = await OrderAppDB.instance.getReportDataFromCollectionTable();
+    // var rem = await OrderAppDB.instance.getReportDataFromRemarksTable();
+    // var coll = await OrderAppDB.instance.getReportDataFromCollectionTable();
 
     if (res.length > 0) {
       for (var item in res) {
         reportData.add(item);
       }
     }
-    if (rem.length > 0) {
-      for (var item in rem) {
-        reportData.add(item);
-      }
-    }
+    // if (rem.length > 0) {
+    //   for (var item in rem) {
+    //     reportData.add(item);
+    //   }
+    // }
 
-    if (coll.length > 0) {
-      for (var item in coll) {
-        reportData.add(item);
-      }
-    }
-    List reportOriginalList1 = [];
-    List copy = [];
-    copy.clear();
-    reportOriginalList1.clear();
-    // reportData.forEach(
-    //   (element) {
-    //     if (reportOriginalList1.length == 0) {
-    //       reportOriginalList1.add(element);
-    //       copy.add(element);
-    //     } else {
-    //       for (var item in reportOriginalList1) {
-    //         if (item["cusid"] != element["cusid"]) {
-    //           // map=element;
-    //           copy.add(element);
-    //         }
-    //       }
-    //     //  copy.add(map);
-    //     }
-    //     reportOriginalList1 = copy;
-    //   },
-    // );
+    // if (coll.length > 0) {
+    //   for (var item in coll) {
+    //     reportData.add(item);
+    //   }
+    // }
 
-    print("report-----$reportOriginalList1");
+    print("report-----$reportData");
     isLoading = false;
     notifyListeners();
+  }
+
+  /////////////////////////////////////////////
+  searchfromreport() async {
+    print("searchkey----$reportSearchkey");
+    newreportList.clear();
+
+    if (reportSearchkey!.isEmpty) {
+      // isreportSearch = false;
+      newreportList = reportData;
+    } else {
+      // isreportSearch = true;
+      newreportList = reportData
+          .where((element) => element["name"]
+              .toLowerCase()
+              .contains(reportSearchkey!.toLowerCase()))
+          .toList();
+      print("new---$newreportList");
+    }
   }
 }
