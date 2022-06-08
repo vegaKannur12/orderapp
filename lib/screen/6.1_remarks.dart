@@ -50,9 +50,10 @@ class _RemarkPageState extends State<RemarkPage> {
               icon: Icon(Icons.delete))
         ],
       ),
-      body: InkWell(onTap: (){
-         FocusScope.of(context).requestFocus(FocusNode());
-      },
+      body: InkWell(
+        onTap: () {
+          FocusScope.of(context).requestFocus(FocusNode());
+        },
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Container(
@@ -140,7 +141,7 @@ class _RemarkPageState extends State<RemarkPage> {
                               ),
                               onPressed: () async {
                                 FocusScope.of(context)
-                                      .requestFocus(FocusNode());
+                                    .requestFocus(FocusNode());
                                 if (remarkController.text != null ||
                                     remarkController.text.isNotEmpty) {
                                   int max = await OrderAppDB.instance
@@ -149,7 +150,7 @@ class _RemarkPageState extends State<RemarkPage> {
                                           'rem_row_num',
                                           "rem_cusid='${widget.cus_id}'");
                                   print("jhjdfmax---$max");
-      
+
                                   await OrderAppDB.instance.insertremarkTable(
                                       date!,
                                       widget.cus_id,
@@ -159,7 +160,8 @@ class _RemarkPageState extends State<RemarkPage> {
                                       max,
                                       0,
                                       0);
-                                  Provider.of<Controller>(context, listen: false)
+                                  Provider.of<Controller>(context,
+                                          listen: false)
                                       .fetchremarkFromTable(widget.cus_id);
                                   remarkController.clear();
                                   tost.toast("success");
@@ -187,19 +189,20 @@ class _RemarkPageState extends State<RemarkPage> {
                               padding: const EdgeInsets.all(8.0),
                               child: Dismissible(
                                 key: ObjectKey([index]),
-                                onDismissed: (DismissDirection direction) async {
-                                  if (direction == DismissDirection.endToStart) {
+                                onDismissed:
+                                    (DismissDirection direction) async {
+                                  if (direction ==
+                                      DismissDirection.endToStart) {
                                     print("Delete");
                                     setState(() {
                                       OrderAppDB.instance
                                           .deleteFromTableCommonQuery(
                                               "remarksTable",
                                               "rem_row_num='${value.remarkList[index]["rem_row_num"]}'");
-                                              Provider.of<Controller>(context,
-                                            listen: false)
-                                        .fetchremarkFromTable(widget.cus_id);
+                                      Provider.of<Controller>(context,
+                                              listen: false)
+                                          .fetchremarkFromTable(widget.cus_id);
                                     });
-                                    
                                   }
                                 },
                                 child: ListTile(
@@ -227,7 +230,8 @@ class _RemarkPageState extends State<RemarkPage> {
                                             controller: remarkController1,
                                             minLines:
                                                 3, // any number you need (It works as the rows for the textarea)
-                                            keyboardType: TextInputType.multiline,
+                                            keyboardType:
+                                                TextInputType.multiline,
                                             maxLines: null,
                                             decoration: InputDecoration(
                                               suffixIcon: IconButton(
@@ -257,9 +261,10 @@ class _RemarkPageState extends State<RemarkPage> {
                                                   MainAxisAlignment.end,
                                               children: [
                                                 ElevatedButton(
-                                                  style: ElevatedButton.styleFrom(
-                                                      primary:
-                                                          P_Settings.wavecolor),
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                          primary: P_Settings
+                                                              .wavecolor),
                                                   onPressed: () async {
                                                     await OrderAppDB.instance
                                                         .upadteCommonQuery(

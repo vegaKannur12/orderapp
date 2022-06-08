@@ -14,6 +14,7 @@ import 'package:orderapp/screen/2_companyDetailsscreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../components/network_connectivity.dart';
+import '../model/balanceGet_model.dart';
 import '../model/productdetails_model.dart';
 import '../model/staffarea_model.dart';
 import '../model/staffdetails_model.dart';
@@ -98,6 +99,7 @@ class Controller extends ChangeNotifier {
   List<Map<String, dynamic>> approximateSum = [];
   // List<WalletModal> wallet = [];
   StaffDetails staffModel = StaffDetails();
+  Balance balanceModel = Balance();
   AccountHead accountHead = AccountHead();
   StaffArea staffArea = StaffArea();
   ProductDetails proDetails = ProductDetails();
@@ -219,6 +221,40 @@ class Controller extends ChangeNotifier {
         }
       }
     });
+  }
+
+  /////////////////////////// get balance ////////////////////////////
+  Future<Balance?> getBalance(String cid, String code) async {
+    print("get balance...............${cid}");
+    var restaff;
+    try {
+      Uri url = Uri.parse("http://trafiqerp.in/order/fj/get_balance.php");
+      Map body = {
+        'cid': cid,
+        'code': code,
+      };
+      // print("compny----${cid}");
+      http.Response response = await http.post(
+        url,
+        body: body,
+      );
+      // print("body ${body}");
+      List map = jsonDecode(response.body);
+      print("map ${map}");
+
+      for (var getbal in map) {
+        balanceModel = Balance.fromJson(getbal);
+        // restaff = await OrderAppDB.instance.insertStaffDetails(staffModel);
+      }
+      print("inserted staff ${balanceModel}");
+
+      /////////////// insert into local db /////////////////////
+      notifyListeners();
+      return balanceModel;
+    } catch (e) {
+      print(e);
+      return null;
+    }
   }
 
   ////////////////////menu table fetch///////////////////////////////

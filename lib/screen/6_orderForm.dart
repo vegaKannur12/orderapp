@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../components/customPopup.dart';
 import '../components/customSnackbar.dart';
+import 'package:marquee_widget/marquee_widget.dart';
 // import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class OrderForm extends StatefulWidget {
@@ -59,6 +60,7 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
   String? custmerId;
   String? sid;
   String? os;
+  String? cid;
   bool areavisible = false;
   bool visible = false;
   String itemName = '';
@@ -96,6 +98,8 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
     final prefs = await SharedPreferences.getInstance();
     sid = prefs.getString('sid');
     os = prefs.getString("os");
+    cid = prefs.getString("cid");
+    print("company Id ......$cid");
 
     print("sid--os-${sid}--$os");
     Provider.of<Controller>(context, listen: false).getArea(sid!);
@@ -378,6 +382,10 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                                 custmerId = value["code"];
                                                 print(
                                                     "Code .........---${custmerId}");
+                                                Provider.of<Controller>(context,
+                                                        listen: false)
+                                                    .getBalance(
+                                                        cid!, custmerId!);
                                               });
                                             },
                                             fieldViewBuilder: (BuildContext
@@ -671,6 +679,28 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                               ),
                                             ),
                                           ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 50),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        // OutlinedButton(
+                                        //     onPressed: () {},
+                                        //     child: Text("Balance")),
+                                        Marquee(
+                                          direction: Axis.horizontal,
+                                          autoRepeat: true,
+                                          child: Text(
+                                            "\u{20B9} ${values.balanceModel.ba!}",
+                                            style: TextStyle(
+                                                fontSize: 20,
+                                                color: P_Settings.wavecolor),
+                                          ),
                                         ),
                                       ],
                                     ),
