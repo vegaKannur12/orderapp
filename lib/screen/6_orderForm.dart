@@ -11,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../components/customPopup.dart';
 import '../components/customSnackbar.dart';
 import 'package:marquee_widget/marquee_widget.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 // import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class OrderForm extends StatefulWidget {
@@ -28,8 +29,8 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
   TextEditingController fieldTextEditingController = TextEditingController();
   TextEditingValue textvalue = TextEditingValue();
   final _formKey = GlobalKey<FormState>();
-  bool customerFlag = true;
   bool isLoading = false;
+  bool balVisible = false;
   String? areaName;
   String? customerName;
   String? _selectedItemarea;
@@ -135,7 +136,7 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Container(
-                            height: size.height * 0.24,
+                            height: size.height * 0.2,
                             decoration: BoxDecoration(
                               color: P_Settings.wavecolor,
                               borderRadius: BorderRadius.only(
@@ -147,9 +148,9 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Icon(
-                                    Icons.person, color: P_Settings.bottomColor,
+                                    Icons.person,
+                                    color: P_Settings.bottomColor,
                                     size: 30,
-                                    // color: Colors.white,
                                   ),
                                   SizedBox(
                                     width: size.width * 0.01,
@@ -162,9 +163,6 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                       // ),
                                       ),
                                 ]),
-                          ),
-                          SizedBox(
-                            height: size.height * 0.05,
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -234,7 +232,7 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                           });
                                         },
                                         fieldViewBuilder: (BuildContext context,
-                                            areaController,
+                                            fieldText,
                                             FocusNode fieldFocusNode,
                                             VoidCallback onFieldSubmitted) {
                                           return Container(
@@ -270,7 +268,7 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                               textInputAction:
                                                   TextInputAction.next,
                                               autofocus: true,
-                                              controller: areaController,
+                                              controller: fieldText,
                                               focusNode: fieldFocusNode,
                                               style: TextStyle(
                                                   fontWeight:
@@ -382,10 +380,6 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                                 custmerId = value["code"];
                                                 print(
                                                     "Code .........---${custmerId}");
-                                                Provider.of<Controller>(context,
-                                                        listen: false)
-                                                    .getBalance(
-                                                        cid!, custmerId!);
                                               });
                                             },
                                             fieldViewBuilder: (BuildContext
@@ -683,26 +677,81 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                       ],
                                     ),
                                   ),
+                                  SizedBox(
+                                    height: size.height * 0.05,
+                                  ),
                                   Padding(
-                                    padding: const EdgeInsets.only(top: 50),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        // OutlinedButton(
-                                        //     onPressed: () {},
-                                        //     child: Text("Balance")),
-                                        Marquee(
-                                          direction: Axis.horizontal,
-                                          autoRepeat: true,
-                                          child: Text(
-                                            "\u{20B9} ${values.balanceModel.ba!}",
-                                            style: TextStyle(
-                                                fontSize: 20,
-                                                color: P_Settings.wavecolor),
+                                    padding: const EdgeInsets.only(
+                                        left: 25, right: 20),
+                                    child: Container(
+                                      width: size.width * 0.9,
+                                      color: P_Settings.collection,
+                                      child: Row(
+                                        children: [
+                                          SizedBox(
+                                            width: size.width * 0.03,
                                           ),
-                                        ),
-                                      ],
+                                          Flexible(
+                                            child: OutlinedButton(
+                                                onPressed: () async {
+                                                  setState(() {
+                                                    balVisible = !balVisible;
+                                                  });
+                                                  print(
+                                                      "cid.........$cid,$custmerId");
+                                                  FocusScopeNode currentFocus =
+                                                      FocusScope.of(context);
+
+                                                  if (!currentFocus
+                                                      .hasPrimaryFocus) {
+                                                    currentFocus.unfocus();
+                                                  }
+
+                                                  if (_formKey.currentState!
+                                                      .validate()) {
+                                                    Provider.of<Controller>(
+                                                            context,
+                                                            listen: false)
+                                                        .getBalance(
+                                                            cid, custmerId);
+                                                  }
+                                                },
+                                                child: Text("Balance")),
+                                          ),
+                                          Spacer(),
+
+                                          cid != null && custmerId != null
+                                              ? Visibility(
+                                                  visible: balVisible,
+                                                  child: Flexible(
+                                                    child: AnimatedTextKit(
+                                                      animatedTexts: [
+                                                        TypewriterAnimatedText(
+                                                          '\u{20B9}${values.balanceModel.ba}',
+                                                          textStyle:
+                                                              const TextStyle(
+                                                            fontSize: 16.0,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                          speed: const Duration(
+                                                              milliseconds: 20),
+                                                        ),
+                                                      ],
+                                                      totalRepeatCount: 4,
+                                                      pause: const Duration(
+                                                          milliseconds: 20),
+                                                      displayFullTextOnTap:
+                                                          true,
+                                                      stopPauseOnTap: true,
+                                                    ),
+                                                  ),
+                                                )
+                                              : Text("\u{20B9}0.00"),
+                                          //   ],
+                                          // ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ],
