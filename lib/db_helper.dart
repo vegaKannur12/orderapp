@@ -152,7 +152,7 @@ class OrderAppDB {
   static final rem_series = 'rem_series';
   static final rem_text = 'rem_text';
   static final rem_staffid = 'rem_staffid';
-  static final rem_row_num='rem_row_num';
+  static final rem_row_num = 'rem_row_num';
   static final rem_cancel = 'rem_cancel';
   static final rem_status = 'rem_status';
 
@@ -696,8 +696,16 @@ class OrderAppDB {
   }
 
 ////////////////////////insert remark/////////////////////////////////
-  Future insertremarkTable(String rem_date, String rem_cusid, String ser,
-      String text, String sttid,int row_num, int cancel, int status,) async {
+  Future insertremarkTable(
+    String rem_date,
+    String rem_cusid,
+    String ser,
+    String text,
+    String sttid,
+    int row_num,
+    int cancel,
+    int status,
+  ) async {
     final db = await database;
     var query =
         'INSERT INTO remarksTable(rem_date, rem_cusid, rem_series, rem_text, rem_staffid, rem_row_num, rem_cancel, rem_status) VALUES("${rem_date}", "${rem_cusid}", "${ser}", "${text}","${sttid}",${row_num},${cancel},${status})';
@@ -759,7 +767,6 @@ class OrderAppDB {
     print("area---List ${list}");
     return list;
   }
-
 
   //////////////////////////////////////////////////////
   Future<List<Map<String, dynamic>>> getCustomer(String aid) async {
@@ -1011,7 +1018,7 @@ class OrderAppDB {
     }
   }
   //////////////select total amount form ordermasterTable ////////////
- 
+
   selectCommonQuery(String table, String? condition) async {
     List<Map<String, dynamic>> result;
     Database db = await instance.database;
@@ -1100,9 +1107,6 @@ class OrderAppDB {
     print("response-------$res");
     return res;
   }
-
-  ////////////////////////////////////////////////////
-  selectsettingsValue() {}
 
 ////////////////////////////////////////////////////
   // selectFrommasterQuery(String table, String? condition) async {

@@ -7,6 +7,7 @@ import 'package:orderapp/screen/3_staffLoginScreen.dart';
 import 'package:orderapp/screen/5_dashboard.dart';
 import 'package:orderapp/screen/6_historypage.dart';
 import 'package:orderapp/screen/0_splashScreen.dart';
+import 'package:orderapp/screen/filter_Report.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'components/commoncolor.dart';
@@ -51,7 +52,7 @@ class MyApp extends StatelessWidget {
           ),  
         ),
       ),
-      home: SplashScreen(),
+      home: FilterReport(),
       // home: MyWaveClipper(),
     );
   }
