@@ -110,7 +110,7 @@ class _ReportPageState extends State<ReportPage> {
                   } else {
                     return ListView.builder(
                       itemCount:
-                          value.isreportSearch || value.newreportList.length > 0
+                          value.isreportSearch && value.newreportList.length > 0
                               ? value.newreportList.length
                               : value.reportData.length,
                       itemBuilder: (context, index) {
@@ -124,7 +124,7 @@ class _ReportPageState extends State<ReportPage> {
                                   Row(
                                     children: [
                                       Text(
-                                          value.isreportSearch ||
+                                          value.isreportSearch &&
                                                   value.newreportList.length > 0
                                               ? value.newreportList[index]
                                                   ["name"]
@@ -166,7 +166,9 @@ class _ReportPageState extends State<ReportPage> {
                                   value.isreportSearch &&
                                           value.newreportList.length > 0
                                       ? value.newreportList[index]["mob"] ==
-                                              null
+                                                  null ||
+                                              value.newreportList[index]["mob"]
+                                                  .isEmpty
                                           ? Container()
                                           : Row(
                                               children: [
@@ -188,7 +190,10 @@ class _ReportPageState extends State<ReportPage> {
                                                     ))
                                               ],
                                             )
-                                      : value.reportData[index]["mob"] == null
+                                      : value.reportData[index]["mob"] ==
+                                                  null ||
+                                              value.reportData[index]["mob"]
+                                                  .isEmpty
                                           ? Container()
                                           : Row(
                                               children: [
@@ -227,7 +232,49 @@ class _ReportPageState extends State<ReportPage> {
                                       SizedBox(
                                         width: size.width * 0.01,
                                       ),
-                                      Text("(balance)")
+                                      Text("(balance)"),
+                                      Spacer(),
+                                      value.newreportList.length > 0 &&
+                                              value.isreportSearch
+                                          ? value.newreportList[index]
+                                                          ["collection_sum"] !=
+                                                      null &&
+                                                  value.newreportList[index]
+                                                          ["collection_sum"] !=
+                                                      0
+                                              ? Row(
+                                                  children: [
+                                                    Icon(Icons.currency_rupee),
+                                                    Text(value
+                                                        .newreportList[index]
+                                                            ["collection_sum"]
+                                                        .toString()),
+                                                    SizedBox(
+                                                      width: size.width * 0.01,
+                                                    ),
+                                                    Text("(collection)"),
+                                                  ],
+                                                )
+                                              : Container()
+                                          : value.reportData[index]
+                                                          ["collection_sum"] !=
+                                                      null &&
+                                                  value.reportData[index]
+                                                          ["collection_sum"] !=
+                                                      0
+                                              ? Row(
+                                                  children: [
+                                                     Icon(Icons.currency_rupee,size: 16,),
+                                                    Text(value.reportData[index]
+                                                            ["collection_sum"]
+                                                        .toString()),
+                                                    SizedBox(
+                                                      width: size.width * 0.01,
+                                                    ),
+                                                    Text("(collection)"),
+                                                  ],
+                                                )
+                                              : Container(),
                                     ],
                                   ),
                                   SizedBox(
@@ -237,7 +284,8 @@ class _ReportPageState extends State<ReportPage> {
                                           value.isreportSearch
                                       ? value.newreportList[index]
                                                   ["order_value"] !=
-                                              null
+                                              null && value.newreportList[index]
+                                                  ["order_value"]!=0 
                                           ? Row(
                                               children: [
                                                 Icon(Icons.currency_rupee,
@@ -264,7 +312,8 @@ class _ReportPageState extends State<ReportPage> {
                                           : Container()
                                       : value.reportData[index]
                                                   ["order_value"] !=
-                                              null
+                                              null && value.reportData[index]
+                                                  ["order_value"] !=0
                                           ? Row(
                                               children: [
                                                 Icon(Icons.currency_rupee,
@@ -301,16 +350,22 @@ class _ReportPageState extends State<ReportPage> {
                                           child: value.isreportSearch &&
                                                   value.newreportList.length > 0
                                               ? value.newreportList[index]
-                                                          ["order_value"] !=
-                                                      null
+                                                              ["order_value"] !=
+                                                          0 &&
+                                                      value.newreportList[index]
+                                                              ["order_value"] !=
+                                                          null
                                                   ? Icon(
                                                       Icons.done,
                                                       color: Colors.white,
                                                     )
                                                   : null
                                               : value.reportData[index]
-                                                          ["order_value"] !=
-                                                      null
+                                                              ["order_value"] !=
+                                                          0 &&
+                                                      value.reportData[index]
+                                                              ["order_value"] !=
+                                                          null
                                                   ? Icon(
                                                       Icons.done,
                                                       color: Colors.white,
@@ -322,17 +377,23 @@ class _ReportPageState extends State<ReportPage> {
                                         height: size.height * 0.03,
                                         child: value.isreportSearch &&
                                                 value.newreportList.length > 0
-                                            ? value.newreportList[index]
-                                                        ["collection_sum"] !=
-                                                    null
+                                            ? value.newreportList[index][
+                                                            "collection_sum"] !=
+                                                        0 &&
+                                                    value.newreportList[index][
+                                                            "collection_sum"] !=
+                                                        null
                                                 ? Icon(
                                                     Icons.done,
                                                     color: Colors.white,
                                                   )
                                                 : null
-                                            : value.reportData[index]
-                                                        ["collection_sum"] !=
-                                                    null
+                                            : value.reportData[index][
+                                                            "collection_sum"] !=
+                                                        0 &&
+                                                    value.reportData[index][
+                                                            "collection_sum"] !=
+                                                        null
                                                 ? Icon(
                                                     Icons.done,
                                                     color: Colors.white,
@@ -346,21 +407,31 @@ class _ReportPageState extends State<ReportPage> {
                                         child: value.isreportSearch &&
                                                 value.newreportList.length > 0
                                             ? value.newreportList[index]
-                                                        ["remark_count"] !=
-                                                    null
+                                                            ["remark_count"] !=
+                                                        0 &&
+                                                    value.newreportList[index]
+                                                            ["remark_count"] !=
+                                                        null
                                                 ? Icon(
                                                     Icons.done,
                                                     color: Colors.white,
                                                   )
                                                 : null
                                             : value.reportData[index]
-                                                        ["remark_count"] !=
-                                                    null
+                                                            ["remark_count"] !=
+                                                        0 &&
+                                                    value.reportData[index]
+                                                            ["remark_count"] !=
+                                                        null
                                                 ? Icon(
                                                     Icons.done,
                                                     color: Colors.white,
                                                   )
                                                 : null,
+                                      ),
+                                      Spacer(),
+                                      Container(
+                                        child: Text("outstanding"),
                                       )
                                     ],
                                   )
