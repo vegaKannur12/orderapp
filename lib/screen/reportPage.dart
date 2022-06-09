@@ -430,10 +430,14 @@ class _ReportPageState extends State<ReportPage> {
                                                 : null,
                                       ),
                                       Spacer(),
-                                      Container(
-                                        child: Text("outstanding"),
+                                      Row(
+                                        children: [
+                                          Icon(Icons.currency_rupee,size: 16,),
+                                          // Text(value.reportData[index]["bln"]-value.reportData[index]["collection_sum"]),
+                                          Text("(outstanding)"),
+                                        ],
                                       )
-                                    ],
+                                    ]
                                   )
                                 ],
                               ),
