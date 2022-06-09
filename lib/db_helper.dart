@@ -59,7 +59,7 @@ class OrderAppDB {
   static final aname = 'aname';
 
   //////////////account heads///////////////////////////////
-  static final code = 'code';
+  static final ac_code = 'ac_code';
   static final hname = 'hname';
   static final gtype = 'gtype';
   static final ac_ad1 = 'ac_ad1';
@@ -77,7 +77,7 @@ class OrderAppDB {
   static final cag = 'cag';
 
   /////////////productdetails//////////
-
+  static final code = 'code';
   static final ean = 'ean';
   static final item = 'item';
   static final unit = 'unit';
@@ -230,7 +230,7 @@ class OrderAppDB {
     await db.execute('''
           CREATE TABLE accountHeadsTable (
             $id INTEGER PRIMARY KEY AUTOINCREMENT,
-            $code TEXT NOT NULL,
+            $ac_code TEXT NOT NULL,
             $hname TEXT NOT NULL,
             $gtype TEXT NOT NULL,
             $ac_ad1 TEXT,
@@ -644,7 +644,7 @@ class OrderAppDB {
   Future insertAccoundHeads(AccountHead accountHead) async {
     final db = await database;
     var query =
-        'INSERT INTO accountHeadsTable(code, hname, gtype, ac_ad1, ac_ad2, ac_ad3, area_id, phn, ba, ri, rc, ht, mo, ac_gst, ac, cag) VALUES("${accountHead.code}", "${accountHead.hname}", "${accountHead.gtype}", "${accountHead.ad1}", "${accountHead.ad2}", "${accountHead.ad3}", "${accountHead.aid}", "${accountHead.ph}", "${accountHead.ba}", "${accountHead.ri}", "${accountHead.rc}", "${accountHead.ht}", "${accountHead.mo}", "${accountHead.gst}", "${accountHead.ac}", "${accountHead.cag}")';
+        'INSERT INTO accountHeadsTable(ac_code, hname, gtype, ac_ad1, ac_ad2, ac_ad3, area_id, phn, ba, ri, rc, ht, mo, ac_gst, ac, cag) VALUES("${accountHead.code}", "${accountHead.hname}", "${accountHead.gtype}", "${accountHead.ad1}", "${accountHead.ad2}", "${accountHead.ad3}", "${accountHead.aid}", "${accountHead.ph}", "${accountHead.ba}", "${accountHead.ri}", "${accountHead.rc}", "${accountHead.ht}", "${accountHead.mo}", "${accountHead.gst}", "${accountHead.ac}", "${accountHead.cag}")';
     var res = await db.rawInsert(query);
     print(query);
     // print(res);
@@ -774,8 +774,8 @@ class OrderAppDB {
     // Provider.of<Controller>(context, listen: false).customerList.clear();
     Database db = await instance.database;
     var hname = await db.rawQuery(
-        'SELECT  hname,code FROM accountHeadsTable WHERE area_id="${aid}"');
-    print('SELECT  hname,code FROM accountHeadsTable WHERE area_id="${aid}');
+        'SELECT  hname,ac_code FROM accountHeadsTable WHERE area_id="${aid}"');
+    print('SELECT  hname,ac_code FROM accountHeadsTable WHERE area_id="${aid}');
     print("hname===${hname}");
     return hname;
   }
@@ -1112,12 +1112,13 @@ class OrderAppDB {
   selectsettingsValue() {}
 
 //////////////////////////////////////////////////////
- getReportDataFromOrderDetails() async {
+
+  getReportDataFromOrderDetails() async {
     List<Map<String, dynamic>> result;
     Database db = await instance.database;
 
     result = await db.rawQuery(
-        'select accountHeadsTable.code  as cusid, accountHeadsTable.hname as name,min(accountHeadsTable.ac_ad1) as ad1,min(accountHeadsTable.mo) as mob , min(accountHeadsTable.ba) as bln,sum(orderMasterTable.total_price)  as order_value,max(remarksTable.rem_row_num) as remark_count,min(collectionTable.rec_amount) as collection_sum from accountHeadsTable  left join orderMasterTable on orderMasterTable.customerid=accountHeadsTable.code  left join remarksTable on remarksTable.rem_cusid=accountHeadsTable.code  left join collectionTable on collectionTable.rec_cusid=accountHeadsTable.code where length(accountHeadsTable.code)>0  group by accountHeadsTable.code , accountHeadsTable.hname order by sum(orderMasterTable.total_price) desc');
+        'select accountHeadsTable.ac_code  as cusid, accountHeadsTable.hname as name,min(accountHeadsTable.ac_ad1) as ad1,min(accountHeadsTable.mo) as mob , min(accountHeadsTable.ba) as bln,sum(orderMasterTable.total_price)  as order_value,max(remarksTable.rem_row_num) as remark_count,min(collectionTable.rec_amount) as collection_sum from accountHeadsTable  left join orderMasterTable on orderMasterTable.customerid=accountHeadsTable.ac_code  left join remarksTable on remarksTable.rem_cusid=accountHeadsTable.ac_code  left join collectionTable on collectionTable.rec_cusid=accountHeadsTable.ac_code where length(accountHeadsTable.ac_code)>0  group by accountHeadsTable.ac_code , accountHeadsTable.hname order by (min(collectionTable.rec_amount)) desc');
     if (result.length > 0) {
       print("result-order-----$result");
       return result;
@@ -1125,6 +1126,7 @@ class OrderAppDB {
       return null;
     }
   }
+
   // getReportDataFromOrderDetails() async {
   //   List<Map<String, dynamic>> result;
   //   Database db = await instance.database;

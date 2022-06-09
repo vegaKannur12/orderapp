@@ -31,21 +31,71 @@ class _ReportPageState extends State<ReportPage> {
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                  decoration: new InputDecoration.collapsed(
-                      hintText: 'search with customer name'),
-                  controller: searchController,
-                  onChanged: (value) {
-                    // Provider.of<Controller>(context, listen: false).reportSearchkey =
-                    //     searchController.text;
-                    Provider.of<Controller>(context, listen: false)
-                        .setreportsearch(true);
+              child: Consumer<Controller>(
+                builder: (context, value, child) {
+                  return TextField(
+                      decoration: InputDecoration(
+                        hintText: "Search with  customer name",
+                        hintStyle:
+                            TextStyle(fontSize: 14.0, color: Colors.grey),
+                        suffixIcon: value.isVisible
+                            ? Wrap(
+                                children: [
+                                  IconButton(
+                                      icon: Icon(
+                                        Icons.done,
+                                        size: 20,
+                                      ),
+                                      onPressed: () async {
+                                        // Provider.of<Controller>(context,
+                                        //         listen: false)
+                                        //     .selectReportFromOrder(context);
+                                        Provider.of<Controller>(context,
+                                                    listen: false)
+                                                .reportSearchkey =
+                                            searchController.text;
+                                        Provider.of<Controller>(context,
+                                                listen: false)
+                                            .setreportsearch(true);
+                                        Provider.of<Controller>(context,
+                                                listen: false)
+                                            .searchfromreport();
+                                      }),
+                                  IconButton(
+                                      icon: Icon(
+                                        Icons.close,
+                                        size: 20,
+                                      ),
+                                      onPressed: () {
+                                        // Provider.of<Controller>(context,
+                                        //         listen: false)
+                                        //     .getProductList(widget.customerId);
+                                        Provider.of<Controller>(context,
+                                                listen: false)
+                                            .setreportsearch(false);
 
-                    Provider.of<Controller>(context, listen: false)
-                        .reportSearchkey = value;
-                    Provider.of<Controller>(context, listen: false)
-                        .searchfromreport();
-                  }),
+                                        value.setisVisible(false);
+                                        Provider.of<Controller>(context,
+                                                listen: false)
+                                            .newreportList
+                                            .clear();
+
+                                        searchController.clear();
+                                      }),
+                                ],
+                              )
+                            : Icon(
+                                Icons.search,
+                                size: 20,
+                              ),
+                      ),
+                      controller: searchController,
+                      onChanged: (value) {
+                        Provider.of<Controller>(context, listen: false)
+                            .setisVisible(true);
+                      });
+                },
+              ),
             ),
             Container(
               height: size.height * 0.8,
@@ -58,9 +108,10 @@ class _ReportPageState extends State<ReportPage> {
                         child: Center(child: CircularProgressIndicator()));
                   } else {
                     return ListView.builder(
-                      itemCount: value.isreportSearch
-                          ? value.newreportList.length
-                          : value.reportData.length,
+                      itemCount:
+                          value.isreportSearch || value.newreportList.length > 0
+                              ? value.newreportList.length
+                              : value.reportData.length,
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.all(3.0),
@@ -72,12 +123,11 @@ class _ReportPageState extends State<ReportPage> {
                                   Row(
                                     children: [
                                       Text(
-                                          value.isreportSearch &&
+                                          value.isreportSearch ||
                                                   value.newreportList.length > 0
                                               ? value.newreportList[index]
-                                                  ["cusid"]
-                                              : value.reportData[index]
-                                                  ["cusid"],
+                                                  ["name"]
+                                              : value.reportData[index]["name"],
                                           style: TextStyle(
                                               fontSize: 20,
                                               fontWeight: FontWeight.bold,
@@ -182,39 +232,12 @@ class _ReportPageState extends State<ReportPage> {
                                   SizedBox(
                                     height: size.height * 0.01,
                                   ),
-                                  value.isreportSearch &&
-                                          value.newreportList.length > 0
-                                      ? value.newreportList[index]["total"] ==
+                                  value.newreportList.length > 0 &&
+                                          value.isreportSearch
+                                      ? value.newreportList[index]
+                                                  ["order_value"] !=
                                               null
-                                          ? Container()
-                                          : value.reportData[index]["total"] ==
-                                                  null
-                                              ? Container()
-                                              : Row(
-                                                  children: [
-                                                    Icon(Icons.currency_rupee,
-                                                        size: 15),
-                                                    SizedBox(
-                                                      width: size.width * 0.01,
-                                                    ),
-                                                    Text(
-                                                        value.newreportList[
-                                                            index]["total"],
-                                                        style: TextStyle(
-                                                            fontSize: 14,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            color: Colors
-                                                                .grey[700])),
-                                                    SizedBox(
-                                                      width: size.width * 0.01,
-                                                    ),
-                                                    Text("(order)")
-                                                  ],
-                                                )
-                                      : value.reportData[index]["total"] == null
-                                          ? Container()
-                                          : Row(
+                                          ? Row(
                                               children: [
                                                 Icon(Icons.currency_rupee,
                                                     size: 15),
@@ -222,8 +245,9 @@ class _ReportPageState extends State<ReportPage> {
                                                   width: size.width * 0.01,
                                                 ),
                                                 Text(
-                                                    value.reportData[index]
-                                                        ["total"],
+                                                    value.newreportList[index]
+                                                            ["order_value"]
+                                                        .toString(),
                                                     style: TextStyle(
                                                         fontSize: 14,
                                                         fontWeight:
@@ -235,7 +259,35 @@ class _ReportPageState extends State<ReportPage> {
                                                 ),
                                                 Text("(order)")
                                               ],
-                                            ),
+                                            )
+                                          : Container()
+                                      : value.reportData[index]
+                                                  ["order_value"] !=
+                                              null
+                                          ? Row(
+                                              children: [
+                                                Icon(Icons.currency_rupee,
+                                                    size: 15),
+                                                SizedBox(
+                                                  width: size.width * 0.01,
+                                                ),
+                                                Text(
+                                                    value.reportData[index]
+                                                            ["order_value"]
+                                                        .toString(),
+                                                    style: TextStyle(
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color:
+                                                            Colors.grey[700])),
+                                                SizedBox(
+                                                  width: size.width * 0.01,
+                                                ),
+                                                Text("(order)")
+                                              ],
+                                            )
+                                          : Container(),
                                   SizedBox(
                                     height: size.height * 0.01,
                                   ),
@@ -245,39 +297,69 @@ class _ReportPageState extends State<ReportPage> {
                                           color: Colors.green,
                                           width: size.width * 0.08,
                                           height: size.height * 0.03,
-                                          child: value.reportData[index]
-                                                      ["order_value"] !=
-                                                  null
-                                              ? Icon(
-                                                  Icons.done,
-                                                  color: Colors.white,
-                                                )
-                                              : null),
+                                          child: value.isreportSearch &&
+                                                  value.newreportList.length > 0
+                                              ? value.newreportList[index]
+                                                          ["order_value"] !=
+                                                      null
+                                                  ? Icon(
+                                                      Icons.done,
+                                                      color: Colors.white,
+                                                    )
+                                                  : null
+                                              : value.reportData[index]
+                                                          ["order_value"] !=
+                                                      null
+                                                  ? Icon(
+                                                      Icons.done,
+                                                      color: Colors.white,
+                                                    )
+                                                  : null),
                                       Container(
                                         color: P_Settings.wavecolor,
                                         width: size.width * 0.08,
                                         height: size.height * 0.03,
-                                        child: value.reportData[index]
-                                                    ["collection_sum"] !=
-                                                null
-                                            ? Icon(
-                                                Icons.done,
-                                                color: Colors.white,
-                                              )
-                                            : null,
+                                        child: value.isreportSearch &&
+                                                value.newreportList.length > 0
+                                            ? value.newreportList[index]
+                                                        ["collection_sum"] !=
+                                                    null
+                                                ? Icon(
+                                                    Icons.done,
+                                                    color: Colors.white,
+                                                  )
+                                                : null
+                                            : value.reportData[index]
+                                                        ["collection_sum"] !=
+                                                    null
+                                                ? Icon(
+                                                    Icons.done,
+                                                    color: Colors.white,
+                                                  )
+                                                : null,
                                       ),
                                       Container(
                                         color: P_Settings.roundedButtonColor,
                                         width: size.width * 0.08,
                                         height: size.height * 0.03,
-                                        child: value.reportData[index]
-                                                    ["remark_count"] !=
-                                                null
-                                            ? Icon(
-                                                Icons.done,
-                                                color: Colors.white,
-                                              )
-                                            : null,
+                                        child: value.isreportSearch &&
+                                                value.newreportList.length > 0
+                                            ? value.newreportList[index]
+                                                        ["remark_count"] !=
+                                                    null
+                                                ? Icon(
+                                                    Icons.done,
+                                                    color: Colors.white,
+                                                  )
+                                                : null
+                                            : value.reportData[index]
+                                                        ["remark_count"] !=
+                                                    null
+                                                ? Icon(
+                                                    Icons.done,
+                                                    color: Colors.white,
+                                                  )
+                                                : null,
                                       )
                                     ],
                                   )

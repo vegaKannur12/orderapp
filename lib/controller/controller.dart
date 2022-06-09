@@ -30,7 +30,7 @@ class Controller extends ChangeNotifier {
   bool isVisible = false;
   List<bool> selected = [];
   List<bool> settingOption = [];
-  String? custmerSelection;
+  // String? custmerSelection;
 
   List<String> tableColumn = [];
   List<Map<String, dynamic>> res = [];
@@ -56,6 +56,8 @@ class Controller extends ChangeNotifier {
   List<Map<String, dynamic>> reportOriginalList = [];
 
   List<Map<String, dynamic>> settingsList = [];
+  List<Map<String, dynamic>> walletList = [];
+
   List<Map<String, dynamic>> historydataList = [];
   List<Map<String, dynamic>> staffOrderTotal = [];
   String? area;
@@ -393,6 +395,16 @@ class Controller extends ChangeNotifier {
         }
       }
     });
+  }
+
+  ////////////////////////////////////////////////////////////////////////////////////////
+  fetchwallet() async {
+    walletList.clear();
+    var res = await OrderAppDB.instance.selectAllcommon('walletTable', "");
+    for (var item in res) {
+      walletList.add(item);
+    }
+    print("fetch wallet-----$walletList");
   }
 
   ///////////////////////////////////account head////////////////////////////////////////////
@@ -1235,7 +1247,7 @@ class Controller extends ChangeNotifier {
     notifyListeners();
   }
 
-  selectReportFromOrder() async {
+  selectReportFromOrder(BuildContext context) async {
     reportData.clear();
     reportOriginalList.clear();
     Map map = {};
@@ -1245,10 +1257,12 @@ class Controller extends ChangeNotifier {
     // var rem = await OrderAppDB.instance.getReportDataFromRemarksTable();
     // var coll = await OrderAppDB.instance.getReportDataFromCollectionTable();
 
-    if (res.length > 0) {
+    if (res!=null  && res.length > 0) {
       for (var item in res) {
         reportData.add(item);
       }
+    }else{
+      snackbar.showSnackbar(context, "please download customers !!!");
     }
     // if (rem.length > 0) {
     //   for (var item in rem) {
@@ -1262,7 +1276,7 @@ class Controller extends ChangeNotifier {
     //   }
     // }
 
-    print("report-----$reportData");
+    // print("report-----$reportData");
     isLoading = false;
     notifyListeners();
   }
@@ -1276,7 +1290,7 @@ class Controller extends ChangeNotifier {
       // isreportSearch = false;
       newreportList = reportData;
     } else {
-      // isreportSearch = true;
+      print("re----$reportData");
       newreportList = reportData
           .where((element) => element["name"]
               .toLowerCase()
