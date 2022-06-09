@@ -1116,9 +1116,19 @@ class OrderAppDB {
   getReportDataFromOrderDetails() async {
     List<Map<String, dynamic>> result;
     Database db = await instance.database;
-
-    result = await db.rawQuery(
-        'select accountHeadsTable.ac_code  as cusid, accountHeadsTable.hname as name,min(accountHeadsTable.ac_ad1) as ad1,min(accountHeadsTable.mo) as mob , min(accountHeadsTable.ba) as bln,sum(orderMasterTable.total_price)  as order_value,max(remarksTable.rem_row_num) as remark_count,min(collectionTable.rec_amount) as collection_sum from accountHeadsTable  left join orderMasterTable on orderMasterTable.customerid=accountHeadsTable.ac_code  left join remarksTable on remarksTable.rem_cusid=accountHeadsTable.ac_code  left join collectionTable on collectionTable.rec_cusid=accountHeadsTable.ac_code where length(accountHeadsTable.ac_code)>0  group by accountHeadsTable.ac_code , accountHeadsTable.hname order by (min(collectionTable.rec_amount)) desc');
+//     String query="select accountHeadsTable.ac_code  as cusid, accountHeadsTable.hname as name,min(accountHeadsTable.ac_ad1) as ad1,min(accountHeadsTable.mo) as mob ," +
+//  "min(accountHeadsTable.ba) as bln, Y.ord  as order_value, Y.remark as collection_sum , Y.col as collection_sum " +
+// "from accountHeadsTable A  " +
+// "inner join ( " +
+// "select cid,sum(Ord) as ord, sum(remark) as remark ,sum(col) as col from " +
+// "(select O.customerid cid, sum(O.total_price) Ord,0 remark,0 col from orderMasterTable O group by O.customerid " +
+// "union all " +
+// " select R.rem_cusid cid, 0 Ord, count(R.rem_cusid) remark , 0 col from remarksTable R group by R.rem_cusid " +
+// "union all " +
+// "select C.rec_cusid cid, 0 Ord , 0 remark, count(C.rec_cusid) col  from collectionTable C group by C.rec_cusid" +
+// ") x group by cid ) Y on Y.cid=accountHeadsTable.ac_code order by Y.ord+ Y.remark+ Y.col desc" ;
+// print("querybnnnmm----$query");
+    result = await db.rawQuery('select A.ac_code  as cusid, A.hname as name,A.ac_ad1 as ad1,A.mo as mob , A.ba as bln, Y.ord  as order_value, Y.remark as remark_count , Y.col as collection_sum from accountHeadsTable A  left join (select cid,sum(Ord) as ord, sum(remark) as remark ,sum(col) as col from (select O.customerid cid, sum(O.total_price) Ord,0 remark,0 col from orderMasterTable O group by O.customerid union all select R.rem_cusid cid, 0 Ord, count(R.rem_cusid) remark , 0 col from remarksTable R group by R.rem_cusid union all select C.rec_cusid cid, 0 Ord , 0 remark, sum(C.rec_amount) col  from collectionTable C group by C.rec_cusid) x group by cid ) Y on Y.cid=A.ac_code order by Y.ord+ Y.remark+ Y.col desc');
     if (result.length > 0) {
       print("result-order-----$result");
       return result;
