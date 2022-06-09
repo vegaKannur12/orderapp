@@ -190,8 +190,8 @@ class _MainDashboardState extends State<MainDashboard> {
                                     padding: const EdgeInsets.all(10.0),
                                     child: Container(
                                       decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.all(Radius.circular(20)),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20)),
                                         color: P_Settings.dashbordcl3,
                                       ),
                                       height: size.height * 0.2,
