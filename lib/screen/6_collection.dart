@@ -20,12 +20,13 @@ class CollectionPage extends StatefulWidget {
 class _CollectionPageState extends State<CollectionPage> {
   ValueNotifier<bool> visible = ValueNotifier(false);
   DateTime date = DateTime.now();
+  String? formattedDate;
   bool amtVal = true;
   bool dscVal = true;
   List<String> items = ["Cash receipt", "Google pay"];
   String selected = "Cash receipt";
   String? os;
-  String? formattedDate;
+
   TextEditingController amtController = TextEditingController();
   TextEditingController dscController = TextEditingController();
   TextEditingController noteController = TextEditingController();

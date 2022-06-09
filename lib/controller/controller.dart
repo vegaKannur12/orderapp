@@ -67,6 +67,7 @@ class Controller extends ChangeNotifier {
   List<String> areaAutoComplete = [];
   List<Map<String, dynamic>> menuList = [];
   List<Map<String, dynamic>> reportData = [];
+  List<Map<String, dynamic>> sumPrice = [];
 
   List<Map<String, dynamic>> remarkList = [];
   String? firstMenu;
@@ -238,7 +239,7 @@ class Controller extends ChangeNotifier {
         url,
         body: body,
       );
-      // print("body ${body}");
+
       List map = jsonDecode(response.body);
       print("map ${map}");
       if (map != null) {
@@ -1284,5 +1285,24 @@ class Controller extends ChangeNotifier {
           .toList();
       print("new---$newreportList");
     }
+  }
+
+  /////////////////////////// select total amount //////////////////
+  selectTotalPrice(String sid,String orderdate) async {
+    print("today.....$orderdate");
+    Map map = {};
+    isLoading = true;
+    // notifyListeners();
+    
+    var res = await OrderAppDB.instance.selectSumPlaceOrder(sid,orderdate);
+    print("resultssss....$res");
+    if (res.length > 0) {
+      for (var item in res) {
+        sumPrice.add(item);
+      }
+    }
+    print("report-----$sumPrice");
+    isLoading = false;
+    notifyListeners();
   }
 }

@@ -1,9 +1,11 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:orderapp/components/commoncolor.dart';
 import 'package:orderapp/controller/controller.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MainDashboard extends StatefulWidget {
   const MainDashboard({Key? key}) : super(key: key);
@@ -13,12 +15,33 @@ class MainDashboard extends StatefulWidget {
 }
 
 class _MainDashboardState extends State<MainDashboard> {
+  DateTime date = DateTime.now();
+  String? formattedDate;
   List companyAttributes = [
     "Collection",
     "Orders",
     "Sale",
   ];
+  String? sid;
   final _random = Random();
+  sharedPref() async {
+    print("helooo");
+    final prefs = await SharedPreferences.getInstance();
+    sid = prefs.getString('sid');
+    print("sid ......$sid");
+    print("formattedDate...$formattedDate");
+    Provider.of<Controller>(context, listen: false).selectTotalPrice(
+      sid!,formattedDate!
+    );
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    formattedDate = DateFormat('yyyy-MM-dd').format(date);
+    sharedPref();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,8 +103,6 @@ class _MainDashboardState extends State<MainDashboard> {
         ),
         Consumer<Controller>(
           builder: (context, value, child) {
-            // Provider.of<Controller>(context, listen: false)
-            //               .getOrderMasterTotal('orderMasterTable',"");
             return Expanded(
               child: Container(
                 decoration: BoxDecoration(
@@ -101,7 +122,6 @@ class _MainDashboardState extends State<MainDashboard> {
                       crossAxisCount: 2,
                     ),
                     itemBuilder: ((context, index) {
-                      
                       return Padding(
                         padding: const EdgeInsets.all(15.0),
                         child: Card(
@@ -148,11 +168,13 @@ class _MainDashboardState extends State<MainDashboard> {
                                 SizedBox(
                                   height: 10,
                                 ),
-                                Text("",
-                                  // value.staffOrderTotal[index]['total_price'],
-                                  style: TextStyle(
-                                      fontSize: 20, color: Colors.pink),
-                                ),
+                                // companyAttributes[index] == "Orders"
+                                //     ? Text(
+                                //         "\u{20B9}${value.sumPrice[0]['S']}",
+                                //         style: TextStyle(
+                                //             fontSize: 20, color: Colors.pink),
+                                //       )
+                                //     : Text(""),
                               ],
                             ),
                           ),

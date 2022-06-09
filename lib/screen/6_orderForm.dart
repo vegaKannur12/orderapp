@@ -10,8 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../components/customPopup.dart';
 import '../components/customSnackbar.dart';
-import 'package:marquee_widget/marquee_widget.dart';
-import 'package:animated_text_kit/animated_text_kit.dart';
+
 // import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class OrderForm extends StatefulWidget {
@@ -680,78 +679,50 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                   SizedBox(
                                     height: size.height * 0.05,
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 25, right: 20),
-                                    child: Container(
-                                      width: size.width * 0.9,
-                                      color: P_Settings.collection,
-                                      child: Row(
-                                        children: [
-                                          SizedBox(
-                                            width: size.width * 0.03,
-                                          ),
-                                          Flexible(
-                                            child: OutlinedButton(
-                                                onPressed: () async {
-                                                  setState(() {
-                                                    balVisible = !balVisible;
-                                                  });
-                                                  print(
-                                                      "cid.........$cid,$custmerId");
-                                                  FocusScopeNode currentFocus =
-                                                      FocusScope.of(context);
-
-                                                  if (!currentFocus
-                                                      .hasPrimaryFocus) {
-                                                    currentFocus.unfocus();
-                                                  }
-
-                                                  if (_formKey.currentState!
-                                                      .validate()) {
-                                                    Provider.of<Controller>(
+                                  Container(
+                                    width: size.width * 0.9,
+                                    child: Row(
+                                      children: [
+                                        SizedBox(
+                                          width: size.width * 0.4,
+                                        ),
+                                        Flexible(
+                                          child: OutlinedButton(
+                                              onPressed: () async {
+                                                if (_formKey.currentState!
+                                                    .validate()) {
+                                                  await Provider.of<Controller>(
+                                                          context,
+                                                          listen: false)
+                                                      .getBalance(
+                                                          cid, custmerId);
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (BuildContext
+                                                            context) =>
+                                                        popup.buildPopupDialog(
                                                             context,
-                                                            listen: false)
-                                                        .getBalance(
-                                                            cid, custmerId);
-                                                  }
-                                                },
-                                                child: Text("Balance")),
-                                          ),
-                                          Spacer(),
+                                                            '\u{20B9}${values.balanceModel.ba}'),
+                                                  );
+                                                }
+                                                setState(() {
+                                                  balVisible = !balVisible;
+                                                });
 
-                                          cid != null && custmerId != null
-                                              ? Visibility(
-                                                  visible: balVisible,
-                                                  child: Flexible(
-                                                    child: AnimatedTextKit(
-                                                      animatedTexts: [
-                                                        TypewriterAnimatedText(
-                                                          '\u{20B9}${values.balanceModel.ba}',
-                                                          textStyle:
-                                                              const TextStyle(
-                                                            fontSize: 16.0,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                          ),
-                                                          speed: const Duration(
-                                                              milliseconds: 20),
-                                                        ),
-                                                      ],
-                                                      totalRepeatCount: 4,
-                                                      pause: const Duration(
-                                                          milliseconds: 20),
-                                                      displayFullTextOnTap:
-                                                          true,
-                                                      stopPauseOnTap: true,
-                                                    ),
-                                                  ),
-                                                )
-                                              : Text("\u{20B9}0.00"),
-                                          //   ],
-                                          // ),
-                                        ],
-                                      ),
+                                                print(
+                                                    "cid.........$cid,$custmerId");
+                                                FocusScopeNode currentFocus =
+                                                    FocusScope.of(context);
+
+                                                if (!currentFocus
+                                                    .hasPrimaryFocus) {
+                                                  currentFocus.unfocus();
+                                                }
+                                              },
+                                              child: Text("Balance")),
+                                        ),
+                                        Spacer(),
+                                      ],
                                     ),
                                   ),
                                 ],

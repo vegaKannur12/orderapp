@@ -1109,10 +1109,41 @@ class OrderAppDB {
   }
 
   ////////////////////////////////////////////////////
-  selectsettingsValue() {}
+  selectSumPlaceOrder(String sid, String orderdate) async {
+    print("today.....$orderdate");
+
+    List<Map<String, dynamic>> result;
+    Database db = await instance.database;
+
+    result = await db.rawQuery(
+        "SELECT sum(total_price) as S FROM orderMasterTable WHERE userid='$sid' AND orderdatetime='$orderdate'");
+    print("result-order-----$result");
+    if (result.length > 0) {
+      print("result-order-----$result");
+      return result;
+    } else {
+      return null;
+    }
+  }
+  ///////////////////// total collection amount/////////////
+
+  selectSumCollectionAmount(String orderdate) async {
+    List<Map<String, dynamic>> result;
+    Database db = await instance.database;
+
+    result = await db.rawQuery(
+        "SELECT sum(rec_amount) as S FROM collectionTable WHERE orderdatetime='$orderdate'");
+    print("result-order-----$result");
+    if (result.length > 0) {
+      print("result-order-----$result");
+      return result;
+    } else {
+      return null;
+    }
+  }
 
 //////////////////////////////////////////////////////
- getReportDataFromOrderDetails() async {
+  getReportDataFromOrderDetails() async {
     List<Map<String, dynamic>> result;
     Database db = await instance.database;
 

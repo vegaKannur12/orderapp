@@ -45,8 +45,7 @@ dependencies:
   intl: ^0.17.0
   ota_update: ^4.0.1
   fluttertoast: ^8.0.9
-  marquee_widget: ^1.2.0
-  animated_text_kit: ^4.2.2
+ 
   # bluetooth_print: ^3.0.1
 dev_dependencies:
   flutter_test:

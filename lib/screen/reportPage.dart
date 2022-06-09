@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:orderapp/components/commoncolor.dart';
 import 'package:orderapp/controller/controller.dart';
+import 'package:orderapp/screen/filter_Report.dart';
 import 'package:provider/provider.dart';
 
 class ReportPage extends StatefulWidget {
@@ -30,22 +31,31 @@ class _ReportPageState extends State<ReportPage> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                  decoration: new InputDecoration.collapsed(
-                      hintText: 'search with customer name'),
-                  controller: searchController,
-                  onChanged: (value) {
-                    // Provider.of<Controller>(context, listen: false).reportSearchkey =
-                    //     searchController.text;
-                    Provider.of<Controller>(context, listen: false)
-                        .setreportsearch(true);
+              padding: const EdgeInsets.only(left:290.0),
+              child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const FilterReport()),
+                    );
+                  },
+                  child: Text("Filter")),
+              // TextField(
+              //     decoration: new InputDecoration.collapsed(
+              //         hintText: 'search with customer name'),
+              //     controller: searchController,
+              //     onChanged: (value) {
+              //       // Provider.of<Controller>(context, listen: false).reportSearchkey =
+              //       //     searchController.text;
+              //       Provider.of<Controller>(context, listen: false)
+              //           .setreportsearch(true);
 
-                    Provider.of<Controller>(context, listen: false)
-                        .reportSearchkey = value;
-                    Provider.of<Controller>(context, listen: false)
-                        .searchfromreport();
-                  }),
+              //       Provider.of<Controller>(context, listen: false)
+              //           .reportSearchkey = value;
+              //       Provider.of<Controller>(context, listen: false)
+              //           .searchfromreport();
+              //     }),
             ),
             Container(
               height: size.height * 0.8,
