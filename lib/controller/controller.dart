@@ -30,7 +30,7 @@ class Controller extends ChangeNotifier {
   bool isVisible = false;
   List<bool> selected = [];
   List<bool> settingOption = [];
-  String? custmerSelection;
+  // String? custmerSelection;
 
   List<String> tableColumn = [];
   List<Map<String, dynamic>> res = [];
@@ -56,6 +56,8 @@ class Controller extends ChangeNotifier {
   List<Map<String, dynamic>> reportOriginalList = [];
 
   List<Map<String, dynamic>> settingsList = [];
+  List<Map<String, dynamic>> walletList = [];
+
   List<Map<String, dynamic>> historydataList = [];
   List<Map<String, dynamic>> staffOrderTotal = [];
   String? area;
@@ -68,6 +70,7 @@ class Controller extends ChangeNotifier {
   List<Map<String, dynamic>> menuList = [];
   List<Map<String, dynamic>> reportData = [];
   List<Map<String, dynamic>> sumPrice = [];
+  List<Map<String, dynamic>> collectionsumPrice = [];
 
   List<Map<String, dynamic>> remarkList = [];
   String? firstMenu;
@@ -394,6 +397,16 @@ class Controller extends ChangeNotifier {
         }
       }
     });
+  }
+
+  ////////////////////////////////////////////////////////////////////////////////////////
+  fetchwallet() async {
+    walletList.clear();
+    var res = await OrderAppDB.instance.selectAllcommon('walletTable', "");
+    for (var item in res) {
+      walletList.add(item);
+    }
+    print("fetch wallet-----$walletList");
   }
 
   ///////////////////////////////////account head////////////////////////////////////////////
@@ -1236,7 +1249,7 @@ class Controller extends ChangeNotifier {
     notifyListeners();
   }
 
-  selectReportFromOrder() async {
+  selectReportFromOrder(BuildContext context) async {
     reportData.clear();
     reportOriginalList.clear();
     Map map = {};
@@ -1246,10 +1259,12 @@ class Controller extends ChangeNotifier {
     // var rem = await OrderAppDB.instance.getReportDataFromRemarksTable();
     // var coll = await OrderAppDB.instance.getReportDataFromCollectionTable();
 
-    if (res.length > 0) {
+    if (res != null && res.length > 0) {
       for (var item in res) {
         reportData.add(item);
       }
+    } else {
+      snackbar.showSnackbar(context, "please download customers !!!");
     }
     // if (rem.length > 0) {
     //   for (var item in rem) {
@@ -1263,7 +1278,7 @@ class Controller extends ChangeNotifier {
     //   }
     // }
 
-    print("report-----$reportData");
+    // print("report-----$reportData");
     isLoading = false;
     notifyListeners();
   }
@@ -1277,7 +1292,7 @@ class Controller extends ChangeNotifier {
       // isreportSearch = false;
       newreportList = reportData;
     } else {
-      // isreportSearch = true;
+      print("re----$reportData");
       newreportList = reportData
           .where((element) => element["name"]
               .toLowerCase()
@@ -1288,13 +1303,10 @@ class Controller extends ChangeNotifier {
   }
 
   /////////////////////////// select total amount //////////////////
-  selectTotalPrice(String sid,String orderdate) async {
-    print("today.....$orderdate");
+  selectTotalPrice(String sid) async {
     Map map = {};
     isLoading = true;
-    // notifyListeners();
-    
-    var res = await OrderAppDB.instance.selectSumPlaceOrder(sid,orderdate);
+    var res = await OrderAppDB.instance.selectSumPlaceOrder(sid);
     print("resultssss....$res");
     if (res.length > 0) {
       for (var item in res) {
@@ -1302,6 +1314,23 @@ class Controller extends ChangeNotifier {
       }
     }
     print("report-----$sumPrice");
+    isLoading = false;
+    notifyListeners();
+  }
+
+  ///////////////////// todayCollection total///////////////////
+  selectCollectionPrice(String sid, String collectDate) async {
+    Map map = {};
+    isLoading = true;
+    var res =
+        await OrderAppDB.instance.selectSumCollectionAmount(sid, collectDate);
+    print("resultssss....$res");
+    if (res.length > 0) {
+      for (var item in res) {
+        collectionsumPrice.add(item);
+      }
+    }
+    print("report-----$collectionsumPrice");
     isLoading = false;
     notifyListeners();
   }

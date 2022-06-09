@@ -30,9 +30,9 @@ class _MainDashboardState extends State<MainDashboard> {
     sid = prefs.getString('sid');
     print("sid ......$sid");
     print("formattedDate...$formattedDate");
-    Provider.of<Controller>(context, listen: false).selectTotalPrice(
-      sid!,formattedDate!
-    );
+    Provider.of<Controller>(context, listen: false).selectTotalPrice(sid!);
+    Provider.of<Controller>(context, listen: false)
+        .selectCollectionPrice(sid!, formattedDate!);
   }
 
   @override
@@ -63,39 +63,28 @@ class _MainDashboardState extends State<MainDashboard> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Text("${cname}",
-                //     style: TextStyle(
-                //         fontSize: 20,
-                //         fontWeight: FontWeight.bold,
-                //         color: P_Settings.headingColor)),
-                // SizedBox(
-                //   height: 15,
-                // ),
-                // Text("${sname}",
-                //     style: TextStyle(
-                //         fontSize: 15,
-                //         fontWeight: FontWeight.bold,
-                //         color: P_Settings.extracolor)),
-                Consumer<Controller>(
-                  builder: (context, value, child) {
-                    return Column(
-                      children: [
-                        Text("${value.cname}",
-                            style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: P_Settings.detailscolor)),
-                        SizedBox(
-                          height: size.height * 0.02,
-                        ),
-                        Text("${value.sname}",
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                                color: P_Settings.extracolor)),
-                      ],
-                    );
-                  },
+                Flexible(
+                  child: Consumer<Controller>(
+                    builder: (context, value, child) {
+                      return Column(
+                        children: [
+                          Text("${value.cname}",
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: P_Settings.detailscolor)),
+                          SizedBox(
+                            height: size.height * 0.02,
+                          ),
+                          Text("${value.sname}",
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  color: P_Settings.extracolor)),
+                        ],
+                      );
+                    },
+                  ),
                 ),
               ],
             ),
@@ -114,75 +103,119 @@ class _MainDashboardState extends State<MainDashboard> {
                 // color: P_Settings.wavecolor,
                 // height: size.height*0.6,
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 50),
-                  child: GridView.builder(
-                    itemCount: companyAttributes.length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      childAspectRatio: .8,
-                      crossAxisCount: 2,
-                    ),
-                    itemBuilder: ((context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: Card(
-                          // shape: RoundedRectangleBorder(
-                          //   borderRadius: BorderRadius.circular(15.0),
-                          // ),
-                          elevation: 0,
-                          child: Container(
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              // gradient: LinearGradient(
-                              //   begin: Alignment.topLeft,
-                              //   end: Alignment(0.8,
-                              //       0.3), // 10% of the width, so there are ten blinds.
-                              //   colors: <Color>[
-                              //     Color.fromARGB(255, 162, 72, 214),
-                              //     Color.fromARGB(255, 88, 86, 202)
-                              //   ], // red to yellow
-                              //   // repeats the gradient over the canvas
-                              // ),
-                              color: Color.fromRGBO(
-                                  _random.nextInt(212),
-                                  _random.nextInt(212),
-                                  _random.nextInt(212),
-                                  _random.nextDouble()),
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(35),
-                                bottomRight: Radius.circular(35),
+                    padding: const EdgeInsets.only(top: 100),
+                    child: Container(
+                      height: size.height * 0.4,
+                      // color: P_Settings.collection,
+                      child: Column(
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Flexible(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(20)),
+                                      color: P_Settings.dashbordcl1,
+                                    ),
+                                    height: size.height * 0.2,
+                                    width: size.height * 0.2,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            "Collection",
+                                            style: TextStyle(fontSize: 23),
+                                          ),
+                                          SizedBox(
+                                            height: size.height * 0.03,
+                                          ),
+                                          // Text(
+                                          //   "\u{20B9}${value.collectionsumPrice[0]['S']}",
+                                          //   style: TextStyle(fontSize: 15),
+                                          // ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               ),
-                              border: Border.all(width: 1, color: Colors.white),
-                            ),
-                            height: 40,
-                            width: 100,
-                            child: Column(
+                              Flexible(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(20)),
+                                      color: P_Settings.dashbordcl2,
+                                    ),
+                                    height: size.height * 0.2,
+                                    width: size.height * 0.2,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            "Orders",
+                                            style: TextStyle(fontSize: 23),
+                                          ),
+                                          SizedBox(
+                                            height: size.height * 0.03,
+                                          ),
+                                          // Text(
+                                          //   "\u{20B9}${value.sumPrice[0]['S']}",
+                                          //   style: TextStyle(fontSize: 15),
+                                          // ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: size.height * 0.015,
+                          ),
+                          Flexible(
+                            child: Row(
+                              // mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                SizedBox(
-                                  height: 20,
+                                Flexible(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.all(Radius.circular(20)),
+                                        color: P_Settings.dashbordcl3,
+                                      ),
+                                      height: size.height * 0.2,
+                                      width: size.height * 0.2,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              "Sales",
+                                              style: TextStyle(fontSize: 23),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                                Text(
-                                  companyAttributes[index],
-                                  style: TextStyle(
-                                      fontSize: 20, color: Colors.black),
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                // companyAttributes[index] == "Orders"
-                                //     ? Text(
-                                //         "\u{20B9}${value.sumPrice[0]['S']}",
-                                //         style: TextStyle(
-                                //             fontSize: 20, color: Colors.pink),
-                                //       )
-                                //     : Text(""),
                               ],
                             ),
                           ),
-                        ),
-                      );
-                    }),
-                  ),
-                ),
+                        ],
+                      ),
+                    )),
               ),
             );
           },

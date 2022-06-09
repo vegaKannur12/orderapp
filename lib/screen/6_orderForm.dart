@@ -11,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../components/customPopup.dart';
 import '../components/customSnackbar.dart';
 
+// import 'package:animated_text_kit/animated_text_kit.dart';
 // import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class OrderForm extends StatefulWidget {
@@ -89,7 +90,7 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
     Provider.of<Controller>(context, listen: false).getOrderno();
     date = DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
 
-    Provider.of<Controller>(context, listen: false).custmerSelection = "";
+    // Provider.of<Controller>(context, listen: false).custmerSelection = "";
 
     sharedPref();
   }
@@ -376,7 +377,7 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                                 _selectedItemcus =
                                                     value["hname"];
                                                 customerName = value["hname"];
-                                                custmerId = value["code"];
+                                                custmerId = value["ac_code"];
                                                 print(
                                                     "Code .........---${custmerId}");
                                               });
@@ -463,17 +464,22 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                                         print(
                                                             "option----${option}");
                                                         return ListTile(
-                                                          onTap: () {
+                                                          onTap: () async {
                                                             print(
                                                                 "optonsssssssssssss$option");
                                                             onSelected(option);
-
-                                                            Provider.of<Controller>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .custmerSelection =
-                                                                option["code"];
+                                                            final prefs =
+                                                                await SharedPreferences
+                                                                    .getInstance();
+                                                            prefs.setString(
+                                                                'cus_id',
+                                                                option["ac_code"]);
+                                                            // Provider.of<Controller>(
+                                                            //             context,
+                                                            //             listen:
+                                                            //                 false)
+                                                            //         .custmerSelection =
+                                                            //     option["code"];
                                                           },
                                                           title: Text(
                                                               option["hname"]
@@ -550,7 +556,7 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                               width: size.width * 0.27,
                                               height: size.height * 0.05,
                                               child: ElevatedButton.icon(
-                                                onPressed: () {
+                                                onPressed: () async {
                                                   FocusScopeNode currentFocus =
                                                       FocusScope.of(context);
 
@@ -561,6 +567,15 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
 
                                                   if (_formKey.currentState!
                                                       .validate()) {
+                                                    Provider.of<Controller>(
+                                                            context,
+                                                            listen: false)
+                                                        .fetchwallet();
+                                                    final prefs =
+                                                        await SharedPreferences
+                                                            .getInstance();
+                                                   String? cuid =
+                                                        prefs.getString('cus_id');
                                                     Navigator.of(context).push(
                                                       PageRouteBuilder(
                                                         opaque:
@@ -570,11 +585,7 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                                                 CollectionPage(
                                                           os: os,
                                                           sid: sid,
-                                                          cuid: Provider.of<
-                                                                      Controller>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .custmerSelection,
+                                                          cuid: cuid,
                                                         ),
                                                       ),
                                                     );
