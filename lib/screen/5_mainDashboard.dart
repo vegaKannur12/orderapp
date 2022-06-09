@@ -166,10 +166,13 @@ class _MainDashboardState extends State<MainDashboard> {
                                           SizedBox(
                                             height: size.height * 0.03,
                                           ),
-                                          // Text(
-                                          //   "\u{20B9}${value.sumPrice[0]['S']}",
-                                          //   style: TextStyle(fontSize: 15),
-                                          // ),
+                                          // sid != null 
+                                          //     ? Text(
+                                          //         "\u{20B9}${value.sumPrice[0]['S']}",
+                                          //         style:
+                                          //             TextStyle(fontSize: 15),
+                                          //       )
+                                          //     : Text("0.00"),
                                         ],
                                       ),
                                     ),

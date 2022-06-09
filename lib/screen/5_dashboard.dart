@@ -147,10 +147,9 @@ class _DashboardState extends State<Dashboard> {
           type: "drawer call",
         );
       case "RP":
-       Provider.of<Controller>(context, listen: false).selectReportFromOrder(context);
-        return ReportPage(
-          
-        );
+        Provider.of<Controller>(context, listen: false)
+            .selectReportFromOrder(context);
+        return ReportPage();
 
       case "ST":
         // title = "Download data";

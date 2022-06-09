@@ -163,7 +163,7 @@ class _FilterReportState extends State<FilterReport> {
                         trailing: Checkbox(
                           checkColor: Colors.white,
                           // fillColor: MaterialStateProperty.resolveWith(getColor),
-                          value: _isChecked![index],
+                          value: isChecked,
                           onChanged: (bool? value) {
                             setState(() {
                               _isChecked![index] = value!;
