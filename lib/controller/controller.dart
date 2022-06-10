@@ -1243,6 +1243,15 @@ class Controller extends ChangeNotifier {
     notifyListeners();
   }
 
+  ////////////////// remark from filter //////////////
+  setRemarkFilter(bool remark, String remarked) {
+    print("remarked......$remarked");
+  }
+
+  setDateFilter(String fromDate , String toDate) {
+    print("remarked......$fromDate $toDate");
+  }
+
   ///////////////////////////////////////////////////////
   setSettingOption(int length) {
     settingOption = List.generate(length, (index) => false);

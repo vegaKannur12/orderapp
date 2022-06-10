@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:orderapp/components/commoncolor.dart';
+import 'package:orderapp/screen/6_reportPage.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../controller/controller.dart';
@@ -24,10 +25,12 @@ class FilterReport extends StatefulWidget {
 
 class _FilterReportState extends State<FilterReport> {
   String? sid;
-  RangeValues _currentRangeValues = const RangeValues(20, 1000);
-  RangeValues _currentRangeValuesbal = const RangeValues(20, 1000);
+  RangeValues _currentRangeValues = const RangeValues(20, 10000);
+  RangeValues _currentRangeValuesbal = const RangeValues(20, 10000);
   WidgetMarker selectedWidgetMarker = WidgetMarker.date;
   List<bool>? _isChecked;
+  List<bool>? _isCheckedremark;
+  List<bool>? _isCheckedarea;
   DateTime selectedDate = DateTime.now();
   DateTime currentDate = DateTime.now();
   String? fromDate;
@@ -55,7 +58,7 @@ class _FilterReportState extends State<FilterReport> {
   void initState() {
     print("helooo");
     crntDateFormat = DateFormat('dd-MM-yyyy').format(currentDate);
-    _isChecked = List<bool>.filled(remark.length, false);
+    _isCheckedremark = List<bool>.filled(remark.length, false);
     _isChecked = List<bool>.filled(orderAmount.length, false);
 
     // TODO: implement initState
@@ -93,6 +96,8 @@ class _FilterReportState extends State<FilterReport> {
                   IconButton(
                       onPressed: () {
                         _selectFromDate(context, size);
+                        print("From date ${crntDateFormat.toString()}");
+                         
                       },
                       icon: Icon(Icons.calendar_month)),
                   fromDate == null
@@ -116,11 +121,13 @@ class _FilterReportState extends State<FilterReport> {
                   IconButton(
                       onPressed: () {
                         _selectToDate(context, size);
+                        print("From date ${crntDateFormat.toString()}");
                       },
                       icon: Icon(Icons.calendar_month)),
                   toDate == null
                       ? InkWell(
                           onTap: () {
+                            
                             _selectToDate(context, size);
                           },
                           child: Text(crntDateFormat.toString()))
@@ -166,7 +173,9 @@ class _FilterReportState extends State<FilterReport> {
                           value: isChecked,
                           onChanged: (bool? value) {
                             setState(() {
-                              _isChecked![index] = value!;
+                              _isCheckedarea![index] = value!;
+                              print("area click $value");
+                              // Provider.of<Controller>(context, listen: false).setAreaFilter(value);
                             });
                           },
                         ),
@@ -206,6 +215,7 @@ class _FilterReportState extends State<FilterReport> {
                     onChanged: (bool? value) {
                       setState(() {
                         _isChecked![index] = value!;
+                        print("order amount selected ${value}");
                       });
                     },
                   ),
@@ -249,7 +259,7 @@ class _FilterReportState extends State<FilterReport> {
           RangeSlider(
             values: _currentRangeValuesbal,
             min: 0,
-            max: 1000,
+            max: 10000,
             divisions: 10,
             labels: RangeLabels(
               _currentRangeValuesbal.start.round().toString(),
@@ -302,12 +312,17 @@ class _FilterReportState extends State<FilterReport> {
           RangeSlider(
             values: _currentRangeValues,
             min: 0,
-            max: 1000,
+            max: 10000,
+//                     String filteredProducts = products.where((element) {
+//   return (element["Price"]>minPrice && element["Price"]<maxPrice);
+// }).toList();
+// log(filteredProducts.toString());
             divisions: 10,
             labels: RangeLabels(
               _currentRangeValues.start.round().toString(),
               _currentRangeValues.end.round().toString(),
             ),
+
             // onChangeStart: (RangeValues values) =>
             //     _currentRangeValues.start.round().toString(),
             // onChangeEnd: (RangeValues values) =>
@@ -335,11 +350,16 @@ class _FilterReportState extends State<FilterReport> {
               itemBuilder: (context, index) {
                 return CheckboxListTile(
                   title: Text(remark[index]),
-                  value: _isChecked![index],
+                  value: _isCheckedremark![index],
                   onChanged: (val) {
                     setState(
                       () {
-                        _isChecked![index] = val!;
+                        _isCheckedremark![index] = val!;
+                        print("Remark click $val");
+                        print("Remark index value ${remark[index]}");
+                        String remarks = remark[index];
+                        Provider.of<Controller>(context, listen: false)
+                            .setRemarkFilter(val, remarks);
                       },
                     );
                   },
@@ -539,7 +559,12 @@ class _FilterReportState extends State<FilterReport> {
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => ReportPage()),
+                        );
+                      },
                       child: Text(
                         "Done",
                         style: TextStyle(fontSize: 18),
