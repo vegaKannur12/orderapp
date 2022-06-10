@@ -238,7 +238,7 @@ class OrderAppDB {
             $ac_ad3 TEXT,
             $area_id TEXT,
             $phn TEXT, 
-            $ba TEXT,
+            $ba REAL,
             $ri TEXT,
             $rc TEXT,
             $ht TEXT,
@@ -644,7 +644,7 @@ class OrderAppDB {
   Future insertAccoundHeads(AccountHead accountHead) async {
     final db = await database;
     var query =
-        'INSERT INTO accountHeadsTable(ac_code, hname, gtype, ac_ad1, ac_ad2, ac_ad3, area_id, phn, ba, ri, rc, ht, mo, ac_gst, ac, cag) VALUES("${accountHead.code}", "${accountHead.hname}", "${accountHead.gtype}", "${accountHead.ad1}", "${accountHead.ad2}", "${accountHead.ad3}", "${accountHead.aid}", "${accountHead.ph}", "${accountHead.ba}", "${accountHead.ri}", "${accountHead.rc}", "${accountHead.ht}", "${accountHead.mo}", "${accountHead.gst}", "${accountHead.ac}", "${accountHead.cag}")';
+        'INSERT INTO accountHeadsTable(ac_code, hname, gtype, ac_ad1, ac_ad2, ac_ad3, area_id, phn, ba, ri, rc, ht, mo, ac_gst, ac, cag) VALUES("${accountHead.code}", "${accountHead.hname}", "${accountHead.gtype}", "${accountHead.ad1}", "${accountHead.ad2}", "${accountHead.ad3}", "${accountHead.aid}", "${accountHead.ph}", ${accountHead.ba}, "${accountHead.ri}", "${accountHead.rc}", "${accountHead.ht}", "${accountHead.mo}", "${accountHead.gst}", "${accountHead.ac}", "${accountHead.cag}")';
     var res = await db.rawInsert(query);
     print(query);
     // print(res);
@@ -680,7 +680,7 @@ class OrderAppDB {
       String rec_cusid,
       String ser,
       String mode,
-      String amt,
+      double amt,
       String disc,
       String note,
       String sttid,
@@ -688,13 +688,19 @@ class OrderAppDB {
       int status) async {
     final db = await database;
     var query =
-        'INSERT INTO collectionTable(rec_date, rec_cusid, rec_series, rec_mode, rec_amount, rec_disc, rec_note, rec_staffid, rec_cancel, rec_status) VALUES("${rec_date}", "${rec_cusid}", "${ser}", "${mode}", "${amt}", "${disc}", "${note}", "${sttid}", ${cancel}, ${status})';
+        'INSERT INTO collectionTable(rec_date, rec_cusid, rec_series, rec_mode, rec_amount, rec_disc, rec_note, rec_staffid, rec_cancel, rec_status) VALUES("${rec_date}", "${rec_cusid}", "${ser}", "${mode}", $amt, "${disc}", "${note}", "${sttid}", ${cancel}, ${status})';
     var res = await db.rawInsert(query);
     print(query);
+
+    List<Map<String,dynamic>> balance=await selectAllcommon('accountHeadsTable', "ac_code='${rec_cusid}'");
+    print("jhjkdxj----$balance");
+    print('bal---${balance[0]["ba"]}');
+    // double bal=double.parse(balance[0]["ba"]);
+    double update_bal=balance[0]["ba"]-amt;
+    upadteCommonQuery('accountHeadsTable',"ba=${update_bal}", "ac_code='${rec_cusid}'");
     // print(res);
     return res;
   }
-
 ////////////////////////insert remark/////////////////////////////////
   Future insertremarkTable(
     String rem_date,
@@ -1156,20 +1162,10 @@ class OrderAppDB {
 
   getReportDataFromOrderDetails() async {
     List<Map<String, dynamic>> result;
+  
     Database db = await instance.database;
-//     String query="select accountHeadsTable.ac_code  as cusid, accountHeadsTable.hname as name,min(accountHeadsTable.ac_ad1) as ad1,min(accountHeadsTable.mo) as mob ," +
-//  "min(accountHeadsTable.ba) as bln, Y.ord  as order_value, Y.remark as collection_sum , Y.col as collection_sum " +
-// "from accountHeadsTable A  " +
-// "inner join ( " +
-// "select cid,sum(Ord) as ord, sum(remark) as remark ,sum(col) as col from " +
-// "(select O.customerid cid, sum(O.total_price) Ord,0 remark,0 col from orderMasterTable O group by O.customerid " +
-// "union all " +
-// " select R.rem_cusid cid, 0 Ord, count(R.rem_cusid) remark , 0 col from remarksTable R group by R.rem_cusid " +
-// "union all " +
-// "select C.rec_cusid cid, 0 Ord , 0 remark, count(C.rec_cusid) col  from collectionTable C group by C.rec_cusid" +
-// ") x group by cid ) Y on Y.cid=accountHeadsTable.ac_code order by Y.ord+ Y.remark+ Y.col desc" ;
-// print("querybnnnmm----$query");
-    result = await db.rawQuery('select A.ac_code  as cusid, A.hname as name,A.ac_ad1 as ad1,A.mo as mob , A.ba as bln, Y.ord  as order_value, Y.remark as remark_count , Y.col as collection_sum from accountHeadsTable A  left join (select cid,sum(Ord) as ord, sum(remark) as remark ,sum(col) as col from (select O.customerid cid, sum(O.total_price) Ord,0 remark,0 col from orderMasterTable O group by O.customerid union all select R.rem_cusid cid, 0 Ord, count(R.rem_cusid) remark , 0 col from remarksTable R group by R.rem_cusid union all select C.rec_cusid cid, 0 Ord , 0 remark, sum(C.rec_amount) col  from collectionTable C group by C.rec_cusid) x group by cid ) Y on Y.cid=A.ac_code order by Y.ord+ Y.remark+ Y.col desc');
+    result = await db.rawQuery(
+        'select A.ac_code  as cusid, A.hname as name,A.ac_ad1 as ad1,A.mo as mob , A.ba as bln, Y.ord  as order_value, Y.remark as remark_count , Y.col as collection_sum from accountHeadsTable A  left join (select cid,sum(Ord) as ord, sum(remark) as remark ,sum(col) as col from (select O.customerid cid, sum(O.total_price) Ord,0 remark,0 col from orderMasterTable O group by O.customerid union all select R.rem_cusid cid, 0 Ord, count(R.rem_cusid) remark , 0 col from remarksTable R group by R.rem_cusid union all select C.rec_cusid cid, 0 Ord , 0 remark, sum(C.rec_amount) col  from collectionTable C group by C.rec_cusid) x group by cid ) Y on Y.cid=A.ac_code order by Y.ord+ Y.remark+ Y.col desc');
     if (result.length > 0) {
       print("result-order-----$result");
       return result;
@@ -1177,6 +1173,20 @@ class OrderAppDB {
       return null;
     }
   }
+/////////////////////////////////////////////////////
+  // getReportRemarkOrderDetails() async {
+  //   List<Map<String, dynamic>> result;
+  
+  //   Database db = await instance.database;
+  //   result = await db.rawQuery(
+  //       'select A.ac_code  as cusid, A.hname as name,A.ac_ad1 as ad1,A.mo as mob , A.ba as bln, Y.ord  as order_value, Y.remark as remark_count , Y.col as collection_sum from accountHeadsTable A  left join (select cid,sum(Ord) as ord, sum(remark) as remark ,sum(col) as col from (select O.customerid cid, sum(O.total_price) Ord,0 remark,0 col from orderMasterTable O group by O.customerid union all select R.rem_cusid cid, 0 Ord, count(R.rem_cusid) remark , 0 col from remarksTable R group by R.rem_cusid union all select C.rec_cusid cid, 0 Ord , 0 remark, sum(C.rec_amount) col  from collectionTable C group by C.rec_cusid) x group by cid ) Y on Y.cid=A.ac_code order by Y.ord+ Y.remark+ Y.col+ Y.remark_count desc');
+  //   if (result.length > 0) {
+  //     print("result-order-----$result");
+  //     return result;
+  //   } else {
+  //     return null;
+  //   }
+  // }
 
   // getReportDataFromOrderDetails() async {
   //   List<Map<String, dynamic>> result;

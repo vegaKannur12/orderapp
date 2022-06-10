@@ -28,7 +28,7 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
- late OtaEvent currentEvent;
+  late OtaEvent currentEvent;
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
           ),
           bodyText2: TextStyle(
             fontSize: 14.0,
-          ),  
+          ),
         ),
       ),
       home: SplashScreen(),
