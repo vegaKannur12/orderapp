@@ -22,12 +22,13 @@ class CollectionPage extends StatefulWidget {
 class _CollectionPageState extends State<CollectionPage> {
   ValueNotifier<bool> visible = ValueNotifier(false);
   DateTime date = DateTime.now();
+  String? formattedDate;
   bool amtVal = true;
   bool dscVal = true;
   // List<String> items = ["Cash receipt", "Google pay"];
   String? selected;
   String? os;
-  String? formattedDate;
+
   TextEditingController amtController = TextEditingController();
   TextEditingController dscController = TextEditingController();
   TextEditingController noteController = TextEditingController();
@@ -252,8 +253,12 @@ class _CollectionPageState extends State<CollectionPage> {
                                                 widget.cuid!,
                                                 widget.os!,
                                                 selected!,
+<<<<<<< HEAD
                                                 double.parse(
                                                     amtController.text),
+=======
+                                                double.parse(amtController.text),
+>>>>>>> 47a06aa9dcaeadc03d3cad740939112c1fc4f0e6
                                                 dscController.text,
                                                 noteController.text,
                                                 widget.sid!,

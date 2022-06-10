@@ -10,7 +10,7 @@ import 'package:orderapp/screen/6_historypage.dart';
 import 'package:orderapp/screen/5_mainDashboard.dart';
 import 'package:orderapp/screen/3_staffLoginScreen.dart';
 import 'package:orderapp/screen/6_uploaddata.dart';
-import 'package:orderapp/screen/reportPage.dart';
+import 'package:orderapp/screen/6_reportPage.dart';
 import 'package:orderapp/screen/settings.dart';
 import 'package:orderapp/service/tableList.dart';
 import 'package:provider/provider.dart';

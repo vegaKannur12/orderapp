@@ -30,12 +30,14 @@ class Controller extends ChangeNotifier {
   bool isVisible = false;
   List<bool> selected = [];
   List<bool> settingOption = [];
+  List<Map<String, dynamic>> filterList = [];
+  List<Map<String, dynamic>> sortList = [];
+  bool filter = false;
   // String? custmerSelection;
 
   List<String> tableColumn = [];
   List<Map<String, dynamic>> res = [];
-  List<Map<String, dynamic>> filterList = [];
-  bool filter = false;
+
   List<String> tableHistorydataColumn = [];
   // List<Map<String, dynamic>> reportOriginalList1 = [];
 
@@ -71,6 +73,8 @@ class Controller extends ChangeNotifier {
   List<String> areaAutoComplete = [];
   List<Map<String, dynamic>> menuList = [];
   List<Map<String, dynamic>> reportData = [];
+  List<Map<String, dynamic>> sumPrice = [];
+  List<Map<String, dynamic>> collectionsumPrice = [];
 
   List<Map<String, dynamic>> remarkList = [];
   String? firstMenu;
@@ -84,6 +88,7 @@ class Controller extends ChangeNotifier {
   List<Map<String, dynamic>> newList = [];
 
   List<Map<String, dynamic>> newreportList = [];
+  List<Map<String, dynamic>> remarkreportList = [];
 
   List<Map<String, dynamic>> masterList = [];
   List<Map<String, dynamic>> orderdetailsList = [];
@@ -242,7 +247,7 @@ class Controller extends ChangeNotifier {
         url,
         body: body,
       );
-      // print("body ${body}");
+
       List map = jsonDecode(response.body);
       print("map ${map}");
       if (map != null) {
@@ -1268,6 +1273,40 @@ class Controller extends ChangeNotifier {
     notifyListeners();
   }
 
+  ////////////////// remark from filter //////////////
+  //  setRemarkfilterReports(String remark, String  remarked) {
+  //   isLoading = true;
+  //   notifyListeners();
+  //   if (fltrType == "balance") {
+  //     filterList = reportData.where((element) {
+  //       //  print('${element["bln"].runtimeType}') ;
+  //       return (element["bln"] > minPrice && element["bln"] < maxPrice);
+  //       // return (element["bln"] > minPrice && element["bln"] < maxPrice);
+  //     }).toList();
+  //     isLoading = false;
+
+  //     notifyListeners();
+  //   }
+  //   if (fltrType == "order amount") {
+  //     filterList = reportData.where((element) {
+  //       //  print('${element["bln"].runtimeType}') ;
+  //       return (element["order_value"] > minPrice &&
+  //           element["order_value"] < maxPrice);
+  //       // return (element["bln"] > minPrice && element["bln"] < maxPrice);
+  //     }).toList();
+  //     isLoading = false;
+
+  //     notifyListeners();
+  //   }
+  //   print("filters-----$filterList");
+  //   notifyListeners();
+  // }
+
+  ///////////////////////////////////////////////////////
+  setDateFilter(String fromDate, String toDate) {
+    print("remarked......$fromDate $toDate");
+  }
+
   /////////////////////////////////////////////
   searchfromreport() async {
     print("searchkey----$reportSearchkey");
@@ -1286,6 +1325,41 @@ class Controller extends ChangeNotifier {
       print("new---$newreportList");
     }
   }
+    selectTotalPrice(String sid) async {
+    print("sid.......sid");
+    Map map = {};
+    isLoading = true;
+    var res = await OrderAppDB.instance.selectSumPlaceOrder(sid);
+    print("resultssss....$res");
+    if (res.length > 0) {
+      for (var item in res) {
+        sumPrice.add(item);
+      }
+    }
+    print("report-----$sumPrice");
+    isLoading = false;
+    notifyListeners();
+  }
+
+  ///////////////////// todayCollection total///////////////////
+  selectCollectionPrice(String sid, String collectDate) async {
+    print("sid $sid $collectDate");
+    Map map = {};
+    isLoading = true;
+    var res =
+        await OrderAppDB.instance.selectSumCollectionAmount(sid, collectDate);
+    print("resultssss....$res");
+    if (res.length > 0) {
+      for (var item in res) {
+        collectionsumPrice.add(item);
+      }
+    }
+    print("report-----$collectionsumPrice");
+    isLoading = false;
+    notifyListeners();
+  }
+
+  
 
   setFilter(bool filters) {
     filter = filters;
