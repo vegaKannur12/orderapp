@@ -297,7 +297,7 @@ class OrderAppDB {
             $userid TEXT,
             $areaid TEXT,
             $status INTEGER,
-            $total_price TEXT
+            $total_price REAL
           )
           ''');
 
@@ -357,9 +357,9 @@ class OrderAppDB {
         $rec_cusid TEXT,
         $rec_series TEXT NOT NULL,
         $rec_mode TEXT,
-        $rec_amount INTEGER,
+        $rec_amount REAL,
         $rec_disc TEXT,
-        $rec_note INTEGER,
+        $rec_note TEXT,
         $rec_staffid TEXT,
         $rec_cancel INTEGER,
         $rec_status INTEGER
@@ -469,7 +469,7 @@ class OrderAppDB {
       String unit,
       int rowNum,
       String table,
-      String total_price) async {
+      double total_price) async {
     final db = await database;
     var res2;
     var res3;
@@ -481,7 +481,7 @@ class OrderAppDB {
       res2 = await db.rawInsert(query2);
     } else if (table == "orderMasterTable") {
       var query3 =
-          'INSERT INTO orderMasterTable(order_id, orderdatetime, os, customerid, userid, areaid, status, total_price) VALUES("${order_id}", "${orderdate}", "${os}", "${customerid}", "${userid}", "${areaid}", ${status},"${total_price}")';
+          'INSERT INTO orderMasterTable(order_id, orderdatetime, os, customerid, userid, areaid, status, total_price) VALUES("${order_id}", "${orderdate}", "${os}", "${customerid}", "${userid}", "${areaid}", ${status},${total_price})';
       res2 = await db.rawInsert(query3);
       print(query3);
     }
@@ -540,7 +540,7 @@ class OrderAppDB {
   Future<List<Map<String, dynamic>>> getOrderBagTable(
       String customerId, String os) async {
     print("enteredcustomerId---${customerId}");
-    // Provider.of<Controller>(context, listen: false).customerList.clear();
+    // .of<Controller>(context, listen: false).customerList.clear();
     Database db = await instance.database;
     var res = await db.rawQuery(
         'SELECT  * FROM orderBagTable WHERE customerid="${customerId}" AND os = "${os}"');
@@ -1049,7 +1049,7 @@ class OrderAppDB {
     } else {
       result = await db.rawQuery("SELECT * FROM '$table' WHERE $condition ");
     }
-    // print("result menu common----$result");
+    print("result menu common----$result");
     return result;
   }
 

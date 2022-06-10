@@ -137,7 +137,7 @@ class _CollectionPageState extends State<CollectionPage> {
                                   elevation: 0,
                                   items: value.walletList
                                       .map((item) => DropdownMenuItem<String>(
-                                          value: item["wname"].toString(),
+                                          value: item["waid"].toString(),
                                           child: Container(
                                             width: size.width * 0.5,
                                             child: Padding(
@@ -151,7 +151,7 @@ class _CollectionPageState extends State<CollectionPage> {
 
                                     if (item != null) {
                                       setState(() {
-                                        selected = item;
+                                        selected = item ;
                                       });
                                       print("se;ected---$item");
                                     }
@@ -240,9 +240,9 @@ class _CollectionPageState extends State<CollectionPage> {
                                       print(
                                           "hjfhdfhn---${amtController.text}---${dscController.text}");
                                       //  double sum=double.parse( amtController.text)+double.parse( dscController.text);
-                                      //  if(sum>0){
+                                   
                                       if (amtController.text.isEmpty &&
-                                          dscController.text.isEmpty) {
+                                          dscController.text.isEmpty|| selected == null) {
                                         visible.value = true;
                                       } else {
                                         visible.value = false;
@@ -253,7 +253,12 @@ class _CollectionPageState extends State<CollectionPage> {
                                                 widget.cuid!,
                                                 widget.os!,
                                                 selected!,
+<<<<<<< HEAD
+                                                double.parse(
+                                                    amtController.text),
+=======
                                                 double.parse(amtController.text),
+>>>>>>> 47a06aa9dcaeadc03d3cad740939112c1fc4f0e6
                                                 dscController.text,
                                                 noteController.text,
                                                 widget.sid!,
@@ -262,6 +267,8 @@ class _CollectionPageState extends State<CollectionPage> {
                                         amtController.clear();
                                         dscController.clear();
                                         noteController.clear();
+
+                                        // await OrderAppDB.instance.upadteCommonQuery('accountHeadsTable',"ba='${item["order_id"]}'","os='${os}' AND customerid='${customerId}'" );
                                         tst.toast("Saved");
                                       }
 

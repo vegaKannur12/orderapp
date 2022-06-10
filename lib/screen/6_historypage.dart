@@ -93,7 +93,7 @@ class _HistoryState extends State<History> {
                     child: Container(
                       height: height * 0.03,
                       child: Text(
-                        widget.page!,
+                        "History",
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),

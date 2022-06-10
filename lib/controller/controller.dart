@@ -37,6 +37,7 @@ class Controller extends ChangeNotifier {
 
   List<String> tableColumn = [];
   List<Map<String, dynamic>> res = [];
+
   List<String> tableHistorydataColumn = [];
   // List<Map<String, dynamic>> reportOriginalList1 = [];
 
@@ -861,7 +862,7 @@ class Controller extends ChangeNotifier {
 
   //////////////insert to order master and details///////////////////////
   insertToOrderbagAndMaster(String os, String date, String customer_id,
-      String user_id, String aid, String total_price) async {
+      String user_id, String aid, double total_price) async {
     List<Map<String, dynamic>> om = [];
     int order_id = await OrderAppDB.instance
         .getMaxCommonQuery('orderDetailTable', 'order_id', "os='${os}'");
@@ -1253,6 +1254,7 @@ class Controller extends ChangeNotifier {
     notifyListeners();
   }
 
+//////////////////////////////////////////////////////////
   selectReportFromOrder(BuildContext context) async {
     reportData.clear();
     reportOriginalList.clear();
@@ -1260,9 +1262,6 @@ class Controller extends ChangeNotifier {
     isLoading = true;
     // notifyListeners();
     var res = await OrderAppDB.instance.getReportDataFromOrderDetails();
-    // var rem = await OrderAppDB.instance.getReportDataFromRemarksTable();
-    // var coll = await OrderAppDB.instance.getReportDataFromCollectionTable();
-
     if (res != null && res.length > 0) {
       for (var item in res) {
         reportData.add(item);
@@ -1270,7 +1269,6 @@ class Controller extends ChangeNotifier {
     } else {
       snackbar.showSnackbar(context, "please download customers !!!");
     }
-
     isLoading = false;
     notifyListeners();
   }
@@ -1327,11 +1325,7 @@ class Controller extends ChangeNotifier {
       print("new---$newreportList");
     }
   }
-
-  /////////////////////////////////////////////
-
-  /////////////////////////// select total amount //////////////////
-  selectTotalPrice(String sid) async {
+    selectTotalPrice(String sid) async {
     print("sid.......sid");
     Map map = {};
     isLoading = true;
@@ -1365,13 +1359,15 @@ class Controller extends ChangeNotifier {
     notifyListeners();
   }
 
-  /////////////////////////////////////////////////
+  
+
   setFilter(bool filters) {
     filter = filters;
-    notifyListeners();
+    // notifyListeners();
   }
 
-  filterReports(String fltrType, double? minPrice, double? maxPrice) {
+  filterReports(
+      String fltrType, double? minPrice, double? maxPrice, String? remark) {
     filterList.clear();
     print("minPrice-maxPrice-$minPrice--$maxPrice");
     isLoading = true;
@@ -1416,27 +1412,25 @@ class Controller extends ChangeNotifier {
       notifyListeners();
     }
     if (fltrType == "remark") {
-      filterList = reportData.where((element) {
+      if (remark == "Remarked") {
+        filterList = reportData.where((element) {
+          //  print('${element["bln"].runtimeType}') ;
+          return (element["remark_count"] != null &&element["remark_count"] != 0 );
+          // return (element["bln"] > minPrice && element["bln"] < maxPrice);
+        }).toList();
+      } else {
+         filterList = reportData.where((element) {
         //  print('${element["bln"].runtimeType}') ;
-        return (element["remark_count"] != null);
+        return (element["remark_count"] == null || element["remark_count"] ==0);
         // return (element["bln"] > minPrice && element["bln"] < maxPrice);
       }).toList();
+      }
+
       isLoading = false;
 
       notifyListeners();
     }
     print("filters-----$filterList");
     notifyListeners();
-  }
-
-  ////////////////////////////////////////
-  sortReport() {
-    for (var item in reportData) {
-      if (item["name"] != null && item.isNotEmpty) {
-        if (item["name"]) {
-          sortList.add(item);
-        }
-      }
-    }
   }
 }

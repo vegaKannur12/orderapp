@@ -146,10 +146,17 @@ class _DashboardState extends State<Dashboard> {
         return CompanyDetails(
           type: "drawer call",
         );
+        case "HR":
+        // title = "Download data";
+        return History(
+          // type: "drawer call",
+        );
       case "RP":
-        Provider.of<Controller>(context, listen: false)
-            .selectReportFromOrder(context);
-        return ReportPage();
+      Provider.of<Controller>(context, listen: false).setFilter(false);
+       Provider.of<Controller>(context, listen: false).selectReportFromOrder(context);
+        return ReportPage(
+          
+        );
 
       case "ST":
         // title = "Download data";
@@ -382,6 +389,15 @@ class _DashboardState extends State<Dashboard> {
                       },
                       title: Text(
                         "Report",
+                        style: TextStyle(fontSize: 17),
+                      ),
+                    ),
+                    ListTile(
+                      onTap: () async {
+                        _onSelectItem(0, "HR");
+                      },
+                      title: Text(
+                        "History",
                         style: TextStyle(fontSize: 17),
                       ),
                     ),
