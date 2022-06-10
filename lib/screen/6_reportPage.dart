@@ -121,7 +121,8 @@ class _ReportPageState extends State<ReportPage> {
                 child: Text(
                   "Sort",
                   style: TextStyle(color: Colors.black),
-                )),
+                ),
+                ),
           ),
           // Container(
           //   width: size.width * 0.3,
