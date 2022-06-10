@@ -1119,7 +1119,7 @@ class OrderAppDB {
         "SELECT sum(total_price) as S FROM orderMasterTable WHERE userid='$sid'");
     if (result != null && result.isNotEmpty && result != null) {
       res = await db.rawQuery(
-          "SELECT sum(total_price) as S FROM orderMasterTable WHERE userid='$sid'");
+          "SELECT sum(total_price) as s FROM orderMasterTable WHERE userid='$sid'");
       sum = res[0]["S"].toString();
       print("sum from db----$sum");
     } else {

@@ -134,10 +134,12 @@ class _MainDashboardState extends State<MainDashboard> {
                                           SizedBox(
                                             height: size.height * 0.03,
                                           ),
-                                          // Text(
-                                          //   "\u{20B9}${value.collectionsumPrice[0]['S']}",
-                                          //   style: TextStyle(fontSize: 15),
-                                          // ),
+                                          Text(
+                                            "\u{20B9}${value.collectionsumPrice.length != 0 && value.collectionsumPrice[0]['S'] != null && value.collectionsumPrice.isNotEmpty ? value.collectionsumPrice[0]['S'] : "0"}",
+                                            style: TextStyle(
+                                                color: P_Settings.extracolor,fontSize: 18),
+                                          ),
+                                    
                                         ],
                                       ),
                                     ),
@@ -166,13 +168,15 @@ class _MainDashboardState extends State<MainDashboard> {
                                           SizedBox(
                                             height: size.height * 0.03,
                                           ),
-                                          // sid != null 
-                                          //     ? Text(
-                                          //         "\u{20B9}${value.sumPrice[0]['S']}",
-                                          //         style:
-                                          //             TextStyle(fontSize: 15),
-                                          //       )
-                                          //     : Text("0.00"),
+                                          Text(
+                                            "\u{20B9}${value.sumPrice.length != 0 && value.sumPrice[0]['s'] != null && value.sumPrice.isNotEmpty ? value.sumPrice[0]['s'] : "0"}",
+                                            style: TextStyle(
+                                                color: P_Settings.extracolor,fontSize: 18),
+                                          ),
+                                          // Text(
+                                          //   "\u{20B9}${value.sumPrice[0]['S']}",
+                                          //   style: TextStyle(fontSize: 15),
+                                          // )
                                         ],
                                       ),
                                     ),
