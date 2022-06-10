@@ -35,6 +35,9 @@ class P_Settings {
 
   static Color get bottomColor => Colors.yellow;
 
+  static Color get bottomNavButton => Colors.white;
+
+
 
 
 

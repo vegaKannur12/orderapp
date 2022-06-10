@@ -152,7 +152,7 @@ class _CartListState extends State<CartList> {
                                     widget.custmerId,
                                     sid!,
                                     widget.areaId,
-                                    value.orderTotal!);
+                                    double.parse(value.orderTotal!));
                             // var result = await OrderAppDB.instance.getDataFromMasterAndDetail("os='${widget.os}' AND customerid='${widget.custmerId}'");
 
                             return showDialog(

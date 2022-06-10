@@ -34,6 +34,8 @@ class Controller extends ChangeNotifier {
 
   List<String> tableColumn = [];
   List<Map<String, dynamic>> res = [];
+  List<Map<String, dynamic>> filterList = [];
+  bool filter = false;
   List<String> tableHistorydataColumn = [];
   // List<Map<String, dynamic>> reportOriginalList1 = [];
 
@@ -855,7 +857,7 @@ class Controller extends ChangeNotifier {
 
   //////////////insert to order master and details///////////////////////
   insertToOrderbagAndMaster(String os, String date, String customer_id,
-      String user_id, String aid, String total_price) async {
+      String user_id, String aid, double total_price) async {
     List<Map<String, dynamic>> om = [];
     int order_id = await OrderAppDB.instance
         .getMaxCommonQuery('orderDetailTable', 'order_id', "os='${os}'");
@@ -1247,6 +1249,7 @@ class Controller extends ChangeNotifier {
     notifyListeners();
   }
 
+//////////////////////////////////////////////////////////
   selectReportFromOrder(BuildContext context) async {
     reportData.clear();
     reportOriginalList.clear();
@@ -1254,29 +1257,13 @@ class Controller extends ChangeNotifier {
     isLoading = true;
     // notifyListeners();
     var res = await OrderAppDB.instance.getReportDataFromOrderDetails();
-    // var rem = await OrderAppDB.instance.getReportDataFromRemarksTable();
-    // var coll = await OrderAppDB.instance.getReportDataFromCollectionTable();
-
-    if (res!=null  && res.length > 0) {
+    if (res != null && res.length > 0) {
       for (var item in res) {
         reportData.add(item);
       }
-    }else{
+    } else {
       snackbar.showSnackbar(context, "please download customers !!!");
     }
-    // if (rem.length > 0) {
-    //   for (var item in rem) {
-    //     reportData.add(item);
-    //   }
-    // }
-
-    // if (coll.length > 0) {
-    //   for (var item in coll) {
-    //     reportData.add(item);
-    //   }
-    // }
-
-    // print("report-----$reportData");
     isLoading = false;
     notifyListeners();
   }
@@ -1298,5 +1285,78 @@ class Controller extends ChangeNotifier {
           .toList();
       print("new---$newreportList");
     }
+  }
+
+  setFilter(bool filters) {
+    filter = filters;
+    // notifyListeners();
+  }
+
+  filterReports(
+      String fltrType, double? minPrice, double? maxPrice, String? remark) {
+    filterList.clear();
+    print("minPrice-maxPrice-$minPrice--$maxPrice");
+    isLoading = true;
+    notifyListeners();
+    if (fltrType == "balance") {
+      filterList = reportData.where((element) {
+        //  print('${element["bln"].runtimeType}') ;
+        return (element["bln"] > minPrice && element["bln"] < maxPrice);
+        // return (element["bln"] > minPrice && element["bln"] < maxPrice);
+      }).toList();
+      isLoading = false;
+
+      notifyListeners();
+    }
+    if (fltrType == "order amount") {
+      for (var item in reportData) {
+        if (item["order_value"] != null && item["order_value"] != 0) {
+          if (item["order_value"] > minPrice &&
+              item["order_value"] < maxPrice) {
+            filterList.add(item);
+          }
+        }
+      }
+
+      // print('hfjkd----$filterList');
+      isLoading = false;
+      notifyListeners();
+    }
+
+    if (fltrType == "collection") {
+      for (var item in reportData) {
+        if (item["collection_sum"] != null && item["collection_sum"] != 0) {
+          if (item["collection_sum"] > minPrice &&
+              item["collection_sum"] < maxPrice) {
+            filterList.add(item);
+          }
+        }
+      }
+
+      // print('hfjkd----$filterList');
+      isLoading = false;
+      notifyListeners();
+    }
+    if (fltrType == "remark") {
+      if (remark == "Remarked") {
+        filterList = reportData.where((element) {
+          //  print('${element["bln"].runtimeType}') ;
+          return (element["remark_count"] != null &&element["remark_count"] != 0 );
+          // return (element["bln"] > minPrice && element["bln"] < maxPrice);
+        }).toList();
+      } else {
+         filterList = reportData.where((element) {
+        //  print('${element["bln"].runtimeType}') ;
+        return (element["remark_count"] == null || element["remark_count"] ==0);
+        // return (element["bln"] > minPrice && element["bln"] < maxPrice);
+      }).toList();
+      }
+
+      isLoading = false;
+
+      notifyListeners();
+    }
+    print("filters-----$filterList");
+    notifyListeners();
   }
 }

@@ -238,7 +238,7 @@ class OrderAppDB {
             $ac_ad3 TEXT,
             $area_id TEXT,
             $phn TEXT, 
-            $ba TEXT,
+            $ba REAL,
             $ri TEXT,
             $rc TEXT,
             $ht TEXT,
@@ -297,7 +297,7 @@ class OrderAppDB {
             $userid TEXT,
             $areaid TEXT,
             $status INTEGER,
-            $total_price TEXT
+            $total_price REAL
           )
           ''');
 
@@ -357,9 +357,9 @@ class OrderAppDB {
         $rec_cusid TEXT,
         $rec_series TEXT NOT NULL,
         $rec_mode TEXT,
-        $rec_amount INTEGER,
+        $rec_amount REAL,
         $rec_disc TEXT,
-        $rec_note INTEGER,
+        $rec_note TEXT,
         $rec_staffid TEXT,
         $rec_cancel INTEGER,
         $rec_status INTEGER
@@ -469,7 +469,7 @@ class OrderAppDB {
       String unit,
       int rowNum,
       String table,
-      String total_price) async {
+      double total_price) async {
     final db = await database;
     var res2;
     var res3;
@@ -481,7 +481,7 @@ class OrderAppDB {
       res2 = await db.rawInsert(query2);
     } else if (table == "orderMasterTable") {
       var query3 =
-          'INSERT INTO orderMasterTable(order_id, orderdatetime, os, customerid, userid, areaid, status, total_price) VALUES("${order_id}", "${orderdate}", "${os}", "${customerid}", "${userid}", "${areaid}", ${status},"${total_price}")';
+          'INSERT INTO orderMasterTable(order_id, orderdatetime, os, customerid, userid, areaid, status, total_price) VALUES("${order_id}", "${orderdate}", "${os}", "${customerid}", "${userid}", "${areaid}", ${status},${total_price})';
       res2 = await db.rawInsert(query3);
       print(query3);
     }
@@ -540,7 +540,7 @@ class OrderAppDB {
   Future<List<Map<String, dynamic>>> getOrderBagTable(
       String customerId, String os) async {
     print("enteredcustomerId---${customerId}");
-    // Provider.of<Controller>(context, listen: false).customerList.clear();
+    // .of<Controller>(context, listen: false).customerList.clear();
     Database db = await instance.database;
     var res = await db.rawQuery(
         'SELECT  * FROM orderBagTable WHERE customerid="${customerId}" AND os = "${os}"');
@@ -644,7 +644,7 @@ class OrderAppDB {
   Future insertAccoundHeads(AccountHead accountHead) async {
     final db = await database;
     var query =
-        'INSERT INTO accountHeadsTable(ac_code, hname, gtype, ac_ad1, ac_ad2, ac_ad3, area_id, phn, ba, ri, rc, ht, mo, ac_gst, ac, cag) VALUES("${accountHead.code}", "${accountHead.hname}", "${accountHead.gtype}", "${accountHead.ad1}", "${accountHead.ad2}", "${accountHead.ad3}", "${accountHead.aid}", "${accountHead.ph}", "${accountHead.ba}", "${accountHead.ri}", "${accountHead.rc}", "${accountHead.ht}", "${accountHead.mo}", "${accountHead.gst}", "${accountHead.ac}", "${accountHead.cag}")';
+        'INSERT INTO accountHeadsTable(ac_code, hname, gtype, ac_ad1, ac_ad2, ac_ad3, area_id, phn, ba, ri, rc, ht, mo, ac_gst, ac, cag) VALUES("${accountHead.code}", "${accountHead.hname}", "${accountHead.gtype}", "${accountHead.ad1}", "${accountHead.ad2}", "${accountHead.ad3}", "${accountHead.aid}", "${accountHead.ph}", ${accountHead.ba}, "${accountHead.ri}", "${accountHead.rc}", "${accountHead.ht}", "${accountHead.mo}", "${accountHead.gst}", "${accountHead.ac}", "${accountHead.cag}")';
     var res = await db.rawInsert(query);
     print(query);
     // print(res);
@@ -680,7 +680,7 @@ class OrderAppDB {
       String rec_cusid,
       String ser,
       String mode,
-      String amt,
+      double amt,
       String disc,
       String note,
       String sttid,
@@ -688,9 +688,16 @@ class OrderAppDB {
       int status) async {
     final db = await database;
     var query =
-        'INSERT INTO collectionTable(rec_date, rec_cusid, rec_series, rec_mode, rec_amount, rec_disc, rec_note, rec_staffid, rec_cancel, rec_status) VALUES("${rec_date}", "${rec_cusid}", "${ser}", "${mode}", "${amt}", "${disc}", "${note}", "${sttid}", ${cancel}, ${status})';
+        'INSERT INTO collectionTable(rec_date, rec_cusid, rec_series, rec_mode, rec_amount, rec_disc, rec_note, rec_staffid, rec_cancel, rec_status) VALUES("${rec_date}", "${rec_cusid}", "${ser}", "${mode}", $amt, "${disc}", "${note}", "${sttid}", ${cancel}, ${status})';
     var res = await db.rawInsert(query);
     print(query);
+
+    List<Map<String,dynamic>> balance=await selectAllcommon('accountHeadsTable', "ac_code='${rec_cusid}'");
+    print("jhjkdxj----$balance");
+    print('bal---${balance[0]["ba"]}');
+    // double bal=double.parse(balance[0]["ba"]);
+    double update_bal=balance[0]["ba"]-amt;
+    upadteCommonQuery('accountHeadsTable',"ba=${update_bal}", "ac_code='${rec_cusid}'");
     // print(res);
     return res;
   }
@@ -1043,7 +1050,7 @@ class OrderAppDB {
     } else {
       result = await db.rawQuery("SELECT * FROM '$table' WHERE $condition ");
     }
-    // print("result menu common----$result");
+    print("result menu common----$result");
     return result;
   }
 
