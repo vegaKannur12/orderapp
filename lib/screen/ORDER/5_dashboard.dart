@@ -539,7 +539,7 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
               return Center(
                 child: Container(
                   child: _getDrawerItemWidget(
-                    menu_index,
+                    menu_index
                   ),
                 ),
               );

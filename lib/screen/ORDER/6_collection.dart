@@ -42,6 +42,8 @@ class _CollectionPageState extends State<CollectionPage> {
     // shared();
     formattedDate = DateFormat('yyyy-MM-dd').format(date);
     print("cuid----${widget.cuid}");
+    Provider.of<Controller>(context, listen: false)
+        .fetchrcollectionFromTable(widget.cuid!);
   }
 
   @override
@@ -214,12 +216,12 @@ class _CollectionPageState extends State<CollectionPage> {
                                   child: TextField(
                                     controller: noteController,
                                     minLines:
-                                        4, // any number you need (It works as the rows for the textarea)
+                                        2, // any number you need (It works as the rows for the textarea)
                                     keyboardType: TextInputType.multiline,
                                     maxLines: null,
                                     decoration: InputDecoration(
                                       contentPadding: EdgeInsets.symmetric(
-                                          vertical: 40, horizontal: 20),
+                                          vertical: 30, horizontal: 20),
                                       border: OutlineInputBorder(),
                                       labelText: '',
                                     ),
@@ -261,6 +263,10 @@ class _CollectionPageState extends State<CollectionPage> {
                                                 widget.sid!,
                                                 0,
                                                 0);
+                                        Provider.of<Controller>(context,
+                                                listen: false)
+                                            .fetchrcollectionFromTable(
+                                                widget.cuid!);
                                         amtController.clear();
                                         dscController.clear();
                                         noteController.clear();
@@ -304,124 +310,26 @@ class _CollectionPageState extends State<CollectionPage> {
                                   // color: P_Settings.collection,
                                   height: size.height * 0.7,
                                   child: ListView.builder(
-                                    itemCount: 4,
+                                    itemCount: value.collectionList.length,
                                     itemBuilder: (context, index) {
                                       return Padding(
                                         padding: const EdgeInsets.all(8.0),
-                                        child: Dismissible(
-                                          key: ObjectKey([index]),
-                                          onDismissed: (DismissDirection
-                                              direction) async {
-                                            if (direction ==
-                                                DismissDirection.endToStart) {
-                                              print("Delete");
-                                              setState(() {
-                                                // OrderAppDB.instance
-                                                //     .deleteFromTableCommonQuery(
-                                                //         "remarksTable",
-                                                //         "rem_row_num='${value.remarkList[index]["rem_row_num"]}'");
-                                                // Provider.of<Controller>(context,
-                                                //         listen: false)
-                                                //     .fetchremarkFromTable(widget.cus_id);
-                                              });
-                                            }
-                                          },
-                                          child: ListTile(
-                                            leading: CircleAvatar(
-                                              child: Icon(
-                                                Icons.reviews,
-                                                size: 16,
-                                              ),
-                                              backgroundColor:
-                                                  P_Settings.roundedButtonColor,
+                                        child: ListTile(
+                                          leading: CircleAvatar(
+                                            child: Icon(
+                                              Icons.reviews,
+                                              size: 16,
                                             ),
-                                            title: Text(
-                                              "hello".toString(),
-                                              style: TextStyle(fontSize: 16),
-                                            ),
-                                            trailing: IconButton(
-                                              icon: Icon(Icons.edit),
-                                              onPressed: () {
-                                                // remarkController1.clear();
-                                                showDialog(
-                                                  context: context,
-                                                  builder: (ctx) => AlertDialog(
-                                                    content: TextField(
-                                                      // controller: remarkController1,
-                                                      minLines:
-                                                          3, // any number you need (It works as the rows for the textarea)
-                                                      keyboardType:
-                                                          TextInputType
-                                                              .multiline,
-                                                      maxLines: null,
-                                                      decoration:
-                                                          InputDecoration(
-                                                        // suffixIcon: IconButton(
-                                                        //   onPressed:
-                                                        //       remarkController1.clear,
-                                                        //   icon: Icon(
-                                                        //     Icons.clear,
-                                                        //     size: 18,
-                                                        //   ),
-                                                        // ),
-                                                        contentPadding:
-                                                            EdgeInsets
-                                                                .symmetric(
-                                                                    vertical:
-                                                                        40,
-                                                                    horizontal:
-                                                                        20),
-                                                        border:
-                                                            OutlineInputBorder(),
-                                                        // hintText: value.remarkList[index]
-                                                        //         ['rem_text']
-                                                        //     .toString(),
-                                                      ),
-                                                      onChanged: (value) {
-                                                        // value = remarkController1.text;
-                                                      },
-                                                    ),
-                                                    actions: <Widget>[
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .end,
-                                                        children: [
-                                                          ElevatedButton(
-                                                            style: ElevatedButton
-                                                                .styleFrom(
-                                                                    primary:
-                                                                        P_Settings
-                                                                            .wavecolor),
-                                                            onPressed:
-                                                                () async {
-                                                              // await OrderAppDB.instance
-                                                              //     .upadteCommonQuery(
-                                                              //         "remarksTable",
-                                                              //         "rem_text='${remarkController1.text}'",
-                                                              //         "rem_row_num='${value.remarkList[index]["rem_row_num"]}'");
-                                                              // Provider.of<Controller>(
-                                                              //         context,
-                                                              //         listen: false)
-                                                              //     .fetchremarkFromTable(
-                                                              //         widget.cus_id);
-                                                              Navigator.of(ctx)
-                                                                  .pop();
-                                                            },
-                                                            child: Text("Edit"),
-                                                          ),
-                                                          SizedBox(
-                                                            width: size.width *
-                                                                0.01,
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ],
-                                                  ),
-                                                );
-                                              },
-                                            ),
+                                            backgroundColor:
+                                                P_Settings.roundedButtonColor,
                                           ),
+                                          title: Text(
+                                            value.collectionList[index]
+                                                ['rec_date'],
+                                            style: TextStyle(fontSize: 16),
+                                          ),
+                                          subtitle: Text(
+                                              "\u{20B9}${value.collectionList[index]['rec_amount'].toString()}"),
                                         ),
                                       );
                                     },

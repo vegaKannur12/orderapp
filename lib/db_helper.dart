@@ -654,8 +654,25 @@ class OrderAppDB {
     // print(res);
     return res;
   }
+
 /////////////////////customer/////////////////////////////////////////
-  Future createCustomer(String ac_code,String hname,String gtype,String ac_ad1,String ac_ad2,String ac_ad3,String area_id,String phn,String ri,double ba,String rc,String ht,String mo,String ac_gst,String ac,String cag) async {
+  Future createCustomer(
+      String ac_code,
+      String hname,
+      String gtype,
+      String ac_ad1,
+      String ac_ad2,
+      String ac_ad3,
+      String area_id,
+      String phn,
+      String ri,
+      double ba,
+      String rc,
+      String ht,
+      String mo,
+      String ac_gst,
+      String ac,
+      String cag) async {
     final db = await database;
     var query =
         'INSERT INTO accountHeadsTable(ac_code, hname, gtype, ac_ad1, ac_ad2, ac_ad3, area_id, phn, ba, ri, rc, ht, mo, ac_gst, ac, cag) VALUES("${ac_code}", "${hname}", "${gtype}", "${ac_ad1}", "${ac_ad2}", "${ac_ad3}", "${area_id}", "${ph}", ${ba}, "${ri}", "${rc}", "${ht}", "${mo}", "${gst}", "${ac}", "${cag}")';
@@ -664,6 +681,7 @@ class OrderAppDB {
     // print(res);
     return res;
   }
+
   ////////////////////////////product category insertion//////////////
   Future insertProductCategory(
       ProductsCategoryModel productsCategoryModel) async {
@@ -1063,7 +1081,22 @@ class OrderAppDB {
     if (condition == null || condition.isEmpty) {
       result = await db.rawQuery("SELECT * FROM '$table'");
     } else {
-      result = await db.rawQuery("SELECT * FROM '$table' WHERE $condition ");
+      result = await db.rawQuery("SELECT * FROM '$table' WHERE $condition");
+    }
+    print("result menu common----$result");
+    return result;
+  }
+
+///////////////////select  collection///////////////////////
+  selectAllcommonwithdesc(String table, String? condition) async {
+    print("haiiiii");
+    List<Map<String, dynamic>> result;
+    Database db = await instance.database;
+    if (condition == null || condition.isEmpty) {
+      result = await db.rawQuery("SELECT * FROM '$table' ORDER BY id DESC");
+    } else {
+      result =
+          await db.rawQuery("SELECT * FROM '$table' WHERE $condition ORDER BY id DESC");
     }
     print("result menu common----$result");
     return result;

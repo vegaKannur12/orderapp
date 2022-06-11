@@ -7,7 +7,6 @@ import 'package:orderapp/controller/controller.dart';
 import 'package:orderapp/db_helper.dart';
 import 'package:provider/provider.dart';
 
-
 class RemarkPage extends StatefulWidget {
   String cus_id;
   String ser;
@@ -38,7 +37,6 @@ class _RemarkPageState extends State<RemarkPage> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-
     return Scaffold(
       appBar: AppBar(
         actions: [

@@ -8,7 +8,7 @@ class Uploaddata extends StatefulWidget {
   String? title;
   String cid;
   String type;
-  Uploaddata({required this.cid, required this.type,this.title});
+  Uploaddata({required this.cid, required this.type, this.title});
 
   @override
   State<Uploaddata> createState() => _UploaddataState();
@@ -19,6 +19,7 @@ class _UploaddataState extends State<Uploaddata> {
   List<String> uploadItems = [
     "Upload Orders",
     "Upload Sales",
+    "Upload Customer"
   ];
   @override
   void initState() {
@@ -89,6 +90,10 @@ class _UploaddataState extends State<Uploaddata> {
                               // Provider.of<Controller>(context, listen: false)
                               //     .getProductCategory(cid!, "");
                             }
+                            if (uploadItems[index] == "Upload Customer") {
+                              // Provider.of<Controller>(context, listen: false)
+                              //     .getProductCategory(cid!, "");
+                            }
                           },
                           icon: Icon(Icons.upload),
                           color: Colors.white,
@@ -104,6 +109,16 @@ class _UploaddataState extends State<Uploaddata> {
                 },
               ),
             ),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              primary: P_Settings.wavecolor,
+              shape: new RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(10.0),
+              ),
+            ),
+            onPressed: () {},
+            child: Text("Upload All"),
           ),
         ],
       ),

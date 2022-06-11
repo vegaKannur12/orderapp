@@ -33,6 +33,7 @@ class Controller extends ChangeNotifier {
   List<bool> settingOption = [];
   List<Map<String, dynamic>> filterList = [];
   List<Map<String, dynamic>> sortList = [];
+  List<Map<String, dynamic>> collectionList= [];
   bool filter = false;
   // String? custmerSelection;
 
@@ -288,7 +289,7 @@ class Controller extends ChangeNotifier {
   fetchremarkFromTable(String custmerId) async {
     remarkList.clear();
     var res = await OrderAppDB.instance
-        .selectAllcommon('remarksTable', "rem_cusid='${custmerId}'");
+        .selectAllcommonwithdesc('remarksTable', "rem_cusid='${custmerId}'");
 
     for (var menu in res) {
       remarkList.add(menu);
@@ -297,7 +298,19 @@ class Controller extends ChangeNotifier {
 
     notifyListeners();
   }
+  /////////////////////// fetch collection table ////////////
+   fetchrcollectionFromTable(String custmerId) async {
+    remarkList.clear();
+    var res = await OrderAppDB.instance
+        .selectAllcommonwithdesc('collectionTable', "rec_cusid='${custmerId}'");
 
+    for (var menu in res) {
+      collectionList.add(menu);
+    }
+    print("remarkList----${collectionList}");
+
+    notifyListeners();
+  }
   /////////////////////// Staff details////////////////////////////////
   Future<StaffDetails?> getStaffDetails(String cid) async {
     print("getStaffDetails...............${cid}");
