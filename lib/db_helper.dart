@@ -650,7 +650,16 @@ class OrderAppDB {
     // print(res);
     return res;
   }
-
+/////////////////////customer/////////////////////////////////////////
+  Future createCustomer(String ac_code,String hname,String gtype,String ac_ad1,String ac_ad2,String ac_ad3,String area_id,String phn,String ri,double ba,String rc,String ht,String mo,String ac_gst,String ac,String cag) async {
+    final db = await database;
+    var query =
+        'INSERT INTO accountHeadsTable(ac_code, hname, gtype, ac_ad1, ac_ad2, ac_ad3, area_id, phn, ba, ri, rc, ht, mo, ac_gst, ac, cag) VALUES("${ac_code}", "${hname}", "${gtype}", "${ac_ad1}", "${ac_ad2}", "${ac_ad3}", "${area_id}", "${ph}", ${ba}, "${ri}", "${rc}", "${ht}", "${mo}", "${gst}", "${ac}", "${cag}")';
+    var res = await db.rawInsert(query);
+    print(query);
+    // print(res);
+    return res;
+  }
   ////////////////////////////product category insertion//////////////
   Future insertProductCategory(
       ProductsCategoryModel productsCategoryModel) async {

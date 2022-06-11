@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:orderapp/components/commoncolor.dart';
 import 'package:orderapp/controller/controller.dart';
 
-
 import 'package:provider/provider.dart';
 
 class ReportPage extends StatefulWidget {
@@ -32,6 +31,8 @@ class _ReportPageState extends State<ReportPage> {
       bottomNavigationBar: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
+
+
           /////////////// sort and filter //////////////////////////
           // Container(
           //   width: size.width * 0.3,

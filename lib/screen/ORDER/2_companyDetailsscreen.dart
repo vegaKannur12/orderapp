@@ -2,11 +2,9 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:orderapp/components/commoncolor.dart';
-import 'package:orderapp/components/customAppbar.dart';
 import 'package:orderapp/components/customSnackbar.dart';
 import 'package:orderapp/controller/controller.dart';
-import 'package:orderapp/db_helper.dart';
-import 'package:orderapp/screen/3_staffLoginScreen.dart';
+import 'package:orderapp/screen/ORDER/3_staffLoginScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -52,19 +50,9 @@ class _CompanyDetailsState extends State<CompanyDetails> {
               ),
             )
           : null,
-      // title: Text("Company Details",style: TextStyle(fontSize: 20),),
-
-      // AppBar(
-      //   title: Text(
-      //     "Company Details",
-      //     style: TextStyle(fontSize: 20),
-      //   ),
-      // ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
-          // crossAxisAlignment: CrossAxisAlignment.center,
-          // mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
               height: size.height * 0.03,

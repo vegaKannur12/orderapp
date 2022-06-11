@@ -1,10 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:orderapp/components/waveclipper.dart';
 import 'package:orderapp/controller/controller.dart';
 import 'package:provider/provider.dart';
-import '../components/commoncolor.dart';
-import '../components/waveclipper.dart';
+
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+
+import '../../components/commoncolor.dart';
 
 class RegistrationScreen extends StatefulWidget {
   @override

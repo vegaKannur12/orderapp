@@ -39,6 +39,8 @@ class P_Settings {
 
 
   static Color get bottomColor => Colors.yellow;
+  static Color get returnbuttnColor => Color.fromARGB(255, 42, 153, 46);
+
 
   // static Color get bottomNavButton => Colors.white;
 
