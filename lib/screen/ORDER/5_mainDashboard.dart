@@ -15,7 +15,6 @@ class MainDashboard extends StatefulWidget {
 }
 
 class _MainDashboardState extends State<MainDashboard> {
-
   DateTime date = DateTime.now();
   String? formattedDate;
   List companyAttributes = [
@@ -31,9 +30,12 @@ class _MainDashboardState extends State<MainDashboard> {
     sid = prefs.getString('sid');
     print("sid ......$sid");
     print("formattedDate...$formattedDate");
-    Provider.of<Controller>(context, listen: false).selectTotalPrice(sid!);
-    Provider.of<Controller>(context, listen: false)
+    await Provider.of<Controller>(context, listen: false).selectTotalPrice(sid!,formattedDate!);
+     Provider.of<Controller>(context, listen: false).selectOrderCount(sid!,formattedDate!);
+    await Provider.of<Controller>(context, listen: false)
         .selectCollectionPrice(sid!, formattedDate!);
+   await  Provider.of<Controller>(context, listen: false)
+        .CollectionCount(sid!, formattedDate!);
   }
 
   @override
@@ -64,12 +66,15 @@ class _MainDashboardState extends State<MainDashboard> {
             // color: P_Settings.roundedButtonColor
           ),
           alignment: Alignment.center,
-          height: size.height * 0.15,
+          height: size.height * 0.13,
           child: Padding(
             padding: const EdgeInsets.all(5.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                SizedBox(
+                  height: size.height * 0.04,
+                ),
                 Flexible(
                   child: Consumer<Controller>(
                     builder: (context, value, child) {
@@ -88,11 +93,6 @@ class _MainDashboardState extends State<MainDashboard> {
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
                                   color: P_Settings.extracolor)),
-                          // Container(
-                          //   decoration: new BoxDecoration(
-                          //       color: Theme.of(context).primaryColor),
-                          //   child:
-                          // ),
                         ],
                       );
                     },
@@ -126,7 +126,8 @@ class _MainDashboardState extends State<MainDashboard> {
                         ),
                       ),
                       Padding(
-                          padding: const EdgeInsets.only(top: 20),
+                          padding: const EdgeInsets.only(
+                              top: 20, left: 10, right: 10),
                           child: Container(
                             height: size.height * 0.9,
                             color: Color.fromARGB(255, 255, 255, 255),
@@ -159,7 +160,7 @@ class _MainDashboardState extends State<MainDashboard> {
                                                   height: size.height * 0.01,
                                                 ),
                                                 Text(
-                                                  "\u{20B9}${value.collectionsumPrice.length != 0 && value.collectionsumPrice[0]['S'] != null && value.collectionsumPrice.isNotEmpty ? value.collectionsumPrice[0]['S'] : "0"}",
+                                                  "${value.collectionCount.length != 0 && value.collectionCount[0]['S'] != null && value.collectionCount.isNotEmpty ? value.collectionCount[0]['S'] : "0"}",
                                                   style: TextStyle(
                                                       color:
                                                           P_Settings.extracolor,
@@ -195,7 +196,7 @@ class _MainDashboardState extends State<MainDashboard> {
                                                   height: size.height * 0.01,
                                                 ),
                                                 Text(
-                                                  "\u{20B9}${value.sumPrice.length != 0 && value.sumPrice[0]['s'] != null && value.sumPrice.isNotEmpty ? value.sumPrice[0]['s'] : "0"}",
+                                                  "${value.orderCount.length != 0 && value.orderCount[0]['S'] != null && value.orderCount.isNotEmpty ? value.orderCount[0]['S'] : "0"}",
                                                   style: TextStyle(
                                                       color:
                                                           P_Settings.extracolor,

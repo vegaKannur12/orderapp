@@ -3,6 +3,7 @@
 import 'dart:ffi';
 
 import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
 import 'package:orderapp/controller/controller.dart';
 import 'package:orderapp/model/accounthead_model.dart';
 import 'package:orderapp/model/productdetails_model.dart';
@@ -18,6 +19,9 @@ import 'model/staffarea_model.dart';
 import 'model/staffdetails_model.dart';
 
 class OrderAppDB {
+  DateTime date = DateTime.now();
+  String? formattedDate;
+
   static final OrderAppDB instance = OrderAppDB._init();
   static Database? _database;
   OrderAppDB._init();
@@ -692,15 +696,18 @@ class OrderAppDB {
     var res = await db.rawInsert(query);
     print(query);
 
-    List<Map<String,dynamic>> balance=await selectAllcommon('accountHeadsTable', "ac_code='${rec_cusid}'");
+    List<Map<String, dynamic>> balance =
+        await selectAllcommon('accountHeadsTable', "ac_code='${rec_cusid}'");
     print("jhjkdxj----$balance");
     print('bal---${balance[0]["ba"]}');
     // double bal=double.parse(balance[0]["ba"]);
-    double update_bal=balance[0]["ba"]-amt;
-    upadteCommonQuery('accountHeadsTable',"ba=${update_bal}", "ac_code='${rec_cusid}'");
+    double update_bal = balance[0]["ba"] - amt;
+    upadteCommonQuery(
+        'accountHeadsTable', "ba=${update_bal}", "ac_code='${rec_cusid}'");
     // print(res);
     return res;
   }
+
 ////////////////////////insert remark/////////////////////////////////
   Future insertremarkTable(
     String rem_date,
@@ -1114,18 +1121,18 @@ class OrderAppDB {
     return res;
   }
 
-  ////////////////////////////////////////////////////
-  selectSumPlaceOrder(String sid) async {
+  ////////////////// today order total //////////////////////////////////
+  Future selectSumPlaceOrder(String sid, String todaydate) async {
     List<Map<String, dynamic>> result;
     var res;
     String sum;
     Database db = await instance.database;
 
     result = await db.rawQuery(
-        "SELECT sum(total_price) as S FROM orderMasterTable WHERE userid='$sid'");
+        "SELECT sum(total_price) as S FROM orderMasterTable WHERE userid='$sid' AND orderdatetime='$todaydate'");
     if (result != null && result.isNotEmpty && result != null) {
       res = await db.rawQuery(
-          "SELECT sum(total_price) as s FROM orderMasterTable WHERE userid='$sid'");
+          "SELECT sum(total_price) as s FROM orderMasterTable WHERE userid='$sid' AND orderdatetime='$todaydate'");
       sum = res[0]["S"].toString();
       print("sum from db----$sum");
     } else {
@@ -1134,9 +1141,32 @@ class OrderAppDB {
 
     return res;
   }
+
+  /////////////////// today order count /////////////
+  Future<dynamic> orderCount(String sid, String todaydate) async {
+    print("sid.....$sid");
+    List<Map<String, dynamic>> result;
+    var res;
+    String orderCount;
+    Database db = await instance.database;
+    result = await db.rawQuery(
+        "SELECT COUNT(id) as S FROM orderMasterTable WHERE userid='$sid' AND orderdatetime='$todaydate'");
+    print("result-order-----$result");
+    if (result != null && result.isNotEmpty && result != null) {
+      res = await db.rawQuery(
+          "SELECT COUNT(id) as S FROM orderMasterTable WHERE userid='$sid' AND orderdatetime='$todaydate'");
+      orderCount = res[0]["S"].toString();
+      print("sum from db----$orderCount");
+    } else {
+      orderCount = "0.0";
+    }
+
+    return res;
+  }
   ///////////////////// total collection amount/////////////
 
-  selectSumCollectionAmount(String sid, String collectDate) async {
+  Future<dynamic> selectSumCollectionAmount(
+      String sid, String collectDate) async {
     print("sid.....$sid");
     List<Map<String, dynamic>> result;
     var res;
@@ -1158,11 +1188,33 @@ class OrderAppDB {
     return res;
   }
 
+///////////////////////// collection count /////////////
+  Future<dynamic> CountCollectionAmount(String sid, String collectDate) async {
+    print("sid.....$sid");
+    List<Map<String, dynamic>> result;
+    var res;
+    String collectCount;
+    Database db = await instance.database;
+
+    result = await db.rawQuery(
+        "SELECT COUNT(id) as S FROM collectionTable WHERE rec_staffid='$sid' AND rec_date='$collectDate'");
+    print("result-order-----$result");
+    if (result != null && result.isNotEmpty && result != null) {
+      res = await db.rawQuery(
+          "SELECT COUNT(id) as S FROM collectionTable WHERE rec_staffid='$sid' AND rec_date='$collectDate'");
+      collectCount = res[0]["S"].toString();
+      print("sum from db----$collectCount");
+    } else {
+      collectCount = "0.0";
+    }
+
+    return res;
+  }
 //////////////////////////////////////////////////////
 
   getReportDataFromOrderDetails() async {
     List<Map<String, dynamic>> result;
-  
+
     Database db = await instance.database;
     result = await db.rawQuery(
         'select A.ac_code  as cusid, A.hname as name,A.ac_ad1 as ad1,A.mo as mob , A.ba as bln, Y.ord  as order_value, Y.remark as remark_count , Y.col as collection_sum from accountHeadsTable A  left join (select cid,sum(Ord) as ord, sum(remark) as remark ,sum(col) as col from (select O.customerid cid, sum(O.total_price) Ord,0 remark,0 col from orderMasterTable O group by O.customerid union all select R.rem_cusid cid, 0 Ord, count(R.rem_cusid) remark , 0 col from remarksTable R group by R.rem_cusid union all select C.rec_cusid cid, 0 Ord , 0 remark, sum(C.rec_amount) col  from collectionTable C group by C.rec_cusid) x group by cid ) Y on Y.cid=A.ac_code order by Y.ord+ Y.remark+ Y.col desc');
@@ -1176,7 +1228,7 @@ class OrderAppDB {
 /////////////////////////////////////////////////////
   // getReportRemarkOrderDetails() async {
   //   List<Map<String, dynamic>> result;
-  
+
   //   Database db = await instance.database;
   //   result = await db.rawQuery(
   //       'select A.ac_code  as cusid, A.hname as name,A.ac_ad1 as ad1,A.mo as mob , A.ba as bln, Y.ord  as order_value, Y.remark as remark_count , Y.col as collection_sum from accountHeadsTable A  left join (select cid,sum(Ord) as ord, sum(remark) as remark ,sum(col) as col from (select O.customerid cid, sum(O.total_price) Ord,0 remark,0 col from orderMasterTable O group by O.customerid union all select R.rem_cusid cid, 0 Ord, count(R.rem_cusid) remark , 0 col from remarksTable R group by R.rem_cusid union all select C.rec_cusid cid, 0 Ord , 0 remark, sum(C.rec_amount) col  from collectionTable C group by C.rec_cusid) x group by cid ) Y on Y.cid=A.ac_code order by Y.ord+ Y.remark+ Y.col+ Y.remark_count desc');

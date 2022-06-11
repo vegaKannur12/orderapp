@@ -28,13 +28,16 @@ class Dashboard extends StatefulWidget {
   State<Dashboard> createState() => _DashboardState();
 }
 
-class _DashboardState extends State<Dashboard> {
-  late TabController _tabController;
+class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
+  TabController? _tabController;
   static const List<Tab> myTabs = <Tab>[
-    Tab(text: 'Home '),
+    Tab(
+      text: 'Home ',
+    ),
     Tab(text: 'Todays Order'),
     Tab(text: 'Todays Collection'),
     Tab(text: 'Todays Sale'),
+    Tab(text: 'Report'),
   ];
   List<Widget> drawerOpts = [];
 
@@ -82,7 +85,11 @@ class _DashboardState extends State<Dashboard> {
     Provider.of<Controller>(context, listen: false).fetchMenusFromMenuTable();
     Provider.of<Controller>(context, listen: false).setCname();
     Provider.of<Controller>(context, listen: false).setSname();
-    // _tabController = TabController(vsync: this, length: myTabs.length);
+    _tabController = TabController(
+      vsync: this,
+      length: 5,
+      initialIndex: 0,
+    );
     getCompaniId();
     // Provider.of<Controller>(context, listen: false).getCompanyData();
     if (Provider.of<Controller>(context, listen: false).firstMenu != null) {
@@ -187,7 +194,7 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   void dispose() {
-    // _tabController.dispose();
+    _tabController!.dispose();
     // TODO: implement dispose
     super.dispose();
   }
@@ -232,33 +239,30 @@ class _DashboardState extends State<Dashboard> {
               ? menu_index != "S1"
                   ? AppBar(
                       elevation: 0,
-                      bottom: TabBar(
-                        controller: _tabController,
-                        tabs: myTabs,
-                      ),
+
                       title: Text(
                         title,
                         style: TextStyle(fontSize: 16),
                       ),
                       backgroundColor: P_Settings.wavecolor,
-                      // bottom: PreferredSize(
-                      //   preferredSize: Size.fromHeight(6.0),
-                      //   child: Consumer<Controller>(
-                      //     builder: (context, value, child) {
-                      //       if (value.isLoading) {
-                      //         return LinearProgressIndicator(
-                      //           backgroundColor: Colors.white,
-                      //           color: P_Settings.wavecolor,
+                      bottom: PreferredSize(
+                        preferredSize: Size.fromHeight(6.0),
+                        child: Consumer<Controller>(
+                          builder: (context, value, child) {
+                            if (value.isLoading) {
+                              return LinearProgressIndicator(
+                                backgroundColor: Colors.white,
+                                color: P_Settings.wavecolor,
 
-                      //           // valueColor: new AlwaysStoppedAnimation<Color>(Colors.red),
-                      //           // value: 0.25,
-                      //         );
-                      //       } else {
-                      //         return Container();
-                      //       }
-                      //     },
-                      //   ),
-                      // ),
+                                // valueColor: new AlwaysStoppedAnimation<Color>(Colors.red),
+                                // value: 0.25,
+                              );
+                            } else {
+                              return Container();
+                            }
+                          },
+                        ),
+                      ),
                       // title: Text("Company Details",style: TextStyle(fontSize: 20),),
                     )
                   : AppBar(
@@ -329,6 +333,23 @@ class _DashboardState extends State<Dashboard> {
                       ],
                     )
               : AppBar(
+                  bottom: TabBar(
+                    isScrollable: true,
+                    // labelStyle: Theme.of(context).tabBarTheme.labelStyle,
+                    unselectedLabelStyle:
+                        Theme.of(context).tabBarTheme.unselectedLabelStyle,
+                    labelColor: Color.fromARGB(255, 255, 255, 255),
+                    indicatorWeight: 2.0,
+                    indicatorSize: TabBarIndicatorSize.label,
+                    unselectedLabelColor:
+                        Theme.of(context).tabBarTheme.unselectedLabelColor,
+                    indicatorColor: Colors.white,
+                    labelStyle:
+                        TextStyle(fontSize: 16.0, fontFamily: 'Family Name'),
+                    tabs: myTabs,
+                    controller: _tabController,
+                    // tabs: myTabs,
+                  ),
                   backgroundColor: P_Settings.wavecolor,
                   elevation: 0,
                   leading: Builder(
@@ -507,7 +528,19 @@ class _DashboardState extends State<Dashboard> {
               },
             ),
           ),
-          body: _getDrawerItemWidget(menu_index),
+          body: TabBarView(
+            controller: _tabController,
+            children: myTabs.map((Tab tab) {
+              final String label = tab.text!.toLowerCase();
+              return Center(
+                child: Container(
+                  child: _getDrawerItemWidget(
+                    menu_index,
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
         ));
   }
 }

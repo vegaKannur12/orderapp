@@ -76,6 +76,8 @@ class Controller extends ChangeNotifier {
   List<Map<String, dynamic>> reportData = [];
   List<Map<String, dynamic>> sumPrice = [];
   List<Map<String, dynamic>> collectionsumPrice = [];
+  List<Map<String, dynamic>> collectionCount = [];
+  List<Map<String, dynamic>> orderCount = [];
 
   List<Map<String, dynamic>> remarkList = [];
   String? firstMenu;
@@ -1326,11 +1328,13 @@ class Controller extends ChangeNotifier {
     }
   }
 
-  selectTotalPrice(String sid) async {
+///////////////// order total today /////////////
+  Future<dynamic> selectTotalPrice(String sid,String todaydate) async {
+    sumPrice.clear();
     print("sid.......sid");
     Map map = {};
     isLoading = true;
-    var res = await OrderAppDB.instance.selectSumPlaceOrder(sid);
+    var res = await OrderAppDB.instance.selectSumPlaceOrder(sid,todaydate);
     print("resultssss....$res");
     if (res.length > 0) {
       for (var item in res) {
@@ -1342,8 +1346,27 @@ class Controller extends ChangeNotifier {
     notifyListeners();
   }
 
+  ////////////////////// today order count ///////////////////
+  Future<dynamic> selectOrderCount(String sid, String todaydate) async {
+    orderCount.clear();
+    print("todaydate.......$todaydate");
+    Map map = {};
+    isLoading = true;
+    var res = await OrderAppDB.instance.orderCount(sid,todaydate);
+    print("ordercount....$res");
+    if (res.length > 0) {
+      for (var item in res) {
+        orderCount.add(item);
+      }
+    }
+    print("report-----$orderCount");
+    isLoading = false;
+    notifyListeners();
+  }
+
   ///////////////////// todayCollection total///////////////////
-  selectCollectionPrice(String sid, String collectDate) async {
+  Future<dynamic> selectCollectionPrice(String sid, String collectDate) async {
+    collectionsumPrice.clear();
     print("sid $sid $collectDate");
     Map map = {};
     isLoading = true;
@@ -1360,6 +1383,25 @@ class Controller extends ChangeNotifier {
     notifyListeners();
   }
 
+  /////////////////// today collection count//////////
+  Future<dynamic> CollectionCount(String sid, String collectDate) async {
+    collectionCount.clear();
+    print("sid $sid $collectDate");
+    Map map = {};
+    isLoading = true;
+    var res = await OrderAppDB.instance.CountCollectionAmount(sid, collectDate);
+    print("resultssss....$res");
+    if (res.length > 0) {
+      for (var item in res) {
+        collectionCount.add(item);
+      }
+    }
+    print("report-----$collectionCount");
+    isLoading = false;
+    notifyListeners();
+  }
+
+/////////////////////////////////////////////////////////////////
   setFilter(bool filters) {
     filter = filters;
     // notifyListeners();

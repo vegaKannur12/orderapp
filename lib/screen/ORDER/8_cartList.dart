@@ -34,7 +34,7 @@ class _CartListState extends State<CartList> {
   String? sname;
   @override
   void initState() {
-    date = DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
+    date = DateFormat('yyyy-MM-dd').format(now);
     Provider.of<Controller>(context, listen: false).getOrderno();
     super.initState();
     Provider.of<Controller>(context, listen: false)
