@@ -138,24 +138,41 @@ class _MainDashboardState extends State<MainDashboard> {
                         // color: P_Settings.collection,
                         child: Column(
                           children: [
-                            Text("${value.cname}",
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: P_Settings.wavecolor)),
-                            SizedBox(
-                              height: size.height * 0.02,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: CircleAvatar(
+                                    radius: 15,
+                                    child: Icon(Icons.person,color: P_Settings.collection1,),
+                                    backgroundColor:
+                                        Color.fromARGB(255, 214, 201, 200),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: size.width * 0.01,
+                                ),
+                                Text("${value.cname}",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: P_Settings.wavecolor)),
+                                SizedBox(
+                                  width: size.width * 0.01,
+                                ),
+                                Text("- ${value.sname}",
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                        color: P_Settings.collection1))
+                              ],
                             ),
-                            Text("${value.sname}",
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                    color: P_Settings.extracolor)),
                           ],
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 8),
+                        padding: const EdgeInsets.only(top: 4),
                         child: Text(
                           "Todays",
                           style: TextStyle(
@@ -192,8 +209,10 @@ class _MainDashboardState extends State<MainDashboard> {
                                               children: [
                                                 Text(
                                                   "Collection",
-                                                  style:
-                                                      TextStyle(fontSize: 18,color: P_Settings.detailscolor),
+                                                  style: TextStyle(
+                                                      fontSize: 18,
+                                                      color: P_Settings
+                                                          .detailscolor),
                                                 ),
                                                 SizedBox(
                                                   height: size.height * 0.01,
@@ -201,7 +220,8 @@ class _MainDashboardState extends State<MainDashboard> {
                                                 Text(
                                                   "${value.collectionCount.length != 0 && value.collectionCount[0]['S'] != null && value.collectionCount.isNotEmpty ? value.collectionCount[0]['S'] : "0"}",
                                                   style: TextStyle(
-                                                      color: P_Settings.detailscolor,
+                                                      color: P_Settings
+                                                          .detailscolor,
                                                       fontSize: 15),
                                                 ),
                                               ],
@@ -227,8 +247,10 @@ class _MainDashboardState extends State<MainDashboard> {
                                               children: [
                                                 Text(
                                                   "Orders",
-                                                  style:
-                                                      TextStyle(fontSize: 18,color: P_Settings.detailscolor),
+                                                  style: TextStyle(
+                                                      fontSize: 18,
+                                                      color: P_Settings
+                                                          .detailscolor),
                                                 ),
                                                 SizedBox(
                                                   height: size.height * 0.01,
@@ -236,7 +258,8 @@ class _MainDashboardState extends State<MainDashboard> {
                                                 Text(
                                                   "${value.orderCount.length != 0 && value.orderCount[0]['S'] != null && value.orderCount.isNotEmpty ? value.orderCount[0]['S'] : "0"}",
                                                   style: TextStyle(
-                                                      color: P_Settings.detailscolor,
+                                                      color: P_Settings
+                                                          .detailscolor,
                                                       fontSize: 15),
                                                 ),
                                                 // Text(
@@ -275,8 +298,10 @@ class _MainDashboardState extends State<MainDashboard> {
                                                 children: [
                                                   Text(
                                                     "Sales",
-                                                    style:
-                                                        TextStyle(fontSize: 18,color: P_Settings.detailscolor),
+                                                    style: TextStyle(
+                                                        fontSize: 18,
+                                                        color: P_Settings
+                                                            .detailscolor),
                                                   ),
                                                 ],
                                               ),
@@ -302,8 +327,10 @@ class _MainDashboardState extends State<MainDashboard> {
                                                 children: [
                                                   Text(
                                                     "Return",
-                                                    style:
-                                                        TextStyle(fontSize: 18,color: P_Settings.detailscolor),
+                                                    style: TextStyle(
+                                                        fontSize: 18,
+                                                        color: P_Settings
+                                                            .detailscolor),
                                                   ),
                                                   SizedBox(
                                                     height: size.height * 0.01,
@@ -311,7 +338,8 @@ class _MainDashboardState extends State<MainDashboard> {
                                                   Text(
                                                     "",
                                                     style: TextStyle(
-                                                        color: P_Settings.detailscolor,
+                                                        color: P_Settings
+                                                            .detailscolor,
                                                         fontSize: 15),
                                                   ),
                                                   // Text(
@@ -352,8 +380,10 @@ class _MainDashboardState extends State<MainDashboard> {
                                                 children: [
                                                   Text(
                                                     "Sales",
-                                                    style:
-                                                        TextStyle(fontSize: 18,color: P_Settings.detailscolor),
+                                                    style: TextStyle(
+                                                        fontSize: 18,
+                                                        color: P_Settings
+                                                            .detailscolor),
                                                   ),
                                                 ],
                                               ),
@@ -379,8 +409,10 @@ class _MainDashboardState extends State<MainDashboard> {
                                                 children: [
                                                   Text(
                                                     "Return",
-                                                    style:
-                                                        TextStyle(fontSize: 18,color: P_Settings.detailscolor),
+                                                    style: TextStyle(
+                                                        fontSize: 18,
+                                                        color: P_Settings
+                                                            .detailscolor),
                                                   ),
                                                   SizedBox(
                                                     height: size.height * 0.01,
@@ -388,7 +420,8 @@ class _MainDashboardState extends State<MainDashboard> {
                                                   Text(
                                                     "",
                                                     style: TextStyle(
-                                                        color: P_Settings.detailscolor,
+                                                        color: P_Settings
+                                                            .detailscolor,
                                                         fontSize: 15),
                                                   ),
                                                   // Text(
@@ -440,8 +473,10 @@ class _MainDashboardState extends State<MainDashboard> {
                                                 children: [
                                                   Text(
                                                     "Collection",
-                                                    style:
-                                                        TextStyle(fontSize: 18,color: P_Settings.detailscolor),
+                                                    style: TextStyle(
+                                                        fontSize: 18,
+                                                        color: P_Settings
+                                                            .detailscolor),
                                                   ),
                                                   SizedBox(
                                                     height: size.height * 0.01,
@@ -449,7 +484,8 @@ class _MainDashboardState extends State<MainDashboard> {
                                                   Text(
                                                     "\u{20B9}${value.collectionsumPrice.length != 0 && value.collectionsumPrice[0]['S'] != null && value.collectionsumPrice.isNotEmpty ? value.collectionsumPrice[0]['S'] : "0"}",
                                                     style: TextStyle(
-                                                        color: P_Settings.detailscolor,
+                                                        color: P_Settings
+                                                            .detailscolor,
                                                         fontSize: 15),
                                                   ),
                                                 ],
@@ -474,8 +510,10 @@ class _MainDashboardState extends State<MainDashboard> {
                                                 children: [
                                                   Text(
                                                     "Orders",
-                                                    style:
-                                                        TextStyle(fontSize: 18,color: P_Settings.detailscolor),
+                                                    style: TextStyle(
+                                                        fontSize: 18,
+                                                        color: P_Settings
+                                                            .detailscolor),
                                                   ),
                                                   SizedBox(
                                                     height: size.height * 0.01,
@@ -483,7 +521,8 @@ class _MainDashboardState extends State<MainDashboard> {
                                                   Text(
                                                     "\u{20B9}${value.sumPrice.length != 0 && value.sumPrice[0]['s'] != null && value.sumPrice.isNotEmpty ? value.sumPrice[0]['s'] : "0"}",
                                                     style: TextStyle(
-                                                       color: P_Settings.detailscolor,
+                                                        color: P_Settings
+                                                            .detailscolor,
                                                         fontSize: 15),
                                                   ),
                                                   // Text(
@@ -521,7 +560,9 @@ class _MainDashboardState extends State<MainDashboard> {
                                                     Text(
                                                       "Sales",
                                                       style: TextStyle(
-                                                          fontSize: 18,color: P_Settings.detailscolor),
+                                                          fontSize: 18,
+                                                          color: P_Settings
+                                                              .detailscolor),
                                                     ),
                                                   ],
                                                 ),
@@ -546,8 +587,10 @@ class _MainDashboardState extends State<MainDashboard> {
                                                 children: [
                                                   Text(
                                                     "Return",
-                                                    style:
-                                                        TextStyle(fontSize: 18,color: P_Settings.detailscolor),
+                                                    style: TextStyle(
+                                                        fontSize: 18,
+                                                        color: P_Settings
+                                                            .detailscolor),
                                                   ),
                                                   SizedBox(
                                                     height: size.height * 0.01,
@@ -555,7 +598,8 @@ class _MainDashboardState extends State<MainDashboard> {
                                                   Text(
                                                     "",
                                                     style: TextStyle(
-                                                        color: P_Settings.detailscolor,
+                                                        color: P_Settings
+                                                            .detailscolor,
                                                         fontSize: 15),
                                                   ),
                                                   // Text(
@@ -593,7 +637,9 @@ class _MainDashboardState extends State<MainDashboard> {
                                                     Text(
                                                       "Sales",
                                                       style: TextStyle(
-                                                          fontSize: 18,color: P_Settings.detailscolor),
+                                                          fontSize: 18,
+                                                          color: P_Settings
+                                                              .detailscolor),
                                                     ),
                                                   ],
                                                 ),
@@ -618,8 +664,10 @@ class _MainDashboardState extends State<MainDashboard> {
                                                 children: [
                                                   Text(
                                                     "Return",
-                                                    style:
-                                                        TextStyle(fontSize: 18,color: P_Settings.detailscolor),
+                                                    style: TextStyle(
+                                                        fontSize: 18,
+                                                        color: P_Settings
+                                                            .detailscolor),
                                                   ),
                                                   SizedBox(
                                                     height: size.height * 0.01,
