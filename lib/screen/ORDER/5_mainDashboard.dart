@@ -57,68 +57,7 @@ class _MainDashboardState extends State<MainDashboard> {
     Size size = MediaQuery.of(context).size;
     return Column(
       children: [
-        Container(
-          // decoration: BoxDecoration(
-          //   borderRadius: BorderRadius.only(
-          //       // bottomLeft: Radius.circular(50),
-          //       // bottomRight: Radius.circular(50),
-          //       ),
-          //   // color: P_Settings.roundedButtonColor
-          // ),
-          alignment: Alignment.center,
-          height: size.height * 0.02,
-          child: Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: size.height * 0.03,
-                ),
-                // Flexible(
-                //   child: Consumer<Controller>(
-                //     builder: (context, value, child) {
-                //       return Column(
-                //         children: [
-                //           Text("${value.cname}",
-                //               style: TextStyle(
-                //                   fontSize: 20,
-                //                   fontWeight: FontWeight.bold,
-                //                   color: P_Settings.detailscolor)),
-                //           SizedBox(
-                //             height: size.height * 0.02,
-                //           ),
-                //           Text("${value.sname}",
-                //               style: TextStyle(
-                //                   fontSize: 15,
-                //                   fontWeight: FontWeight.bold,
-                //                   color: P_Settings.extracolor)),
-
-                //           // Row(
-                //           //   mainAxisAlignment: MainAxisAlignment.end,
-                //           //   children: [
-                //           //     IconButton(
-                //           //         onPressed: () {},
-                //           //         icon: Icon(
-                //           //           Icons.place,
-                //           //           color: Colors.white,
-                //           //         ))
-                //           //   ],
-                //           // )
-                //           // Container(
-                //           //   decoration: new BoxDecoration(
-                //           //       color: Theme.of(context).primaryColor),
-                //           //   child:
-                //           // ),
-                //         ],
-                //       );
-                //     },
-                //   ),
-                // ),
-              ],
-            ),
-          ),
-        ),
+        
         Consumer<Controller>(
           builder: (context, value, child) {
             return Expanded(
