@@ -29,7 +29,13 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  // int _selectedDrawerIndex = 0;
+  late TabController _tabController;
+  static const List<Tab> myTabs = <Tab>[
+    Tab(text: 'Home '),
+    Tab(text: 'Todays Order'),
+    Tab(text: 'Todays Collection'),
+    Tab(text: 'Todays Sale'),
+  ];
   List<Widget> drawerOpts = [];
 
   ValueNotifier<bool> upselected = ValueNotifier(false);
@@ -76,7 +82,7 @@ class _DashboardState extends State<Dashboard> {
     Provider.of<Controller>(context, listen: false).fetchMenusFromMenuTable();
     Provider.of<Controller>(context, listen: false).setCname();
     Provider.of<Controller>(context, listen: false).setSname();
-    // insertSettings();
+    // _tabController = TabController(vsync: this, length: myTabs.length);
     getCompaniId();
     // Provider.of<Controller>(context, listen: false).getCompanyData();
     if (Provider.of<Controller>(context, listen: false).firstMenu != null) {
@@ -180,6 +186,13 @@ class _DashboardState extends State<Dashboard> {
   }
 
   @override
+  void dispose() {
+    // _tabController.dispose();
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     print("${Provider.of<Controller>(context, listen: false).menuList.length}");
     // List<Widget> drawerOpts = [];
@@ -219,29 +232,33 @@ class _DashboardState extends State<Dashboard> {
               ? menu_index != "S1"
                   ? AppBar(
                       elevation: 0,
+                      bottom: TabBar(
+                        controller: _tabController,
+                        tabs: myTabs,
+                      ),
                       title: Text(
                         title,
                         style: TextStyle(fontSize: 16),
                       ),
                       backgroundColor: P_Settings.wavecolor,
-                      bottom: PreferredSize(
-                        preferredSize: Size.fromHeight(6.0),
-                        child: Consumer<Controller>(
-                          builder: (context, value, child) {
-                            if (value.isLoading) {
-                              return LinearProgressIndicator(
-                                backgroundColor: Colors.white,
-                                color: P_Settings.wavecolor,
+                      // bottom: PreferredSize(
+                      //   preferredSize: Size.fromHeight(6.0),
+                      //   child: Consumer<Controller>(
+                      //     builder: (context, value, child) {
+                      //       if (value.isLoading) {
+                      //         return LinearProgressIndicator(
+                      //           backgroundColor: Colors.white,
+                      //           color: P_Settings.wavecolor,
 
-                                // valueColor: new AlwaysStoppedAnimation<Color>(Colors.red),
-                                // value: 0.25,
-                              );
-                            } else {
-                              return Container();
-                            }
-                          },
-                        ),
-                      ),
+                      //           // valueColor: new AlwaysStoppedAnimation<Color>(Colors.red),
+                      //           // value: 0.25,
+                      //         );
+                      //       } else {
+                      //         return Container();
+                      //       }
+                      //     },
+                      //   ),
+                      // ),
                       // title: Text("Company Details",style: TextStyle(fontSize: 20),),
                     )
                   : AppBar(

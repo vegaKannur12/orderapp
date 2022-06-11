@@ -15,6 +15,7 @@ class MainDashboard extends StatefulWidget {
 }
 
 class _MainDashboardState extends State<MainDashboard> {
+
   DateTime date = DateTime.now();
   String? formattedDate;
   List companyAttributes = [
@@ -40,13 +41,11 @@ class _MainDashboardState extends State<MainDashboard> {
     // TODO: implement initState
     super.initState();
     formattedDate = DateFormat('yyyy-MM-dd').format(date);
-    //  _controller = TabController(vsync: this, length: 3);
     sharedPref();
   }
 
   @override
   void dispose() {
-    // _controller.dispose();
     // TODO: implement dispose
     super.dispose();
   }
