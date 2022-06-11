@@ -14,8 +14,8 @@ class P_Settings {
   // static String get title => 'Order App';
   static Color get appbarColor => Color.fromARGB(255, 221, 202, 219);
   static Color get headingColor => Color.fromARGB(255, 4, 11, 73);
-  // font color 
-  
+  // font color
+
   static Color get bodycolor => Color.fromARGB(255, 236, 235, 235);
   static Color get detailscolor2 => Color.fromARGB(255, 195, 203, 228);
   static Color get detailscolor => Colors.white;
@@ -29,27 +29,21 @@ class P_Settings {
   static Color get tableheadingColor => Color.fromARGB(255, 236, 243, 243);
   static Color get chooseCategory => Color.fromRGBO(230, 81, 0, 1);
   static Color get addbutonColor => Color.fromARGB(255, 243, 40, 4);
-  static Color get ratecolor=> Color.fromARGB(255, 231, 133, 166);
-  static Color get collection=> Color.fromARGB(255, 238, 238, 238);
-  static Color get editcolor=> Color.fromARGB(255, 22, 78, 30);
- 
-  static Color get dashbordcl2=> Color.fromARGB(255, 235, 121, 45);
-  static Color get dashbordcl3=> Color.fromARGB(255, 46, 207, 40);
-  static Color get dashbordcl1=>Color.fromARGB(255, 3, 169, 244);
-    static Color get bottomNavButton => Colors.white;
+  static Color get ratecolor => Color.fromARGB(255, 231, 133, 166);
+  static Color get collection => Color.fromARGB(255, 238, 238, 238);
+  static Color get collection1 => Color.fromARGB(255, 121, 119, 119);
+  static Color get editcolor => Color.fromARGB(255, 22, 78, 30);
 
+  static Color get dashbordcl2 => Color.fromARGB(255, 235, 121, 45);
+  static Color get dashbordcl3 => Color.fromARGB(255, 46, 207, 40);
+  static Color get dashbordcl1 => Color.fromARGB(255, 3, 169, 244);
+  static Color get bottomNavButton => Colors.white;
 
   static Color get bottomColor => Colors.yellow;
   static Color get returnbuttnColor => Color.fromARGB(255, 42, 153, 46);
 
-
   // static Color get bottomNavButton => Colors.white;
 
-
-
-
-
 /////////////////////////level1///////////////////////////////////////////////
-
 
 }
