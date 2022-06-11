@@ -92,6 +92,14 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
       length: 5,
       initialIndex: 0,
     );
+    print("Selected Index: " + _tabController!.index.toString());
+    _tabController!.addListener(() {
+      setState(() {
+        menu_index = _tabController!.index.toString();
+      });
+
+      
+    });
     getCompaniId();
     // Provider.of<Controller>(context, listen: false).getCompanyData();
     if (Provider.of<Controller>(context, listen: false).firstMenu != null) {
@@ -108,7 +116,7 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     cid = prefs.getString("cid");
     os = prefs.getString("os");
-    sid=prefs.getString("sid");
+    sid = prefs.getString("sid");
     print("cid--sid--$cid--$sid");
   }
 
@@ -169,11 +177,19 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
         return History(
             // type: "drawer call",
             );
-      case "RP":
+      case "0":
+        return new MainDashboard();
+      case "4":
         Provider.of<Controller>(context, listen: false).setFilter(false);
         Provider.of<Controller>(context, listen: false)
             .selectReportFromOrder(context);
+        // Navigator.pop(context);
         return ReportPage();
+      // case "RP":
+      //   Provider.of<Controller>(context, listen: false).setFilter(false);
+      //   Provider.of<Controller>(context, listen: false)
+      //       .selectReportFromOrder(context);
+      //   return ReportPage();
 
       case "ST":
         // title = "Download data";
@@ -205,33 +221,6 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     print("${Provider.of<Controller>(context, listen: false).menuList.length}");
-    // List<Widget> drawerOpts = [];
-    // print("clicked");
-    // // companyAttributes.clear();
-    // for (var i = 0;
-    //     i < Provider.of<Controller>(context, listen: false).menuList.length;
-    //     i++) {
-    //   // var d =Provider.of<Controller>(context, listen: false).drawerItems[i];
-    //   setState(() {
-    //     drawerOpts.add(Consumer<Controller>(
-    //       builder: (context, value, child) {
-    //         return ListTile(
-    //           title: Text(
-    //             value.menuList[i]["menu_name"].toLowerCase(),
-    //             style: TextStyle(fontFamily: P_Font.kronaOne, fontSize: 17),
-    //           ),
-    //           // selected: i == _selectedIndex,
-    //           onTap: () {
-    //             _onSelectItem(
-    //               i,
-    //               value.menuList[i]["menu_index"],
-    //             );
-    //           },
-    //         );
-    //       },
-    //     ));
-    //   });
-    // }
     Size size = MediaQuery.of(context).size;
     return WillPopScope(
         onWillPop: () => _onBackPressed(context),
@@ -239,132 +228,60 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
           key: _key, //
           backgroundColor: P_Settings.wavecolor,
           appBar: menu_index == "UL" || menu_index == "dP"
-              ? menu_index != "S1"
-                  ? AppBar(
-                      elevation: 0,
-
-                      title: Text(
-                        title,
-                        style: TextStyle(fontSize: 16),
-                      ),
-                      backgroundColor: P_Settings.wavecolor,
-                      bottom: PreferredSize(
-                        preferredSize: Size.fromHeight(6.0),
-                        child: Consumer<Controller>(
-                          builder: (context, value, child) {
-                            if (value.isLoading) {
-                              return LinearProgressIndicator(
-                                backgroundColor: Colors.white,
-                                color: P_Settings.wavecolor,
-
-                                // valueColor: new AlwaysStoppedAnimation<Color>(Colors.red),
-                                // value: 0.25,
-                              );
-                            } else {
-                              return Container();
-                            }
-                          },
-                        ),
-                      ),
-                      // title: Text("Company Details",style: TextStyle(fontSize: 20),),
-                    )
-                  : AppBar(
-                      leading: Builder(
-                        builder: (context) => IconButton(
-                            icon: new Icon(Icons.menu),
-                            onPressed: () {
-                              Provider.of<Controller>(context, listen: false)
-                                  .getCompanyData();
-                              // Provider.of<Controller>(context, listen: false)
-                              //     .selectFromSettings();
-                              // Provider.of<Controller>(context, listen: false)
-                              //     .getCompanyData();
-
-                              drawerOpts.clear();
-                              print("clicked");
-                              // companyAttributes.clear();
-                              for (var i = 0;
-                                  i <
-                                      Provider.of<Controller>(context,
-                                              listen: false)
-                                          .menuList
-                                          .length;
-                                  i++) {
-                                // var d =Provider.of<Controller>(context, listen: false).drawerItems[i];
-                                setState(() {
-                                  drawerOpts.add(Consumer<Controller>(
-                                    builder: (context, value, child) {
-                                      return ListTile(
-                                        title: Text(
-                                          value.menuList[i]["menu_name"]
-                                              .toLowerCase(),
-                                          style: TextStyle(
-                                              fontFamily: P_Font.kronaOne,
-                                              fontSize: 17),
-                                        ),
-                                        // selected: i == _selectedIndex,
-                                        onTap: () {
-                                          _onSelectItem(
-                                            i,
-                                            value.menuList[i]["menu_index"],
-                                          );
-                                        },
-                                      );
-                                    },
-                                  ));
-                                });
-                              }
-                              // Provider.of<Controller>(context, listen: false).fetchMenusFromMenuTable();
-                              Scaffold.of(context).openDrawer();
-                            }),
-                      ),
-                      elevation: 0,
-                      backgroundColor: P_Settings.wavecolor,
-                      actions: [
-                        IconButton(
-                          onPressed: () async {
-                            List<Map<String, dynamic>> list =
-                                await OrderAppDB.instance.getListOfTables();
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => TableList(list: list)),
-                            );
-                          },
-                          icon: Icon(Icons.table_bar),
-                        ),
-                      ],
-                    )
-              : AppBar(
-                  bottom: TabBar(
-                    isScrollable: true,
-                    // labelStyle: Theme.of(context).tabBarTheme.labelStyle,
-                    unselectedLabelStyle:
-                        Theme.of(context).tabBarTheme.unselectedLabelStyle,
-                    labelColor: Color.fromARGB(255, 255, 255, 255),
-                    indicatorWeight: 2.0,
-                    indicatorSize: TabBarIndicatorSize.label,
-                    unselectedLabelColor:
-                        Theme.of(context).tabBarTheme.unselectedLabelColor,
-                    indicatorColor: Colors.white,
-                    labelStyle:
-                        TextStyle(fontSize: 16.0, fontFamily: 'Family Name'),
-                    tabs: myTabs,
-                    controller: _tabController,
-                    // tabs: myTabs,
+              ? AppBar(
+                  elevation: 0,
+                  title: Text(
+                    title,
+                    style: TextStyle(fontSize: 16),
                   ),
                   backgroundColor: P_Settings.wavecolor,
-                  elevation: 0,
+                  bottom: PreferredSize(
+                    preferredSize: Size.fromHeight(6.0),
+                    child: Consumer<Controller>(
+                      builder: (context, value, child) {
+                        if (value.isLoading) {
+                          return LinearProgressIndicator(
+                            backgroundColor: Colors.white,
+                            color: P_Settings.wavecolor,
+
+                            // valueColor: new AlwaysStoppedAnimation<Color>(Colors.red),
+                            // value: 0.25,
+                          );
+                        } else {
+                          return Container();
+                        }
+                      },
+                    ),
+                  ),
+                  // title: Text("Company Details",style: TextStyle(fontSize: 20),),
+                )
+              : AppBar(
+                  bottom: menu_index == "S1" ||
+                          menu_index == "1" ||
+                          menu_index == "2" ||
+                          menu_index == "3" ||
+                          menu_index == "4"
+                      ? TabBar(
+                          isScrollable: true,
+
+                          indicatorColor: Colors.white,
+                          indicatorSize: TabBarIndicatorSize.label,
+                          indicatorWeight: 2.0,
+                          // indicatorSize: TabBarIndicatorSize.label,
+                          labelColor: Color.fromARGB(255, 255, 255, 255),
+                          tabs: myTabs,
+                          controller: _tabController,
+                        )
+                      : null,
                   leading: Builder(
                     builder: (context) => IconButton(
                         icon: new Icon(Icons.menu),
                         onPressed: () {
                           Provider.of<Controller>(context, listen: false)
                               .getCompanyData();
-
                           drawerOpts.clear();
                           print("clicked");
-
+                          // companyAttributes.clear();
                           for (var i = 0;
                               i <
                                   Provider.of<Controller>(context,
@@ -400,6 +317,8 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                           Scaffold.of(context).openDrawer();
                         }),
                   ),
+                  elevation: 0,
+                  backgroundColor: P_Settings.wavecolor,
                   actions: [
                     IconButton(
                       onPressed: () async {
@@ -532,6 +451,10 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
               },
             ),
           ),
+          // body: _getDrawerItemWidget(
+          //   menu_index,
+          // ),
+
           body: TabBarView(
             controller: _tabController,
             children: myTabs.map((Tab tab) {

@@ -17,6 +17,7 @@ class CustomerCreation extends StatefulWidget {
 }
 
 class _CustomerCreationState extends State<CustomerCreation> {
+  ValueNotifier<bool> visible = ValueNotifier(false);
   String? selected;
   TextEditingController cusname = TextEditingController();
   String? gtype;
@@ -323,35 +324,44 @@ class _CustomerCreationState extends State<CustomerCreation> {
                                   height: size.height * 0.05,
                                   child: ElevatedButton(
                                     onPressed: () async {
-                                      customerCount = customerCount + 1;
-                                      String ac_code =
-                                          "${widget.os} " + "${customerCount}";
-                                      FocusScope.of(context)
-                                          .requestFocus(FocusNode());
-                                      var account = await OrderAppDB.instance
-                                          .createCustomer(
-                                              ac_code,
-                                              cusname.text,
-                                              gtype!,
-                                              addr1.text,
-                                              addr2.text,
-                                              addr3.text,
-                                              selected!,
-                                              phoneNo.text,
-                                              "0",
-                                              0,
-                                              "0",
-                                              "0",
-                                              mob.text,
-                                              "0",
-                                              "0",
-                                              "");
-                                      cusname.clear();
-                                      addr1.clear();
-                                      addr2.clear();
-                                      addr3.clear();
-                                      phoneNo.clear();
-                                      tst.toast("Customer created!!");
+                                      if (selected == null ||
+                                          selected!.isEmpty) {
+                                        visible.value = true;
+                                      } else if (gtype == null ||
+                                          gtype!.isEmpty) {
+                                        visible.value = true;
+                                      } else {
+                                        visible.value = false;
+                                        customerCount = customerCount + 1;
+                                        String ac_code = "${widget.os} " +
+                                            "${customerCount}";
+                                        FocusScope.of(context)
+                                            .requestFocus(FocusNode());
+                                        var account = await OrderAppDB.instance
+                                            .createCustomer(
+                                                ac_code,
+                                                cusname.text,
+                                                gtype!,
+                                                addr1.text,
+                                                addr2.text,
+                                                addr3.text,
+                                                selected!,
+                                                phoneNo.text,
+                                                "0",
+                                                0,
+                                                "0",
+                                                "0",
+                                                mob.text,
+                                                "0",
+                                                "0",
+                                                "");
+                                        cusname.clear();
+                                        addr1.clear();
+                                        addr2.clear();
+                                        addr3.clear();
+                                        phoneNo.clear();
+                                        tst.toast("Customer created!!");
+                                      }
                                     },
                                     child: Text('Save'),
                                   ),
@@ -360,21 +370,21 @@ class _CustomerCreationState extends State<CustomerCreation> {
                               SizedBox(
                                 height: size.height * 0.01,
                               ),
-                              // Center(
-                              //   child: ValueListenableBuilder(
-                              //       // valueListenable: visible,
-                              //       builder: (BuildContext context, bool v,
-                              //           Widget? child) {
-                              //         print("value===${visible.value}");
-                              //         return Visibility(
-                              //           visible: v,
-                              //           child: Text(
-                              //             "Please fill corresponding fields!!!",
-                              //             style: TextStyle(color: Colors.red),
-                              //           ),
-                              //         );
-                              //       }),
-                              // )
+                              Center(
+                                child: ValueListenableBuilder(
+                                    valueListenable: visible,
+                                    builder: (BuildContext context, bool v,
+                                        Widget? child) {
+                                      print("value===${visible.value}");
+                                      return Visibility(
+                                        visible: v,
+                                        child: Text(
+                                          "Please fill corresponding fields",
+                                          style: TextStyle(color: Colors.red),
+                                        ),
+                                      );
+                                    }),
+                              )
                             ],
                           ),
                         ),
