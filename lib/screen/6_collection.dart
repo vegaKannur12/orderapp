@@ -253,12 +253,8 @@ class _CollectionPageState extends State<CollectionPage> {
                                                 widget.cuid!,
                                                 widget.os!,
                                                 selected!,
-<<<<<<< HEAD
                                                 double.parse(
                                                     amtController.text),
-=======
-                                                double.parse(amtController.text),
->>>>>>> 47a06aa9dcaeadc03d3cad740939112c1fc4f0e6
                                                 dscController.text,
                                                 noteController.text,
                                                 widget.sid!,
