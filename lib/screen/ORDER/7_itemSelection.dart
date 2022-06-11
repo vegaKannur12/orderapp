@@ -4,13 +4,12 @@ import 'package:intl/intl.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:orderapp/components/commoncolor.dart';
 import 'package:orderapp/components/customSearchTile.dart';
+import 'package:orderapp/components/customSnackbar.dart';
 import 'package:orderapp/components/showMoadal.dart';
+import 'package:orderapp/controller/controller.dart';
 import 'package:orderapp/db_helper.dart';
-import 'package:orderapp/screen/8_cartList.dart';
-// import 'package:orderapp/screen/cartList.dart';
+import 'package:orderapp/screen/ORDER/8_cartList.dart';
 import 'package:provider/provider.dart';
-import '../controller/controller.dart';
-import '../components/customSnackbar.dart';
 
 class ItemSelection extends StatefulWidget {
   // List<Map<String,dynamic>>  products;

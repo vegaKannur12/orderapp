@@ -10,7 +10,8 @@ import 'package:orderapp/model/productsCategory_model.dart';
 import 'package:orderapp/model/registration_model.dart';
 import 'package:orderapp/model/sideMenu_model.dart';
 import 'package:orderapp/model/wallet_model.dart';
-import 'package:orderapp/screen/2_companyDetailsscreen.dart';
+import 'package:orderapp/screen/ORDER/2_companyDetailsscreen.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../components/network_connectivity.dart';
@@ -258,7 +259,6 @@ class Controller extends ChangeNotifier {
       }
 
       print("inserted staff ${balanceModel}");
-
       /////////////// insert into local db /////////////////////
       notifyListeners();
       return balanceModel;
@@ -1325,7 +1325,8 @@ class Controller extends ChangeNotifier {
       print("new---$newreportList");
     }
   }
-    selectTotalPrice(String sid) async {
+
+  selectTotalPrice(String sid) async {
     print("sid.......sid");
     Map map = {};
     isLoading = true;
@@ -1358,8 +1359,6 @@ class Controller extends ChangeNotifier {
     isLoading = false;
     notifyListeners();
   }
-
-  
 
   setFilter(bool filters) {
     filter = filters;
@@ -1415,15 +1414,17 @@ class Controller extends ChangeNotifier {
       if (remark == "Remarked") {
         filterList = reportData.where((element) {
           //  print('${element["bln"].runtimeType}') ;
-          return (element["remark_count"] != null &&element["remark_count"] != 0 );
+          return (element["remark_count"] != null &&
+              element["remark_count"] != 0);
           // return (element["bln"] > minPrice && element["bln"] < maxPrice);
         }).toList();
       } else {
-         filterList = reportData.where((element) {
-        //  print('${element["bln"].runtimeType}') ;
-        return (element["remark_count"] == null || element["remark_count"] ==0);
-        // return (element["bln"] > minPrice && element["bln"] < maxPrice);
-      }).toList();
+        filterList = reportData.where((element) {
+          //  print('${element["bln"].runtimeType}') ;
+          return (element["remark_count"] == null ||
+              element["remark_count"] == 0);
+          // return (element["bln"] > minPrice && element["bln"] < maxPrice);
+        }).toList();
       }
 
       isLoading = false;

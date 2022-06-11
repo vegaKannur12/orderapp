@@ -3,10 +3,10 @@ import 'package:intl/intl.dart';
 import 'package:orderapp/components/commoncolor.dart';
 import 'package:orderapp/components/customPopup.dart';
 import 'package:orderapp/components/customToast.dart';
+import 'package:orderapp/controller/controller.dart';
 import 'package:orderapp/db_helper.dart';
 import 'package:provider/provider.dart';
 
-import '../controller/controller.dart';
 
 class RemarkPage extends StatefulWidget {
   String cus_id;

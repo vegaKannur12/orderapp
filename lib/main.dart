@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:orderapp/controller/controller.dart';
-import 'package:orderapp/screen/1_companyRegistrationScreen.dart';
-import 'package:orderapp/screen/2_companyDetailsscreen.dart';
-import 'package:orderapp/screen/3_staffLoginScreen.dart';
-import 'package:orderapp/screen/5_dashboard.dart';
-import 'package:orderapp/screen/6_historypage.dart';
-import 'package:orderapp/screen/0_splashScreen.dart';
-import 'package:orderapp/screen/6.1_filter_Report.dart';
+import 'package:orderapp/screen/ORDER/0_splashScreen.dart';
+
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'components/commoncolor.dart';
