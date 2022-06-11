@@ -15,8 +15,6 @@ class MainDashboard extends StatefulWidget {
 }
 
 class _MainDashboardState extends State<MainDashboard> {
-
-
   DateTime date = DateTime.now();
   String? formattedDate;
   List companyAttributes = [
@@ -45,16 +43,16 @@ class _MainDashboardState extends State<MainDashboard> {
     //  _controller = TabController(vsync: this, length: 3);
     sharedPref();
   }
+
   @override
   void dispose() {
-      // _controller.dispose();
+    // _controller.dispose();
     // TODO: implement dispose
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-  
     Size size = MediaQuery.of(context).size;
     return Column(
       children: [
@@ -94,7 +92,7 @@ class _MainDashboardState extends State<MainDashboard> {
                           // Container(
                           //   decoration: new BoxDecoration(
                           //       color: Theme.of(context).primaryColor),
-                          //   child: 
+                          //   child:
                           // ),
                         ],
                       );
@@ -114,7 +112,7 @@ class _MainDashboardState extends State<MainDashboard> {
                         // topLeft: Radius.circular(95),
                         // topRight: Radius.circular(95),
                         ),
-                    color: Color.fromARGB(255, 241, 237, 237)),
+                    color: Color.fromARGB(255, 255, 255, 255)),
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
@@ -123,14 +121,16 @@ class _MainDashboardState extends State<MainDashboard> {
                         child: Text(
                           "Todays",
                           style: TextStyle(
-                              fontSize: 20, color: P_Settings.wavecolor),
+                              fontSize: 20,
+                              color: P_Settings.wavecolor,
+                              fontWeight: FontWeight.bold),
                         ),
                       ),
                       Padding(
                           padding: const EdgeInsets.only(top: 20),
                           child: Container(
                             height: size.height * 0.9,
-                            color: Color.fromARGB(255, 240, 230, 230),
+                            color: Color.fromARGB(255, 255, 255, 255),
                             child: Column(
                               children: [
                                 Row(
@@ -380,7 +380,8 @@ class _MainDashboardState extends State<MainDashboard> {
                                         "Today Collection",
                                         style: TextStyle(
                                             fontSize: 20,
-                                            color: P_Settings.wavecolor),
+                                            color: P_Settings.wavecolor,
+                                            fontWeight: FontWeight.bold),
                                       ),
                                     ),
                                     Row(
