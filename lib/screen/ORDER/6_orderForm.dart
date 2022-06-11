@@ -16,10 +16,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class OrderForm extends StatefulWidget {
   String areaname;
-
-  OrderForm(
-    this.areaname,
-  );
+  String? type;
+  OrderForm(this.areaname, this.type);
 
   @override
   State<OrderForm> createState() => _OrderFormState();
@@ -147,15 +145,15 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                             child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(
-                                    Icons.person,
-                                    color: P_Settings.bottomColor,
-                                    size: 30,
-                                  ),
+                                  // Icon(
+                                  //   Icons.person,
+                                  //   color: P_Settings.bottomColor,
+                                  //   size: 30,
+                                  // ),
                                   SizedBox(
                                     width: size.width * 0.01,
                                   ),
-                                  Text("SALES ORDER",
+                                  Text(widget.type=="return"?"RETURN":widget.type=="collection"?"COLLECTION":"SALES ORDER",
                                       style: TextStyle(
                                           fontSize: 24,
                                           color: P_Settings.bodycolor,
@@ -473,7 +471,8 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                                                     .getInstance();
                                                             prefs.setString(
                                                                 'cus_id',
-                                                                option["ac_code"]);
+                                                                option[
+                                                                    "ac_code"]);
                                                             // Provider.of<Controller>(
                                                             //             context,
                                                             //             listen:
@@ -499,243 +498,519 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                         SizedBox(
                                           height: size.height * 0.02,
                                         ),
-                                        Row(
-                                          children: [
-                                            Container(
-                                              width: size.width * 0.26,
-                                              height: size.height * 0.05,
-                                              child: ElevatedButton.icon(
-                                                onPressed: () {
-                                                  FocusScopeNode currentFocus =
-                                                      FocusScope.of(context);
-
-                                                  if (!currentFocus
-                                                      .hasPrimaryFocus) {
-                                                    currentFocus.unfocus();
-                                                  }
-
-                                                  if (_formKey.currentState!
-                                                      .validate()) {
-                                                    Navigator.of(context)
-                                                        .push(PageRouteBuilder(
-                                                      opaque:
-                                                          false, // set to false
-                                                      pageBuilder:
-                                                          (_, __, ___) =>
-                                                              RemarkPage(
-                                                        cus_id: custmerId
-                                                            .toString(),
-                                                        ser: values.ordernum[0]
-                                                            ['os'],
-                                                        sid: sid!,
+                                        widget.type == "return"
+                                            ? Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Container(
+                                                    width: size.width * 0.27,
+                                                    height: size.height * 0.05,
+                                                    child: ElevatedButton.icon(
+                                                      icon: Icon(
+                                                        Icons.library_add_check,
+                                                        color: Colors.white,
+                                                        size: 15.0,
                                                       ),
-                                                    ));
-                                                  }
-                                                },
-                                                label: Text(
-                                                  'Remarks',
-                                                  style:
-                                                      TextStyle(fontSize: 12),
-                                                ),
-                                                icon: Icon(
-                                                  Icons.comment,
-                                                  size: 14,
-                                                ),
-                                                style: ElevatedButton.styleFrom(
-                                                  primary: Colors.lightBlue,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10.0),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            Spacer(),
-                                            Container(
-                                              width: size.width * 0.27,
-                                              height: size.height * 0.05,
-                                              child: ElevatedButton.icon(
-                                                onPressed: () async {
-                                                  FocusScopeNode currentFocus =
-                                                      FocusScope.of(context);
-
-                                                  if (!currentFocus
-                                                      .hasPrimaryFocus) {
-                                                    currentFocus.unfocus();
-                                                  }
-
-                                                  if (_formKey.currentState!
-                                                      .validate()) {
-                                                    Provider.of<Controller>(
-                                                            context,
-                                                            listen: false)
-                                                        .fetchwallet();
-                                                    final prefs =
-                                                        await SharedPreferences
-                                                            .getInstance();
-                                                   String? cuid =
-                                                        prefs.getString('cus_id');
-                                                    Navigator.of(context).push(
-                                                      PageRouteBuilder(
-                                                        opaque:
-                                                            false, // set to false
-                                                        pageBuilder:
-                                                            (_, __, ___) =>
-                                                                CollectionPage(
-                                                          os: os,
-                                                          sid: sid,
-                                                          cuid: cuid,
-                                                        ),
+                                                      label: Text(
+                                                        "Return",
+                                                        style: TextStyle(
+                                                            fontSize: 12),
                                                       ),
-                                                    );
-                                                  }
-                                                },
-                                                label: Text(
-                                                  'Collection',
-                                                  style:
-                                                      TextStyle(fontSize: 12),
-                                                ),
-                                                icon: Icon(
-                                                  Icons.comment,
-                                                  size: 15,
-                                                ),
-                                                style: ElevatedButton.styleFrom(
-                                                  primary: Color.fromARGB(
-                                                      255, 194, 85, 93),
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10.0),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            Spacer(),
-                                            Container(
-                                              width: size.width * 0.27,
-                                              height: size.height * 0.05,
-                                              child: ElevatedButton.icon(
-                                                icon: Icon(
-                                                  Icons.library_add_check,
-                                                  color: Colors.white,
-                                                  size: 15.0,
-                                                ),
-                                                label: Text(
-                                                  "Add Items",
-                                                  style:
-                                                      TextStyle(fontSize: 12),
-                                                ),
-                                                onPressed: () async {
-                                                  FocusScopeNode currentFocus =
-                                                      FocusScope.of(context);
+                                                      onPressed: () async {
+                                                        FocusScopeNode
+                                                            currentFocus =
+                                                            FocusScope.of(
+                                                                context);
 
-                                                  if (!currentFocus
-                                                      .hasPrimaryFocus) {
-                                                    currentFocus.unfocus();
-                                                  }
+                                                        if (!currentFocus
+                                                            .hasPrimaryFocus) {
+                                                          currentFocus
+                                                              .unfocus();
+                                                        }
 
-                                                  if (_formKey.currentState!
-                                                      .validate()) {
-                                                    Provider.of<Controller>(
-                                                            context,
-                                                            listen: false)
-                                                        .countFromTable(
-                                                      "orderBagTable",
-                                                      values.ordernum[0]['os'],
-                                                      custmerId.toString(),
-                                                    );
-                                                    Navigator.of(context).push(
-                                                      PageRouteBuilder(
-                                                        opaque:
-                                                            false, // set to false
-                                                        pageBuilder:
-                                                            (_, __, ___) =>
-                                                                ItemSelection(
-                                                          customerId: custmerId
-                                                              .toString(),
-                                                          areaId: Provider.of<
-                                                                      Controller>(
+                                                        if (_formKey
+                                                            .currentState!
+                                                            .validate()) {
+                                                          Provider.of<Controller>(
                                                                   context,
                                                                   listen: false)
-                                                              .areaAutoComplete[0],
-                                                          os: values.ordernum[0]
-                                                              ['os'],
-                                                          areaName: Provider.of<
-                                                                      Controller>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .areaAutoComplete[1],
+                                                              .countFromTable(
+                                                            "orderBagTable",
+                                                            values.ordernum[0]
+                                                                ['os'],
+                                                            custmerId
+                                                                .toString(),
+                                                          );
+                                                          Navigator.of(context)
+                                                              .push(
+                                                            PageRouteBuilder(
+                                                              opaque:
+                                                                  false, // set to false
+                                                              pageBuilder: (_,
+                                                                      __,
+                                                                      ___) =>
+                                                                  ItemSelection(
+                                                                customerId:
+                                                                    custmerId
+                                                                        .toString(),
+                                                                areaId: Provider.of<
+                                                                            Controller>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .areaAutoComplete[0],
+                                                                os: values
+                                                                        .ordernum[
+                                                                    0]['os'],
+                                                                areaName: Provider.of<
+                                                                            Controller>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .areaAutoComplete[1],
+                                                              ),
+                                                            ),
+                                                          );
+                                                        }
+                                                      },
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                        primary: P_Settings
+                                                            .returnbuttnColor,
+                                                        shape:
+                                                            new RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              new BorderRadius
+                                                                      .circular(
+                                                                  10.0),
                                                         ),
                                                       ),
-                                                    );
-                                                  }
-                                                },
-                                                style: ElevatedButton.styleFrom(
-                                                  primary: P_Settings.wavecolor,
-                                                  shape:
-                                                      new RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        new BorderRadius
-                                                            .circular(10.0),
+                                                    ),
                                                   ),
-                                                ),
+                                                  SizedBox(
+                                                    width: size.width * 0.05,
+                                                  ),
+                                                ],
+                                              )
+                                            : widget.type=="collection"?
+                                            Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Container(
+                                                    width: size.width * 0.27,
+                                                    height: size.height * 0.05,
+                                                    child: ElevatedButton.icon(
+                                                      onPressed: () async {
+                                                        FocusScopeNode
+                                                            currentFocus =
+                                                            FocusScope.of(
+                                                                context);
+
+                                                        if (!currentFocus
+                                                            .hasPrimaryFocus) {
+                                                          currentFocus
+                                                              .unfocus();
+                                                        }
+
+                                                        if (_formKey
+                                                            .currentState!
+                                                            .validate()) {
+                                                          Provider.of<Controller>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .fetchwallet();
+                                                          final prefs =
+                                                              await SharedPreferences
+                                                                  .getInstance();
+                                                          String? cuid =
+                                                              prefs.getString(
+                                                                  'cus_id');
+                                                          Navigator.of(context)
+                                                              .push(
+                                                            PageRouteBuilder(
+                                                              opaque:
+                                                                  false, // set to false
+                                                              pageBuilder: (_,
+                                                                      __,
+                                                                      ___) =>
+                                                                  CollectionPage(
+                                                                os: os,
+                                                                sid: sid,
+                                                                cuid: cuid,
+                                                              ),
+                                                            ),
+                                                          );
+                                                        }
+                                                      },
+                                                      label: Text(
+                                                        'Collection',
+                                                        style: TextStyle(
+                                                            fontSize: 12),
+                                                      ),
+                                                      icon: Icon(
+                                                        Icons.comment,
+                                                        size: 15,
+                                                      ),
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                        primary: Color.fromARGB(
+                                                            255, 194, 85, 93),
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      10.0),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    width: size.width * 0.05,
+                                                  ),
+                                                ],
+                                              )
+                                            :
+                                            Row(
+                                                children: [
+                                                  Container(
+                                                    width: size.width * 0.26,
+                                                    height: size.height * 0.05,
+                                                    child: ElevatedButton.icon(
+                                                      onPressed: () {
+                                                        FocusScopeNode
+                                                            currentFocus =
+                                                            FocusScope.of(
+                                                                context);
+
+                                                        if (!currentFocus
+                                                            .hasPrimaryFocus) {
+                                                          currentFocus
+                                                              .unfocus();
+                                                        }
+
+                                                        if (_formKey
+                                                            .currentState!
+                                                            .validate()) {
+                                                          Navigator.of(context)
+                                                              .push(
+                                                                  PageRouteBuilder(
+                                                            opaque:
+                                                                false, // set to false
+                                                            pageBuilder:
+                                                                (_, __, ___) =>
+                                                                    RemarkPage(
+                                                              cus_id: custmerId
+                                                                  .toString(),
+                                                              ser: values
+                                                                      .ordernum[
+                                                                  0]['os'],
+                                                              sid: sid!,
+                                                            ),
+                                                          ));
+                                                        }
+                                                      },
+                                                      label: Text(
+                                                        'Remarks',
+                                                        style: TextStyle(
+                                                            fontSize: 12),
+                                                      ),
+                                                      icon: Icon(
+                                                        Icons.comment,
+                                                        size: 14,
+                                                      ),
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                        primary:
+                                                            Colors.lightBlue,
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      10.0),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Spacer(),
+                                                  Container(
+                                                    width: size.width * 0.27,
+                                                    height: size.height * 0.05,
+                                                    child: ElevatedButton.icon(
+                                                      onPressed: () async {
+                                                        FocusScopeNode
+                                                            currentFocus =
+                                                            FocusScope.of(
+                                                                context);
+
+                                                        if (!currentFocus
+                                                            .hasPrimaryFocus) {
+                                                          currentFocus
+                                                              .unfocus();
+                                                        }
+
+                                                        if (_formKey
+                                                            .currentState!
+                                                            .validate()) {
+                                                          Provider.of<Controller>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .fetchwallet();
+                                                          final prefs =
+                                                              await SharedPreferences
+                                                                  .getInstance();
+                                                          String? cuid =
+                                                              prefs.getString(
+                                                                  'cus_id');
+                                                          Navigator.of(context)
+                                                              .push(
+                                                            PageRouteBuilder(
+                                                              opaque:
+                                                                  false, // set to false
+                                                              pageBuilder: (_,
+                                                                      __,
+                                                                      ___) =>
+                                                                  CollectionPage(
+                                                                os: os,
+                                                                sid: sid,
+                                                                cuid: cuid,
+                                                              ),
+                                                            ),
+                                                          );
+                                                        }
+                                                      },
+                                                      label: Text(
+                                                        'Collection',
+                                                        style: TextStyle(
+                                                            fontSize: 12),
+                                                      ),
+                                                      icon: Icon(
+                                                        Icons.comment,
+                                                        size: 15,
+                                                      ),
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                        primary: Color.fromARGB(
+                                                            255, 194, 85, 93),
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      10.0),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Spacer(),
+                                                  Container(
+                                                    width: size.width * 0.27,
+                                                    height: size.height * 0.05,
+                                                    child: ElevatedButton.icon(
+                                                      icon: Icon(
+                                                        Icons.library_add_check,
+                                                        color: Colors.white,
+                                                        size: 15.0,
+                                                      ),
+                                                      label: Text(
+                                                        "Add Items",
+                                                        style: TextStyle(
+                                                            fontSize: 12),
+                                                      ),
+                                                      onPressed: () async {
+                                                        FocusScopeNode
+                                                            currentFocus =
+                                                            FocusScope.of(
+                                                                context);
+
+                                                        if (!currentFocus
+                                                            .hasPrimaryFocus) {
+                                                          currentFocus
+                                                              .unfocus();
+                                                        }
+
+                                                        if (_formKey
+                                                            .currentState!
+                                                            .validate()) {
+                                                          Provider.of<Controller>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .countFromTable(
+                                                            "orderBagTable",
+                                                            values.ordernum[0]
+                                                                ['os'],
+                                                            custmerId
+                                                                .toString(),
+                                                          );
+                                                          Navigator.of(context)
+                                                              .push(
+                                                            PageRouteBuilder(
+                                                              opaque:
+                                                                  false, // set to false
+                                                              pageBuilder: (_,
+                                                                      __,
+                                                                      ___) =>
+                                                                  ItemSelection(
+                                                                customerId:
+                                                                    custmerId
+                                                                        .toString(),
+                                                                areaId: Provider.of<
+                                                                            Controller>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .areaAutoComplete[0],
+                                                                os: values
+                                                                        .ordernum[
+                                                                    0]['os'],
+                                                                areaName: Provider.of<
+                                                                            Controller>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .areaAutoComplete[1],
+                                                              ),
+                                                            ),
+                                                          );
+                                                        }
+                                                      },
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                        primary: P_Settings
+                                                            .wavecolor,
+                                                        shape:
+                                                            new RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              new BorderRadius
+                                                                      .circular(
+                                                                  10.0),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                            ),
-                                          ],
-                                        ),
                                       ],
                                     ),
                                   ),
                                   SizedBox(
                                     height: size.height * 0.05,
                                   ),
-                                  Container(
-                                    width: size.width * 0.9,
-                                    child: Row(
-                                      children: [
-                                        SizedBox(
-                                          width: size.width * 0.4,
-                                        ),
-                                        Flexible(
-                                          child: OutlinedButton(
-                                              onPressed: () async {
-                                                if (_formKey.currentState!
-                                                    .validate()) {
-                                                  await Provider.of<Controller>(
-                                                          context,
-                                                          listen: false)
-                                                      .getBalance(
-                                                          cid, custmerId);
-                                                  showDialog(
-                                                    context: context,
-                                                    builder: (BuildContext
-                                                            context) =>
-                                                        popup.buildPopupDialog(
+                                 widget.type=="return"?Container():
+                                 
+                                 widget.type=="collection"?Container():
+                                 Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        width: size.width * 0.27,
+                                        height: size.height * 0.05,
+                                        child: ElevatedButton.icon(
+                                          icon: Icon(
+                                            Icons.library_add_check,
+                                            color: Colors.white,
+                                            size: 15.0,
+                                          ),
+                                          label: Text(
+                                            "Return",
+                                            style: TextStyle(fontSize: 12),
+                                          ),
+                                          onPressed: () async {
+                                            FocusScopeNode currentFocus =
+                                                FocusScope.of(context);
+
+                                            if (!currentFocus.hasPrimaryFocus) {
+                                              currentFocus.unfocus();
+                                            }
+
+                                            if (_formKey.currentState!
+                                                .validate()) {
+                                              Provider.of<Controller>(context,
+                                                      listen: false)
+                                                  .countFromTable(
+                                                "orderBagTable",
+                                                values.ordernum[0]['os'],
+                                                custmerId.toString(),
+                                              );
+                                              Navigator.of(context).push(
+                                                PageRouteBuilder(
+                                                  opaque: false, // set to false
+                                                  pageBuilder: (_, __, ___) =>
+                                                      ItemSelection(
+                                                    customerId:
+                                                        custmerId.toString(),
+                                                    areaId: Provider.of<
+                                                                Controller>(
                                                             context,
-                                                            '\u{20B9}${values.balanceModel.ba}'),
-                                                  );
-                                                }
-                                                setState(() {
-                                                  balVisible = !balVisible;
-                                                });
-
-                                                print(
-                                                    "cid.........$cid,$custmerId");
-                                                FocusScopeNode currentFocus =
-                                                    FocusScope.of(context);
-
-                                                if (!currentFocus
-                                                    .hasPrimaryFocus) {
-                                                  currentFocus.unfocus();
-                                                }
-                                              },
-                                              child: Text("Balance")),
+                                                            listen: false)
+                                                        .areaAutoComplete[0],
+                                                    os: values.ordernum[0]
+                                                        ['os'],
+                                                    areaName: Provider.of<
+                                                                Controller>(
+                                                            context,
+                                                            listen: false)
+                                                        .areaAutoComplete[1],
+                                                  ),
+                                                ),
+                                              );
+                                            }
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            primary:
+                                                P_Settings.returnbuttnColor,
+                                            shape: new RoundedRectangleBorder(
+                                              borderRadius:
+                                                  new BorderRadius.circular(
+                                                      10.0),
+                                            ),
+                                          ),
                                         ),
-                                        Spacer(),
-                                      ],
-                                    ),
-                                  ),
+                                      ),
+                                      SizedBox(
+                                        width: size.width * 0.05,
+                                      ),
+                                      Flexible(
+                                        child: OutlinedButton(
+                                            onPressed: () async {
+                                              if (_formKey.currentState!
+                                                  .validate()) {
+                                                await Provider.of<Controller>(
+                                                        context,
+                                                        listen: false)
+                                                    .getBalance(cid, custmerId);
+                                                showDialog(
+                                                  context: context,
+                                                  builder: (BuildContext
+                                                          context) =>
+                                                      popup.buildPopupDialog(
+                                                          context,
+                                                          '\u{20B9}${values.balanceModel.ba}'),
+                                                );
+                                              }
+                                              setState(() {
+                                                balVisible = !balVisible;
+                                              });
+
+                                              print(
+                                                  "cid.........$cid,$custmerId");
+                                              FocusScopeNode currentFocus =
+                                                  FocusScope.of(context);
+
+                                              if (!currentFocus
+                                                  .hasPrimaryFocus) {
+                                                currentFocus.unfocus();
+                                              }
+                                            },
+                                            child: Text("Balance")),
+                                      ),
+                                    ],
+                                  )
+
+                                  
                                 ],
                               ),
                             ),

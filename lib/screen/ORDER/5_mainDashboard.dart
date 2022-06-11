@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:orderapp/components/areaPopup.dart';
 import 'package:orderapp/components/commoncolor.dart';
 import 'package:orderapp/controller/controller.dart';
 import 'package:provider/provider.dart';
@@ -17,11 +18,8 @@ class MainDashboard extends StatefulWidget {
 class _MainDashboardState extends State<MainDashboard> {
   DateTime date = DateTime.now();
   String? formattedDate;
-  List companyAttributes = [
-    "Collection",
-    "Orders",
-    "Sale",
-  ];
+  String? selected;
+  AreaSelectionPopup popup = AreaSelectionPopup();
   String? sid;
   final _random = Random();
   sharedPref() async {
@@ -58,13 +56,13 @@ class _MainDashboardState extends State<MainDashboard> {
     return Column(
       children: [
         Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-                // bottomLeft: Radius.circular(50),
-                // bottomRight: Radius.circular(50),
-                ),
-            // color: P_Settings.roundedButtonColor
-          ),
+          // decoration: BoxDecoration(
+          //   borderRadius: BorderRadius.only(
+          //       // bottomLeft: Radius.circular(50),
+          //       // bottomRight: Radius.circular(50),
+          //       ),
+          //   // color: P_Settings.roundedButtonColor
+          // ),
           alignment: Alignment.center,
           height: size.height * 0.13,
           child: Padding(
@@ -93,6 +91,23 @@ class _MainDashboardState extends State<MainDashboard> {
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
                                   color: P_Settings.extracolor)),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(
+                                    Icons.place,
+                                    color: Colors.white,
+                                  ))
+                            ],
+                          )
+                          // Container(
+                          //   decoration: new BoxDecoration(
+                          //       color: Theme.of(context).primaryColor),
+                          //   child:
+                          // ),
                         ],
                       );
                     },

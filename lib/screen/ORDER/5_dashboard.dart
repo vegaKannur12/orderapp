@@ -45,7 +45,9 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
   ValueNotifier<bool> dwnselected = ValueNotifier(false);
   String title = "";
   String? cid;
+  String? sid;
   String? os;
+
   String menu_index = "S1";
   List defaultitems = ["upload data", "download page", "logout"];
   final GlobalKey<ScaffoldState> _key = GlobalKey();
@@ -106,8 +108,8 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     cid = prefs.getString("cid");
     os = prefs.getString("os");
-
-    print("cid----$cid");
+    sid=prefs.getString("sid");
+    print("cid--sid--$cid--$sid");
   }
 
   _getDrawerItemWidget(String pos) {
@@ -117,14 +119,13 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
         return new MainDashboard();
       case "S2":
         if (widget.type == "return from cartList") {
-          return OrderForm(widget.areaName!);
+          return OrderForm(widget.areaName!, "sales");
         } else {
-          return OrderForm(
-            "",
-          );
+          return OrderForm("", "sales");
         }
       case "S3":
-        return null;
+        return OrderForm("", "return");
+
       case "SAC1":
         return null;
 
@@ -136,12 +137,14 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
 
       case "SA1":
         return CustomerCreation(
-          title: "Customer Creation",
-          type: "drawer call",
+          sid: sid!,
+          os: os,
         );
 
       case "SA2":
         return null;
+      case "SA3":
+        return OrderForm("", "collection");
 
       case "UL":
         // title = "Upload data";
@@ -412,6 +415,7 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                     ),
                   ],
                 ),
+
           drawer: Drawer(
             child: LayoutBuilder(
               builder: (context, constraints) {

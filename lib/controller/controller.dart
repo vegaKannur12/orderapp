@@ -1476,4 +1476,9 @@ class Controller extends ChangeNotifier {
     print("filters-----$filterList");
     notifyListeners();
   }
+
+  // customerCreation(){
+  //   accountHead = AccountHead.fromJson(ahead);
+  //       var account = await OrderAppDB.instance.insertAccoundHeads(accountHead);
+  // }
 }
