@@ -33,7 +33,7 @@ class Controller extends ChangeNotifier {
   List<bool> settingOption = [];
   List<Map<String, dynamic>> filterList = [];
   List<Map<String, dynamic>> sortList = [];
-  List<Map<String, dynamic>> collectionList= [];
+  List<Map<String, dynamic>> collectionList = [];
   bool filter = false;
   // String? custmerSelection;
 
@@ -298,11 +298,14 @@ class Controller extends ChangeNotifier {
 
     notifyListeners();
   }
+
   /////////////////////// fetch collection table ////////////
-   fetchrcollectionFromTable(String custmerId) async {
+  fetchrcollectionFromTable(String custmerId, String todaydate) async {
     remarkList.clear();
-    var res = await OrderAppDB.instance
-        .selectAllcommonwithdesc('collectionTable', "rec_cusid='${custmerId}'");
+  
+    var res = await OrderAppDB.instance.selectAllcommonwithdesc(
+        'collectionTable',
+        "rec_cusid='${custmerId}' AND rec_date='$todaydate'");
 
     for (var menu in res) {
       collectionList.add(menu);
@@ -311,6 +314,7 @@ class Controller extends ChangeNotifier {
 
     notifyListeners();
   }
+
   /////////////////////// Staff details////////////////////////////////
   Future<StaffDetails?> getStaffDetails(String cid) async {
     print("getStaffDetails...............${cid}");
@@ -1342,12 +1346,12 @@ class Controller extends ChangeNotifier {
   }
 
 ///////////////// order total today /////////////
-  Future<dynamic> selectTotalPrice(String sid,String todaydate) async {
+  Future<dynamic> selectTotalPrice(String sid, String todaydate) async {
     sumPrice.clear();
     print("sid.......sid");
     Map map = {};
     isLoading = true;
-    var res = await OrderAppDB.instance.selectSumPlaceOrder(sid,todaydate);
+    var res = await OrderAppDB.instance.selectSumPlaceOrder(sid, todaydate);
     print("resultssss....$res");
     if (res.length > 0) {
       for (var item in res) {
@@ -1365,7 +1369,7 @@ class Controller extends ChangeNotifier {
     print("todaydate.......$todaydate");
     Map map = {};
     isLoading = true;
-    var res = await OrderAppDB.instance.orderCount(sid,todaydate);
+    var res = await OrderAppDB.instance.orderCount(sid, todaydate);
     print("ordercount....$res");
     if (res.length > 0) {
       for (var item in res) {

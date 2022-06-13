@@ -786,6 +786,12 @@ class _OrderFormState extends State<OrderForm> with TickerProviderStateMixin {
                                                                       context,
                                                                       listen:
                                                                           false)
+                                                                  .collectionList
+                                                                  .clear();
+                                                              Provider.of<Controller>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
                                                                   .fetchwallet();
                                                               final prefs =
                                                                   await SharedPreferences

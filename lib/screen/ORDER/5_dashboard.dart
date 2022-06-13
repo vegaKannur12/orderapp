@@ -13,6 +13,7 @@ import 'package:orderapp/screen/ORDER/6_downloadedPage.dart';
 import 'package:orderapp/screen/ORDER/6_historypage.dart';
 import 'package:orderapp/screen/ORDER/6_uploaddata.dart';
 import 'package:orderapp/screen/ORDER/6_settings.dart';
+import 'package:orderapp/screen/ORDER/homePage.dart';
 import 'package:orderapp/service/tableList.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -29,6 +30,8 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
+  HomeWidget homepage = HomeWidget();
+
   TabController? _tabController;
   static const List<Tab> myTabs = <Tab>[
     Tab(
@@ -97,8 +100,6 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
       setState(() {
         menu_index = _tabController!.index.toString();
       });
-
-      
     });
     getCompaniId();
     // Provider.of<Controller>(context, listen: false).getCompanyData();
@@ -124,7 +125,9 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
     print("pos---${pos}");
     switch (pos) {
       case "S1":
-        return new MainDashboard();
+        return MainDashboard(
+          type: "drawer call",
+        );
       case "S2":
         if (widget.type == "return from cartList") {
           return OrderForm(widget.areaName!, "sales");
@@ -178,7 +181,10 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
             // type: "drawer call",
             );
       case "0":
-        return new MainDashboard();
+        return new MainDashboard(
+          type: "drawer call",
+        );
+
       case "4":
         Provider.of<Controller>(context, listen: false).setFilter(false);
         Provider.of<Controller>(context, listen: false)
@@ -223,252 +229,239 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
     print("${Provider.of<Controller>(context, listen: false).menuList.length}");
     Size size = MediaQuery.of(context).size;
     return WillPopScope(
-        onWillPop: () => _onBackPressed(context),
-        child: Scaffold(
-          key: _key, //
-          backgroundColor: P_Settings.wavecolor,
-          appBar: menu_index == "UL" || menu_index == "dP"
-              ? AppBar(
-                  elevation: 0,
-                  title: Text(
-                    title,
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  backgroundColor: P_Settings.wavecolor,
-                  bottom: PreferredSize(
-                    preferredSize: Size.fromHeight(6.0),
-                    child: Consumer<Controller>(
-                      builder: (context, value, child) {
-                        if (value.isLoading) {
-                          return LinearProgressIndicator(
-                            backgroundColor: Colors.white,
-                            color: P_Settings.wavecolor,
+      onWillPop: () => _onBackPressed(context),
+      child: Scaffold(
+        key: _key, //
+        backgroundColor: P_Settings.wavecolor,
+        appBar: menu_index == "UL" || menu_index == "dP"
+            ? AppBar(
+                elevation: 0,
+                title: Text(
+                  title,
+                  style: TextStyle(fontSize: 16),
+                ),
+                backgroundColor: P_Settings.wavecolor,
+                bottom: PreferredSize(
+                  preferredSize: Size.fromHeight(6.0),
+                  child: Consumer<Controller>(
+                    builder: (context, value, child) {
+                      if (value.isLoading) {
+                        return LinearProgressIndicator(
+                          backgroundColor: Colors.white,
+                          color: P_Settings.wavecolor,
 
-                            // valueColor: new AlwaysStoppedAnimation<Color>(Colors.red),
-                            // value: 0.25,
-                          );
-                        } else {
-                          return Container();
-                        }
-                      },
-                    ),
-                  ),
-                  // title: Text("Company Details",style: TextStyle(fontSize: 20),),
-                )
-              : AppBar(
-                  bottom: menu_index == "S1" ||
-                          menu_index == "1" ||
-                          menu_index == "2" ||
-                          menu_index == "3" ||
-                          menu_index == "4"
-                      ? TabBar(
-                          isScrollable: true,
-
-                          indicatorColor: Colors.white,
-                          indicatorSize: TabBarIndicatorSize.label,
-                          indicatorWeight: 2.0,
-                          // indicatorSize: TabBarIndicatorSize.label,
-                          labelColor: Color.fromARGB(255, 255, 255, 255),
-                          tabs: myTabs,
-                          controller: _tabController,
-                        )
-                      : null,
-                  leading: Builder(
-                    builder: (context) => IconButton(
-                        icon: new Icon(Icons.menu),
-                        onPressed: () {
-                          Provider.of<Controller>(context, listen: false)
-                              .getCompanyData();
-                          drawerOpts.clear();
-                          print("clicked");
-                          // companyAttributes.clear();
-                          for (var i = 0;
-                              i <
-                                  Provider.of<Controller>(context,
-                                          listen: false)
-                                      .menuList
-                                      .length;
-                              i++) {
-                            // var d =Provider.of<Controller>(context, listen: false).drawerItems[i];
-                            setState(() {
-                              drawerOpts.add(Consumer<Controller>(
-                                builder: (context, value, child) {
-                                  return ListTile(
-                                    title: Text(
-                                      value.menuList[i]["menu_name"]
-                                          .toLowerCase(),
-                                      style: TextStyle(
-                                          fontFamily: P_Font.kronaOne,
-                                          fontSize: 17),
-                                    ),
-                                    // selected: i == _selectedIndex,
-                                    onTap: () {
-                                      _onSelectItem(
-                                        i,
-                                        value.menuList[i]["menu_index"],
-                                      );
-                                    },
-                                  );
-                                },
-                              ));
-                            });
-                          }
-                          // Provider.of<Controller>(context, listen: false).fetchMenusFromMenuTable();
-                          Scaffold.of(context).openDrawer();
-                        }),
-                  ),
-                  elevation: 0,
-                  backgroundColor: P_Settings.wavecolor,
-                  actions: [
-                    IconButton(
-                      onPressed: () async {
-                        List<Map<String, dynamic>> list =
-                            await OrderAppDB.instance.getListOfTables();
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => TableList(list: list)),
+                          // valueColor: new AlwaysStoppedAnimation<Color>(Colors.red),
+                          // value: 0.25,
                         );
+                      } else {
+                        return Container();
+                      }
+                    },
+                  ),
+                ),
+                // title: Text("Company Details",style: TextStyle(fontSize: 20),),
+              )
+            : AppBar(
+                // bottom: menu_index == "S1" ||
+                //         menu_index == "1" ||
+                //         menu_index == "2" ||
+                //         menu_index == "3" ||
+                //         menu_index == "4"
+                // ? TabBar(
+                //     isScrollable: true,
+
+                //     indicatorColor: Colors.white,
+                //     indicatorSize: TabBarIndicatorSize.label,
+                //     indicatorWeight: 2.0,
+                //     // indicatorSize: TabBarIndicatorSize.label,
+                //     labelColor: Color.fromARGB(255, 255, 255, 255),
+                //     tabs: myTabs,
+                //     controller: _tabController,
+                //   )
+                // : null,
+                leading: Builder(
+                  builder: (context) => IconButton(
+                      icon: new Icon(Icons.menu),
+                      onPressed: () {
+                        Provider.of<Controller>(context, listen: false)
+                            .getCompanyData();
+                        drawerOpts.clear();
+                        print("clicked");
+                        // companyAttributes.clear();
+                        for (var i = 0;
+                            i <
+                                Provider.of<Controller>(context, listen: false)
+                                    .menuList
+                                    .length;
+                            i++) {
+                          // var d =Provider.of<Controller>(context, listen: false).drawerItems[i];
+                          setState(() {
+                            drawerOpts.add(Consumer<Controller>(
+                              builder: (context, value, child) {
+                                return ListTile(
+                                  title: Text(
+                                    value.menuList[i]["menu_name"]
+                                        .toLowerCase(),
+                                    style: TextStyle(
+                                        fontFamily: P_Font.kronaOne,
+                                        fontSize: 17),
+                                  ),
+                                  // selected: i == _selectedIndex,
+                                  onTap: () {
+                                    _onSelectItem(
+                                      i,
+                                      value.menuList[i]["menu_index"],
+                                    );
+                                  },
+                                );
+                              },
+                            ));
+                          });
+                        }
+                        // Provider.of<Controller>(context, listen: false).fetchMenusFromMenuTable();
+                        Scaffold.of(context).openDrawer();
+                      }),
+                ),
+                elevation: 0,
+                backgroundColor: P_Settings.wavecolor,
+                actions: [
+                  IconButton(
+                    onPressed: () async {
+                      List<Map<String, dynamic>> list =
+                          await OrderAppDB.instance.getListOfTables();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => TableList(list: list)),
+                      );
+                    },
+                    icon: Icon(Icons.table_bar),
+                  ),
+                ],
+              ),
+
+        drawer: Drawer(
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: size.height * 0.045,
+                    ),
+                    Container(
+                      height: size.height * 0.1,
+                      width: size.width * 1,
+                      color: P_Settings.wavecolor,
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            height: size.height * 0.07,
+                            width: size.width * 0.03,
+                          ),
+                          Icon(
+                            Icons.list_outlined,
+                            color: Colors.white,
+                          ),
+                          SizedBox(width: size.width * 0.04),
+                          Text(
+                            "Menus",
+                            style: TextStyle(fontSize: 20, color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Column(children: drawerOpts),
+                    Divider(
+                      color: Colors.black,
+                      indent: 20,
+                      endIndent: 20,
+                    ),
+                    ListTile(
+                      onTap: () async {
+                        _onSelectItem(0, "CD");
                       },
-                      icon: Icon(Icons.table_bar),
+                      title: Text(
+                        "Company Details",
+                        style: TextStyle(fontSize: 17),
+                      ),
+                    ),
+                    ListTile(
+                      onTap: () async {
+                        _onSelectItem(0, "dP");
+                      },
+                      title: Text(
+                        "Download page",
+                        style: TextStyle(fontSize: 17),
+                      ),
+                    ),
+                    ListTile(
+                      onTap: () async {
+                        _onSelectItem(0, "UL");
+                      },
+                      title: Text(
+                        "Upload data",
+                        style: TextStyle(fontSize: 17),
+                      ),
+                    ),
+                    ListTile(
+                      trailing: Icon(Icons.settings),
+                      onTap: () async {
+                        _onSelectItem(0, "ST");
+                      },
+                      title: Text(
+                        "Settings",
+                        style: TextStyle(fontSize: 17),
+                      ),
+                    ),
+                    ListTile(
+                      onTap: () async {
+                        _onSelectItem(0, "RP");
+                      },
+                      title: Text(
+                        "Report",
+                        style: TextStyle(fontSize: 17),
+                      ),
+                    ),
+                    ListTile(
+                      onTap: () async {
+                        _onSelectItem(0, "HR");
+                      },
+                      title: Text(
+                        "History",
+                        style: TextStyle(fontSize: 17),
+                      ),
+                    ),
+                    ListTile(
+                      trailing: Icon(Icons.logout),
+                      onTap: () async {
+                        final prefs = await SharedPreferences.getInstance();
+                        await prefs.remove('st_username');
+                        await prefs.remove('st_pwd');
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => StaffLogin()));
+                      },
+                      title: Text(
+                        "Logout",
+                        style: TextStyle(fontSize: 17),
+                      ),
                     ),
                   ],
                 ),
-
-          drawer: Drawer(
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                return SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: size.height * 0.045,
-                      ),
-                      Container(
-                        height: size.height * 0.1,
-                        width: size.width * 1,
-                        color: P_Settings.wavecolor,
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              height: size.height * 0.07,
-                              width: size.width * 0.03,
-                            ),
-                            Icon(
-                              Icons.list_outlined,
-                              color: Colors.white,
-                            ),
-                            SizedBox(width: size.width * 0.04),
-                            Text(
-                              "Menus",
-                              style:
-                                  TextStyle(fontSize: 20, color: Colors.white),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Column(children: drawerOpts),
-                      Divider(
-                        color: Colors.black,
-                        indent: 20,
-                        endIndent: 20,
-                      ),
-                      ListTile(
-                        onTap: () async {
-                          _onSelectItem(0, "CD");
-                        },
-                        title: Text(
-                          "Company Details",
-                          style: TextStyle(fontSize: 17),
-                        ),
-                      ),
-                      ListTile(
-                        onTap: () async {
-                          _onSelectItem(0, "dP");
-                        },
-                        title: Text(
-                          "Download page",
-                          style: TextStyle(fontSize: 17),
-                        ),
-                      ),
-                      ListTile(
-                        onTap: () async {
-                          _onSelectItem(0, "UL");
-                        },
-                        title: Text(
-                          "Upload data",
-                          style: TextStyle(fontSize: 17),
-                        ),
-                      ),
-                      ListTile(
-                        trailing: Icon(Icons.settings),
-                        onTap: () async {
-                          _onSelectItem(0, "ST");
-                        },
-                        title: Text(
-                          "Settings",
-                          style: TextStyle(fontSize: 17),
-                        ),
-                      ),
-                      ListTile(
-                        onTap: () async {
-                          _onSelectItem(0, "RP");
-                        },
-                        title: Text(
-                          "Report",
-                          style: TextStyle(fontSize: 17),
-                        ),
-                      ),
-                      ListTile(
-                        onTap: () async {
-                          _onSelectItem(0, "HR");
-                        },
-                        title: Text(
-                          "History",
-                          style: TextStyle(fontSize: 17),
-                        ),
-                      ),
-                      ListTile(
-                        trailing: Icon(Icons.logout),
-                        onTap: () async {
-                          final prefs = await SharedPreferences.getInstance();
-                          await prefs.remove('st_username');
-                          await prefs.remove('st_pwd');
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => StaffLogin()));
-                        },
-                        title: Text(
-                          "Logout",
-                          style: TextStyle(fontSize: 17),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
-          ),
-          // body: _getDrawerItemWidget(
-          //   menu_index,
-          // ),
-
-          body: TabBarView(
-            controller: _tabController,
-            children: myTabs.map((Tab tab) {
-              final String label = tab.text!.toLowerCase();
-              return Center(
-                child: Container(
-                  child: _getDrawerItemWidget(
-                    menu_index
-                  ),
-                ),
               );
-            }).toList(),
+            },
           ),
-        ));
+        ),
+        // body: _getDrawerItemWidget(
+        //   menu_index,
+        // ),
+
+        body: _getDrawerItemWidget(menu_index),
+      ),
+    );
   }
 }
 

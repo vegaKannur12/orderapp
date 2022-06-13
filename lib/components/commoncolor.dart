@@ -32,6 +32,7 @@ class P_Settings {
   static Color get ratecolor => Color.fromARGB(255, 231, 133, 166);
   static Color get collection => Color.fromARGB(255, 238, 238, 238);
   static Color get collection1 => Color.fromARGB(255, 121, 119, 119);
+  static Color get collection3 => Color.fromARGB(255, 228, 219, 219);
   static Color get editcolor => Color.fromARGB(255, 22, 78, 30);
 
   static Color get dashbordcl2 => Color.fromARGB(255, 235, 121, 45);

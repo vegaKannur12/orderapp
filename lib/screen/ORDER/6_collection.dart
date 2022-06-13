@@ -43,7 +43,7 @@ class _CollectionPageState extends State<CollectionPage> {
     formattedDate = DateFormat('yyyy-MM-dd').format(date);
     print("cuid----${widget.cuid}");
     Provider.of<Controller>(context, listen: false)
-        .fetchrcollectionFromTable(widget.cuid!);
+        .fetchrcollectionFromTable(widget.cuid!, formattedDate!);
   }
 
   @override
@@ -265,8 +265,12 @@ class _CollectionPageState extends State<CollectionPage> {
                                                 0);
                                         Provider.of<Controller>(context,
                                                 listen: false)
+                                            .collectionList
+                                            .clear();
+                                        Provider.of<Controller>(context,
+                                                listen: false)
                                             .fetchrcollectionFromTable(
-                                                widget.cuid!);
+                                                widget.cuid!, formattedDate!);
                                         amtController.clear();
                                         dscController.clear();
                                         noteController.clear();

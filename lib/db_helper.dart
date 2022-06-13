@@ -1095,8 +1095,8 @@ class OrderAppDB {
     if (condition == null || condition.isEmpty) {
       result = await db.rawQuery("SELECT * FROM '$table' ORDER BY id DESC");
     } else {
-      result =
-          await db.rawQuery("SELECT * FROM '$table' WHERE $condition ORDER BY id DESC");
+      result = await db
+          .rawQuery("SELECT * FROM '$table' WHERE $condition ORDER BY id DESC");
     }
     print("result menu common----$result");
     return result;
