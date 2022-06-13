@@ -1,0 +1,759 @@
+import 'package:flutter/material.dart';
+import 'package:orderapp/components/commoncolor.dart';
+import 'package:orderapp/controller/controller.dart';
+
+import 'package:provider/provider.dart';
+
+class ReportPage {
+  Widget reportPage(BuildContext context) {
+    final GlobalKey<FormState> _key = GlobalKey<FormState>();
+    double? outstand;
+    final formKey = GlobalKey<FormState>();
+    final TextEditingController searchController = TextEditingController();
+    Size size = MediaQuery.of(context).size;
+
+    return Consumer<Controller>(builder: (context, value, child) {
+      return Container(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Consumer<Controller>(
+                builder: (context, value, child) {
+                  return TextField(
+                      decoration: InputDecoration(
+                        hintText: "Search with  customer name",
+                        hintStyle:
+                            TextStyle(fontSize: 14.0, color: Colors.grey),
+                        suffixIcon: value.isVisible
+                            ? Wrap(
+                                children: [
+                                  IconButton(
+                                      icon: Icon(
+                                        Icons.done,
+                                        size: 20,
+                                      ),
+                                      onPressed: () async {
+                                        // Provider.of<Controller>(context,
+                                        //         listen: false)
+                                        //     .selectReportFromOrder(context);
+                                        // FocusScope.of(context).requestFocus(FocusNode());
+                                        Provider.of<Controller>(context,
+                                                    listen: false)
+                                                .reportSearchkey =
+                                            searchController.text;
+                                        Provider.of<Controller>(context,
+                                                listen: false)
+                                            .setreportsearch(true);
+                                        Provider.of<Controller>(context,
+                                                listen: false)
+                                            .searchfromreport();
+                                      }),
+                                  IconButton(
+                                      icon: Icon(
+                                        Icons.close,
+                                        size: 20,
+                                      ),
+                                      onPressed: () {
+                                        FocusScope.of(context)
+                                            .requestFocus(FocusNode());
+                                        // Provider.of<Controller>(context,
+                                        //         listen: false)
+                                        //     .getProductList(widget.customerId);
+                                        Provider.of<Controller>(context,
+                                                listen: false)
+                                            .setreportsearch(false);
+
+                                        value.setisVisible(false);
+                                        // Provider.of<Controller>(context,
+                                        //         listen: false)
+                                        //     .newreportList
+                                        //     .clear();
+
+                                        searchController.clear();
+                                      }),
+                                ],
+                              )
+                            : Icon(
+                                Icons.search,
+                                size: 20,
+                              ),
+                      ),
+                      controller: searchController,
+                      onChanged: (value) {
+                        Provider.of<Controller>(context, listen: false)
+                            .setisVisible(true);
+                      });
+                },
+              ),
+            ),
+             Container(
+                height: size.height * 0.8,
+                child: Consumer<Controller>(
+                  builder: (context, value, child) {
+                    if (value.isLoading) {
+                      return Container(
+                          // height: size.height * 0.9,
+                          width: double.infinity,
+                          child: Center(child: CircularProgressIndicator()));
+                    } else {
+                      print("value.filter----${value.filter}");
+                 
+
+                      if (value.filter) {
+                        return ListView.builder(
+                          itemCount: value.filterList.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.all(3.0),
+                              child: Card(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text(value.filterList[index]["name"],
+                                              style: TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: P_Settings.wavecolor))
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: size.height * 0.01,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.gps_fixed,
+                                            size: 15,
+                                          ),
+                                          SizedBox(
+                                            width: size.width * 0.01,
+                                          ),
+                                          Text(
+                                            value.filterList[index]["ad1"],
+                                            style: TextStyle(
+                                                fontSize: 17,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.grey[500],
+                                                fontStyle: FontStyle.italic),
+                                          )
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: size.height * 0.01,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.phone,
+                                            size: 15,
+                                          ),
+                                          SizedBox(
+                                            width: size.width * 0.01,
+                                          ),
+                                          Text(value.filterList[index]["mob"],
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.grey[700],
+                                                fontWeight: FontWeight.bold,
+                                              ))
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: size.height * 0.01,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Icon(Icons.currency_rupee, size: 15),
+                                          SizedBox(
+                                            width: size.width * 0.01,
+                                          ),
+                                          Text(
+                                              value.filterList[index]["bln"]
+                                                  .toString(),
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.grey[700])),
+                                          SizedBox(
+                                            width: size.width * 0.01,
+                                          ),
+                                          Text("(balance)"),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: size.height * 0.01,
+                                      ),
+                                      value.filterList[index]["order_value"] !=
+                                                  null &&
+                                              value.filterList[index]
+                                                      ["order_value"] !=
+                                                  0
+                                          ? Row(
+                                              children: [
+                                                Icon(Icons.currency_rupee,
+                                                    size: 15),
+                                                SizedBox(
+                                                  width: size.width * 0.01,
+                                                ),
+                                                Text(
+                                                    value.filterList[index]
+                                                            ["order_value"]
+                                                        .toString(),
+                                                    style: TextStyle(
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color:
+                                                            Colors.grey[700])),
+                                                SizedBox(
+                                                  width: size.width * 0.01,
+                                                ),
+                                                Text("(order)")
+                                              ],
+                                            )
+                                          : Container(),
+                                      SizedBox(
+                                        height: size.height * 0.01,
+                                      ),
+                                      Row(children: [
+                                        Container(
+                                            color: Colors.green,
+                                            width: size.width * 0.08,
+                                            height: size.height * 0.03,
+                                            child: value.filterList[index]
+                                                            ["order_value"] !=
+                                                        0 &&
+                                                    value.filterList[index]
+                                                            ["order_value"] !=
+                                                        null
+                                                ? Icon(
+                                                    Icons.done,
+                                                    color: Colors.white,
+                                                  )
+                                                : null),
+                                        Container(
+                                            color: P_Settings.wavecolor,
+                                            width: size.width * 0.08,
+                                            height: size.height * 0.03,
+                                            child: value.filterList[index][
+                                                            "collection_sum"] !=
+                                                        0 &&
+                                                    value.filterList[index][
+                                                            "collection_sum"] !=
+                                                        null
+                                                ? Icon(
+                                                    Icons.done,
+                                                    color: Colors.white,
+                                                  )
+                                                : null),
+                                        Container(
+                                            color:
+                                                P_Settings.roundedButtonColor,
+                                            width: size.width * 0.08,
+                                            height: size.height * 0.03,
+                                            child: value.filterList[index]
+                                                            ["remark_count"] !=
+                                                        0 &&
+                                                    value.filterList[index]
+                                                            ["remark_count"] !=
+                                                        null
+                                                ? Icon(
+                                                    Icons.done,
+                                                    color: Colors.white,
+                                                  )
+                                                : null),
+                                      ])
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      }
+
+                      if (value.isreportSearch &&
+                          value.newreportList.length == 0) {
+                        return Container(
+                          height: size.height * 0.8,
+                          child: Text("No Customer !!!"),
+                        );
+                      } else {
+                        return ListView.builder(
+                          itemCount: value.isreportSearch &&
+                                  value.newreportList.length > 0
+                              ? value.newreportList.length
+                              : value.reportData.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.all(3.0),
+                              child: Card(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text(
+                                              value.isreportSearch &&
+                                                      value.newreportList
+                                                              .length >
+                                                          0
+                                                  ? value.newreportList[index]
+                                                      ["name"]
+                                                  : value.reportData[index]
+                                                      ["name"],
+                                              style: TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: P_Settings.wavecolor))
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: size.height * 0.01,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.gps_fixed,
+                                            size: 15,
+                                          ),
+                                          SizedBox(
+                                            width: size.width * 0.01,
+                                          ),
+                                          Text(
+                                            value.isreportSearch &&
+                                                    value.newreportList.length >
+                                                        0
+                                                ? value.newreportList[index]
+                                                    ["ad1"]
+                                                : value.reportData[index]
+                                                    ["ad1"],
+                                            style: TextStyle(
+                                                fontSize: 17,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.grey[500],
+                                                fontStyle: FontStyle.italic),
+                                          )
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: size.height * 0.01,
+                                      ),
+                                      value.isreportSearch &&
+                                              value.newreportList.length > 0
+                                          ? value.newreportList[index]["mob"] ==
+                                                      null ||
+                                                  value
+                                                      .newreportList[index]
+                                                          ["mob"]
+                                                      .isEmpty
+                                              ? Container()
+                                              : Row(
+                                                  children: [
+                                                    Icon(
+                                                      Icons.phone,
+                                                      size: 15,
+                                                    ),
+                                                    SizedBox(
+                                                      width: size.width * 0.01,
+                                                    ),
+                                                    Text(
+                                                        value.newreportList[
+                                                            index]["mob"],
+                                                        style: TextStyle(
+                                                          fontSize: 14,
+                                                          color:
+                                                              Colors.grey[700],
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ))
+                                                  ],
+                                                )
+                                          : value.reportData[index]["mob"] ==
+                                                      null ||
+                                                  value.reportData[index]["mob"]
+                                                      .isEmpty
+                                              ? Container()
+                                              : Row(
+                                                  children: [
+                                                    Icon(
+                                                      Icons.phone,
+                                                      size: 15,
+                                                    ),
+                                                    SizedBox(
+                                                      width: size.width * 0.01,
+                                                    ),
+                                                    Text(
+                                                        value.reportData[index]
+                                                            ["mob"],
+                                                        style: TextStyle(
+                                                          fontSize: 14,
+                                                          color:
+                                                              Colors.grey[700],
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ))
+                                                  ],
+                                                ),
+                                      SizedBox(
+                                        height: size.height * 0.01,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Icon(Icons.currency_rupee, size: 15),
+                                          SizedBox(
+                                            width: size.width * 0.01,
+                                          ),
+                                          Text(
+                                              value.reportData[index]["bln"]
+                                                  .toString(),
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.grey[700])),
+                                          SizedBox(
+                                            width: size.width * 0.01,
+                                          ),
+                                          Text("(balance)"),
+                                         
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: size.height * 0.01,
+                                      ),
+                                      value.newreportList.length > 0 &&
+                                              value.isreportSearch
+                                          ? value.newreportList[index]
+                                                          ["order_value"] !=
+                                                      null &&
+                                                  value.newreportList[index]
+                                                          ["order_value"] !=
+                                                      0
+                                              ? Row(
+                                                  children: [
+                                                    Icon(Icons.currency_rupee,
+                                                        size: 15),
+                                                    SizedBox(
+                                                      width: size.width * 0.01,
+                                                    ),
+                                                    Text(
+                                                        value.newreportList[
+                                                                index]
+                                                                ["order_value"]
+                                                            .toString(),
+                                                        style: TextStyle(
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color: Colors
+                                                                .grey[700])),
+                                                    SizedBox(
+                                                      width: size.width * 0.01,
+                                                    ),
+                                                    Text("(order)")
+                                                  ],
+                                                )
+                                              : Container()
+                                          : value.reportData[index]
+                                                          ["order_value"] !=
+                                                      null &&
+                                                  value.reportData[index]
+                                                          ["order_value"] !=
+                                                      0
+                                              ? Row(
+                                                  children: [
+                                                    Icon(Icons.currency_rupee,
+                                                        size: 15),
+                                                    SizedBox(
+                                                      width: size.width * 0.01,
+                                                    ),
+                                                    Text(
+                                                        value.reportData[index]
+                                                                ["order_value"]
+                                                            .toString(),
+                                                        style: TextStyle(
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color: Colors
+                                                                .grey[700])),
+                                                    SizedBox(
+                                                      width: size.width * 0.01,
+                                                    ),
+                                                    Text("(order)")
+                                                  ],
+                                                )
+                                              : Container(),
+                                      SizedBox(
+                                        height: size.height * 0.01,
+                                      ),
+                                      Row(children: [
+                                        Container(
+                                            color: Colors.green,
+                                            width: size.width * 0.08,
+                                            height: size.height * 0.03,
+                                            child: value.isreportSearch &&
+                                                    value.newreportList.length >
+                                                        0
+                                                ? value.newreportList[index][
+                                                                "order_value"] !=
+                                                            0 &&
+                                                        value.newreportList[index][
+                                                                "order_value"] !=
+                                                            null
+                                                    ? Icon(
+                                                        Icons.done,
+                                                        color: Colors.white,
+                                                      )
+                                                    : null
+                                                : value.reportData[index][
+                                                                "order_value"] !=
+                                                            0 &&
+                                                        value.reportData[index]
+                                                                ["order_value"] !=
+                                                            null
+                                                    ? Icon(
+                                                        Icons.done,
+                                                        color: Colors.white,
+                                                      )
+                                                    : null),
+                                        Container(
+                                          color: P_Settings.wavecolor,
+                                          width: size.width * 0.08,
+                                          height: size.height * 0.03,
+                                          child: value.isreportSearch &&
+                                                  value.newreportList.length > 0
+                                              ? value.newreportList[index][
+                                                              "collection_sum"] !=
+                                                          0 &&
+                                                      value.newreportList[index]
+                                                              [
+                                                              "collection_sum"] !=
+                                                          null
+                                                  ? Icon(
+                                                      Icons.done,
+                                                      color: Colors.white,
+                                                    )
+                                                  : null
+                                              : value.reportData[index][
+                                                              "collection_sum"] !=
+                                                          0 &&
+                                                      value.reportData[index]
+                                                              ["collection_sum"] !=
+                                                          null
+                                                  ? Icon(
+                                                      Icons.done,
+                                                      color: Colors.white,
+                                                    )
+                                                  : null,
+                                        ),
+                                        Container(
+                                          color: P_Settings.roundedButtonColor,
+                                          width: size.width * 0.08,
+                                          height: size.height * 0.03,
+                                          child: value.isreportSearch &&
+                                                  value.newreportList.length > 0
+                                              ? value.newreportList[index][
+                                                              "remark_count"] !=
+                                                          0 &&
+                                                      value.newreportList[index]
+                                                              [
+                                                              "remark_count"] !=
+                                                          null
+                                                  ? Icon(
+                                                      Icons.done,
+                                                      color: Colors.white,
+                                                    )
+                                                  : null
+                                              : value.reportData[index][
+                                                              "remark_count"] !=
+                                                          0 &&
+                                                      value.reportData[index]
+                                                              ["remark_count"] !=
+                                                          null
+                                                  ? Icon(
+                                                      Icons.done,
+                                                      color: Colors.white,
+                                                    )
+                                                  : null,
+                                        ),
+
+                                   
+                                      ])
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      }
+                    }
+                  }
+                )
+             )
+    
+          ],
+        ),
+    
+      );
+    });
+  }
+}
+
+// class _ReportPageState extends State<ReportPage> {
+//   // Filter filter = Filter();
+
+//   @override
+//   void initState() {
+//     // TODO: implement initState
+//     super.initState();
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     Size size = MediaQuery.of(context).size;
+//     return Scaffold(
+//       bottomNavigationBar: Row(
+//         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//         children: [
+//           /////////////// sort and filter //////////////////////////
+//           // Container(
+//           //   width: size.width * 0.3,
+//           //   child: ElevatedButton(
+//           //       onPressed: () {
+//           //         showModalBottomSheet<void>(
+//           //           context: context,
+//           //           builder: (BuildContext context) {
+//           //             return Container(
+//           //               alignment: Alignment.topLeft,
+//           //               height: size.height * 0.25,
+//           //               child: Column(
+//           //                 crossAxisAlignment: CrossAxisAlignment.center,
+//           //                 mainAxisSize: MainAxisSize.min,
+//           //                 children: <Widget>[
+//           //                   Row(
+//           //                     children: [
+//           //                       Padding(
+//           //                         padding: const EdgeInsets.all(8.0),
+//           //                         child: Text(
+//           //                           'Name :',
+//           //                           style: TextStyle(
+//           //                             fontSize: 16,
+//           //                           ),
+//           //                         ),
+//           //                       ),
+//           //                       SizedBox(
+//           //                         width: size.width * 0.039,
+//           //                       ),
+//           //                       OutlinedButton(
+//           //                           onPressed: () async {
+//           //                             // Provider.of<Controller>(context,
+//           //                             //         listen: false)
+//           //                             //     .setreportsearch(true);
+//           //                             // Provider.of<Controller>(context,
+//           //                             //         listen: false)
+//           //                             //     .sortByNamereport();
+//           //                           },
+//           //                           child: Text("Assending")),
+//           //                     ],
+//           //                   ),
+//           //                   Row(
+//           //                     children: [
+//           //                       Padding(
+//           //                         padding: const EdgeInsets.all(8.0),
+//           //                         child: Text('Balance : ',
+//           //                             style: TextStyle(
+//           //                               fontSize: 16,
+//           //                             )),
+//           //                       ),
+//           //                       OutlinedButton(
+//           //                           onPressed: () async {},
+//           //                           child: Text("High to Low")),
+//           //                       SizedBox(
+//           //                         width: size.width * 0.03,
+//           //                       ),
+//           //                       OutlinedButton(
+//           //                         onPressed: () async {},
+//           //                         child: Text("Low to High"),
+//           //                       ),
+//           //                       Padding(
+//           //                         padding: const EdgeInsets.all(8.0),
+//           //                         child: Divider(
+//           //                           thickness: 2,
+//           //                         ),
+//           //                       ),
+//           //                     ],
+//           //                   ),
+//           //                   Padding(
+//           //                     padding: const EdgeInsets.only(left: 20),
+//           //                     child: ElevatedButton(
+//           //                       child: const Text('Done'),
+//           //                       onPressed: () => Navigator.pop(context),
+//           //                     ),
+//           //                   )
+//           //                 ],
+//           //               ),
+//           //             );
+//           //           },
+//           //         );
+//           //       },
+//           //       style: ElevatedButton.styleFrom(
+//           //           primary: P_Settings.bottomNavButton,
+//           //           side: BorderSide(
+//           //             width: 1.0,
+//           //             color: P_Settings.wavecolor,
+//           //           )),
+//           //       child: Text(
+//           //         "Sort",
+//           //         style: TextStyle(color: Colors.black),
+//           //       ),
+//           //       ),
+//           // ),
+//           // Container(
+//           //   width: size.width * 0.3,
+//           //   child: ElevatedButton(
+//           //       onPressed: () {
+//           //         // Navigator.of(context).push(PageRouteBuilder(
+//           //         //   opaque: false, // set to false
+//           //         //   pageBuilder: (_, __, ___) => FilterReport(),
+//           //         // ));
+//           //       },
+//           //       style: ElevatedButton.styleFrom(
+//           //           // primary: Colors.white,
+//           //           primary: P_Settings.bottomNavButton,
+//           //           side: BorderSide(width: 1.0, color: P_Settings.wavecolor)),
+//           //       child: Text(
+//           //         "Filters",
+//           //         style: TextStyle(color: Colors.black),
+//           //       )),
+//           // ),
+//         ],
+//       ),
+//       resizeToAvoidBottomInset: false,
+//       // appBar: AppBar(
+//       //   backgroundColor:P_Settings.wavecolor
+//       // ),
+//       body: InkWell(
+//         onTap: () {
+//           FocusScope.of(context).requestFocus(FocusNode());
+//         },
+//         child: SingleChildScrollView(
+//           child: Column(
+//             children: [
+             
+//                   },
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }

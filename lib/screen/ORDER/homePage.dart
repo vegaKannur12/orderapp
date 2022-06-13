@@ -12,6 +12,50 @@ class HomeWidget {
         return Container(
           child: Column(
             children: [
+              Container(
+                height: size.height * 0.1,
+                width: double.infinity,
+                // color: P_Settings.collection,
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: CircleAvatar(
+                            radius: 15,
+                            child: Icon(
+                              Icons.person,
+                              color: P_Settings.collection1,
+                            ),
+                            backgroundColor: Color.fromARGB(255, 214, 201, 200),
+                          ),
+                        ),
+                        SizedBox(
+                          width: size.width * 0.01,
+                        ),
+                        Text("${value.cname}",
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: P_Settings.wavecolor)),
+                        SizedBox(
+                          width: size.width * 0.01,
+                        ),
+                        Text("- ${value.sname}",
+                            style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                color: P_Settings.collection1))
+                      ],
+                    ),
+                    Divider(
+                      thickness: 2,
+                    ),
+                  ],
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.only(top: 4),
                 child: Text(
@@ -506,7 +550,6 @@ class HomeWidget {
                       ],
                     ),
                   )),
-              Text("Home"),
             ],
           ),
         );

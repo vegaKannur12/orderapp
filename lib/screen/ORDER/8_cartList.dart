@@ -25,6 +25,7 @@ class CartList extends StatefulWidget {
 }
 
 class _CartListState extends State<CartList> {
+  List<String> s=[];
   TextEditingController rateController = TextEditingController();
   DateTime now = DateTime.now();
   String? date;
@@ -34,7 +35,12 @@ class _CartListState extends State<CartList> {
   String? sname;
   @override
   void initState() {
-    date = DateFormat('yyyy-MM-dd').format(now);
+    date = DateFormat('yyyy-MM-dd kk:mm:ss').format(now);
+    s = date!.split(" ");
+    // print("date----${s[1]}");
+
+// String date = s[0];
+// String time = s[1];
     Provider.of<Controller>(context, listen: false).getOrderno();
     super.initState();
     Provider.of<Controller>(context, listen: false)
@@ -148,7 +154,7 @@ class _CartListState extends State<CartList> {
                             Provider.of<Controller>(context, listen: false)
                                 .insertToOrderbagAndMaster(
                                     widget.os,
-                                    date!,
+                                    s[0],s[1],
                                     widget.custmerId,
                                     sid!,
                                     widget.areaId,

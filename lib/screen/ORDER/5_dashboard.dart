@@ -125,9 +125,7 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
     print("pos---${pos}");
     switch (pos) {
       case "S1":
-        return MainDashboard(
-          type: "drawer call",
-        );
+        return MainDashboard(type: homepage.home(context));
       case "S2":
         if (widget.type == "return from cartList") {
           return OrderForm(widget.areaName!, "sales");
@@ -181,9 +179,7 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
             // type: "drawer call",
             );
       case "0":
-        return new MainDashboard(
-          type: "drawer call",
-        );
+        return MainDashboard(type: homepage.home(context));
 
       case "4":
         Provider.of<Controller>(context, listen: false).setFilter(false);

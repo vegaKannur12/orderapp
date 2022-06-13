@@ -109,7 +109,9 @@ class OrderAppDB {
   static final order_id = 'order_id';
 
   static final ordernum = 'ordernum';
-  static final orderdatetime = 'orderdatetime';
+  static final orderdate = 'orderdate';
+  static final ordertime = 'ordertime';
+
   static final customerid = 'customerid';
   static final userid = 'userid';
   static final areaid = 'areaid';
@@ -117,7 +119,8 @@ class OrderAppDB {
   static final total_price = 'total_price';
 
 /////////////////// cart table/////////////
-  static final cartdatetime = 'cartdatetime';
+  static final cartdate = 'cartdate';
+  static final carttime = 'carttime';
   static final cartrowno = 'cartrowno';
   static final qty = 'qty';
   static final rate = 'rate';
@@ -295,7 +298,8 @@ class OrderAppDB {
           CREATE TABLE orderMasterTable (
             $id INTEGER PRIMARY KEY AUTOINCREMENT,
             $order_id INTEGER,
-            $orderdatetime TEXT,
+            $orderdate TEXT,
+            $ordertime TEXT,
             $os TEXT NOT NULL,
             $customerid TEXT,
             $userid TEXT,
@@ -321,7 +325,8 @@ class OrderAppDB {
           CREATE TABLE orderBagTable (
             $id INTEGER PRIMARY KEY AUTOINCREMENT,
             $itemName TEXT NOT NULL,
-            $cartdatetime TEXT,
+            $cartdate TEXT,
+            $carttime TEXT,
             $os TEXT NOT NULL,
             $customerid TEXT,
             $cartrowno INTEGER,
@@ -416,7 +421,8 @@ class OrderAppDB {
   //////////////////////////////////////////////
   Future insertorderBagTable(
     String itemName,
-    String cartdatetime,
+    String cartdate,
+    String carttime,
     String os,
     String customerid,
     int cartrowno,
@@ -449,7 +455,7 @@ class OrderAppDB {
       print("response-------$res");
     } else {
       query2 =
-          'INSERT INTO orderBagTable (itemName, cartdatetime, os, customerid, cartrowno, code, qty, rate, totalamount, cstatus) VALUES ("${itemName}","${cartdatetime}", "${os}", "${customerid}", $cartrowno, "${code}", $qty, "${rate}", "${totalamount}", $cstatus)';
+          'INSERT INTO orderBagTable (itemName, cartdate, carttime , os, customerid, cartrowno, code, qty, rate, totalamount, cstatus) VALUES ("${itemName}","${cartdate}","${carttime}", "${os}", "${customerid}", $cartrowno, "${code}", $qty, "${rate}", "${totalamount}", $cstatus)';
       var res = await db.rawInsert(query2);
     }
 
@@ -465,6 +471,7 @@ class OrderAppDB {
       double rate,
       String? code,
       String orderdate,
+      String ordertime,
       String os,
       String customerid,
       String userid,
@@ -485,7 +492,7 @@ class OrderAppDB {
       res2 = await db.rawInsert(query2);
     } else if (table == "orderMasterTable") {
       var query3 =
-          'INSERT INTO orderMasterTable(order_id, orderdatetime, os, customerid, userid, areaid, status, total_price) VALUES("${order_id}", "${orderdate}", "${os}", "${customerid}", "${userid}", "${areaid}", ${status},${total_price})';
+          'INSERT INTO orderMasterTable(order_id, orderdate, ordertime, os, customerid, userid, areaid, status, total_price) VALUES("${order_id}", "${orderdate}", "${ordertime}", "${os}", "${customerid}", "${userid}", "${areaid}", ${status},${total_price})';
       res2 = await db.rawInsert(query3);
       print(query3);
     }
@@ -1044,14 +1051,14 @@ class OrderAppDB {
 
 ////////////////////////left join///////////////////////////
 
-  getHistory() async {
+  todayOrder(String date) async {
     List<Map<String, dynamic>> result;
     Database db = await instance.database;
 
     result = await db.rawQuery(
-        'select orderMasterTable.order_id, orderMasterTable.os  || orderMasterTable.order_id as Order_Num,orderMasterTable.customerid Cus_id,orderMasterTable.orderdatetime Date, count(orderDetailTable.row_num) count, orderMasterTable.total_price  from orderMasterTable inner join orderDetailTable on orderMasterTable.order_id=orderDetailTable.order_id group by orderMasterTable.order_id');
+        'select orderMasterTable.order_id, orderMasterTable.os  || orderMasterTable.order_id as Order_Num,orderMasterTable.customerid Cus_id,orderMasterTable.orderdate Date, count(orderDetailTable.row_num) count, orderMasterTable.total_price  from orderMasterTable inner join orderDetailTable on orderMasterTable.order_id=orderDetailTable.order_id where orderMasterTable.orderdate="${date}"  group by orderMasterTable.order_id');
     if (result.length > 0) {
-      print("result------$result");
+      print("inner result------$result");
       return result;
     } else {
       return null;
@@ -1081,22 +1088,7 @@ class OrderAppDB {
     if (condition == null || condition.isEmpty) {
       result = await db.rawQuery("SELECT * FROM '$table'");
     } else {
-      result = await db.rawQuery("SELECT * FROM '$table' WHERE $condition");
-    }
-    print("result menu common----$result");
-    return result;
-  }
-
-///////////////////select  collection///////////////////////
-  selectAllcommonwithdesc(String table, String? condition) async {
-    print("haiiiii");
-    List<Map<String, dynamic>> result;
-    Database db = await instance.database;
-    if (condition == null || condition.isEmpty) {
-      result = await db.rawQuery("SELECT * FROM '$table' ORDER BY id DESC");
-    } else {
-      result = await db
-          .rawQuery("SELECT * FROM '$table' WHERE $condition ORDER BY id DESC");
+      result = await db.rawQuery("SELECT * FROM '$table' WHERE $condition ");
     }
     print("result menu common----$result");
     return result;
@@ -1171,10 +1163,10 @@ class OrderAppDB {
     Database db = await instance.database;
 
     result = await db.rawQuery(
-        "SELECT sum(total_price) as S FROM orderMasterTable WHERE userid='$sid' AND orderdatetime='$todaydate'");
+        "SELECT sum(total_price) as S FROM orderMasterTable WHERE userid='$sid' AND orderdate='$todaydate'");
     if (result != null && result.isNotEmpty && result != null) {
       res = await db.rawQuery(
-          "SELECT sum(total_price) as s FROM orderMasterTable WHERE userid='$sid' AND orderdatetime='$todaydate'");
+          "SELECT sum(total_price) as s FROM orderMasterTable WHERE userid='$sid' AND orderdate='$todaydate'");
       sum = res[0]["S"].toString();
       print("sum from db----$sum");
     } else {
@@ -1192,11 +1184,11 @@ class OrderAppDB {
     String orderCount;
     Database db = await instance.database;
     result = await db.rawQuery(
-        "SELECT COUNT(id) as S FROM orderMasterTable WHERE userid='$sid' AND orderdatetime='$todaydate'");
+        "SELECT COUNT(id) as S FROM orderMasterTable WHERE userid='$sid' AND orderdate='$todaydate'");
     print("result-order-----$result");
     if (result != null && result.isNotEmpty && result != null) {
       res = await db.rawQuery(
-          "SELECT COUNT(id) as S FROM orderMasterTable WHERE userid='$sid' AND orderdatetime='$todaydate'");
+          "SELECT COUNT(id) as S FROM orderMasterTable WHERE userid='$sid' AND orderdate='$todaydate'");
       orderCount = res[0]["S"].toString();
       print("sum from db----$orderCount");
     } else {
@@ -1230,8 +1222,39 @@ class OrderAppDB {
     return res;
   }
 
+////////////////////////left join///////////////////////////
+
+  getHistory() async {
+    List<Map<String, dynamic>> result;
+    Database db = await instance.database;
+
+    result = await db.rawQuery(
+        'select orderMasterTable.order_id, orderMasterTable.os  || orderMasterTable.order_id as Order_Num,orderMasterTable.customerid Cus_id,orderMasterTable.orderdatetime Date, count(orderDetailTable.row_num) count, orderMasterTable.total_price  from orderMasterTable inner join orderDetailTable on orderMasterTable.order_id=orderDetailTable.order_id group by orderMasterTable.order_id');
+    if (result.length > 0) {
+      print("result------$result");
+      return result;
+    } else {
+      return null;
+    }
+  }
+
+///////////////////select  collection///////////////////////
+  selectAllcommonwithdesc(String table, String? condition) async {
+    print("haiiiii");
+    List<Map<String, dynamic>> result;
+    Database db = await instance.database;
+    if (condition == null || condition.isEmpty) {
+      result = await db.rawQuery("SELECT * FROM '$table' ORDER BY id DESC");
+    } else {
+      result = await db
+          .rawQuery("SELECT * FROM '$table' WHERE $condition ORDER BY id DESC");
+    }
+    print("result menu common----$result");
+    return result;
+  }
+
 ///////////////////////// collection count /////////////
-  Future<dynamic> CountCollectionAmount(String sid, String collectDate) async {
+  Future<dynamic> countCollectionAmount(String sid, String collectDate) async {
     print("sid.....$sid");
     List<Map<String, dynamic>> result;
     var res;
@@ -1266,6 +1289,28 @@ class OrderAppDB {
     } else {
       return null;
     }
+  }
+  ///////////////////////// collection count /////////////
+  Future<dynamic> CountCollectionAmount(String sid, String collectDate) async {
+    print("sid.....$sid");
+    List<Map<String, dynamic>> result;
+    var res;
+    String collectCount;
+    Database db = await instance.database;
+
+    result = await db.rawQuery(
+        "SELECT COUNT(id) as S FROM collectionTable WHERE rec_staffid='$sid' AND rec_date='$collectDate'");
+    print("result-order-----$result");
+    if (result != null && result.isNotEmpty && result != null) {
+      res = await db.rawQuery(
+          "SELECT COUNT(id) as S FROM collectionTable WHERE rec_staffid='$sid' AND rec_date='$collectDate'");
+      collectCount = res[0]["S"].toString();
+      print("sum from db----$collectCount");
+    } else {
+      collectCount = "0.0";
+    }
+
+    return res;
   }
 /////////////////////////////////////////////////////
   // getReportRemarkOrderDetails() async {

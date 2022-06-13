@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 class HistoryPopup {
   Future buildPopupDialog(
-      BuildContext context, Size size, String orderNum, String cusId) {
+      BuildContext context, Size size, String? orderNum, String? cusId) {
     return showDialog(
         context: context,
         barrierDismissible: true,
@@ -41,12 +41,13 @@ class HistoryPopup {
                         // height: size.height*0.2,
                         child: DataTable(
                           horizontalMargin: 0,
-                          headingRowHeight: 30,
-                          dataRowHeight: 35,
-                          //     MaterialStateColor.resolveWith((states) => Colors.yellow),
+                          headingRowHeight: 25,
+                          dataRowHeight: 30,
+                           headingRowColor:
+                    MaterialStateColor.resolveWith((states) => Color.fromARGB(255, 240, 235, 235)),
                           columnSpacing: 0,
                           showCheckboxColumn: false,
-
+                          dataRowColor: MaterialStateColor.resolveWith((states) => Colors.white),
                           border:
                               TableBorder.all(width: 1, color: Colors.grey),
                           columns: getColumns(value.tableHistorydataColumn),
@@ -69,7 +70,7 @@ class HistoryPopup {
   }
 
   List<DataColumn> getColumns(List<String> columns) {
-    // print("columns---${columns}");
+    print("columns---${columns}");
     String behv;
     String colsName;
     return columns.map((String column) {

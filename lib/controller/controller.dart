@@ -66,6 +66,7 @@ class Controller extends ChangeNotifier {
 
   List<Map<String, dynamic>> historydataList = [];
   List<Map<String, dynamic>> staffOrderTotal = [];
+  List<Map<String, dynamic>> todayOrderList = [];
   String? area;
   String? splittedCode;
   double amt = 0.0;
@@ -303,9 +304,8 @@ class Controller extends ChangeNotifier {
   fetchrcollectionFromTable(String custmerId, String todaydate) async {
     remarkList.clear();
 
-    var res = await OrderAppDB.instance.selectAllcommonwithdesc(
-        'collectionTable',
-        "rec_cusid='${custmerId}' AND rec_date='$todaydate'");
+    var res = await OrderAppDB.instance
+        .selectAllcommonwithdesc('collectionTable', "rec_cusid='${custmerId}'");
 
     for (var menu in res) {
       collectionList.add(menu);
@@ -315,6 +315,7 @@ class Controller extends ChangeNotifier {
     notifyListeners();
   }
 
+  //////////////////////////////////////////////////////////////////////////
   fetchtotalcollectionFromTable(String custmerId, String todaydate) async {
     remarkList.clear();
 
@@ -894,8 +895,15 @@ class Controller extends ChangeNotifier {
   }
 
   //////////////insert to order master and details///////////////////////
-  insertToOrderbagAndMaster(String os, String date, String customer_id,
-      String user_id, String aid, double total_price) async {
+  insertToOrderbagAndMaster(
+      String os,
+      String date,
+      String time,
+      String customer_id,
+      String user_id,
+      String aid,
+      double total_price) async {
+    print("hhjk----$date");
     List<Map<String, dynamic>> om = [];
     int order_id = await OrderAppDB.instance
         .getMaxCommonQuery('orderDetailTable', 'order_id', "os='${os}'");
@@ -907,6 +915,7 @@ class Controller extends ChangeNotifier {
           0.0,
           " ",
           date,
+          time,
           os,
           customer_id,
           user_id,
@@ -926,6 +935,7 @@ class Controller extends ChangeNotifier {
             rate,
             item["code"],
             date,
+            time,
             os,
             customer_id,
             user_id,
@@ -1159,7 +1169,7 @@ class Controller extends ChangeNotifier {
   getHistoryData(String table, String? condition) async {
     isLoading = true;
     print("haiiii");
-
+    tableHistorydataColumn.clear();historydataList.clear();
     List<Map<String, dynamic>> result =
         await OrderAppDB.instance.selectCommonQuery(table, condition);
 
@@ -1282,6 +1292,53 @@ class Controller extends ChangeNotifier {
   }
 
   ///////////////////////////////////////////////////////
+  //  toggleExpansion(int index) {
+  //   for (int i = 0; i < isExpanded.length; i++) {
+  //     if (isExpanded[index] != isExpanded[i] && isExpanded[i]) {
+  //       isExpanded[i] = !isExpanded[i];
+  //       isVisibleTable[i] = !isVisibleTable[i];
+  //     }
+  //   }
+  // }
+  ///  //////getHistory/////////////////////////////
+  todayOrder(String date) async {
+    print("date$date");
+    todayOrderList.clear();
+
+    isLoading = true;
+    print("haiiii");
+    List<Map<String, dynamic>> result =
+        await OrderAppDB.instance.todayOrder(date);
+    List<Map<String, dynamic>> copy = [];
+    print("aftr cut----$result");
+
+    for (var item in result) {
+      todayOrderList.add(item);
+    }
+
+    // isExpanded = List.generate(todayOrderList.length, (index) => false);
+    // isVisibleTable = List.generate(todayOrderList.length, (index) => false);
+
+    print("todayOrderList----$todayOrderList");
+
+    // copy[0].remove("order_id");
+    // for (Map<String, dynamic> item in result) {
+    //   historyList.add(item);
+    // }
+
+    // print("history list----$historyList");
+    // var list = historyList[0].keys.toList();
+    // print("**list----$list");
+    // for (var item in list) {
+    //   print(item);
+    //   tableColumn.add(item);
+    // }
+    isLoading = false;
+    notifyListeners();
+
+    notifyListeners();
+  }
+
   setSettingOption(int length) {
     settingOption = List.generate(length, (index) => false);
     notifyListeners();

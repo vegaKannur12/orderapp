@@ -38,6 +38,7 @@ class _ItemSelectionState extends State<ItemSelection> {
   SearchTile search = SearchTile();
   DateTime now = DateTime.now();
   // CustomSnackbar snackbar = CustomSnackbar();
+  List<String> s=[];
   String? date;
   bool loading = true;
   bool loading1 = false;
@@ -57,6 +58,7 @@ class _ItemSelectionState extends State<ItemSelection> {
     products = Provider.of<Controller>(context, listen: false).productName;
     Provider.of<Controller>(context, listen: false).getOrderno();
     date = DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
+    s=date!.split(" ");
     Provider.of<Controller>(context, listen: false)
         .getProductList(widget.customerId);
     // Provider.of<Controller>(context, listen: false).getProductItems(
@@ -400,7 +402,7 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                                 value.newList[
                                                                         index]
                                                                     ["item"],
-                                                                date!,
+                                                                s[0],s[1],
                                                                 value.ordernum[
                                                                     0]["os"],
                                                                 widget
@@ -642,7 +644,7 @@ class _ItemSelectionState extends State<ItemSelection> {
                                                     .instance
                                                     .insertorderBagTable(
                                                         products[index]["item"],
-                                                        date!,
+                                                        s[0],s[1],
                                                         value.ordernum[0]["os"],
                                                         widget.customerId,
                                                         max,

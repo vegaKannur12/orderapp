@@ -1,13 +1,15 @@
-import 'dart:async';
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:orderapp/components/areaPopup.dart';
 import 'package:orderapp/components/commoncolor.dart';
 import 'package:orderapp/controller/controller.dart';
 import 'package:orderapp/screen/ORDER/homePage.dart';
+import 'package:orderapp/screen/ORDER/report.dart';
 import 'package:orderapp/screen/ORDER/todaycollectionPage.dart';
+import 'package:orderapp/screen/ORDER/todaysOrder.dart';
+import 'package:orderapp/screen/ORDER/todaysOrder.dart';
+import 'package:orderapp/screen/historydataPopup.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -15,11 +17,11 @@ enum WidgetMarker {
   home,
   order,
   collection,
-  report,
+  reportPage,
 }
 
 class MainDashboard extends StatefulWidget {
-  String type;
+  Widget type;
   MainDashboard({required this.type});
 
   @override
@@ -28,13 +30,20 @@ class MainDashboard extends StatefulWidget {
 
 class _MainDashboardState extends State<MainDashboard> {
   String? cuid;
+  DateTime now = DateTime.now();
+  HistoryPopup popup = HistoryPopup();
+  List<String> s = [];
+
+  String? date;
   HomeWidget homepage = HomeWidget();
   TodayCollectionPage collectionPage = TodayCollectionPage();
+  ReportPage reportpages = ReportPage();
+  TodaysOrder orderpage = TodaysOrder();
   WidgetMarker selectedWidgetMarker = WidgetMarker.home;
-  DateTime date = DateTime.now();
+  DateTime dateti = DateTime.now();
   String? formattedDate;
   String? selected;
-  AreaSelectionPopup popup = AreaSelectionPopup();
+  // AreaSelectionPopup popup = AreaSelectionPopup();
   String? sid;
   final _random = Random();
   sharedPref() async {
@@ -59,15 +68,21 @@ class _MainDashboardState extends State<MainDashboard> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    formattedDate = DateFormat('yyyy-MM-dd').format(date);
+    formattedDate = DateFormat('yyyy-MM-dd').format(dateti);
     Provider.of<Controller>(context, listen: false).setFilter(false);
     Provider.of<Controller>(context, listen: false)
         .selectReportFromOrder(context);
+    date = DateFormat('yyyy-MM-dd kk:mm:ss').format(now);
+    s = date!.split(" ");
+    Provider.of<Controller>(context, listen: false).todayOrder(s[0]);
     sharedPref();
   }
 
   @override
   void dispose() {
+    selectedWidgetMarker = WidgetMarker.home;
+    selectedWidgetMarker = WidgetMarker.order;
+    selectedWidgetMarker = WidgetMarker.collection;
     // TODO: implement dispose
     super.dispose();
   }
@@ -80,13 +95,15 @@ class _MainDashboardState extends State<MainDashboard> {
     }
 
     Widget order() {
-      return Container(
-        child: Text("Order"),
-      );
+      return orderpage.orderpage(context);
     }
 
     Widget collection() {
       return collectionPage.collectionPage(context);
+    }
+
+    Widget report() {
+      return reportpages.reportPage(context);
     }
 
     Widget getCustomContainer() {
@@ -102,6 +119,8 @@ class _MainDashboardState extends State<MainDashboard> {
           break;
         case WidgetMarker.collection:
           return collection();
+        case WidgetMarker.reportPage:
+          return report();
           break;
         default:
           return home();
@@ -257,7 +276,8 @@ class _MainDashboardState extends State<MainDashboard> {
                                   GestureDetector(
                                     onTap: () {
                                       setState(() {
-                                        // selectedWidgetMarker = WidgetMarker.date;
+                                        selectedWidgetMarker =
+                                            WidgetMarker.reportPage;
                                       });
                                     },
                                     child: Container(
@@ -284,61 +304,14 @@ class _MainDashboardState extends State<MainDashboard> {
                         ),
                       ),
                       Container(
-                        height: size.height * 0.1,
-                        width: double.infinity,
-                        // color: P_Settings.collection,
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: CircleAvatar(
-                                    radius: 15,
-                                    child: Icon(
-                                      Icons.person,
-                                      color: P_Settings.collection1,
-                                    ),
-                                    backgroundColor:
-                                        Color.fromARGB(255, 214, 201, 200),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: size.width * 0.01,
-                                ),
-                                Text("${value.cname}",
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: P_Settings.wavecolor)),
-                                SizedBox(
-                                  width: size.width * 0.01,
-                                ),
-                                Text("- ${value.sname}",
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold,
-                                        color: P_Settings.collection1))
-                              ],
-                            ),
-                            Divider(
-                              thickness: 2,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
                         height: size.height * 7,
                         width: double.infinity,
                         child: GestureDetector(
                             onTap: () {
-                              if (mounted) {
-                                setState(() {
-                                  getCustomContainer();
-                                  print("helooooooooooo");
-                                });
-                              }
+                              setState(() {
+                                getCustomContainer();
+                                print("helooooooooooo");
+                              });
                             },
                             child: getCustomContainer()),
                       ),
