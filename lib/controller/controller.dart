@@ -302,10 +302,24 @@ class Controller extends ChangeNotifier {
   /////////////////////// fetch collection table ////////////
   fetchrcollectionFromTable(String custmerId, String todaydate) async {
     remarkList.clear();
-  
+
     var res = await OrderAppDB.instance.selectAllcommonwithdesc(
         'collectionTable',
         "rec_cusid='${custmerId}' AND rec_date='$todaydate'");
+
+    for (var menu in res) {
+      collectionList.add(menu);
+    }
+    print("remarkList----${collectionList}");
+
+    notifyListeners();
+  }
+
+  fetchtotalcollectionFromTable(String custmerId, String todaydate) async {
+    remarkList.clear();
+
+    var res = await OrderAppDB.instance
+        .selectAllcommonwithdesc('collectionTable', "rec_date='$todaydate'");
 
     for (var menu in res) {
       collectionList.add(menu);

@@ -52,7 +52,7 @@ class _MainDashboardState extends State<MainDashboard> {
     await Provider.of<Controller>(context, listen: false)
         .CollectionCount(sid!, formattedDate!);
     await Provider.of<Controller>(context, listen: false)
-        .fetchrcollectionFromTable(sid!, formattedDate!);
+        .fetchtotalcollectionFromTable(sid!, formattedDate!);
   }
 
   @override
